@@ -68,25 +68,23 @@
 do_action( 'zakra_action_after' );
 ?>
 
-<script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/jquery-migrate-3.1.0.min.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/jquery-migrate-3.1.0.min.js"></script>
 
 <?php wp_footer(); ?>
 <!-- Scripts
 ================================================== -->
 
-<script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/chosen.min.js"></script>
-<script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/magnific-popup.min.js"></script>
-<script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/owl.carousel.min.js"></script>
-<script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/rangeSlider.js"></script>
-<script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/sticky-kit.min.js"></script>
-<script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/slick.min.js"></script>
-<script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/masonry.min.js"></script>
-<script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/mmenu.min.js"></script>
-<script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/tooltips.min.js"></script>
-<script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/custom.js"></script>
-
-
-
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/chosen.min.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/magnific-popup.min.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/owl.carousel.min.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/rangeSlider.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/sticky-kit.min.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/slick.min.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/masonry.min.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/mmenu.min.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/tooltips.min.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/custom.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/main.js"></script>
 </body>
 </html>

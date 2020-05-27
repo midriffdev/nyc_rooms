@@ -1,5 +1,6 @@
 <?php
 /* Template Name: Signup */
+require_once 'google-api/vendor/autoload.php';
 global $wpdb, $user_ID;
 $errors = array(); 
 if(is_user_logged_in()){
@@ -11,45 +12,50 @@ if(is_user_logged_in()){
 		  
          // Check username is present and not already in use  
         $username = $wpdb->escape($_REQUEST['username']);  
-        if ( strpos($username, ' ') !== false )
-        {   
-            $errors['username'] = "Sorry, no spaces allowed in usernames";  
-        }  
-        if(empty($username)) 
+          
+        if(empty($_REQUEST['username'])) 
         {   
             $errors['username'] = "Please enter a username";  
+        } else if ( strpos($username, ' ') !== false )
+        {   
+            $errors['username'] = "Sorry, no spaces allowed in usernames";  
         } elseif( username_exists( $username ) ) 
         {  
             $errors['username'] = "Username already exists, please try another";  
         }  
    
         // Check email address is present and valid  
-        $email = $wpdb->escape($_REQUEST['email']);  
-        if( !is_email( $email ) ) 
+        $email = $wpdb->escape($_REQUEST['email']); 
+		if(empty($_REQUEST['email'])) 
+        {   
+            $errors['email'] = "Please enter a email";  
+        } elseif( !is_email( $email ) ) 
         {   
             $errors['email'] = "Please enter a valid email";  
         } elseif( email_exists( $email ) ) 
         {  
             $errors['email'] = "This email address is already in use";  
-        }  
-   
-        // Check password is valid  
-        if(0 === preg_match("/.{6,}/", $_POST['password1']))
+        } 
+           
+		 if(empty($_REQUEST['password1'])) 
+		{   
+            $errors['password'] = "Please enter a password";  
+        } elseif(0 === preg_match("/.{6,}/", $_REQUEST['password1']))
         {  
           $errors['password'] = "Password must be at least six characters";  
         }  
-   
-        // Check password confirmation_matches  
-        if(0 !== strcmp($_POST['password1'], $_POST['password2']))
-         {  
-          $errors['password_confirmation'] = "Passwords do not match";  
+        if(empty($_REQUEST['password2'])) 
+		{   
+            $errors['password_confirmation'] = "Please enter a confirm password";  
+        }  elseif(0 !== strcmp($_REQUEST['password1'], $_REQUEST['password2'])) {  
+              $errors['password_confirmation'] = "Passwords do not match";
         }  
      
    
         if(0 === count($errors)) 
          {  
    
-            $password = $_POST['password1'];  
+            $password = $_REQUEST['password1'];  
             $signin_data =  array(
 									  'user_login' => $username,
 									  'user_pass' => $password,
@@ -68,7 +74,9 @@ if(is_user_logged_in()){
 			     
 			    $user_verify = wp_signon( $login_data, false ); 
 				
+				
 				 if(!is_wp_error($user_verify)){
+				   wp_new_user_notification($user, null, 'both');
 				   header( 'Location:' . site_url() . '/my-profile/?success=1&u=' . $username );  
 				}
 				
@@ -100,7 +108,7 @@ if(is_user_logged_in()){
     $user_verify = wp_signon( $login_data, false );
    
     if ( is_wp_error($user_verify) ) {  
-        echo "Invalid login details";  
+        $loginerror = "Invalid login details";  
        // Note, I have created a page called "Error" that is a child of the login page to handle errors. This can be anything, but it seemed a good way to me to handle errors.  
      } else {    
        echo "<script type='text/javascript'>window.location.href='". site_url().'/my-profile/' ."'</script>";  
@@ -108,8 +116,159 @@ if(is_user_logged_in()){
      }
    
 }
-	
-	
+
+$client_id = '675017533078473'; // Facebook APP Client ID
+$client_secret = 'a2183f77e4e5c2944b2c5f1ed9fcabb6'; // Facebook APP Client secret
+$redirect_uri = 'http://localhost/nycrooms/login-register/'; // URL of page/file that processes a request
+ 
+ /*----------------- Facebook Login -------------------------*/
+ 
+// in our case we ask facebook to redirect to the same page, because processing code is also here
+// processing code
+if ( isset( $_GET['code'] ) && $_GET['code'] ) {
+ 
+	// first of all we should receive access token by the given code
+	$params = array(
+		'client_id'     => $client_id,
+		'redirect_uri'  => $redirect_uri,
+		'client_secret' => $client_secret,
+		'code'          => $_GET['code'] 
+	);
+ 
+	// connect Facebook Grapth API using WordPress HTTP API
+	$tokenresponse = wp_remote_get( 'https://graph.facebook.com/v2.7/oauth/access_token?' . http_build_query( $params ) );
+ 
+	$token = json_decode( wp_remote_retrieve_body( $tokenresponse ) );
+ 
+	if ( isset( $token->access_token )) {
+ 
+		// now using the access token we can receive informarion about user
+		$params = array(
+			'access_token'	=> $token->access_token,
+			'fields'		=> 'id,name,email,picture,link,locale,first_name,last_name' // info to get
+		);
+ 
+		// connect Facebook Grapth API using WordPress HTTP API
+		$useresponse = wp_remote_get('https://graph.facebook.com/v2.7/me' . '?' . urldecode( http_build_query( $params ) ) );
+ 
+		$fb_user = json_decode( wp_remote_retrieve_body( $useresponse ) );
+        
+		 // if ID and email exist, we can try to create new WordPress user or authorize if he is already registered
+		if ( isset( $fb_user->id ) && isset( $fb_user->email ) ) {
+ 
+			// if no user with this email, create him
+			if( !email_exists( $fb_user->email ) ) {
+ 
+				$userdata = array(
+					'user_login'  =>  $fb_user->email,
+					'user_pass'   =>  wp_generate_password(), // random password, you can also send a notification to new users, so they could set a password themselves
+					'user_email' => $fb_user->email,
+					'first_name' => $fb_user->first_name,
+					'last_name' => $fb_user->last_name,
+					'role'  => 'property_owner'
+				);
+				$user_id = wp_insert_user( $userdata );
+				
+				update_user_meta( $user_id, 'facebook', $fb_user->link );
+				
+				
+				
+				
+				
+ 
+			} else {
+				// user exists, so we need just get his ID
+				$user = get_user_by( 'email', $fb_user->email );
+				$user_id = $user->ID;
+				
+			}
+			
+			if( $user_id ) {
+			    wp_set_auth_cookie( $user_id, true );
+				wp_redirect( home_url() . '/my-profile/');
+				exit;
+			}
+ 
+		}
+ 
+	}
+}
+?>
+
+<?php
+ 
+$params = array(
+	'client_id'     => $client_id,
+	'redirect_uri'  => $redirect_uri,
+	'response_type' => 'code',
+	'scope'         => 'email'
+);
+ 
+$login_url = 'https://www.facebook.com/dialog/oauth?' . urldecode( http_build_query( $params ) );
+
+/*----------------- Google Login  ---------------------*/
+
+// init configuration
+$clientID = '442563866929-35p9pvj6om2jepgi700mgs0blocjh839.apps.googleusercontent.com';
+$clientSecret = '3mzvZQJVFDFBbTQhOO5EOcZx';
+$redirectUri = 'http://localhost/nycrooms/login-register/';
+  
+// create Client Request to access Google API
+$client = new Google_Client();
+$client->setClientId($clientID);
+$client->setClientSecret($clientSecret);
+$client->setRedirectUri($redirectUri);
+$client->addScope("email");
+$client->addScope("profile");
+
+// authenticate code from Google OAuth Flow
+if (isset($_GET['code'])) {
+  $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+  $client->setAccessToken($token['access_token']);
+  
+  // get profile info
+  $google_oauth = new Google_Service_Oauth2($client);
+  $google_account_info = $google_oauth->userinfo->get();
+  if(isset($google_account_info->email) && isset($google_account_info->id)){
+  
+         // if no user with this email, create him
+			if( !email_exists( $google_account_info->email ) ) {
+ 
+				$userdata = array(
+					'user_login'  =>  $google_account_info->email,
+					'user_pass'   =>  wp_generate_password(), // random password, you can also send a notification to new users, so they could set a password themselves
+					'user_email' => $google_account_info->email,
+					'first_name' => $google_account_info->givenName,
+					'last_name' =>  $google_account_info->familyName,
+					'role'  => 'property_owner'
+				);
+				$user_id = wp_insert_user( $userdata );
+				
+				
+ 
+			} else {
+				// user exists, so we need just get his ID
+				$user = get_user_by( 'email', $google_account_info->email );
+				$user_id = $user->ID;
+				
+			}
+			
+			if( $user_id ) {
+			    wp_set_auth_cookie( $user_id, true );
+				wp_redirect( home_url() . '/my-profile/');
+				exit;
+			}
+			
+  
+  
+  }
+  
+ 
+  // now you can use this profile info to create account in your website and make user logged in.
+} else {
+  $google_uri = $client->createAuthUrl();
+}
+
 //Check whether the user is already logged in  
 get_header();
 ?>
@@ -129,10 +288,10 @@ get_header();
 
 	<div class="row">
 	<div class="col-md-4 col-md-offset-4">
-
-	<button class="button social-login via-twitter"><i class="fa fa-twitter"></i> Log In With Twitter</button>
-	<button class="button social-login via-gplus"><i class="fa fa-google-plus"></i> Log In With Google Plus</button>
-	<button class="button social-login via-facebook"><i class="fa fa-facebook"></i> Log In With Facebook</button>
+     
+	<!--button class="button social-login via-twitter"><i class="fa fa-twitter"></i> Log In With Twitter</button--->
+	<a href = "<?php echo $google_uri; ?>"><button class="button social-login via-gplus"><i class="fa fa-google-plus"></i> Log In With Google Plus</button></a>
+	<a href="<?php echo $login_url ?>"><button class="button social-login via-facebook"><i class="fa fa-facebook"></i> Log In With Facebook</button></a>
 
 	<!--Tab -->
 	<div class="my-account style-1 margin-top-5 margin-bottom-40">
@@ -146,6 +305,10 @@ get_header();
 
 			<!-- Login -->
 			<div class="tab-content" id="tab1" style="display: none;">
+			     <label class="form_errors" align="center"><?php echo $loginerror; ?></label>
+				 <?php if(isset($_GET['action']) && $_GET['action'] == "reset_success") {?>
+				      <label class="reset_success" align="center"><?php echo "Your New Password has been reset successfully.You can Login now with new credentials sent to your e-mail"; ?></label>
+				 <?php } ?>
 				<form method="post" class="login">
 
 					<p class="form-row form-row-wide">
@@ -170,7 +333,7 @@ get_header();
 					</p>
 
 					<p class="lost_password">
-						<a href="#" >Lost Your Password?</a>
+						<a href="<?php  echo home_url() ."/forgot-password/"?>" >Lost Your Password?</a>
 					</p>
 					
 				</form>
@@ -178,7 +341,7 @@ get_header();
 
 			<!-- Register -->
 			<div class="tab-content" id="tab2" style="display: none;">
-
+                
 				<form method="post" class="register"  action="<?php echo $_SERVER['REQUEST_URI']; ?>" >
 					
 				<p class="form-row form-row-wide">
@@ -186,6 +349,7 @@ get_header();
 						<i class="im im-icon-Male"></i>
 						<input type="text" class="input-text" name="username" id="username2" value="" />
 					</label>
+					<label class="form_errors"><?php if(!empty($errors['username'])){ echo $errors['username'];} ?></label>
 				</p>
 					
 				<p class="form-row form-row-wide">
@@ -193,6 +357,7 @@ get_header();
 						<i class="im im-icon-Mail"></i>
 						<input type="text" class="input-text" name="email" id="email2" value="" />
 					</label>
+					<label class="form_errors"><?php if(!empty($errors['email'])){ echo $errors['email'];} ?></label>
 				</p>
 
 				<p class="form-row form-row-wide">
@@ -200,6 +365,7 @@ get_header();
 						<i class="im im-icon-Lock-2"></i>
 						<input class="input-text" type="password" name="password1" id="password1"/>
 					</label>
+					<label class="form_errors"><?php if(!empty($errors['password'])){ echo $errors['password'];} ?></label>
 				</p>
 
 				<p class="form-row form-row-wide">
@@ -207,6 +373,7 @@ get_header();
 						<i class="im im-icon-Lock-2"></i>
 						<input class="input-text" type="password" name="password2" id="password2"/>
 					</label>
+					<label class="form_errors"><?php if(!empty($errors['password_confirmation'])){ echo $errors['password_confirmation'];} ?></label>
 				</p>
 
 				<p class="form-row">
@@ -234,6 +401,13 @@ get_header();
 
 </div>
 	</div><!-- #primary -->
-
+<style>
+label.form_errors {
+    color: red;
+}
+label.reset_success {
+    color: green;
+}
+</style>
 <?php
 get_footer();
