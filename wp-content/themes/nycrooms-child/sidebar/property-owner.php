@@ -17,11 +17,12 @@
 						<i class="sl sl-icon-docs"></i> My Properties <i class="sl sl-icon-arrow-down listing-dropdown-icon"></i>
 					</a>
 					<ul class="list--submenu">
-						<li><a href="active-properties.html" >Active <span class="active-listing-no">4</span></a></li>
-						<li><a href="rented-properties.html">Rented <span class="rented-listing-no">3</span></a></li>
+						<li><a href="<?php echo get_site_url(); ?>/active-properties">Active <span class="active-listing-no"><?php echo nyc_get_properties_by_status(array('available'))->post_count; ?></span></a></li>
+						<li><a href="<?php echo get_site_url(); ?>/rented-properties">Rented <span class="rented-listing-no"><?php echo nyc_get_properties_by_status(array('rented'))->post_count; ?></span></a></li>
+						<li><a href="<?php echo get_site_url(); ?>/unapproved-properties">Unapproved <span class="unapproved-listing-no"><?php echo nyc_get_properties_by_status(array('draft'))->post_count; ?></span></a></li>
 					</ul>
 				</li>
-				<li><a href="submit-property.html"><i class="sl sl-icon-action-redo"></i> Submit New Property</a></li>
+				<li><a href="<?php echo get_site_url(); ?>/add-property/"><i class="sl sl-icon-action-redo"></i> Submit New Property</a></li>
 			</ul>
 
 			<ul class="my-account-nav">

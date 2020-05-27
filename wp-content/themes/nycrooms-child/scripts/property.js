@@ -138,9 +138,12 @@ jQuery(document).ready(function($) {
 			form_data.append("contact_name", contact_name);
 			form_data.append("contact_email", contact_email);
 			form_data.append("contact_phone", contact_phone);
+			var gallery_files=[];
 			for(var i = 0;i<file_data.length;i++){
 				form_data.append("file_"+i, file_data[i]);
+				gallery_files.push("file_"+i);
 			}
+			form_data.append("gallery_files", gallery_files);
 			form_data.append( "action", 'nyc_add_property_ajax');   
 			jQuery.ajax({
 				type : "post",
@@ -158,5 +161,27 @@ jQuery(document).ready(function($) {
 			})		
 		}
 		jQuery(".preview").attr("disabled", false);
+	});
+	jQuery('.delete-property').click(function (e) {
+	    e.preventDefault();
+		// escape here if the confirm is false;
+		if (!confirm('Are you sure?')) return false;
+		var property_id=jQuery(this).attr('data-id');
+		var form_data = new FormData();	
+		form_data.append("property_id", property_id);
+		form_data.append( "action", 'nyc_delete_property_ajax');   
+		jQuery.ajax({
+			type : "post",
+			url : my_ajax_object.ajax_url,
+			data: form_data,
+			processData: false,
+			contentType: false,
+			success: function(response) {
+				if(response == "success"){
+				var delete_tr= ".property-id-"+property_id;
+				jQuery(delete_tr).fadeOut("slow");	
+				}
+			}
+		});
 	});
 });

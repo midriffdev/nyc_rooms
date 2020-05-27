@@ -257,6 +257,7 @@ function nyc_add_property_ajax(){
 			add_post_meta($property_id, 'contact_name', $_POST['contact_name']);
 			add_post_meta($property_id, 'contact_email', $_POST['contact_email']);
 			add_post_meta($property_id, 'contact_phone', $_POST['contact_phone']);
+			add_post_meta($property_id, 'gallery_files', $_POST['gallery_files']);
 			if(isset($_FILES)){
 			  foreach($_FILES as $key=>$file){
 				  nyc_property_gallery_image_upload($key,$property_id);
@@ -279,6 +280,18 @@ function nyc_add_property_ajax(){
 }
 add_action( 'wp_ajax_nyc_add_property_ajax', 'nyc_add_property_ajax' );
 add_action( 'wp_ajax_nopriv_nyc_add_property_ajax', 'nyc_add_property_ajax' );
+
+function nyc_delete_property_ajax(){
+	if(isset($_POST['action']) && $_POST['action'] == 'nyc_delete_property_ajax'){
+	   $post=wp_delete_post($_POST['property_id'],true);
+	   if($post){
+		   echo 'success';
+	   }
+	}
+	exit;
+}
+add_action( 'wp_ajax_nyc_delete_property_ajax', 'nyc_delete_property_ajax' );
+add_action( 'wp_ajax_nopriv_nyc_delete_property_ajax', 'nyc_delete_property_ajax' );
 
 function nyc_property_gallery_image_upload($file_name,$post_id){
 		$uploaddir = wp_upload_dir();
@@ -308,6 +321,16 @@ function nyc_property_owner_authority(){
 	}else{
 		wp_redirect(home_url());
 	}
+}
+
+function nyc_get_properties_by_status($status){
+	$properties = new WP_Query(array(
+		'posts_per_page' 	=> -1,
+		'post_type' 		=> 'property',
+		'post_status' 		=> $status,
+		'author' 			=> get_current_user_id(),
+	));
+	return $properties;
 }
 
 function kv_forgot_password_reset_email($user_input) {
