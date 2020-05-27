@@ -74,7 +74,6 @@ do_action( 'zakra_action_after' );
 <?php wp_footer(); ?>
 <!-- Scripts
 ================================================== -->
-
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/chosen.min.js"></script>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/magnific-popup.min.js"></script>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/owl.carousel.min.js"></script>
