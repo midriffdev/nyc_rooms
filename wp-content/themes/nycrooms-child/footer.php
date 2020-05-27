@@ -85,6 +85,7 @@ do_action( 'zakra_action_after' );
 <script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/mmenu.min.js"></script>
 <script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/tooltips.min.js"></script>
 <script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/custom.js"></script>
+<script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/main.js"></script>
 
 
 
