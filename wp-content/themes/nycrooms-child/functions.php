@@ -3,6 +3,13 @@
  * Child theme functions file
  * 
  */
+add_action('after_setup_theme', 'remove_admin_bar');
+ 
+function remove_admin_bar() {
+if (!current_user_can('administrator') && !is_admin()) {
+  show_admin_bar(false);
+}
+}
 function zakra_child_enqueue_styles() {
 
 	$parent_style = 'zakra-style'; //parent theme style handle 'zakra-style'
@@ -78,7 +85,7 @@ function kv_forgot_password_reset_email($user_input) {
  	global $wpdb; 
  	$user_data = get_user_by( 'email', $user_input ); 
  	$user_login = $user_data->user_login;
-	 $user_email = $user_data->user_email;
+	$user_email = $user_data->user_email;
  
  	$key = $wpdb->get_var("SELECT user_activation_key FROM $wpdb->users WHERE user_login ='".$user_login."'");
  	if(empty($key)) {
@@ -116,15 +123,22 @@ function tg_validate_url() {
 
 function kv_rest_setting_password($reset_key, $user_login, $user_email, $ID ,$new_password) {
  
-  	$new_password = $new_password; //you can change the number 7 to whatever length needed for the new password
+  	 $new_password = $new_password; //you can change the number 7 to whatever length needed for the new password
  	 wp_set_password( $new_password, $ID ); //mailing the reset details to the user
- 
+     $checkuserrole = get_user_meta($ID,'nyc_capabilities',true);
+     $userrole      =  array_keys($checkuserrole);
+	 $user_role      =  $userrole[0];
+	 
   	 $message = __('Your new password for the account at:') . "<br><br>";
  	 $message .= get_bloginfo('name') . "<br><br>";
  	 $message .= sprintf(__('Username: %s'), $user_login) . "<br><br>";
   	 $message .= sprintf(__('Password: %s'), $new_password) . "<br><br>";
- 	 $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/login-register" .'" >' . get_option('siteurl')."/login-register/" . "</a> <br><br>";
-     $headers = array('Content-Type: text/html; charset=UTF-8');
+	 if($user_role == 'property_owner'){
+ 	 $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/login-register/" .'" >' . get_option('siteurl')."/login-register/" . "</a> <br><br>";
+	 } else if($user_role == 'tenant'){
+	  $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/tenant-registration/" .'" >' . get_option('siteurl')."/tenant-registration/" . "</a> <br><br>";
+	 }
+      $headers = array('Content-Type: text/html; charset=UTF-8');
   	if ( $message && !wp_mail($user_email, 'Your New Password to login into eimams', $message,$headers) ) {
   	 	$msg = false; 
  	 } else {

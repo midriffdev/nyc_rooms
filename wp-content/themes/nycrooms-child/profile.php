@@ -1,5 +1,8 @@
 <?php
 /* Template Name: Profile */
+if(!is_user_logged_in()){
+     header( 'Location:' . site_url() . '/login-register/');
+}
 $user = wp_get_current_user();
 if($user->roles[0] == "tenant"){
     header( 'Location:' . site_url() . '/my-profile-tenant/');
@@ -9,10 +12,11 @@ if($user->roles[0] == "tenant"){
 if(isset($_POST['user_submit'])){
   
 	 
-      $userdata = array( 
-	            'ID' => get_current_user_id(),
-	            'user_nicename'  => $_POST['user_name'],
-				'display_name'   => $_POST['user_name']
+      $userdata = array(
+                    'ID' => get_current_user_id(),
+					'user_nicename'  => $_POST['user_name'],
+					'display_name'   => $_POST['user_name'],
+					'user_email'    =>  $_POST['user_email']
 	             );
     wp_update_user($userdata );
 	 
