@@ -38,7 +38,7 @@ get_header();
 							$prop_image = wp_get_attachment_url(get_post_meta($post_id, 'file_0',true));
 							
 				?>
-							<tr>
+							<tr class="property-id-<?php echo $post_id; ?>">
 								<td class="title-container">
 									<img src="<?php if($prop_image){ echo $prop_image; } ?>" alt="">
 									<div class="title">
@@ -50,7 +50,7 @@ get_header();
 								<td class="action">
 									<a href="#"><i class="fa fa-pencil"></i> Edit</a>
 									<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>
-									<a href="#" class="delete"><i class="fa fa-remove"></i> Delete</a>
+									<a href="#" class="delete delete-property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 								</td>
 							</tr>
 				<?php 
