@@ -8,7 +8,6 @@ Template: nycrooms
 Version: 1.0
 */
 
-
 @charset "UTF-8";
 
 
@@ -12452,6 +12451,127 @@ body .daterangepicker .drp-buttons button.cancelBtn {
 	.padding-bottom-95 { padding-bottom: 95px !important; }
 	.padding-bottom-100 { padding-bottom: 100px !important; }
 
+
+/* --------------------############## Shubham CSS start ####################------------------ */
+.active--property {
+    display: inline-block !important;
+    background: #2c3b3e;
+    color: #fff;
+    border-radius: 2px;
+    font-size: 13px;
+    margin-top: 9px;
+    padding: 2px 10px;
+    margin-left: 7px;
+}
+.rented--property{
+	display: inline-block !important;
+    background: #a1b789;
+    color: #fff;
+    border-radius: 2px;
+    font-size: 13px;
+    margin-top: 9px;
+    padding: 2px 10px;
+    margin-left: 7px;
+}
+.unapproved--property{
+	display: inline-block !important;
+    background: #cad7bc;
+    color: #fff;
+    border-radius: 2px;
+    font-size: 13px;
+    margin-top: 9px;
+    padding: 2px 10px;
+    margin-left: 7px;
+}
+.listing-dropdown-icon {
+    font-size: 12px !important;
+    margin: 7px 0 0 0;
+    float:right;
+}
+.list--submenu{
+	height:0;
+	transition: 0.5s;
+	display:none;
+	margin: 7px 0 0 0;
+}
+.list--submenu li{margin:4px 0;}
+.show--submenu{
+	height:100%;
+	transition: 0.5s;
+	opacity:1;
+	display:block;
+}
+.list-has--submenu{cursor:pointer;}
+.my-account-nav-container .my-account-nav li a {display: block;}
+.active-listing-no {
+    background: #2c3b3e;
+    color: #fff;
+    width: 23px;
+    height: 23px;
+    display: flex;
+    border-radius: 50px;
+    margin: 2px 0 0 0;
+    font-size: 12px;
+    float: right;
+    justify-content: center;
+    align-items: center;
+}
+.rented-listing-no{
+    background: #a1b789;
+    color: #fff;
+    width: 23px;
+    height: 23px;
+    display: flex;
+    border-radius: 50px;
+    margin: 2px 0 0 0;
+    font-size: 12px;
+    float: right;
+    justify-content: center;
+    align-items: center;
+}
+.unapproved-listing-no{
+	background: #cad7bc;
+	color: #fff;
+	width: 23px;
+	height: 23px;
+	display: flex;
+	border-radius: 50px;
+	margin: 2px 0 0 0;
+	font-size: 12px;
+	float: right;
+	justify-content: center;
+	align-items: center;
+}
+.select-checkbox li input {
+    height: 14px;
+    display: inline-block;
+    width: auto;
+    margin: 0 10px 0 0 !important;
+}
+.select-checkbox ul {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+.select-checkbox li {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin: 0 15px 0 0;
+    width: 37%;
+}
+.select-checkbox li label {
+    display: inline-block !important;
+    margin: 0;
+    font-size: 14px;
+}
+table.contracts--table th:first-child {width: auto;}
+table.contracts--table td{border:0;}
+.title-container-contract a{color:#333;}
+.contracts--table tr:nth-child(2n) {background: #f2f2f2;}
+table.contracts--table td:first-child {padding-left: 40px !important;}
+/* --------------------############## Shubham CSS end ######################------------------ */
 
 /* ------------------------------------------------------------------- */
 /* 06. Media Queries
