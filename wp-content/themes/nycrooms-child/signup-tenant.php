@@ -5,7 +5,7 @@ global $wpdb, $user_ID;
 $errors = array(); 
 if(is_user_logged_in()){
   header( 'Location:' . site_url() . '/my-profile-tenant/');
-}
+} 
    
      if(isset($_REQUEST['register']) && $_SERVER['REQUEST_METHOD'] == "POST") 
       {  
@@ -104,16 +104,24 @@ if(is_user_logged_in()){
     $login_data['user_login'] = $username;  
     $login_data['user_password'] = $password;  
     $login_data['remember'] = $remember;  
-   
-    $user_verify = wp_signon( $login_data, false );
-   
-    if ( is_wp_error($user_verify) ) {  
-        $loginerror = "Invalid login details";  
-       // Note, I have created a page called "Error" that is a child of the login page to handle errors. This can be anything, but it seemed a good way to me to handle errors.  
-     } else {    
-       echo "<script type='text/javascript'>window.location.href='". site_url().'/my-profile-tenant/' ."'</script>";  
-       exit();  
-     }
+
+    $userrolecheck = get_user_by('login', $username);
+	if(!$userrolecheck){
+	  $userrolecheck = get_user_by('email', $username);
+	}
+	
+    if($userrolecheck->roles[0] != "tenant"){
+	   $loginerror = "Invalid login details";
+	} else {
+	      $user_verify = wp_signon( $login_data, false );
+		   if ( is_wp_error($user_verify)) {  
+			$loginerror = "Invalid login details";  
+		   // Note, I have created a page called "Error" that is a child of the login page to handle errors. This can be anything, but it seemed a good way to me to handle errors.  
+		   } else {    
+			   echo "<script type='text/javascript'>window.location.href='". site_url().'/my-profile-tenant/' ."'</script>";  
+			   exit();  
+		   } 
+	}
    
 }
 
@@ -312,16 +320,16 @@ get_header();
 				<form method="post" class="login">
 
 					<p class="form-row form-row-wide">
-						<label for="username">Username:
+						<label for="username">Username or Email:
 							<i class="im im-icon-Male"></i>
-							<input type="text" class="input-text" name="username" id="username" value="" />
+							<input type="text" class="input-text" name="username" id="username" value="" Placeholder="Username Or Email" />
 						</label>
 					</p>
 
 					<p class="form-row form-row-wide">
 						<label for="password">Password:
 							<i class="im im-icon-Lock-2"></i>
-							<input class="input-text" type="password" name="password" id="password"/>
+							<input class="input-text" type="password" name="password" id="password" Placeholder="Password" />
 						</label>
 					</p>
 

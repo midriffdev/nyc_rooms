@@ -29,9 +29,19 @@ if(isset($_POST['reset_pass_Sbumit'])){
 				 if (!kv_rest_setting_password($reset_key, $user_login, $user_email, $user_data->ID,$new_password)) {
 					 $errors['emailError'] = "Email failed to sent for some unknown reason"; 
 				 } else {
-					 $redirect_to = get_site_url()."/login-register/?action=reset_success";
-					 wp_safe_redirect($redirect_to);
-					 exit();
+				      $checkuserrole = get_user_meta($user_data->ID,'nyc_capabilities',true);
+                      $userrole      =  array_keys($checkuserrole);
+	                  $user_role      =  $userrole[0];
+					  if($user_role == 'property_owner'){
+						  $redirect_to = get_site_url()."/login-register/?action=reset_success";
+						  wp_safe_redirect($redirect_to);
+						  exit();
+					  } else if($user_role == 'tenant'){
+					      $redirect_to = get_site_url()."/tenant-registration/?action=reset_success";
+						  wp_safe_redirect($redirect_to);
+						  exit();
+					  }
+					 
 		         }
 	     } else {
 	                $errors['emailError'] = 'Not a Valid Key.'; 
