@@ -42,7 +42,7 @@ get_header();
 								<td class="title-container">
 									<img src="<?php if($prop_image){ echo $prop_image; } ?>" alt="">
 									<div class="title">
-										<h4><a href="#"><?php echo get_the_title(); ?></a></h4>
+										<h4><a href="<?php echo get_the_guid(); ?>"><?php echo get_the_title(); ?></a></h4>
 										<span><?php echo $address; ?></span>
 										<span class="table-property-price">$<?php echo ($price) ? $price : 'N/A'; ?>/<?php echo ($payment_method) ? $payment_method : 'N/A'; ?></span> <span class="rented--property">Rented</span>
 									</div>

@@ -7,7 +7,7 @@
 			<ul class="my-account-nav">
 				<li class="sub-nav-title">Manage Account</li>
 				<li><a href="#"><i class="sl sl-icon-screen-desktop"></i> Dashboard</a></li>
-				<li><a href="my-profile.html"><i class="sl sl-icon-user"></i> My Profile</a></li>
+				<li><a href="<?php echo home_url(); ?>/my-profile/" class="current"><i class="sl sl-icon-user"></i> My Profile</a></li>
 			</ul>
 			
 			<ul class="my-account-nav">
@@ -26,8 +26,8 @@
 			</ul>
 
 			<ul class="my-account-nav">
-				<li><a href="change-password.html"><i class="sl sl-icon-lock"></i> Change Password</a></li>
-				<li><a href="#"><i class="sl sl-icon-power"></i> Log Out</a></li>
+					<li><a href="<?php echo home_url(); ?>/change-password/"><i class="sl sl-icon-lock"></i> Change Password</a></li>
+					<li><a href="<?php echo wp_logout_url(home_url().'/login-register/'); ?>"><i class="sl sl-icon-power"></i> Log Out</a></li>
 			</ul>
 
 		</div>

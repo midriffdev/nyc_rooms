@@ -755,3 +755,44 @@ function delete_multiple_agents() {
 }
 
 
+
+function nyc_add_to_favorite() {
+    // Get the existing meta for 'meta_key'
+	if(isset($_POST['action']) && $_POST['action'] == 'nyc_add_to_favorite'){
+		$user_id=get_current_user_id(); 
+		if($user_id){
+		$meta_key='nyc_bookmark';
+		$new_value=$_POST['property_id'];
+		$new_data = array();
+		$old_data= get_user_meta($user_id, $meta_key, true);
+		if(in_array($new_value, $old_data)){
+		$pos = array_search($new_value, $old_data);
+		unset($old_data[$pos]);
+		}else{
+			$new_data[] = $new_value;
+		}
+		foreach($old_data as $data){
+			$new_data[] = $data;
+		}
+		update_user_meta($user_id, $meta_key, $new_data);
+		}else{
+			echo "false";
+		}
+	}
+	exit;
+}
+add_action( 'wp_ajax_nyc_add_to_favorite', 'nyc_add_to_favorite' );
+add_action( 'wp_ajax_nopriv_nyc_add_to_favorite', 'nyc_add_to_favorite' );
+
+function nyc_check_is_bookmark($post_id=''){
+$is_bookmark='';
+$user_id=get_current_user_id(); 
+if($user_id){
+	$b_data = get_user_meta($user_id,'nyc_bookmark', true);
+	if(in_array($post_id, $b_data)){
+       $is_bookmark='liked';
+	}
+}
+return $is_bookmark;
+}
+
