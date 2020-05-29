@@ -419,51 +419,7 @@ function my_menu_pages(){
 	add_action( 'admin_print_styles-' .$submenuagentall, 'admin_custom_css' );
 	add_action( 'admin_print_scripts-' .$submenuagentall, 'admin_custom_js' );
 	
-	?>
-	<style>
-	#adminmenu .wp-submenu li:nth-child(4){display:none;}
-	#adminmenu .wp-submenu li:nth-child(5){display:none;}
-	
-	form.wp_agent_form {
-		width: 50%;
-		float: left;
-		padding-left: 1.3%;
-     }
-	 .form-agent{
-	  padding:1% 0%;
-	 }
-	.form-agent label {
-		width: 100%;
-		float: left;
-		padding-bottom: 2%;
-		padding-top: 2%;
-		font-weight: bold;
-     }
-	 .form-agent input {
-        width: 100%;
-     }
-	 .form-agent textarea {
-		width: 100%;
-		height: 121px;
-       }
-	   .form-agent select {
-			max-width: 100% !important;
-			width: 100%;
-			margin-bottom: 4%;
-        }
-	   h2.agent-title {
-         padding-left: 1.3%;
-       }
-	   div#data-table-div {
-			border: 1px solid #cccccc40;
-			padding: 1%;
-		
-       }
-	   table#table_id {
-           text-align: center;
-       }
-	</style>;
-<?php
+
 }
 
 function admin_custom_css(){ 
@@ -795,4 +751,5 @@ if($user_id){
 }
 return $is_bookmark;
 }
+
 
