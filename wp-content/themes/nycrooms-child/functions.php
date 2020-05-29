@@ -406,3 +406,352 @@ function kv_rest_setting_password($reset_key, $user_login, $user_email, $ID ,$ne
 
   	return $msg; 
 }
+
+add_action('admin_menu', 'my_menu_pages');
+function my_menu_pages(){
+                          add_menu_page('Agents', 'Agents', 'manage_options', 'agents', 'nyc_rooms_add_agent' );
+                          add_submenu_page('agents', 'Add Agent', 'Add Agent', 'manage_options', 'agents');
+   $submenuagentall =     add_submenu_page('agents', 'All Agents', 'All Agents', 'manage_options', 'all-agents', 'nyc_rooms_all_agents');
+	                      add_submenu_page('agents', 'Edit Agent', 'Edit Agent', 'manage_options', 'edit-agent', 'nyc_rooms_edit_agents');
+						  add_submenu_page('agents', 'Delete Agent', 'Delete Agent', 'manage_options', 'delete-agent', 'nyc_rooms_delete_agents');
+						  
+			
+	add_action( 'admin_print_styles-' .$submenuagentall, 'admin_custom_css' );
+	add_action( 'admin_print_scripts-' .$submenuagentall, 'admin_custom_js' );
+	
+	?>
+	<style>
+	#adminmenu .wp-submenu li:nth-child(4){display:none;}
+	#adminmenu .wp-submenu li:nth-child(5){display:none;}
+	
+	form.wp_agent_form {
+		width: 50%;
+		float: left;
+		padding-left: 1.3%;
+     }
+	 .form-agent{
+	  padding:1% 0%;
+	 }
+	.form-agent label {
+		width: 100%;
+		float: left;
+		padding-bottom: 2%;
+		padding-top: 2%;
+		font-weight: bold;
+     }
+	 .form-agent input {
+        width: 100%;
+     }
+	 .form-agent textarea {
+		width: 100%;
+		height: 121px;
+       }
+	   .form-agent select {
+			max-width: 100% !important;
+			width: 100%;
+			margin-bottom: 4%;
+        }
+	   h2.agent-title {
+         padding-left: 1.3%;
+       }
+	   div#data-table-div {
+			border: 1px solid #cccccc40;
+			padding: 1%;
+		
+       }
+	   table#table_id {
+           text-align: center;
+       }
+	</style>;
+<?php
+}
+
+function admin_custom_css(){ 
+   wp_enqueue_style( 'jquery-datatable-css', get_stylesheet_directory_uri() . '/admin-scripts/jquery.dataTables.min.css');
+}
+
+function admin_custom_js() { 
+   wp_enqueue_script( 'jquery-datatable-js', get_stylesheet_directory_uri() . '/admin-scripts/jquery.dataTables.min.js');
+   wp_enqueue_script( 'main-js', get_stylesheet_directory_uri() . '/admin-scripts/main.js');
+   wp_localize_script( 'main-js', 'ajax_object',
+            array( 'ajax_url' => admin_url( 'admin-ajax.php' )) );
+};
+
+function nyc_rooms_add_agent(){
+if(isset($_POST['agent_submission'])){
+  
+   if( email_exists( $_POST['email'] ) ) {
+     $usererror ="Sorry!! Email Already Exists";
+  } else {
+      $userdata = array(
+					'user_login'  => $_POST['email'],
+					'user_pass'   =>  wp_generate_password(), // random password, you can also send a notification to new users, so they could set a password themselves
+					'user_email' => $_POST['email'],
+					'first_name' => $_POST['first_name'],
+					'last_name' => $_POST['last_name'],
+					'role'  => 'sales_agent'
+				);
+	   $user_id = wp_insert_user( $userdata );
+	   
+	    if($user_id){
+	        update_user_meta( $user_id, 'user_phone', $_POST['phone'] );
+			update_user_meta( $user_id, 'user_personal_address', $_POST['address'] );
+			update_user_meta( $user_id, 'user_designation', $_POST['designation'] );
+			update_user_meta( $user_id, 'user_agent_status','active');
+			$usersuccess = "Agent Added.";	
+	   }
+	   
+  
+  }
+  if($usererror){
+  ?>
+   <div class="notice notice-error">
+        <p><?php _e( $usererror, 'sample-text-domain' ); ?></p>
+    </div> 
+  <?php    
+  }
+  if($usersuccess){
+  ?>
+   <div class="notice notice-success is-dismissible">
+        <p><?php _e( $usersuccess, 'sample-text-domain' ); ?></p>
+    </div> 
+  <?php   
+  }
+	
+  
+}
+
+ ?>
+ <h2 class="agent-title">Add Agent:</h2>
+   <form method="post" class="wp_agent_form">
+    <div class="form-agent">
+		<label>First Name:</label></br>
+		<input type="text" name="first_name" Placeholder="Enter First Name" required />
+	</div>
+	<div class="form-agent">
+		<label>Last Name:</label></br>
+		<input type="text" name="last_name" Placeholder="Enter Last Name"  required />
+	</div>
+	<div class="form-agent">
+		<label>Email:</label></br>
+		<input type="email" name="email" Placeholder="Enter email" required  />
+	</div>
+	<div class="form-agent">
+		<label>phone:</label></br>
+		<input type="text" id="phone" name="phone" pattern="[0-9]{10}" maxlength=10 required Placeholder="Enter Phone">
+	</div>
+	<div class="form-agent">
+		<label>Designation:</label></br>
+		<input type="text"  name="designation"  required Placeholder="Enter Designation">
+	</div>
+	<div class="form-agent">
+		<label>Adress:</label></br>
+		<textarea  name="address" required Placeholder="Enter Your address"></textarea>
+	</div>
+	<div class="form-agent">
+	<button type="submit" name="agent_submission" class="button action">Add Agent</button>
+	</div>
+   </form>
+   
+ <?php 
+}
+function nyc_rooms_all_agents(){
+
+  $useragents = get_users( [ 'role__in' => [ 'sales_agent' ] ] );
+     
+/*   echo "<pre>";
+  print_r($useragents); */
+  ?>
+  
+  <div id="data-table-div">
+  <h1>All Agents</h1>
+  
+  <table id="table_id" class="display">
+    <thead>
+        <tr>
+		    <th><input type="checkbox" class="Select_all_agent" id="all_selected_agent"></th>
+            <th>Name</th>
+			<th>Email</th>
+			<th>Phone</th>
+			<th>Status</th>
+			<th>Actions</th>
+			
+        </tr>
+    </thead>
+    <tbody>
+	   <?php
+	     foreach($useragents as $agents){
+	   ?>
+        <tr>
+		    <th><input type="checkbox" class="agent_selected" value="<?= $agents->ID ?>" /></th>
+            <td><?php echo $agents->data->display_name; ?></td>
+			<td><?php echo $agents->data->user_email; ?></td>
+			<td><?php echo get_user_meta($agents->ID,'user_phone',true); ?></td>
+			<td><?php echo get_user_meta($agents->ID,'user_agent_status',true); ?></td>
+			<td><a href="<?php echo site_url().'/wp-admin/admin.php?page=edit-agent&&userid='.$agents->ID ?>">Edit</a>&nbsp;&nbsp;<a href="<?php echo site_url().'/wp-admin/admin.php?page=delete-agent&&userid='.$agents->ID ?>">Delete</a> </td>
+			
+        </tr>
+		<?php
+		}
+		?>
+    </tbody>
+</table>
+<div class="alignleft actions bulkactions">
+			<label for="bulk-action-selector-bottom" class="screen-reader-text">Select bulk action</label>
+			<select name="action2" id="bulk-action-selector-bottom">
+			 <option value="-1">Bulk Actions</option>
+			 <option value="delete" class="hide-if-no-js">Delete</option>
+            </select>
+        <input type="submit" id="doaction2" class="button action" value="Apply">
+</div>
+</div>
+ <?php
+  
+  
+  
+}
+
+function nyc_rooms_edit_agents(){
+    $getuser = get_user_by('id',$_GET['userid']);
+	
+	if(isset($_POST['agent_submission'])){
+	  
+	    $user_data = wp_update_user( 
+		            array(
+					       'ID' => $_POST['agent_id'], 
+		                   'user_email' => $_POST['email'],
+						   'display_name' => $_POST['first_name'].' ' .$_POST['last_name']
+				    ) 
+				   
+				   );
+ 
+           if ( is_wp_error( $user_data ) ) {
+    
+                   $usererror =  'Error in update user';
+           } else {
+		   
+		          update_user_meta( $_POST['agent_id'], 'first_name', $_POST['first_name'] );
+			      update_user_meta( $_POST['agent_id'], 'last_name', $_POST['last_name'] );
+		          update_user_meta( $_POST['agent_id'], 'user_phone', $_POST['phone'] );
+				  update_user_meta( $_POST['agent_id'], 'user_designation', $_POST['designation'] );
+			      update_user_meta( $_POST['agent_id'], 'user_personal_address', $_POST['address'] );
+			      update_user_meta( $_POST['agent_id'], 'user_agent_status',$_POST['set_status_agent']);
+		   
+                  $usersuccess = 'User profile updated.';
+          }
+		  
+		  
+      if($usererror){
+    ?>
+	   <div class="notice notice-error">
+			<p><?php _e( $usererror, 'sample-text-domain' ); ?></p>
+		</div> 
+  <?php    
+     }
+     if($usersuccess){
+    ?>
+	   <div class="notice notice-success is-dismissible">
+			<p><?php _e( $usersuccess, 'sample-text-domain' ); ?></p>
+		</div> 
+  <?php   
+     }
+		  
+	}
+	
+    
+	?>
+	
+	<h2 class="agent-title">Update Agent:</h2>
+   <form method="post" class="wp_agent_form">
+    <div class="form-agent">
+		<label>First Name:</label></br>
+		<input type="text" name="first_name"  value="<?php echo get_user_meta($getuser->ID,'first_name',true); ?>" required  />
+	</div>
+	<div class="form-agent">
+		<label>Last Name:</label></br>
+		<input type="text" name="last_name" value="<?php echo get_user_meta($getuser->ID,'last_name',true); ?>"  required />
+	</div>
+	<div class="form-agent">
+		<label>Email:</label></br>
+		<input type="email" name="email" value="<?php echo $getuser->data->user_email; ?>" required  />
+	</div>
+	<div class="form-agent">
+		<label>phone:</label></br>
+		<input type="text" id="phone" name="phone" pattern="[0-9]{10}" maxlength=10 required value="<?php echo get_user_meta($getuser->ID,'user_phone',true); ?>">
+	</div>
+	<div class="form-agent">
+		<label>Designation:</label></br>
+		<input type="text"  name="designation"  required value="<?php echo get_user_meta($getuser->ID,'user_designation',true); ?>">
+	</div>
+	<div class="form-agent">
+		<label>Adress:</label></br>
+		<textarea  name="address" required><?php echo get_user_meta($getuser->ID,'user_personal_address',true); ?></textarea>
+	</div>
+	<div class="form-agent">
+		<label>Set Status:</label></br>
+		<select name="set_status_agent">
+			<option value="active" <?= (get_user_meta($getuser->ID,'user_agent_status',true) == 'active')? 'selected':'' ?>>Active</option>
+			<option value="inactive" <?= (get_user_meta($getuser->ID,'user_agent_status',true) == 'inactive')? 'selected':'' ?> >Inactive</option>
+		</select>
+	</div>
+	
+	<div class="form-agent">
+	<input type="hidden" name="agent_id" value="<?= $getuser->ID ?>">
+	<button type="submit" name="agent_submission" class="button action">Update Agent</button>
+	</div>
+   </form>
+   
+<?php	
+}
+
+function nyc_rooms_delete_agents(){
+   $getuser = get_user_by('id',$_GET['userid']);
+   if(isset($_POST['submit'])){
+      $success = wp_delete_user($_POST['users_delete']);
+	  if($success){
+	      $usersuccess = 'User Deleted';
+	  }
+	  
+	  if($usersuccess){
+    ?>
+	   <div class="notice notice-success is-dismissible">
+			<p><?php _e( $usersuccess, 'sample-text-domain' ); ?></p>
+		</div> 
+  <?php
+        
+     }
+	  
+	  
+   }
+   
+?>
+             <?php 
+			  if($getuser){
+			 ?>
+             <form method="post">
+              <div class="wrap">
+                <h1>Delete Users</h1>
+	                  <p>You have specified these users for deletion:</p>
+					 <ul>
+					   <li><input type="hidden" name="users_delete" value="<?= $_GET['userid']?>">ID #<?= $getuser->ID;?>: <?= $getuser->data->user_email; ?></li>
+					</ul>
+					 <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Confirm Deletion"></p> 
+              </div>
+             </form>
+			
+<?php
+ }
+}
+
+
+add_action( 'wp_ajax_delete_multiple_agents', 'delete_multiple_agents' );
+function delete_multiple_agents() {
+	global $wpdb;
+	foreach($_POST['data'] as $ids){
+	  wp_delete_user($ids);
+	}
+	echo "true";
+	wp_die();
+}
+
+
