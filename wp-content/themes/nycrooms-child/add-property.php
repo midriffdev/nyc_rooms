@@ -359,7 +359,7 @@ get_header();
 <?php
 get_footer();
 ?>
-<script type="text/javascript" src="http://localhost/nycrooms/wp-content/themes/nycrooms-child/scripts/dropzone.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/dropzone.js"></script>
 <script>				
 jQuery(".dropzone").dropzone({
 	dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
