@@ -420,51 +420,15 @@ function my_menu_pages(){
 	add_action( 'admin_print_scripts-' .$submenuagentall, 'admin_custom_js' );
 	
 	?>
-	<style>
-	#adminmenu .wp-submenu li:nth-child(4){display:none;}
-	#adminmenu .wp-submenu li:nth-child(5){display:none;}
-	
-	form.wp_agent_form {
-		width: 50%;
-		float: left;
-		padding-left: 1.3%;
-     }
-	 .form-agent{
-	  padding:1% 0%;
-	 }
-	.form-agent label {
-		width: 100%;
-		float: left;
-		padding-bottom: 2%;
-		padding-top: 2%;
-		font-weight: bold;
-     }
-	 .form-agent input {
-        width: 100%;
-     }
-	 .form-agent textarea {
-		width: 100%;
-		height: 121px;
-       }
-	   .form-agent select {
-			max-width: 100% !important;
-			width: 100%;
-			margin-bottom: 4%;
-        }
-	   h2.agent-title {
-         padding-left: 1.3%;
-       }
-	   div#data-table-div {
-			border: 1px solid #cccccc40;
-			padding: 1%;
-		
-       }
-	   table#table_id {
-           text-align: center;
-       }
-	</style>;
 <?php
 }
+
+function wpdocs_enqueue_custom_admin_style() {
+        wp_register_style( 'custom_wp_admin_css', get_stylesheet_directory_uri() . '/css/admin-style.css', false, '1.0.0' );
+        wp_enqueue_style( 'custom_wp_admin_css' );
+}
+add_action( 'admin_enqueue_scripts', 'wpdocs_enqueue_custom_admin_style' );
+
 
 function admin_custom_css(){ 
    wp_enqueue_style( 'jquery-datatable-css', get_stylesheet_directory_uri() . '/admin-scripts/jquery.dataTables.min.css');
@@ -600,6 +564,8 @@ function nyc_rooms_all_agents(){
 			<label for="bulk-action-selector-bottom" class="screen-reader-text">Select bulk action</label>
 			<select name="action2" id="bulk-action-selector-bottom">
 			 <option value="-1">Bulk Actions</option>
+			 <option value="active" class="hide-if-no-js">Active</option>
+			 <option value="inactive" class="hide-if-no-js">Inactive</option>
 			 <option value="delete" class="hide-if-no-js">Delete</option>
             </select>
         <input type="submit" id="doaction2" class="button action" value="Apply">
@@ -754,6 +720,27 @@ function delete_multiple_agents() {
 	wp_die();
 }
 
+add_action( 'wp_ajax_active_multiple_agents', 'active_multiple_agents' );
+function active_multiple_agents() {
+	global $wpdb;
+	foreach($_POST['data'] as $ids){
+	update_user_meta( $ids, 'user_agent_status','active' );
+	}
+	echo "true";
+	wp_die();
+}
+
+add_action( 'wp_ajax_inactive_multiple_agents', 'inactive_multiple_agents' );
+function inactive_multiple_agents() {
+	global $wpdb;
+	foreach($_POST['data'] as $ids){
+	 update_user_meta( $ids, 'user_agent_status','inactive');
+	}
+	echo "true";
+	wp_die();
+}
+
+
 
 
 function nyc_add_to_favorite() {
@@ -796,3 +783,14 @@ if($user_id){
 return $is_bookmark;
 }
 
+function get_lat_long($address){
+
+    $address = str_replace(" ", "+", $address);	
+
+    $json = file_get_contents("https://maps.google.com/maps/api/geocode/json?key=AIzaSyAgeuuDfRlweIs7D6uo4wdIHVvJ0LonQ6g&&address=$address");
+    $json = json_decode($json);
+
+    $lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
+    $long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
+    return $lat.','.$long;
+}

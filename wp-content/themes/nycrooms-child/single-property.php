@@ -1,11 +1,7 @@
 <?php
-/**
- * The template for displaying all single property
-*/
+/* Template Name: Single Property */
 get_header();
-while ( have_posts() ) :
-the_post();
-$post_id = get_the_ID();
+$post_id = $_GET['property_id'];
 $address = get_post_meta($post_id, 'address',true)." ";
 $address .= get_post_meta($post_id, 'city',true)." ";
 $address .= get_post_meta($post_id, 'state',true).", ";
@@ -13,7 +9,6 @@ $address .= get_post_meta($post_id, 'zip',true)." ";
 $price = get_post_meta($post_id, 'price',true);
 $payment_method = get_post_meta($post_id, 'payment_method',true);
 $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
-
 ?>
 <!-- Wrapper -->
 <div id="wrapper">
@@ -24,7 +19,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 		<div class="row">
 			<div class="col-md-12">
 				<div class="property-title" style="margin:0;">
-					<h2><?php echo get_the_title(); ?><span class="property-badge">For Rent</span></h2>
+					<h2><?php echo get_the_title($post_id); ?><span class="property-badge">For Rent</span></h2>
 					<span>
 						<a href="#location" class="listing-address">
 							<i class="fa fa-map-marker"></i>
@@ -88,7 +83,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 				<!-- Description -->
 				<h3 class="desc-headline">Description</h3>
 				<div class="show-more">
-					<?php echo the_content(); ?>
+					<?php echo get_the_content(null,false,$post_id); ?>
 					<a href="#" class="show-more-button">Show More <i class="fa fa-angle-down"></i></a>
 				</div>
 
@@ -124,7 +119,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 				<!-- Location -->
 				<h3 class="desc-headline no-border" id="location">Location</h3>
 				<div id="propertyMap-container">
-					<div id="propertyMap" data-address="40.7427837" data-longitude="-73.11445617675781"></div>
+					<div id="propertyMap" data-latitude="40.7427837" data-longitude="-73.11445617675781"></div>
 					<a href="#" id="streetView">Street View</a>
 				</div>
 
@@ -418,7 +413,6 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 
 </div>
 <?php
-endwhile;
 get_footer();
 ?>
 <!-- Maps -->
@@ -432,8 +426,8 @@ get_footer();
 <script src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/daterangepicker.js"></script>
 <script>
 // Calendar Init
-$(function() {
-	$('#date-picker').daterangepicker({
+jQuery(function() {
+	jQuery('#date-picker').daterangepicker({
 		"opens": "left",
 		singleDatePicker: true,
 
@@ -448,34 +442,35 @@ $(function() {
 		// if (date.format('MM/DD/YYYY') == '08/08/2018') {
 		//     return true; 
 		// }
+		
 		}
 	});
 });
 
 // Calendar animation
-$('#date-picker').on('showCalendar.daterangepicker', function(ev, picker) {
-	$('.daterangepicker').addClass('calendar-animated');
+jQuery('#date-picker').on('showCalendar.daterangepicker', function(ev, picker) {
+	jQuery('.daterangepicker').addClass('calendar-animated');
 });
-$('#date-picker').on('show.daterangepicker', function(ev, picker) {
-	$('.daterangepicker').addClass('calendar-visible');
-	$('.daterangepicker').removeClass('calendar-hidden');
+jQuery('#date-picker').on('show.daterangepicker', function(ev, picker) {
+	jQuery('.daterangepicker').addClass('calendar-visible');
+	jQuery('.daterangepicker').removeClass('calendar-hidden');
 });
-$('#date-picker').on('hide.daterangepicker', function(ev, picker) {
-	$('.daterangepicker').removeClass('calendar-visible');
-	$('.daterangepicker').addClass('calendar-hidden');
+jQuery('#date-picker').on('hide.daterangepicker', function(ev, picker) {
+	jQuery('.daterangepicker').removeClass('calendar-visible');
+	jQuery('.daterangepicker').addClass('calendar-hidden');
 });
 </script>
 
 
 <!-- Replacing dropdown placeholder with selected time slot -->
 <script>
-$(".time-slot").each(function() {
-	var timeSlot = $(this);
-	$(this).find('input').on('change',function() {
+jQuery(".time-slot").each(function() {
+	var timeSlot = jQuery(this);
+	jQuery(this).find('input').on('change',function() {
 		var timeSlotVal = timeSlot.find('strong').text();
 
-		$('.panel-dropdown.time-slots-dropdown a').html(timeSlotVal);
-		$('.panel-dropdown').removeClass('active');
+		jQuery('.panel-dropdown.time-slots-dropdown a').html(timeSlotVal);
+		jQuery('.panel-dropdown').removeClass('active');
 	});
 });
 jQuery('.nyc_bookmark').click(function (e) {
