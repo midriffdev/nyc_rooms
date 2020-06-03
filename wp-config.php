@@ -21,11 +21,22 @@
 /** The name of the database for WordPress */
 define( 'DB_NAME', 'dbs451995' );
 /** MySQL database username */
+<<<<<<< HEAD
 define( 'DB_USER', 'dbu784734' );
 /** MySQL database password */
 define( 'DB_PASSWORD', 'Nycrooms2020@#' );
 /** MySQL hostname */
 define( 'DB_HOST', 'db5000471707.hosting-data.io' );
+=======
+define( 'DB_USER', 'root' );
+
+/** MySQL database password */
+define( 'DB_PASSWORD', '' );
+
+/** MySQL hostname */
+define( 'DB_HOST', 'localhost' );
+
+>>>>>>> 880d05ace483ab696fcbf6ddaad410095951670b
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8mb4' );
 /** The Database Collate type. Don't change this if in doubt. */

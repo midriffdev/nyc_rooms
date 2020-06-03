@@ -47,6 +47,7 @@ get_header();
 <div class="container">
 	<div class="row">
 		<!-- Widget -->
+<<<<<<< HEAD
 		<div class="col-md-4">
 			<div class="sidebar left">
 
@@ -82,6 +83,9 @@ get_header();
 
 			</div>
 		</div>
+=======
+		<?php get_template_part('sidebar/property-owner'); ?>
+>>>>>>> 880d05ace483ab696fcbf6ddaad410095951670b
 
 		<div class="col-md-8">
 			<div class="row">

@@ -419,8 +419,18 @@ function my_menu_pages(){
 	add_action( 'admin_print_styles-' .$submenuagentall, 'admin_custom_css' );
 	add_action( 'admin_print_scripts-' .$submenuagentall, 'admin_custom_js' );
 	
+	?>
+<?php
+
 
 }
+
+function wpdocs_enqueue_custom_admin_style() {
+        wp_register_style( 'custom_wp_admin_css', get_stylesheet_directory_uri() . '/css/admin-style.css', false, '1.0.0' );
+        wp_enqueue_style( 'custom_wp_admin_css' );
+}
+add_action( 'admin_enqueue_scripts', 'wpdocs_enqueue_custom_admin_style' );
+
 
 function admin_custom_css(){ 
    wp_enqueue_style( 'jquery-datatable-css', get_stylesheet_directory_uri() . '/admin-scripts/jquery.dataTables.min.css');
@@ -773,4 +783,19 @@ if($user_id){
 	}
 }
 return $is_bookmark;
+<<<<<<< HEAD
+=======
+}
+
+function get_lat_long($address){
+
+    $address = str_replace(" ", "+", $address);	
+
+    $json = file_get_contents("https://maps.google.com/maps/api/geocode/json?key=AIzaSyAgeuuDfRlweIs7D6uo4wdIHVvJ0LonQ6g&&address=$address");
+    $json = json_decode($json);
+
+    $lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
+    $long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
+    return $lat.','.$long;
+>>>>>>> 880d05ace483ab696fcbf6ddaad410095951670b
 }

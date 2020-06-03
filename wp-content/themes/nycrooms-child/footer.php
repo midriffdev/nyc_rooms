@@ -70,7 +70,7 @@ do_action( 'zakra_action_after' );
 
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/jquery-migrate-3.1.0.min.js"></script>
-
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 <?php wp_footer(); ?>
 <!-- Scripts
 ================================================== -->

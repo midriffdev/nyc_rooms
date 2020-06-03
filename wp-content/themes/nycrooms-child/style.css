@@ -12571,6 +12571,317 @@ table.contracts--table td{border:0;}
 .title-container-contract a{color:#333;}
 .contracts--table tr:nth-child(2n) {background: #f2f2f2;}
 table.contracts--table td:first-child {padding-left: 40px !important;}
+
+/********Multistep question start*****/
+.tenant-questionary-cont {
+    background: #1CD8D2;
+    background: -webkit-linear-gradient(to right, #93EDC7, #1CD8D2);
+    background: linear-gradient(to right, #93EDC7, #1CD8D2);
+    height:120vh;
+    overflow: hidden !important;
+}
+.teanent-question-innersec:hover {
+    -webkit-transform:scale(1.1);
+	transform:scale(1.1);
+    box-shadow: 0 0 22px rgba(0,0,0,0.2);
+}
+.click_effect{
+	-webkit-transform:scale(1.1);
+	transform:scale(1.1);
+    box-shadow: 0 0 22px rgba(0,0,0,0.2);
+    border:1px solid #a1b789;
+}
+.teanent-question-wrapper ul {
+    padding: 0;
+    display: flex;
+    margin: 0;
+    justify-content: space-between;
+}
+.teanent-question-wrapper li label {
+    margin: 0;
+    color: #000;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 22px;
+}
+.teanent-question-innersec img {
+    width: 55px;
+    margin: 0 0 10px 0;
+}
+.state-qestions li{
+	width:70%;
+	margin: 0 auto;
+}
+.state-qestions .chosen-results {
+    display: block !important;
+}
+.state-qestions .chosen-container-single .chosen-single span{margin-right:16px !important;}
+.state-qestions .chosen-results li {
+   width:100%;
+}
+.state-qestions .teanent-question-innersec{z-index:999999 !important;}
+.teanent-question-wrapper ul li {list-style: none;}
+.genDer-qestions li {width: 30%;}
+.room-apartment-qestions li{width: 35%;}
+.room-apartment-qestions {justify-content: space-around !important;}
+.city-u-live {flex-wrap: wrap;}
+.city-u-live li {
+	width: 22%;
+	margin: 0px 0 32px 0;
+}
+.city-u-live li .teanent-question-innersec{min-height: 110px;}
+.tenant-other-city {
+    margin: 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid #000 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    height: 25px !important;
+    position: relative;
+    z-index: 9999999 !important;
+}
+.teanent-question-innersec {
+    box-shadow: 0 0 17px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 0 30px;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: 0.5s;
+}
+.radio__select {
+    width: 100% !important;
+    height: 100%;
+    opacity: 0 !important;
+    cursor: pointer;
+    position: absolute;
+    margin: 0 !important;
+}
+#msform {
+	width: 1100px;
+	margin: 100px auto 0;
+	text-align: center;
+	position: relative;
+}
+#msform fieldset {
+    background: white;
+    border: 0 none;
+    border-radius: 14px;
+    box-shadow: 0 0 51px rgba(0, 0, 0, 0.2);
+    padding: 65px 75px;
+    box-sizing: border-box;
+    width: 80%;
+    margin: 0 10%;
+    position: relative;
+}
+
+#msform fieldset:not(:first-of-type) {
+	display: none;
+}
+
+#msform input, #msform textarea {
+	padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	margin-bottom: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	font-family: montserrat;
+	color: #2C3E50;
+	font-size: 13px;
+}
+#msform .action-button {
+    background: #2c3b3e;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 1px;
+    cursor: pointer;
+    padding: 13px 0;
+    margin: 0 15px;
+    line-height: 20px;
+    height: auto;
+    width: 110px;
+}
+
+#msform .submit.action-button{background: #274abb;}
+#msform .submit.action-button:hover, #msform .submit.action-button:focus {box-shadow: 0 0 0 2px white, 0 0 0 3px #274abb;}
+
+#msform .previous.action-button{background: #a1b789;}
+#msform  .previous.action-button:hover, #msform  .previous.action-button:focus {box-shadow: 0 0 0 2px white, 0 0 0 3px #a1b789;}
+
+#msform .action-button:hover, #msform .action-button:focus {box-shadow: 0 0 0 2px white, 0 0 0 3px #2c3b3e;}
+.teanent-question-wrapper {margin: 0 0 45px 0;}
+.fs-title {
+    font-size: 35px;
+    text-transform: unset;
+    color: #333;
+    margin: 0 0 50px 0;
+    font-weight: bold;
+}
+.fs-subtitle {
+	font-weight: normal;
+	font-size: 13px;
+	color: #666;
+	margin-bottom: 20px;
+}
+/********Multistep question end*****/
+
+
+.recent-activity .act-wrap .alert.br-o {
+    border-left: 2px solid #f91;
+    list-style: none;
+    display: none;
+}
+.recent-activity .act-wrap .alert {
+    margin-bottom: 25px;
+    background: #f5f6f7;
+    position: relative;
+    border-radius: 0;
+    color: #666;
+}
+.act-wrap li {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 20px 15px;
+}
+.act-wrap li span.review-stat {
+    font-weight: 600;
+    color: #333;
+}
+.act-wrap {padding: 0 !important;}
+.act-wrap li p {
+    margin: 0;
+}
+.recent-activity .act-title h5 {
+    font-size: 25px;
+    margin: 0 0 20px 0;
+}
+.recent-activity .act-wrap .close {
+    float: right;
+    background: transparent;
+    border: 0;
+    padding: 13px 0;
+}
+.recent-activity .act-wrap .sl.sl-icon-close {
+    font-size: 18px;
+}
+.dashboard-stat-sectioncont ul {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    justify-content: space-between;
+}
+.dashboard-stat-sectioncont ul li{width:30%;}
+.statistic__item {
+    transition: 0.5s;
+    position: relative;
+    min-height: 130px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.12);
+}
+.statistic__item:hover{
+	-webkit-transform: scale(1.1);
+    transform: scale(1.1);
+    box-shadow: 0 0 22px rgba(0,0,0,0.2);
+}
+.statistic__item h2 {
+    font-weight: 500;
+    color: #fff;
+    font-size: 32px;
+    margin: 0;
+    line-height: 1.2;
+}
+.statistic__item .desc {
+    font-size: 15px;
+    text-transform: capitalize;
+    font-weight: 400;
+    color: #fff;
+    line-height: 19px !important;
+    display: block;
+}
+.statistic__item_cont{display:flex;}
+.statistic__item_title-sec{width:70%;}
+.statistic__item_img-sec{
+	width:30%;
+	text-align: right;
+}
+.statistic__item_img-sec img{
+	opacity: 0.6;
+    max-width: 40px;
+}
+.statistic__item a {
+	display: block;
+	padding: 30px;
+}
+.dashboard-stats-section {margin: 45px 0 0 0;}
+.dadhboard-featuredproperties_section {
+    background: #f6f6f6;
+    border-radius: 4px;
+    padding: 15px 45px;
+}
+.dashbaord__wrapper .container {width: 1240px;}
+.item--red {background: #f91942;}
+.item--blue{background: #274abb;}
+.item--green{background: #a1b789;}
+.item--dark{background: #2c3b3e;}
+.item--orange{background: #f91;}
+.item--black{background: #000;}
+.item--blue2{background: #6449e7;}
+
+.admin-propertieslistings .active-listing-no {
+    border-radius: 3px;
+    padding: 0px 10px;
+    width: auto;
+    height: auto;
+}
+.admin-propertieslistings .rented-listing-no{
+	border-radius: 3px;
+    padding: 0px 10px;
+    width: auto;
+    height: auto;
+}
+.admin-propertieslistings .unapproved-listing-no{
+	border-radius: 3px;
+    padding: 0px 10px;
+    width: auto;
+    height: auto;
+}
+.all-listing-no{background: #274abb;}
+.admin-dashboard-sidebar.sidebar.left {padding: 0 ;}
+.admin-advanced-searchfilter .row.with-forms {margin: 0 !important;}
+.admin-advanced-searchfilter .main-search-box.no-shadow{background: transparent !important;}
+.admin-advanced-searchfilter {
+    padding: 42px 40px;
+    background: linear-gradient(to top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5));
+    background-color: rgba(0, 0, 0, 0);
+    background-color: #f7f7f7;
+}
+.admin-advanced-searchfilter h2 {margin: 0 0 25px 0;}
+.owner--name h3 {
+    margin: 0;
+    font-size: 17px;
+}
+.recently_prop{background: #cad7bc !important;}
+.recently-approved-btn button{
+	background-color: #274abb;
+	padding: 7px 17px;
+	color: #fff;
+	font-size: 15px;
+	font-weight: 500;
+	display: inline-block;
+	transition: all 0.2s ease-in-out;
+	cursor: pointer;	
+	border: none;
+	border-radius: 3px;
+}
+.recently-approved-btn button:hover{opacity:0.8;}
 /* --------------------############## Shubham CSS end ######################------------------ */
 
 /* ------------------------------------------------------------------- */
