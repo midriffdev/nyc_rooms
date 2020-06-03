@@ -67,11 +67,6 @@ get_header();
 				<input type="text" name="emailToreceive" class="form-control" placeholder="Your Username " required />
 			</div>
 		 
-			<div class="form-group"> 
-				<span class="pull-right">
-					 <a href="<?php  echo  home_url()."/login-register/"; ?>" id="have_id" > Back to Login? </a> 
-				</span>
-			 </div>
 			 <input type="hidden" name="forgot_pass_Sbumit" value="kv_yes" >
 			<input type="submit" class="btn btn-primary" value="Get Password" > 
    </form>

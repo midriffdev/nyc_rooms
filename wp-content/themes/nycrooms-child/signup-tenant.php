@@ -127,7 +127,7 @@ if(is_user_logged_in()){
 
 $client_id = '675017533078473'; // Facebook APP Client ID
 $client_secret = 'a2183f77e4e5c2944b2c5f1ed9fcabb6'; // Facebook APP Client secret
-$redirect_uri = 'http://localhost/nycrooms/tenant-registration/'; // URL of page/file that processes a request
+$redirect_uri =   site_url() . '/tenant-registration/'; // URL of page/file that processes a request
  
  /*----------------- Facebook Login -------------------------*/
  
@@ -202,9 +202,7 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 	}
 }
 ?>
-
 <?php
- 
 $params = array(
 	'client_id'     => $client_id,
 	'redirect_uri'  => $redirect_uri,
@@ -219,7 +217,7 @@ $login_url = 'https://www.facebook.com/dialog/oauth?' . urldecode( http_build_qu
 // init configuration
 $clientID = '442563866929-35p9pvj6om2jepgi700mgs0blocjh839.apps.googleusercontent.com';
 $clientSecret = '3mzvZQJVFDFBbTQhOO5EOcZx';
-$redirectUri = 'http://localhost/nycrooms/tenant-registration/';
+$redirectUri = site_url() .'/tenant-registration/';
   
 // create Client Request to access Google API
 $client = new Google_Client();

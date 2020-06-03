@@ -1,6 +1,7 @@
 <?php
 /* Template Name: Change Password */
 global $wpdb;
+$user = wp_get_current_user();
 $errors = array();
 if(isset($_POST['reset_pass_Sbumit'])){
 
@@ -27,6 +28,7 @@ if(isset($_POST['reset_pass_Sbumit'])){
 
 
 }
+
 get_header();
 ?>
  <div id="primary" class="content-area">
@@ -49,7 +51,23 @@ get_header();
 					<ul class="my-account-nav">
 						<li class="sub-nav-title">Manage Account</li>
 						<li><a href="#"><i class="sl sl-icon-screen-desktop"></i> Dashboard</a></li>
+					    <?php
+                       if($user->roles[0] == "property_owner"){
+					   ?>
 						<li><a href="<?php echo home_url(); ?>/my-profile/" class="current"><i class="sl sl-icon-user"></i> My Profile</a></li>
+						<?php
+						}
+						?>
+						
+						 <?php
+                       if($user->roles[0] == "tenant"){
+					   ?>
+						<li><a href="<?php echo home_url(); ?>/my-profile-tenant/" class="current"><i class="sl sl-icon-user"></i> My Profile</a></li>
+						<?php
+						}
+						?>
+						
+						
 					</ul>
 					
 					<ul class="my-account-nav">
@@ -60,7 +78,22 @@ get_header();
 
 					<ul class="my-account-nav">
 						<li><a href="<?php echo home_url(); ?>/change-password/"><i class="sl sl-icon-lock"></i> Change Password</a></li>
-						<li><a href="<?php echo wp_logout_url(home_url().'/login-register/'); ?>"><i class="sl sl-icon-power"></i> Log Out</a></li>
+						 <?php
+                       if($user->roles[0] == "property_owner"){
+					   ?>
+						<li><a href="<?php echo wp_logout_url(home_url().'/signup/'); ?>"><i class="sl sl-icon-power"></i> Log Out</a></li>
+						<?php
+						}
+						?>
+						<?php
+                       if($user->roles[0] == "tenant"){
+					   ?>
+						<li><a href="<?php echo wp_logout_url(home_url().'/tenant-registration/'); ?>"><i class="sl sl-icon-power"></i> Log Out</a></li>
+						<?php
+						}
+						?>
+						
+						
 					</ul>
 
 				</div>

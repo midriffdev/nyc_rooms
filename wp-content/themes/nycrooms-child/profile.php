@@ -1,7 +1,7 @@
 <?php
 /* Template Name: Profile */
 if(!is_user_logged_in()){
-     header( 'Location:' . site_url() . '/login-register/');
+     header( 'Location:' . site_url() . '/signup/');
 }
 $user = wp_get_current_user();
 if($user->roles[0] == "tenant"){
@@ -75,7 +75,7 @@ get_header();
 
 					<ul class="my-account-nav">
 						<li><a href="<?php echo home_url(); ?>/change-password/"><i class="sl sl-icon-lock"></i> Change Password</a></li>
-						<li><a href="<?php echo wp_logout_url(home_url().'/login-register/'); ?>"><i class="sl sl-icon-power"></i> Log Out</a></li>
+						<li><a href="<?php echo wp_logout_url(home_url().'/signup/'); ?>"><i class="sl sl-icon-power"></i> Log Out</a></li>
 					</ul>
 
 				</div>

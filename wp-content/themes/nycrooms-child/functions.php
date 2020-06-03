@@ -43,14 +43,14 @@ function hide_login_menu_for_logged_in_user(){
 if(is_user_logged_in()){
 ?>
 <style>
-.menu-item-object-page.menu-item-36{display: none !important;}
-.menu-item-object-page.menu-item-81{display: none !important;}
+.menu-item-object-page.menu-item-22{display: none !important;}
+.menu-item-object-page.menu-item-42{display: none !important;}
 </style> 
 <?php
 } else {
 ?>
 <style>
-.menu-item-object-page.menu-item-37{display: none !important;}
+.menu-item-object-page.menu-item-43{display: none !important;}
 </style> 
 <?php
 }
@@ -393,7 +393,7 @@ function kv_rest_setting_password($reset_key, $user_login, $user_email, $ID ,$ne
  	 $message .= sprintf(__('Username: %s'), $user_login) . "<br><br>";
   	 $message .= sprintf(__('Password: %s'), $new_password) . "<br><br>";
 	 if($user_role == 'property_owner'){
- 	 $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/login-register/" .'" >' . get_option('siteurl')."/login-register/" . "</a> <br><br>";
+ 	 $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/signup/" .'" >' . get_option('siteurl')."/login-register/" . "</a> <br><br>";
 	 } else if($user_role == 'tenant'){
 	  $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/tenant-registration/" .'" >' . get_option('siteurl')."/tenant-registration/" . "</a> <br><br>";
 	 }
@@ -556,6 +556,8 @@ function nyc_rooms_all_agents(){
 			<label for="bulk-action-selector-bottom" class="screen-reader-text">Select bulk action</label>
 			<select name="action2" id="bulk-action-selector-bottom">
 			 <option value="-1">Bulk Actions</option>
+			 <option value="active" class="hide-if-no-js">Active</option>
+			 <option value="inactive" class="hide-if-no-js">Inactive</option>
 			 <option value="delete" class="hide-if-no-js">Delete</option>
             </select>
         <input type="submit" id="doaction2" class="button action" value="Apply">
@@ -710,6 +712,27 @@ function delete_multiple_agents() {
 	wp_die();
 }
 
+add_action( 'wp_ajax_active_multiple_agents', 'active_multiple_agents' );
+function active_multiple_agents() {
+	global $wpdb;
+	foreach($_POST['data'] as $ids){
+	update_user_meta( $ids, 'user_agent_status','active' );
+	}
+	echo "true";
+	wp_die();
+}
+
+add_action( 'wp_ajax_inactive_multiple_agents', 'inactive_multiple_agents' );
+function inactive_multiple_agents() {
+	global $wpdb;
+	foreach($_POST['data'] as $ids){
+	 update_user_meta( $ids, 'user_agent_status','inactive');
+	}
+	echo "true";
+	wp_die();
+}
+
+
 
 
 function nyc_add_to_favorite() {
@@ -751,5 +774,3 @@ if($user_id){
 }
 return $is_bookmark;
 }
-
-
