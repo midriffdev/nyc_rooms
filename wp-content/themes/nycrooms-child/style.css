@@ -12495,7 +12495,7 @@ body .daterangepicker .drp-buttons button.cancelBtn {
 	margin: 7px 0 0 0;
 }
 .list--submenu li{margin:4px 0;}
-.show--submenu{
+.show--submenu .list--submenu{
 	height:100%;
 	transition: 0.5s;
 	opacity:1;
@@ -12577,7 +12577,7 @@ table.contracts--table td:first-child {padding-left: 40px !important;}
     background: #1CD8D2;
     background: -webkit-linear-gradient(to right, #93EDC7, #1CD8D2);
     background: linear-gradient(to right, #93EDC7, #1CD8D2);
-    height:120vh;
+    height:100vh;
     overflow: hidden !important;
 }
 .teanent-question-innersec:hover {
@@ -12882,6 +12882,165 @@ table.contracts--table td:first-child {padding-left: 40px !important;}
 	border-radius: 3px;
 }
 .recently-approved-btn button:hover{opacity:0.8;}
+.title-container.teanent-title-container {
+    align-items: center !important;
+}
+table.admin-teanent-maintable th:first-child{width:30%;}
+.admin-teanentdetail-title{font-size:25px;}
+.admin-owner-propertycount{text-align: center;}
+.popup__button{
+	background-color: #274abb !important;
+	padding: 10px 20px !important;
+	color: #fff !important;
+	font-size: 15px !important;
+	font-weight: 500 !important;
+	display: inline-block !important;
+	transition: all 0.2s ease-in-out !important;
+	cursor: pointer !important;
+	border: none !important;
+	border-radius: 3px !important;
+}
+.popup__container {
+    text-align: center !important;
+    margin: 50px 0 0 0;
+}
+.popup-main--section .modal-dialog {
+    top: 50%;
+    margin: 0 auto;
+    transform: translatey(-50%) !important;
+}
+.lead-detail-container h2 {
+    margin: 0 0 30px 0;
+}
+.lead-teanent_details {
+    background: #efefef;
+    border-radius: 5px;
+    box-shadow: 0 0 19px rgba(0,0,0,0.2);
+    padding: 31px 34px 24px;
+}
+.lead-teanent_details ul {
+    padding: 0;
+    margin: 0;
+}
+.lead-teanent_details li {
+    list-style: none;
+    display: flex;
+    margin: 0 0 11px 0;
+}
+.lead-teanent_details li p {
+    margin: 0;
+    font-size: 15px;
+}
+.lead-teanent_details li span {
+    color: #333;
+    font-weight: 600;
+    display: inline-block;
+    margin: 0 0 0 12px;
+    font-size: 16px;
+}
+.lead-detail-propertytitlesec {align-items: center !important;}
+.lead-detail-propertytitlesec p {
+    margin: 0;
+    display: flex;
+}
+.lead-detail-propertytitlesec p span {
+    color: #274abb;
+    font-size: 17px;
+    margin: 0 0 0 8px;
+}
+
+.create-deal-btnsec button {
+    background: #274abb;
+    color: #fff;
+    border: 0;
+    border-radius: 0;
+    padding: 19px 100px;
+    font-size: 19px;
+    transition: 0.5s;
+}
+.create-deal-btnsec button:hover{opacity:0.8;}
+.create-deal-btnsec {
+    text-align: left;
+    margin: 50px 0 0 0;
+}
+.leaddetail-teanentdetail{margin: 50px 0 0 0;}
+.stage-main--section button[disabled]{opacity:0.3 !important;}
+.stage-main--section #previousBtn{background: #a1b789 !important;}
+.stage-main--section #nextBtn{background: #2c3b3e !important;}
+.stage-main--section #main button{
+	background-color: #274abb;
+	font-size: 13px;
+	font-weight: 500;
+	border-radius: 3px;
+	transition: all 0.2s ease-in-out;
+	padding: 3px 25px;
+	color: #fff;
+	border:0;
+	margin: 0 8px;
+}
+.stage-main--section #main button:hover{opacity: 0.9;}
+.stage-main--section #main {
+    width: 350px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+.stage-main--section {
+    margin: 50px 0 0 0;
+    box-shadow: 0 0 13px rgba(0,0,0,0.2);
+    border-radius: 9px;
+    padding: 35px 0;
+}
+#stepProgressBar  {
+    display:  flex;
+    justify-content:  space-between;
+    align-items:  flex-end;
+    width:  350px;
+    margin: 0 auto;
+    margin-bottom:  33px;
+}
+.step  {text-align:  center;}
+.step-text  {
+margin-bottom:  10px;
+color:  #28a745;
+}
+
+.bullet {
+    border: 1px solid #28a745;
+    height: 20px;
+    width: 20px;
+    border-radius: 100%;
+    color: #28a745;
+    display: inline-block;
+    position: relative;
+    transition: background-color 500ms;
+  	line-height:20px;
+  	font-size: 13px;
+}
+.bullet.completed  {
+    color:  white;
+    background-color:  #28a745;
+}
+.bullet.completed::after {
+    content: '';
+    position: absolute;
+    right: -120px;
+    bottom: 10px;
+    height: 1px;
+    width: 111px;
+    background-color: #28a745;
+}
+
+/* Base styles and helper stuff */
+.hidden  {
+    display:  none;
+}
+ 
+.guest-check-descp-sec i{top:40px !important;}
+.guest-check-descp-sec textarea {
+    height: 100px !important;
+    min-height: 115px;
+}
 /* --------------------############## Shubham CSS end ######################------------------ */
 
 /* ------------------------------------------------------------------- */
@@ -13325,5 +13484,3 @@ table.contracts--table td:first-child {padding-left: 40px !important;}
 	.property-slider .item,
 	.property-slider.default .item  { height: 200px; }
 }
-
-

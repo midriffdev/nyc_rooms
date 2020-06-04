@@ -3,7 +3,7 @@
 global $wpdb, $user_ID;
 $errors = array(); 
 if(is_user_logged_in()){
-  header( 'Location:' . site_url() . '/my-profile/');
+  header( 'Location:' . site_url() . '/admin-dashboard/');
 } 
    
 if(isset($_POST['login'])){  
@@ -28,7 +28,7 @@ if(isset($_POST['login'])){
 	}
 	
    
-     if($userrolecheck->roles[0] != "property_owner"){
+     if($userrolecheck->roles[0] != "administrator" ){
 	   $loginerror = "Invalid login details";
 	} else {
 		$user_verify = wp_signon( $login_data, false );
@@ -37,7 +37,7 @@ if(isset($_POST['login'])){
 			$loginerror = "Invalid login details";  
 		   // Note, I have created a page called "Error" that is a child of the login page to handle errors. This can be anything, but it seemed a good way to me to handle errors.  
 		 } else {    
-		   echo "<script type='text/javascript'>window.location.href='". site_url().'/my-profile/' ."'</script>";  
+		   echo "<script type='text/javascript'>window.location.href='". site_url().'/admin-dashboard/' ."'</script>";  
 		   exit();  
 		 }
    }

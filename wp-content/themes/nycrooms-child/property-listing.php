@@ -672,7 +672,7 @@ get_header();
     display: inline-block;
     border-radius: 3px;
 }
-<style>
+</style>
 <?php
 get_footer();
 ?>

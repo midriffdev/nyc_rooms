@@ -7,7 +7,7 @@ $user = wp_get_current_user();
 if($user->roles[0] == "property_owner"){
     header( 'Location:' . site_url() . '/my-profile/');
 } else if($user->roles[0] == "administrator"){
-   header( 'Location:' . site_url());
+   header( 'Location:' . site_url() . '/admin-dashboard/');
 }
 if(isset($_POST['user_submit'])){
   

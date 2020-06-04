@@ -377,9 +377,9 @@ function tg_validate_url() {
 	} else {
 		$concate = "&";
 	}
+
 	return $page_url.$concate;
 }
-
 function kv_rest_setting_password($reset_key, $user_login, $user_email, $ID ,$new_password) {
  
   	 $new_password = $new_password; //you can change the number 7 to whatever length needed for the new password
@@ -796,3 +796,61 @@ function get_lat_long($address){
     $long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
     return $lat.','.$long;
 }
+
+add_action('init', 'start_session', 1);
+function start_session() {
+if(!session_id()) {
+session_start();
+}
+}
+
+add_action('end_session_action','end_session');
+function end_session() {
+ session_destroy();
+}
+
+
+//Create a custom post type leads
+add_action( 'init', 'nyc_create_custom_post_leads', 0 );
+function nyc_create_custom_post_leads() {
+	$labels = array(
+		'name'                => __( 'Leads' ),
+		'singular_name'       => __( 'leads'),
+		'menu_name'           => __( 'Leads'),
+		'parent_item_colon'   => __( 'Parent Leads'),
+		'all_items'           => __( 'All Leads'),
+		'view_item'           => __( 'View Leads'),
+		'add_new_item'        => __( 'Add New Lead'),
+		'add_new'             => __( 'Add New'),
+		'edit_item'           => __( 'Edit Leads'),
+		'update_item'         => __( 'Update Leads'),
+		'search_items'        => __( 'Search Leads'),
+		'not_found'           => __( 'Not Found'),
+		'not_found_in_trash'  => __( 'Not found in Trash')
+	);
+	$args = array(
+		'label'               => __( 'leads'),
+		'description'         => __( 'Best Leads'),
+		'labels'              => $labels,
+		'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'revisions', 'custom-fields'),
+		'public'              => true,
+		'hierarchical'        => false,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => true,
+		'show_in_admin_bar'   => true,
+		'has_archive'         => true,
+		'can_export'          => true,
+		'exclude_from_search' => false,
+	    'yarpp_support'       => true,
+		'publicly_queryable'  => true,
+		'capability_type'     => 'page'
+	);
+	register_post_type( 'leads', $args );
+}
+
+
+
+
+
+
