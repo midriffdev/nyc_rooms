@@ -783,8 +783,6 @@ if($user_id){
 	}
 }
 return $is_bookmark;
-<<<<<<< HEAD
-=======
 }
 
 function get_lat_long($address){
@@ -797,5 +795,4 @@ function get_lat_long($address){
     $lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
     $long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
     return $lat.','.$long;
->>>>>>> 880d05ace483ab696fcbf6ddaad410095951670b
 }
