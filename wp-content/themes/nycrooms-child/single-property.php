@@ -2,6 +2,10 @@
 /* Template Name: Single Property */
 get_header();
 $post_id = $_GET['property_id'];
+if(!is_user_logged_in()):
+	$_SESSION['action']['request'] = 'guest_checkout';
+	$_SESSION['action']['property_id'] = $post_id;
+endif;
 $address = get_post_meta($post_id, 'address',true)." ";
 $address .= get_post_meta($post_id, 'city',true)." ";
 $address .= get_post_meta($post_id, 'state',true).", ";
@@ -122,7 +126,10 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 					<div id="propertyMap" data-latitude="40.7427837" data-longitude="-73.11445617675781"></div>
 					<a href="#" id="streetView">Street View</a>
 				</div>
-
+                 
+				<div class="checkoutproperty">
+				 <a href="<?= site_url() ?>/tenant-registration/" class="button checkout_property">Checkout Property</a>
+				</div>
 
 				<!-- Similar Listings Container -->
 				<h3 class="desc-headline no-border margin-bottom-35 margin-top-60">Similar Properties</h3>
@@ -412,6 +419,11 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 <div class="margin-top-55"></div>
 
 </div>
+<style>
+a.checkout_property {
+    margin-top: 6%;
+}
+</style>
 <?php
 get_footer();
 ?>

@@ -179,5 +179,10 @@ get_header();
 			</div>
 		</div>
 	</div>
+<style>
+.tenant-questionary-cont{
+  height: 120vh;
+}
+</style>
 <?php
 get_footer();

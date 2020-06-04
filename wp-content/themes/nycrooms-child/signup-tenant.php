@@ -5,7 +5,7 @@ global $wpdb, $user_ID;
 $errors = array(); 
 if(is_user_logged_in()){
   header( 'Location:' . site_url() . '/my-profile-tenant/');
-} 
+}
    
      if(isset($_REQUEST['register']) && $_SERVER['REQUEST_METHOD'] == "POST") 
       {  
@@ -125,11 +125,68 @@ if(is_user_logged_in()){
    
 }
 
+/*------------ Guest Checkout ----------------------*/
+
+if(isset($_POST['guest_checkout'])){
+		
+		
+	
+		
+		$lead_id = wp_insert_post(array (
+			'post_type'		=> 'leads',
+			'post_title' 	=> 'Lead submission',
+			'post_content' 	=> 'Lead submission by guest user',
+			'post_author' 	=> 1,
+			'post_status'   => 'available'
+		));
+		
+		
+		 if ($lead_id) {
+			add_post_meta($lead_id, 'lead_name', $_POST['guest_name']);
+			add_post_meta($lead_id, 'lead_email', $_POST['guest_email']);
+			add_post_meta($lead_id, 'lead_phone', $_POST['guest_phone']);
+			add_post_meta($lead_id, 'lead_summary', $_POST['guest_summary']);
+			add_post_meta($lead_id, 'lead_checkout_property', $_SESSION['action']['property_id']);
+			add_post_meta($lead_id, 'lead_checkout_property_name', get_the_title($_SESSION['action']['property_id']));
+			add_post_meta($lead_id, 'lead_checkt_prp_owner', get_post_meta($_SESSION['action']['property_id'],'contact_name',true));
+			add_post_meta($lead_id, 'lead_chckt_prp_owner_email', get_post_meta($_SESSION['action']['property_id'],'contact_email',true));
+			add_post_meta($lead_id, 'lead_created_from', 'guest_user' );
+			
+			
+			
+			
+			$subject = "New Lead Submission";
+			$to = get_option('admin_email');
+			$msg  = __( '<h4>Hello Admin,</h4>') . "\r\n\r\n";
+			$msg .= '<p>A new lead Submission by guest user with following Details:</p>';
+			$msg .= '<p>Name:'.$_POST['guest_name'] .'</p>';
+			$msg .= '<p>Email:'.$_POST['guest_email'] .'</p>';
+			$msg .= '<p>Phone:'.$_POST['guest_phone'] .'</p>';
+			$msg .= '<p>Property link: <a href="'.site_url() .'/single-property/?property_id='.$_SESSION['action']['property_id'].'">'.site_url().'/single-property/?property_id='.$_SESSION['action']['property_id'].'</a></p>';
+			$msg .= '<p>Requirements:</p><p>'.$_POST['guest_summary'] .'</p>';
+			$msg .=  '<p>Thanks!<p>';
+			$headers = array('Content-Type: text/html; charset=UTF-8');
+		    $mail = wp_mail($to, $subject, $msg,$headers);
+			if($mail){
+			
+			    $success_msg = "We have recieved your request for property. We will contact you soon";
+				
+				
+			   
+			}
+		
+		}
+		
+}
+
+
+/*----------------- Facebook Login -------------------------*/
+
 $client_id = '675017533078473'; // Facebook APP Client ID
 $client_secret = 'a2183f77e4e5c2944b2c5f1ed9fcabb6'; // Facebook APP Client secret
 $redirect_uri = 'http://localhost/nycrooms/tenant-registration/'; // URL of page/file that processes a request
  
- /*----------------- Facebook Login -------------------------*/
+ 
  
 // in our case we ask facebook to redirect to the same page, because processing code is also here
 // processing code
@@ -307,6 +364,7 @@ get_header();
 		<ul class="tabs-nav">
 			<li class=""><a href="#tab1">Log In</a></li>
 			<li><a href="#tab2">Register</a></li>
+			<li><a href="#tab3">Guest Checkout</a></li>
 		</ul>
 
 		<div class="tabs-container alt">
@@ -316,7 +374,15 @@ get_header();
 			     <label class="form_errors" align="center"><?php echo $loginerror; ?></label>
 				 <?php if(isset($_GET['action']) && $_GET['action'] == "reset_success") {?>
 				      <label class="reset_success" align="center"><?php echo "Your New Password has been reset successfully.You can Login now with new credentials sent to your e-mail"; ?></label>
-				 <?php } ?>
+					 
+					  
+				 <?php }
+                   if($success_msg):
+				 ?>
+				       <label class="reset_success" align="center"><?php echo $success_msg ;?></label>
+				  <?php
+				  endif;
+				  ?>
 				<form method="post" class="login">
 
 					<p class="form-row form-row-wide">
@@ -390,6 +456,46 @@ get_header();
 
 				</form>
 			</div>
+			
+			<!-- Guest Checkout -->
+			<div class="tab-content" id="tab3" style="display: none;">
+				<form method="post" class="guest--checkout">
+					
+							<p class="form-row form-row-wide">
+								<label for="username2">Name:
+									<i class="im im-icon-Male"></i>
+									<input type="text" class="input-text" name="guest_name" id="username2" value="" />
+								</label>
+							</p>
+								
+							<p class="form-row form-row-wide">
+								<label for="email2">Email Address:
+									<i class="im im-icon-Mail"></i>
+									<input type="text" class="input-text" name="guest_email" id="email2" value="" />
+								</label>
+							</p>
+
+							<p class="form-row form-row-wide">
+								<label for="password1">Phone:
+									<i class="im im-icon-Phone"></i>
+									<input type="tel" id="phone" name="guest_phone">
+								</label>
+							</p>
+
+							<p class="form-row form-row-wide guest-check-descp-sec">
+								<label for="password2">Descprition:
+									<i class="im im-icon-Lock-2"></i>
+									<textarea class="WYSIWYG" name="guest_summary" id="summary" spellcheck="true"></textarea>
+								</label>
+							</p>
+
+							<p class="form-row">
+								<input type="submit" class="button border fw margin-top-10" name="guest_checkout" value="Submit" />
+							</p>
+
+				</form>
+			</div>
+			
 
 		</div>
 	</div>
