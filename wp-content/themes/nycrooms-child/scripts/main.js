@@ -96,6 +96,8 @@ $(".submit").click(function(){
         $(".teanent-question-innersec").removeClass("click_effect");
         $(this).toggleClass("click_effect");
     });
+	
+	
 
 });
 /*---------Query for tenant question closed---------*/
