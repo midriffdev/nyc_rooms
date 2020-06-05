@@ -184,4 +184,176 @@ jQuery(document).ready(function($) {
 			}
 		});
 	});
+	
+	jQuery('.bulk_actions .apply_action').click(function(){
+	  
+     var myarray = new Array();
+     
+    var value = jQuery('.bulk_actions select[class=select_action]').val();
+	if(value == -1){
+	  alert("please choose a option");
+	} else {
+	      if(value == "delete"){
+	         var checkedNum = jQuery('input[class="checkagent"]:checked').length;
+		    if(checkedNum == 0){
+		        alert('Please choose one or more agent to delete');
+		    } else {
+		       if(checkedNum == 1){
+		        var r = confirm("Are you sure to delete this user");
+			  } else {
+			    var r = confirm("Are you sure to delete these users");
+			  }
+				if(r == true) {
+                       jQuery('input[class="checkagent"]:checked').each(function(){
+			                 myarray.push(jQuery(this).val());
+			           });
+					   
+					   var data = {
+							'action': 'delete_multiple_agents',
+							'data':   myarray
+	                   };
+					// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+						        
+								  if(response == "true"){
+									 alert("users Deleted successfully");
+									setTimeout(function(){
+									   window.location.reload();
+									   // or window.location = window.location.href; 
+								 }, 2000);
+								 
+								 }
+						});   
+               }
+		     
+		     }
+		 
+		 } else if(value == 'active') {
+		    
+			 var checkedNum = jQuery('input[class="checkagent"]:checked').length;
+		     if(checkedNum == 0){
+		         alert('Please choose one or more agent to be active');
+		     } else {
+		       
+				
+                       jQuery('input[class="checkagent"]:checked').each(function(){
+			                 myarray.push(jQuery(this).val());
+			           });
+					   
+					   var data = {
+									'action': 'active_multiple_agents',
+									'data':   myarray
+	                   };
+	// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+						          
+								  if(response == "true"){
+									 alert("users activated successfully");
+									setTimeout(function(){
+									   window.location.reload();
+									   // or window.location = window.location.href; 
+								 }, 2000);
+								 
+								 }
+						  });
+		
+		     
+		     }
+		 
+		 
+		 
+		    
+		 } else if(value == 'inactive'){
+		 
+		      var checkedNum = jQuery('input[class="checkagent"]:checked').length;
+		     if(checkedNum == 0){
+		         alert('Please choose one or more agent to inactive');
+		     } else {
+		       
+				
+                       jQuery('input[class="checkagent"]:checked').each(function(){
+			                 myarray.push(jQuery(this).val());
+			           });
+					   
+					   var data = {
+									'action': 'inactive_multiple_agents',
+									'data':   myarray
+	                   };
+	// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+						          
+								  if(response == "true"){
+									 alert("users inactive successfully");
+									setTimeout(function(){
+									   window.location.reload();
+									   // or window.location = window.location.href; 
+								 }, 2000);
+								 
+								 }
+						  });
+		
+		     
+		     }
+			 
+		    
+		 }
+		 
+		 
+	    //jQuery('.agent_selected').each()
+	}
+	
+   });
+   
+   jQuery('.checkallagents').click(function(){
+	   jQuery(".checkagent").prop('checked', jQuery(this).prop('checked'));
+	});
+	
+	jQuery('.delete_agent_profile').click(function(){
+	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkagent"]:checked').length;
+				   
+	              var mydeletearray = new Array();
+	              var id = jQuery(this).data('id');
+				  
+				  if(checkedNum == 0){
+		               alert('Please Select this agent to delete');
+		          } else {
+		       
+	                        var r = confirm("Are you sure to delete this user");
+					            if(r == true) {
+											   
+											   mydeletearray.push(id);
+											   
+											   
+											 var data = {
+													'action': 'delete_multiple_agents',
+													'data':   mydeletearray
+											   };
+											// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+												jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+														
+														  if(response == "true"){
+															 alert("user Deleted successfully");
+															setTimeout(function(){
+															   window.location.reload();
+															   // or window.location = window.location.href; 
+														 }, 2000);
+														 
+														 }
+												}); 
+							   }
+			  
+	            }
+	   
+	    
+	   
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
 });

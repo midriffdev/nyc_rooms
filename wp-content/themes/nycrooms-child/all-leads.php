@@ -198,39 +198,39 @@ get_header();
 			
 				
 				<div class="row fs-listings">
-				<div class="col-md-12">
+						<div class="col-md-12">
 
-					<!-- Pagination -->
-					<div class="clearfix"></div>
-					<div class="pagination-container margin-top-10 margin-bottom-45">
-						<nav class="pagination">
-							<?php 
-									echo paginate_links( array(
-											'base'         => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
-											'total'        => $all_leads->max_num_pages,
-											'current'      => max( 1, get_query_var( 'paged' ) ),
-											'format'       => '?paged=%#%',
-											'show_all'     => false,
-											'type'         => 'list',
-											'end_size'     => 2,
-											'mid_size'     => 1,
-											'prev_next'    => false,
-											'add_args'     => false,
-											'add_fragment' => '',
-										) );
-                              ?>
-						</nav>
+							<!-- Pagination -->
+							<div class="clearfix"></div>
+							<div class="pagination-container margin-top-10 margin-bottom-45">
+								<nav class="pagination">
+									<?php 
+											echo paginate_links( array(
+													'base'         => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
+													'total'        => $all_leads->max_num_pages,
+													'current'      => max( 1, get_query_var( 'paged' ) ),
+													'format'       => '?paged=%#%',
+													'show_all'     => false,
+													'type'         => 'list',
+													'end_size'     => 2,
+													'mid_size'     => 1,
+													'prev_next'    => false,
+													'add_args'     => false,
+													'add_fragment' => '',
+												) );
+									  ?>
+								</nav>
 
-						<nav class="pagination-next-prev">
-							<ul>
-								<li class="prev"><!--a href="#" class="prev">Previous</a--> <?php previous_posts_link( 'Previous',$all_leads->max_num_pages ); ?> </li>
-								<li class="next"><!--a href="#" class="next">Next</a--> <?php next_posts_link( 'Next', $all_leads->max_num_pages);  ?> </li>
-							</ul>
-						</nav>
-					</div>
+								<nav class="pagination-next-prev">
+									<ul>
+										<li class="prev"><!--a href="#" class="prev">Previous</a--> <?php previous_posts_link( 'Previous',$all_leads->max_num_pages ); ?> </li>
+										<li class="next"><!--a href="#" class="next">Next</a--> <?php next_posts_link( 'Next', $all_leads->max_num_pages);  ?> </li>
+									</ul>
+								</nav>
+							</div>
 
-				</div>
-			</div>
+						</div>
+			    </div>
 			
 				<!-- Pagination Container / End -->
 

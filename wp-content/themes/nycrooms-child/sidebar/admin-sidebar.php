@@ -56,8 +56,8 @@
 
 					<ul class="my-account-nav">
 						<li class="sub-nav-title">Manage Agents</li>
-						<li class="admin-propertieslistings"><a href="admin-agents.html">All Agents <span class="all-listing-no active-listing-no">1000</span></a></li>
-						<li><a href="admin-add-agent.html"><i class="sl sl-icon-action-redo"></i> Add New Agent</a></li>
+						<li class="admin-propertieslistings"><a href="<?= home_url();?>/all-agent/">All Agents <span class="all-listing-no active-listing-no">1000</span></a></li>
+						<li><a href="<?= home_url();?>/add-agent/"><i class="sl sl-icon-action-redo"></i> Add New Agent</a></li>
 					</ul>
 
 					<ul class="my-account-nav">

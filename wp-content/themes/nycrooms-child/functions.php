@@ -27,6 +27,8 @@ function zakra_child_enqueue_styles() {
 	wp_enqueue_script( 'property-js', get_stylesheet_directory_uri().'/scripts/property.js', array( 'jquery' ), '1.0', true );
 	wp_localize_script( 'property-js', 'my_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 	
+	
+	
 }
 add_action( 'wp_enqueue_scripts', 'zakra_child_enqueue_styles' );
 
@@ -318,6 +320,26 @@ function nyc_property_gallery_image_upload($file_name,$post_id){
 	   add_post_meta($post_id, $file_name, $attach_id);
 }
 
+function nyc_property_profile_image_upload($FILES,$userid){
+		$uploaddir = wp_upload_dir();
+		$tmp_file = $FILES['agent_profile_picture']["tmp_name"];
+		$uploadfile = $uploaddir['path'] . '/' . $FILES['agent_profile_picture']['name'];
+		move_uploaded_file($tmp_file, $uploadfile);
+		$wp_filetype = wp_check_filetype(basename($uploadfile), null);
+		$attachment = array(
+			'post_mime_type' => $wp_filetype['type'],
+			'post_title' => preg_replace('/\.[^.]+$/', '', basename($uploadfile)),
+			'post_status' => 'inherit',
+		);
+	   $attach_id = wp_insert_attachment($attachment, $uploadfile); // adding the image to th media
+	   require_once(ABSPATH . 'wp-admin/includes/image.php');
+	   $attach_data = wp_generate_attachment_metadata($attach_id, $uploadfile);
+	   $update = wp_update_attachment_metadata($attach_id, $attach_data); // Updated the image details
+	   update_user_meta($userid,'profile_user_image', $attach_id);
+}
+
+
+
 function nyc_property_owner_authority(){
 	if( is_user_logged_in() ) {
 		$user = wp_get_current_user();
@@ -344,7 +366,7 @@ function kv_forgot_password_reset_email($user_input) {
  	global $wpdb; 
  	$user_data = get_user_by( 'email', $user_input ); 
  	$user_login = $user_data->user_login;
-	$user_email = $user_data->user_email;
+    $user_email = $user_data->user_email;
  
  	$key = $wpdb->get_var("SELECT user_activation_key FROM $wpdb->users WHERE user_login ='".$user_login."'");
  	if(empty($key)) {
@@ -712,6 +734,7 @@ function nyc_rooms_delete_agents(){
 }
 
 
+add_action( 'wp_ajax_nopriv_delete_multiple_agents', 'delete_multiple_agents' );
 add_action( 'wp_ajax_delete_multiple_agents', 'delete_multiple_agents' );
 function delete_multiple_agents() {
 	global $wpdb;
@@ -722,6 +745,7 @@ function delete_multiple_agents() {
 	wp_die();
 }
 
+add_action( 'wp_ajax_nopriv_active_multiple_agents', 'active_multiple_agents' );
 add_action( 'wp_ajax_active_multiple_agents', 'active_multiple_agents' );
 function active_multiple_agents() {
 	global $wpdb;
@@ -732,6 +756,7 @@ function active_multiple_agents() {
 	wp_die();
 }
 
+add_action( 'wp_ajax_nopriv_inactive_multiple_agents', 'inactive_multiple_agents' );
 add_action( 'wp_ajax_inactive_multiple_agents', 'inactive_multiple_agents' );
 function inactive_multiple_agents() {
 	global $wpdb;
@@ -848,9 +873,3 @@ function nyc_create_custom_post_leads() {
 	);
 	register_post_type( 'leads', $args );
 }
-
-
-
-
-
-
