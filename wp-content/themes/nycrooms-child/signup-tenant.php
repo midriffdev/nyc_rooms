@@ -146,10 +146,11 @@ if(isset($_POST['guest_checkout'])){
 			add_post_meta($lead_id, 'lead_email', $_POST['guest_email']);
 			add_post_meta($lead_id, 'lead_phone', $_POST['guest_phone']);
 			add_post_meta($lead_id, 'lead_summary', $_POST['guest_summary']);
-			add_post_meta($lead_id, 'lead_checkout_property', $_SESSION['action']['property_id']);
-			add_post_meta($lead_id, 'lead_checkout_property_name', get_the_title($_SESSION['action']['property_id']));
-			add_post_meta($lead_id, 'lead_checkt_prp_owner', get_post_meta($_SESSION['action']['property_id'],'contact_name',true));
-			add_post_meta($lead_id, 'lead_chckt_prp_owner_email', get_post_meta($_SESSION['action']['property_id'],'contact_email',true));
+			add_post_meta($lead_id, 'lead_checkout_property', $_POST['Property_search_id']);
+			add_post_meta($lead_id, 'lead_checkout_property_name', get_the_title($_POST['Property_search_id']));
+			add_post_meta($lead_id, 'lead_checkt_prp_owner', get_post_meta($_POST['Property_search_id'],'contact_name',true));
+			add_post_meta($lead_id, 'lead_source','Property Form');
+			add_post_meta($lead_id, 'lead_chckt_prp_owner_email', get_post_meta($_POST['Property_search_id'],'contact_email',true));
 			add_post_meta($lead_id, 'lead_created_from', 'guest_user' );
 			
 			
@@ -488,6 +489,9 @@ get_header();
 							</p>
 
 							<p class="form-row">
+							    <?php if(isset($_GET['request']) && $_GET['request'] == 'guest_checkout'): ?>
+							    <input type="hidden" value="<?= $_GET['property_id'] ?>" name="Property_search_id">
+								<?php endif; ?>
 								<input type="submit" class="button border fw margin-top-10" name="guest_checkout" value="Submit" />
 							</p>
 

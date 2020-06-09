@@ -7,7 +7,7 @@
 					<ul class="my-account-nav">
 						<li class="sub-nav-title">Manage Account</li>
 						<li><a href="<?= home_url();?>/admin-dashboard/"><i class="sl sl-icon-screen-desktop"></i> Dashboard</a></li>
-						<li><a href="<?= home_url();?>//profile-admin//"><i class="sl sl-icon-user"></i> My Profile</a></li>
+						<li><a href="<?= home_url();?>/profile-admin/"><i class="sl sl-icon-user"></i> My Profile</a></li>
 					</ul>
 					
 					<ul class="my-account-nav">
@@ -16,11 +16,11 @@
 							<a href="#">
 								<i class="sl sl-icon-docs"></i>Properties <i class="sl sl-icon-arrow-down listing-dropdown-icon"></i>
 							</a>
-							<ul class="list--submenu">
-								<li><a href="admin-all-properties.html" >All Properties <span class="all-listing-no active-listing-no">2000</span></a></li>
-								<li><a href="admin-available-properties.html" >Available <span class="active-listing-no">200</span></a></li>
-								<li><a href="admin-rented-properties.html">Rented <span class="rented-listing-no">500</span></a></li>
-								<li><a href="admin-recently-property">Recently Submitted <span class="unapproved-listing-no">50</span></a></li>
+							<ul class="list--submenu show--submenu">
+								<li><a href="<?php echo get_site_url(); ?>/admin-properties" class="current">All Properties <span class="all-listing-no active-listing-no"><?php echo nyc_get_properties_admin_by_status(array('draft', 'available', 'rented','Pending Review'))->post_count; ?></span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/admin-available-properties" >Available <span class="active-listing-no"><?php echo nyc_get_properties_admin_by_status(array('available'))->post_count; ?></span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/admin-rented-properties" >Rented <span class="rented-listing-no"><?php echo nyc_get_properties_admin_by_status(array('rented'))->post_count; ?></span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/admin-recently-properties">Recently Submitted <span class="unapproved-listing-no"><?php echo nyc_get_recent_properties('draft')->post_count; ?></span></a></li>
 							</ul>
 						</li>
 						<li><a href="<?= home_url() ?>/add-property/"><i class="sl sl-icon-action-redo"></i> Submit New Property</a></li>
@@ -33,11 +33,11 @@
 								<i class="sl sl-icon-docs"></i>Property Owners <i class="sl sl-icon-arrow-down listing-dropdown-icon"></i>
 							</a>
 							<ul class="list--submenu">
-								<li><a href="admin-property-owners.html" >All Owners <span class="all-listing-no active-listing-no">2000</span></a></li>
-								<li><a href="admin-recently-propertyowners.html" >Recently Added<span class="active-listing-no">20</span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/admin-property-owner-all/" >All Owners <span class="all-listing-no active-listing-no">2000</span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/recent-property-owner/" >Recently Added<span class="active-listing-no">20</span></a></li>
 							</ul>
 						</li>
-						<li><a href="admin-add-propertyowner.html"><i class="sl sl-icon-action-redo"></i> Add New Owner</a></li>
+						<li><a href="<?php echo get_site_url(); ?>/add-property-owner/"><i class="sl sl-icon-action-redo"></i> Add New Owner</a></li>
 					</ul>
 
 					<ul class="my-account-nav">
@@ -47,11 +47,11 @@
 								<i class="sl sl-icon-docs"></i>Tenants <i class="sl sl-icon-arrow-down listing-dropdown-icon"></i>
 							</a>
 							<ul class="list--submenu ">
-								<li><a href="admin-tenants.html" >All Tenants <span class="all-listing-no active-listing-no">1000</span></a></li>
-								<li><a href="admin-recently-tenant.html" >Recently Added<span class="active-listing-no">20</span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/all-tenants/">All Tenants <span class="all-listing-no active-listing-no">1000</span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/recent-tenants/">Recently Added<span class="active-listing-no">20</span></a></li>
 							</ul>
 						</li>
-						<li><a href="admin-add-teanent.html"><i class="sl sl-icon-action-redo"></i> Add New Teanent</a></li>
+						<li><a href="<?php echo get_site_url(); ?>/add-tenant/"><i class="sl sl-icon-action-redo"></i> Add New Teanent</a></li>
 					</ul>
 
 					<ul class="my-account-nav">

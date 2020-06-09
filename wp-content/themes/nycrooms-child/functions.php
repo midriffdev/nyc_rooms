@@ -951,3 +951,83 @@ function get_recent_leads(){
 	
 						 
 }
+
+function nyc_property_admin_authority(){
+	if( is_user_logged_in() ) {
+		$user = wp_get_current_user();
+		$roles = ( array ) $user->roles;
+		if(!in_array('administrator',$roles)){
+		   wp_redirect(home_url());
+		}
+	}else{
+		wp_redirect(home_url());
+	}
+}
+
+function nyc_get_properties_admin_by_status($status){
+	$properties = new WP_Query(array(
+		'posts_per_page' 	=> -1,
+		'post_type' 		=> 'property',
+		'post_status' 		=> $status,
+	));
+	return $properties;
+}
+function nyc_get_recent_properties($status){
+$args = wp_get_recent_posts( array(
+	'numberposts'      => 10,
+	'post_type'        => 'property',
+	'orderby'          => 'post_date',
+	'order'            => 'DESC',
+	'post_status'      => $status,
+) );
+$properties = new WP_Query( $args );
+return $properties;
+}
+
+function pagination_bar() { ?>
+<div class="row fs-listings">
+					<div class="col-md-12">
+
+						<!-- Pagination -->
+						<div class="clearfix"></div>
+						<div class="pagination-container margin-top-10 margin-bottom-45">
+							<nav class="pagination">
+							<ul>
+							
+								<?php
+    global $wp_query;
+    $big = 9999999;
+          ?>
+		  
+		  <?php
+         echo paginate_links(array(
+            'base' => str_replace($big,'%#%',esc_url(get_pagenum_link($big))),
+            'format' =>  '/paged/%#%',
+            'current' => max(1,get_query_var('paged')),
+            'total' => $wp_query->max_num_pages
+        )); 
+		?>
+ 
+	
+	</ul>
+	</div>
+	</nav>
+	</div>
+	</div>
+	
+	<?php 
+}
+function nyc_get_properties_by_property_owner($id){
+	$properties = new WP_Query(array(
+		'posts_per_page' 	=> -1,
+		'post_type' 		=> 'property',
+		'post_status' 		=> array('available','rented','inherit'),
+		'author' 			=>  'property-owner',
+		'post_author'       => $id,
+	));
+	return $properties;
+}
+
+	 ?>
+	
+	 

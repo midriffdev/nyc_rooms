@@ -1,52 +1,24 @@
-<?php
+<?php 
 /* Template Name: Admin Dashboard */
-if(!is_user_logged_in()){
-     header( 'Location:' . site_url() . '/login-admin/');
-}
-$user = wp_get_current_user();
-if($user->roles[0] == "tenant"){
-    header( 'Location:' . site_url() . '/my-profile-tenant/');
-} else if($user->roles[0] == "property_owner"){
-    header( 'Location:' . site_url() . '/my-profile/');
-}
-if(isset($_POST['user_submit'])){
-  
-	 
-      $userdata = array(
-                    'ID' => get_current_user_id(),
-					'user_nicename'  => $_POST['user_name'],
-					'display_name'   => $_POST['user_name'],
-					'user_email'    =>  $_POST['user_email']
-	             );
-    wp_update_user($userdata );
-	 
-   update_user_meta(get_current_user_id(),'nickname', $_POST['user_name']); 
-   update_user_meta(get_current_user_id(),'user_phone', $_POST['user_phone']);
-   update_user_meta(get_current_user_id(),'about', $_POST['about']);
-   update_user_meta(get_current_user_id(),'user_twitter', $_POST['user_twitter']);
-   update_user_meta(get_current_user_id(),'user_facebook', $_POST['user_facebook']);
-   update_user_meta(get_current_user_id(),'user_google', $_POST['user_google']);
-   update_user_meta(get_current_user_id(),'user_linkedin', $_POST['user_linkedin']); 
-   
-   
-   $message =  "User Updated Successfully";
-   
-}
+nyc_property_admin_authority();
 get_header();
 ?>
 <!-- Wrapper -->
 <div id="wrapper" class="dashbaord__wrapper">
 
-
 <!-- Content
 ================================================== -->
 <div class="container">
 	<div class="row">
-
-
-		<!-- Widget -->
-		<?php get_template_part('sidebar/admin-sidebar'); ?>
-
+	<?php include(locate_template('sidebar/admin-sidebar.php')); 
+	$result = wp_get_recent_posts( array(
+	'numberposts'      => 5,
+	'orderby'          => 'post_date',
+	'order'            => 'DESC',
+	'post_type'        => 'property',
+	'post_status'      => 'draft, publish, available ,rented'
+) );
+?>
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
 
@@ -55,61 +27,63 @@ get_header();
 	                    <h5>Recent Activities</h5>
 	                </div>
 	                <ul class="act-wrap">
-	                    <li class="alert br-o fade show">
-	                        A new property <span class="review-stat">Villa On Hartford</span> has been added!
-	                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<?php foreach( $result as $post ){
+					   $post_id = $post['ID'];
+	                   $title = $post['post_title'];
+					   $date = $post['post_date'];
+					   $Human_time =  human_time_diff(strtotime($date) , current_time ('timestamp', 1));
+?>
+	                    <li class="alert br-o fade show" data-id="<?php echo $post_id ; ?>">
+	                        A new property <span class="review-stat"><?php echo $title;?></span> has been added!
+							
+	                        <button type="button" class="close recently_properties_close" data-id="<?php echo $post_id ; ?>" data-dismiss="alert" aria-label="Close">
 	                            <span aria-hidden="true"><i class="sl sl-icon-close"></i></span>
 	                        </button>
-	                        <p>30 mins ago</p>
+	                        <p><?php echo $Human_time ; ?> ago </p>
 	                    </li>
-	                    <li class="alert br-o fade show">
-	                        <span class="review-stat">Andrew</span> sends a Booking request for <span class="review-stat">Villa on Sunbury</span> Property!
-	                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-	                            <span aria-hidden="true"><i class="sl sl-icon-close"></i></span>
-	                        </button>
-	                        <p>5 hours ago</p>
-	                    </li>
+					<?php } ?>
 	                </ul>
 	            </div>
 
 	            <div class="dashboard-stats-section">
 				<div class="dashboard-stat-sectioncont">
 					<ul>
+					
 						<li class="statistic__item item--red">
-							<a href="#">
+							<a href="<?php echo get_site_url();?>/admin-properties">
 								<div class="statistic__item_cont">
 									<div class="statistic__item_title-sec">
-										<h2 class="counter-value">2000</h2>
+										<h2 class="counter-value"><?php echo nyc_get_properties_admin_by_status(array('draft', 'available', 'rented',))->post_count;?></h2>
 	                            		<span class="desc">Total Properties</span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="<?= get_stylesheet_directory_uri() ?>/images/property-stats.png" alt="...">
+										<img src="<?php echo get_stylesheet_directory_uri();?>/images/property-stats.png" alt="..">
 									</div>
 								</div>
 							</a>
 						</li>
 						<li class="statistic__item item--blue">
-							<a href="#">
+							<a href= "<?php echo get_site_url();?>/admin-available-properties">
 								<div class="statistic__item_cont">
 									<div class="statistic__item_title-sec">
-										<h2 class="counter-value">20</h2>
+										<h2 class="counter-value"><?php echo nyc_get_properties_admin_by_status(array('available'))->post_count; ?></h2>
 	                            		<span class="desc">Available Properties</span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="<?= get_stylesheet_directory_uri() ?>/images/property-stats.png" alt="...">
+										<img src="<?php echo get_stylesheet_directory_uri();?>/images/property-stats.png" alt="...">
 									</div>
 								</div>
 							</a>
 						</li>
 						<li class="statistic__item item--green">
-							<a href="#">
+							<a href="<?php echo get_site_url();?>/admin-rented-properties">
 								<div class="statistic__item_cont">
 									<div class="statistic__item_title-sec">
-										<h2 class="counter-value">500</h2>
+										<h2 class="counter-value"><?php echo nyc_get_properties_admin_by_status(array('rented'))->post_count; ?></h2>
 	                            		<span class="desc">Rented Properties</span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="<?= get_stylesheet_directory_uri() ?>/images/property-stats.png" alt="...">
+										<img src="<?php echo get_stylesheet_directory_uri();?>/images/property-stats.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -118,27 +92,35 @@ get_header();
 
 					<ul>
 						<li class="statistic__item item--blue">
-							<a href="#">
+							<a href="<?php echo get_site_url();?>/admin-recently-properties">
 								<div class="statistic__item_cont">
 									<div class="statistic__item_title-sec">
-										<h2 class="counter-value">5</h2>
+										<h2 class="counter-value"><?php echo nyc_get_recent_properties('draft')->post_count; ?></h2>
 	                            		<span class="desc">Recently Added </span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="<?= get_stylesheet_directory_uri() ?>/images/property-stats.png" alt="...">
+										<img src="<?php echo get_stylesheet_directory_uri();?>/images/property-stats.png" alt="...">
 									</div>
 								</div>
 							</a>
 						</li>
+						<?php 
+						$user_count_data = count_users();
+						$avail_roles = $user_count_data['avail_roles'];
+						$tenant = $avail_roles['tenant'];
+						$administrator = $avail_roles['administrator']; 
+						$sales_agent = $avail_roles['sales_agent'];
+						$property_owner = $avail_roles['property_owner'];
+?>
 						<li class="statistic__item item--dark">
-							<a href="#">
+							<a href="<?php echo get_site_url();?>/admin-property-owner"> 
 								<div class="statistic__item_cont">
 									<div class="statistic__item_title-sec">
-										<h2 class="counter-value">1000</h2>
+										<h2 class="counter-value"><?php echo $property_owner;?></h2>
 	                            		<span class="desc">Property Owners</span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="<?= get_stylesheet_directory_uri() ?>/images/stats-proprtyowner.png" alt="...">
+										<img src="<?php echo get_stylesheet_directory_uri();?>/images/stats-proprtyowner.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -147,11 +129,11 @@ get_header();
 							<a href="#">
 								<div class="statistic__item_cont">
 									<div class="statistic__item_title-sec">
-										<h2 class="counter-value">500</h2>
+										<h2 class="counter-value"><?php echo $tenant;?></h2>
 	                            		<span class="desc">Tenants</span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="<?= get_stylesheet_directory_uri() ?>/images/stats-teanent.png" alt="...">
+										<img src="<?php echo get_stylesheet_directory_uri();?>/images/stats-teanent.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -167,7 +149,7 @@ get_header();
 	                            		<span class="desc">Active Deals </span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="<?= get_stylesheet_directory_uri() ?>/images/property-stats.png" alt="...">
+										<img src="<?php echo get_stylesheet_directory_uri();?>/images/property-stats.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -180,7 +162,7 @@ get_header();
 	                            		<span class="desc">Total Contracts</span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="<?= get_stylesheet_directory_uri() ?>/images/stats-proprtyowner.png" alt="...">
+										<img src="<?php echo get_stylesheet_directory_uri();?>/images/stats-proprtyowner.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -193,7 +175,7 @@ get_header();
 	                            		<span class="desc">Recently Added Tenants</span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="<?= get_stylesheet_directory_uri() ?>/images/stats-teanent.png" alt="...">
+										<img src="<?php echo get_stylesheet_directory_uri();?>/images/stats-teanent.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -213,7 +195,7 @@ get_header();
 						<!-- Item #1 -->
 						<tr>
 						<td class="title-container">
-						<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-02.jpg" alt="">
+						<img src="images/listing-02.jpg" alt="">
 						<div class="title">
 						<h4><a href="#">Serene Uptown</a></h4>
 						<span>6 Bishop Ave. Perkasie, PA </span>
@@ -224,7 +206,7 @@ get_header();
 						<!-- Item #2 -->
 						<tr>
 						<td class="title-container">
-						<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-05.jpg" alt="">
+						<img src="images/listing-05.jpg" alt="">
 						<div class="title">
 						<h4><a href="#">Oak Tree Villas</a></h4>
 						<span>71 Lower River Dr. Bronx, NY</span>
@@ -242,7 +224,7 @@ get_header();
 						<!-- Item #3 -->
 						<tr>
 						<td class="title-container">
-						<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-04.jpg" alt="">
+						<img src="images/listing-04.jpg" alt="">
 						<div class="title">
 						<h4><a href="#">Selway Apartments</a></h4>
 						<span>33 William St. Northbrook, IL </span>
@@ -254,7 +236,7 @@ get_header();
 						<!-- Item #4 -->
 						<tr>
 						<td class="title-container">
-						<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-06.jpg" alt="">
+						<img src="images/listing-06.jpg" alt="">
 						<div class="title">
 						<h4><a href="#">Old Town Manchester</a></h4>
 						<span> 7843 Durham Avenue, MD  </span>
@@ -280,15 +262,18 @@ get_header();
 <!-- Back To Top Button -->
 <div id="backtotop"><a href="#"></a></div>
 
-
-<!-- Scripts
-================================================== -->
-
 </div>
-<style>
-label.reset_success {
-    color: green;
-}
-</style>
+<!-- Wrapper / End -->
+
 <?php
 get_footer();
+?>
+<script>
+jQuery(document).ready(function($) {
+	jQuery(".recently_properties_close").click(function(){
+     var post_id = jQuery(this).attr("data-id");
+	   jQuery("li[data-id='" + post_id + "']").remove();
+	 
+	})
+});
+</script>
