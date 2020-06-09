@@ -6,8 +6,8 @@
 					
 					<ul class="my-account-nav">
 						<li class="sub-nav-title">Manage Account</li>
-						<li><a href="admin-dashboard.html"><i class="sl sl-icon-screen-desktop"></i> Dashboard</a></li>
-						<li><a href="my-profile.html"><i class="sl sl-icon-user"></i> My Profile</a></li>
+						<li><a href="<?= home_url();?>/admin-dashboard/"><i class="sl sl-icon-screen-desktop"></i> Dashboard</a></li>
+						<li><a href="<?= home_url();?>//profile-admin//"><i class="sl sl-icon-user"></i> My Profile</a></li>
 					</ul>
 					
 					<ul class="my-account-nav">
@@ -23,7 +23,7 @@
 								<li><a href="admin-recently-property">Recently Submitted <span class="unapproved-listing-no">50</span></a></li>
 							</ul>
 						</li>
-						<li><a href="submit-property.html"><i class="sl sl-icon-action-redo"></i> Submit New Property</a></li>
+						<li><a href="<?= home_url() ?>/add-property/"><i class="sl sl-icon-action-redo"></i> Submit New Property</a></li>
 					</ul>
 
 					<ul class="my-account-nav">
@@ -56,14 +56,16 @@
 
 					<ul class="my-account-nav">
 						<li class="sub-nav-title">Manage Agents</li>
-						<li class="admin-propertieslistings"><a href="<?= home_url();?>/all-agent/">All Agents <span class="all-listing-no active-listing-no">1000</span></a></li>
+						<li class="admin-propertieslistings"><a href="<?= home_url();?>/all-agent/">All Agents <span class="all-listing-no active-listing-no"><?= get_all_agents() ?></span></a></li>
 						<li><a href="<?= home_url();?>/add-agent/"><i class="sl sl-icon-action-redo"></i> Add New Agent</a></li>
 					</ul>
 
 					<ul class="my-account-nav">
 						<li class="sub-nav-title">Manage Property Leads</li>
-						<li class="admin-propertieslistings"><a href="<?= home_url();?>/all-leads/" >All leads <span class="all-listing-no active-listing-no">2000</span></a></li>
-						<li class="admin-propertieslistings"><a href="<?= home_url();?>/recent-leads/" class="current">Recently Added Lead<span class="active-listing-no">20</span></a></li>
+						<li class="admin-propertieslistings"><a href="<?= home_url();?>/all-leads/" >All leads <span class="all-listing-no active-listing-no"><?= get_all_leads() ?></span></a></li>
+						<li class="admin-propertieslistings"><a href="<?= home_url();?>/recent-leads/" class="current">Recently Added Lead<span class="active-listing-no">
+						<?= get_recent_leads()?>
+						</span></a></li>
 					</ul>
 
 					<ul class="my-account-nav">

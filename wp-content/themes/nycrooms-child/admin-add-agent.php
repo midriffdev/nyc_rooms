@@ -46,25 +46,6 @@ get_header();
 
 <!-- Titlebar
 ================================================== -->
-<div id="titlebar">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-
-				<h2>Add Agent</h2>
-
-				<!-- Breadcrumbs -->
-				<nav id="breadcrumbs">
-					<ul>
-						<li><a href="#">Home</a></li>
-						<li>Add Agent</li>
-					</ul>
-				</nav>
-
-			</div>
-		</div>
-	</div>
-</div>
 
 
 <!-- Content
@@ -83,20 +64,7 @@ get_header();
 					</div>
 				</div>
 				<div class="row">
-				        <?php
-                         if($usererror){
-						?>
-						    <label class="form_errors"><?= $usererror ?></label>
-						<?php
-						 }
-						?>
-						<?php
-                         if($usersuccess){
-						?>
-						    <label class="reset_success"><?= $usersuccess ?></label>
-						<?php
-						 }
-						?>
+				        
 						
 				    <form method="post" enctype="multipart/form-data">
 						<div class="col-md-6 my-profile">
@@ -119,7 +87,7 @@ get_header();
 								</div>
 								<div class="col-md-6">
 									<label>Phone</label>
-									<input  type="text" name="phone" placeholder="Phone" required>
+									<input  type="text" name="phone" placeholder="Phone" required pattern="[0-9]{10}" maxlength=10>
 								</div>
 							</div>
 							
@@ -202,14 +170,52 @@ get_header();
 <div id="backtotop"><a href="#"></a></div>
 
 </div>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>
+		  <?php
+            if($usererror){
+		         echo $usererror;
+						
+			}
+					
+		    if($usersuccess){
+	          echo $usersuccess; 
+			}
+		    ?>
+		  </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 <!-- Wrapper / End -->
-<style>
-label.form_errors {
-    color: red;
-}
-label.reset_success {
-    color: green;
-}
-</style>
+
 <?php
 get_footer();
+if($usererror){
+   echo "<script>
+         jQuery(window).load(function(){
+             $('#myModal').modal('show');
+         });
+    </script>";
+}
+if($usersuccess){
+   echo "<script>
+         jQuery(window).load(function(){
+             $('#myModal').modal('show');
+         });
+    </script>";
+}
+?>

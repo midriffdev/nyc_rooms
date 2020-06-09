@@ -45,9 +45,9 @@ $argspage = array(
         );
 		
 $users = new WP_User_Query( $argspage ); 
-$user_count = $users->get_results();
+$user_count_agents = $users->get_results();
 // count the number of users found in the query
-$total_users = $user_count ? count($user_count) : 1;
+$total_users_agents = $user_count_agents ? count($user_count_agents) : 1;
 
 $page = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
@@ -57,7 +57,7 @@ $users_per_page = 6;
 // calculate the total number of pages.
 $total_pages = 1;
 $offset = $users_per_page * ($page - 1);
-$total_pages = ceil($total_users / $users_per_page);
+$total_pages = ceil($total_users_agents / $users_per_page);
 
 $args = array(
          'role__in' => 'sales_agent',
@@ -83,33 +83,13 @@ get_header();
 
 <!-- Titlebar
 ================================================== -->
-<div id="titlebar">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-
-				<h2>Agents</h2>
-
-				<!-- Breadcrumbs -->
-				<nav id="breadcrumbs">
-					<ul>
-						<li><a href="#">Home</a></li>
-						<li>Agents</li>
-					</ul>
-				</nav>
-
-			</div>
-		</div>
-	</div>
-</div>
-
 
 <!-- Content
 ================================================== -->
 <div class="container">
 	<div class="row">
 		<!-- Widget -->
-		<?php get_template_part('sidebar/admin-sidebar'); ?>
+		<?php include(locate_template('sidebar/admin-sidebar.php')); ?>
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
 
@@ -161,7 +141,7 @@ get_header();
 					     <p class="showing-results"><?= count($all_users); ?> Results Found On Page <?php echo $page ;?> of <?php echo $total_pages;?> </p>
 				    </div>
 
-				<table class="manage-table responsive-table admin-teanent-maintable">
+				<table class="manage-table responsive-table admin-teanent-maintable all_agents_table">
 				<tbody>
 				<tr>
 				    <th><input type="checkbox" class="checkallagents"></th>
@@ -267,13 +247,67 @@ get_header();
 <!-- Back To Top Button -->
 <div id="backtotop"><a href="#"></a></div>
 
-
+<!-- Modal -->
+  <div class="modal fade" id="Modalinactive" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Agent Inactivated Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+ 
+ <!-- Modal -->
+  <div class="modal fade" id="Modaldelete" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Agent Deleted Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+ 
+ <!-- Modal -->
+  <div class="modal fade" id="Modalactive" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Agent Activated Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 </div>
 <style>
-.tg-container {
-    width: 100%;
-    max-width: 100%;
-}
 .pagination-next-prev ul li.prev a {
     left: 0;
     position: absolute;
@@ -304,7 +338,6 @@ input.apply_action {
     margin-left: 5%;
     padding: 0;
 }
-
 </style>
 <!-- Wrapper / End -->
 <?php

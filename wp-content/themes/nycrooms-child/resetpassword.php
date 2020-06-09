@@ -65,7 +65,7 @@ get_header();
 		   }
 		 }
    ?>
-  <form role="form" action="<?php echo "http://".$_SERVER["SERVER_NAME"].$_SERVER['REQUEST_URI']; ?>" method="post" >
+  <form role="form" action="<?php echo "https://".$_SERVER["SERVER_NAME"].$_SERVER['REQUEST_URI']; ?>" method="post" >
 			<div class="form-group input-group">
 				<span class="input-group-addon">New Password</span>
 				<input type="password" name="password" class="form-control" placeholder="Enter New Password" required />

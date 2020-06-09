@@ -37,28 +37,6 @@ get_header();
 <!-- Wrapper -->
 <div id="wrapper" class="dashbaord__wrapper">
 
-<!-- Titlebar
-================================================== -->
-<div id="titlebar">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-
-				<h2>Admin Dashboard</h2>
-
-				<!-- Breadcrumbs -->
-				<nav id="breadcrumbs">
-					<ul>
-						<li><a href="#">Home</a></li>
-						<li>Admin Dashboard</li>
-					</ul>
-				</nav>
-
-			</div>
-		</div>
-	</div>
-</div>
-
 
 <!-- Content
 ================================================== -->
@@ -105,7 +83,7 @@ get_header();
 	                            		<span class="desc">Total Properties</span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="images/property-stats.png" alt="...">
+										<img src="<?= get_stylesheet_directory_uri() ?>/images/property-stats.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -118,7 +96,7 @@ get_header();
 	                            		<span class="desc">Available Properties</span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="images/property-stats.png" alt="...">
+										<img src="<?= get_stylesheet_directory_uri() ?>/images/property-stats.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -131,7 +109,7 @@ get_header();
 	                            		<span class="desc">Rented Properties</span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="images/property-stats.png" alt="...">
+										<img src="<?= get_stylesheet_directory_uri() ?>/images/property-stats.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -147,7 +125,7 @@ get_header();
 	                            		<span class="desc">Recently Added </span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="images/property-stats.png" alt="...">
+										<img src="<?= get_stylesheet_directory_uri() ?>/images/property-stats.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -160,7 +138,7 @@ get_header();
 	                            		<span class="desc">Property Owners</span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="images/stats-proprtyowner.png" alt="...">
+										<img src="<?= get_stylesheet_directory_uri() ?>/images/stats-proprtyowner.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -173,7 +151,7 @@ get_header();
 	                            		<span class="desc">Tenants</span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="images/stats-teanent.png" alt="...">
+										<img src="<?= get_stylesheet_directory_uri() ?>/images/stats-teanent.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -189,7 +167,7 @@ get_header();
 	                            		<span class="desc">Active Deals </span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="images/property-stats.png" alt="...">
+										<img src="<?= get_stylesheet_directory_uri() ?>/images/property-stats.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -202,7 +180,7 @@ get_header();
 	                            		<span class="desc">Total Contracts</span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="images/stats-proprtyowner.png" alt="...">
+										<img src="<?= get_stylesheet_directory_uri() ?>/images/stats-proprtyowner.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -215,7 +193,7 @@ get_header();
 	                            		<span class="desc">Recently Added Tenants</span>
 									</div>
 									<div class="statistic__item_img-sec">
-										<img src="images/stats-teanent.png" alt="...">
+										<img src="<?= get_stylesheet_directory_uri() ?>/images/stats-teanent.png" alt="...">
 									</div>
 								</div>
 							</a>
@@ -235,7 +213,7 @@ get_header();
 						<!-- Item #1 -->
 						<tr>
 						<td class="title-container">
-						<img src="images/listing-02.jpg" alt="">
+						<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-02.jpg" alt="">
 						<div class="title">
 						<h4><a href="#">Serene Uptown</a></h4>
 						<span>6 Bishop Ave. Perkasie, PA </span>
@@ -246,7 +224,7 @@ get_header();
 						<!-- Item #2 -->
 						<tr>
 						<td class="title-container">
-						<img src="images/listing-05.jpg" alt="">
+						<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-05.jpg" alt="">
 						<div class="title">
 						<h4><a href="#">Oak Tree Villas</a></h4>
 						<span>71 Lower River Dr. Bronx, NY</span>
@@ -264,7 +242,7 @@ get_header();
 						<!-- Item #3 -->
 						<tr>
 						<td class="title-container">
-						<img src="images/listing-04.jpg" alt="">
+						<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-04.jpg" alt="">
 						<div class="title">
 						<h4><a href="#">Selway Apartments</a></h4>
 						<span>33 William St. Northbrook, IL </span>
@@ -276,7 +254,7 @@ get_header();
 						<!-- Item #4 -->
 						<tr>
 						<td class="title-container">
-						<img src="images/listing-06.jpg" alt="">
+						<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-06.jpg" alt="">
 						<div class="title">
 						<h4><a href="#">Old Town Manchester</a></h4>
 						<span> 7843 Durham Avenue, MD  </span>

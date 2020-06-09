@@ -64,15 +64,12 @@ get_header();
 	<div class="col-md-4 col-md-offset-4">
      
 	<!--button class="button social-login via-twitter"><i class="fa fa-twitter"></i> Log In With Twitter</button--->
-	<a href = "<?php echo $google_uri; ?>"><button class="button social-login via-gplus"><i class="fa fa-google-plus"></i> Log In With Google Plus</button></a>
-	<a href="<?php echo $login_url ?>"><button class="button social-login via-facebook"><i class="fa fa-facebook"></i> Log In With Facebook</button></a>
 
 	<!--Tab -->
 	<div class="my-account style-1 margin-top-5 margin-bottom-40">
 
 		<ul class="tabs-nav">
 			<li class=""><a href="#tab1">Log In</a></li>
-			<li><a href="#tab2">Register</a></li>
 		</ul>
 
 		<div class="tabs-container alt">

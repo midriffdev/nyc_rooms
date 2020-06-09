@@ -23,9 +23,10 @@ function zakra_child_enqueue_styles() {
 	);
 	
 	wp_enqueue_style( 'color-css', get_stylesheet_directory_uri().'/css/color.css');
-	
+	//wp_enqueue_style( 'bootstrap-css', get_stylesheet_directory_uri().'/css/bootstrap.min.css');
 	wp_enqueue_script( 'property-js', get_stylesheet_directory_uri().'/scripts/property.js', array( 'jquery' ), '1.0', true );
-	wp_localize_script( 'property-js', 'my_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+	wp_enqueue_script( 'bootstrap-js', get_stylesheet_directory_uri().'/scripts/bootstrap.min.js', array( 'jquery' ), '1.0', true );
+    wp_localize_script( 'property-js', 'my_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 	
 	
 	
@@ -45,14 +46,14 @@ function hide_login_menu_for_logged_in_user(){
 if(is_user_logged_in()){
 ?>
 <style>
-.menu-item-object-page.menu-item-36{display: none !important;}
-.menu-item-object-page.menu-item-81{display: none !important;}
+.menu-item-object-page.menu-item-22{display: none !important;}
+.menu-item-object-page.menu-item-42{display: none !important;}
 </style> 
 <?php
 } else {
 ?>
 <style>
-.menu-item-object-page.menu-item-37{display: none !important;}
+.menu-item-object-page.menu-item-43{display: none !important;}
 </style> 
 <?php
 }
@@ -339,12 +340,33 @@ function nyc_property_profile_image_upload($FILES,$userid){
 }
 
 
+function nyc_property_profile_all_image_upload($FILES,$userid){
+		$uploaddir = wp_upload_dir();
+		$tmp_file = $FILES['profilepicture']["tmp_name"];
+		$uploadfile = $uploaddir['path'] . '/' . $FILES['profilepicture']['name'];
+		move_uploaded_file($tmp_file, $uploadfile);
+		$wp_filetype = wp_check_filetype(basename($uploadfile), null);
+		$attachment = array(
+			'post_mime_type' => $wp_filetype['type'],
+			'post_title' => preg_replace('/\.[^.]+$/', '', basename($uploadfile)),
+			'post_status' => 'inherit',
+		);
+	   $attach_id = wp_insert_attachment($attachment, $uploadfile); // adding the image to th media
+	   require_once(ABSPATH . 'wp-admin/includes/image.php');
+	   $attach_data = wp_generate_attachment_metadata($attach_id, $uploadfile);
+	   $update = wp_update_attachment_metadata($attach_id, $attach_data); // Updated the image details
+	   update_user_meta($userid,'profile_picture', $attach_id);
+}
+
+
 
 function nyc_property_owner_authority(){
 	if( is_user_logged_in() ) {
 		$user = wp_get_current_user();
 		$roles = ( array ) $user->roles;
-		if(!in_array('property_owner',$roles)){
+		if(in_array('administrator',$roles) || in_array('property_owner',$roles)){
+		  
+		} else {
 		   wp_redirect(home_url());
 		}
 	}else{
@@ -415,7 +437,7 @@ function kv_rest_setting_password($reset_key, $user_login, $user_email, $ID ,$ne
  	 $message .= sprintf(__('Username: %s'), $user_login) . "<br><br>";
   	 $message .= sprintf(__('Password: %s'), $new_password) . "<br><br>";
 	 if($user_role == 'property_owner'){
- 	 $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/login-register/" .'" >' . get_option('siteurl')."/login-register/" . "</a> <br><br>";
+ 	 $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/signup/" .'" >' . get_option('siteurl')."/login-register/" . "</a> <br><br>";
 	 } else if($user_role == 'tenant'){
 	  $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/tenant-registration/" .'" >' . get_option('siteurl')."/tenant-registration/" . "</a> <br><br>";
 	 }
@@ -745,6 +767,19 @@ function delete_multiple_agents() {
 	wp_die();
 }
 
+add_action( 'wp_ajax_nopriv_delete_multiple_leads', 'delete_multiple_leads' );
+add_action( 'wp_ajax_delete_multiple_leads', 'delete_multiple_leads' );
+function delete_multiple_leads() {
+	global $wpdb;
+	foreach($_POST['data'] as $ids){
+	  wp_delete_post($ids);
+	}
+	echo "true";
+	wp_die();
+}
+
+
+
 add_action( 'wp_ajax_nopriv_active_multiple_agents', 'active_multiple_agents' );
 add_action( 'wp_ajax_active_multiple_agents', 'active_multiple_agents' );
 function active_multiple_agents() {
@@ -872,4 +907,47 @@ function nyc_create_custom_post_leads() {
 		'capability_type'     => 'page'
 	);
 	register_post_type( 'leads', $args );
+}
+
+function get_all_agents(){
+   $argspage = array(
+         'role__in' => 'sales_agent',
+		 'number' => -1
+
+        );
+		
+$users = new WP_User_Query( $argspage ); 
+$user_count_agents = $users->get_results();
+  return count($user_count_agents);
+}
+
+function get_all_leads(){
+   $args = array(
+         'post_type'        => 'leads',
+		 'post_status'       => 'available',
+         'posts_per_page'   => -1,
+         //'no_found_rows'    => true,
+         'suppress_filters' => false,
+        );
+	$all_leads = new WP_Query( $args );
+	$count = $all_leads->found_posts;
+	 return $count;
+
+}
+
+function get_recent_leads(){
+    $args = array(
+         'post_type'        => 'leads',
+		 'post_status'       => 'available',
+         //'no_found_rows'    => true,
+         'suppress_filters' => false,
+		 'orderby'          => 'post_date',
+         'order'            => 'DESC',
+		 'numberposts'      => 20,
+
+        );
+    $all_leads = wp_get_recent_posts($args);
+	return count($all_leads);
+	
+						 
 }
