@@ -649,10 +649,6 @@ get_header();
 </div>
 </div>
 <style>
-.tg-container {
-    width: 100%;
-    max-width: 100%;
-}
 .pagination-next-prev ul li.prev a {
     left: 0;
     position: absolute;
@@ -672,6 +668,13 @@ get_header();
     display: inline-block;
     border-radius: 3px;
 }
+#wrapper {
+    width: 100%;
+}
+.tg-container.search_prop_tnt {
+    max-width: 100% !important;
+	display: block;
+}
 </style>
 <?php
 get_footer();
@@ -680,3 +683,8 @@ get_footer();
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/infobox.min.js"></script>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/markerclusterer.js"></script>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/maps.js"></script>
+<script>
+ jQuery(document).ready(function(){
+ jQuery('.page-id-74 .site-content .tg-container.tg-container--flex.tg-container--flex-space-between').addClass('search_prop_tnt');
+ });
+</script>

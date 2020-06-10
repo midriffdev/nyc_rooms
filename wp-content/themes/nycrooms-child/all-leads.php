@@ -47,6 +47,7 @@ if(!empty($argarray)){
 }
 		
 $all_leads = new WP_Query( $args );
+
 get_header();
 ?>
 
@@ -55,25 +56,7 @@ get_header();
 
 <!-- Titlebar
 ================================================== -->
-<div id="titlebar">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
 
-				<h2>All Leads</h2>
-
-				<!-- Breadcrumbs -->
-				<nav id="breadcrumbs">
-					<ul>
-						<li><a href="#">Home</a></li>
-						<li>All Leads</li>
-					</ul>
-				</nav>
-
-			</div>
-		</div>
-	</div>
-</div>
 
 
 <!-- Content
@@ -82,7 +65,7 @@ get_header();
 	<div class="row">
 
 
-		<?php get_template_part('sidebar/admin-sidebar'); ?>
+		<?php include(locate_template('sidebar/admin-sidebar.php')); ?>
 
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
@@ -126,14 +109,18 @@ get_header();
 					</div>
 					</form>
 				</div>
-
-				<table class="manage-table responsive-table">
+                 <div class="col-md-12">
+					 <p class="showing-results"><?= $all_leads->found_posts; ?> Results Found On Page <?php echo $paged ;?> of <?php echo $all_leads->max_num_pages;?> </p>
+				 </div>
+					
+				<table class="manage-table responsive-table all_leads_table">
 				<tbody>
 				<tr>
+				    <th><input type="checkbox" class="checkallleads"></th>
 					<th><i class="fa fa-file-text"></i> Property</th>
 					<th><i class="fa fa-user"></i>Name</th>
 					<th class="expire-date"><i class="fa fa-envelope" ></i>Email</th>
-					<th></th>
+					<th>Action</th>
 				</tr>
                  
 				 
@@ -150,6 +137,7 @@ get_header();
 								
                     ?> 
 					<tr>
+					<td><input type="checkbox" class="checkleads" value="<?= get_the_ID() ?>"></td>
 					<td class="title-container">
 						
 						<?php 
@@ -173,7 +161,7 @@ get_header();
 					<td class="action">
 						<a href="<?= site_url() . '/lead-details/?leadid='.get_the_ID() ?>"><i class="fa fa-eye"></i> View</a>
 						<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>
-						<a href="#" class="delete" data-id="<?= get_the_ID() ?>"><i class="fa fa-remove"></i> Delete</a>
+						<a class="delete" data-id="<?= get_the_ID() ?>" style="cursor:pointer;"><i class="fa fa-remove"></i> Delete</a>
 					</td>
 				</tr>
 					
@@ -194,6 +182,17 @@ get_header();
 
 				</tbody>
 				</table>
+				
+				<div>
+			        <label>Select bulk action</label>
+                  <div class="bulk_actions_leads">
+						<select class="select_action_leads">
+						 <option value="-1">Bulk Actions</option>
+						 <option value="delete">Delete</option>
+						</select>
+                    <input type="button" value="Apply" class="apply_action_leads">
+                 </div>
+                </div>
 
 			
 				
@@ -245,6 +244,26 @@ get_header();
 <!-- Back To Top Button -->
 <div id="backtotop"><a href="#"></a></div>
 
+ <!-- Modal -->
+  <div class="modal fade" id="Modaldelete" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Leads Deleted Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
 
 <!-- Scripts
 ================================================== -->
@@ -254,10 +273,7 @@ get_header();
 <!-- Wrapper / End -->
 
 <style>
-.tg-container {
-    width: 100%;
-    max-width: 100%;
-}
+
 .pagination-next-prev ul li.prev a {
     left: 0;
     position: absolute;
@@ -277,6 +293,19 @@ get_header();
     display: inline-block;
     border-radius: 3px;
 }
+
+.bulk_actions_leads {
+    display: flex;
+}
+select.select_action_leads {
+    width: 30%;
+}
+input.apply_action_leads {
+    width: 30%;
+    margin-left: 5%;
+    padding: 0;
+}
+
 </style>
 
 

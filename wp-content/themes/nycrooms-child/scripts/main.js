@@ -1,10 +1,12 @@
 /*---------Query for listing submenu---------*/
-$( document ).ready(function() {
+ jQuery( document ).ready(function() {
     $(".list-has--submenu > a").click(function(){
     event.preventDefault();
-  	$(".list--submenu").toggleClass("show--submenu");
 	});
-});
+    $(".list-has--submenu ").click(function(){
+  	$(this).toggleClass("show--submenu");
+	});
+ });
 /*---------Query for listing submenu closed---------*/
 
 /*---------Query for tenant question---------*/

@@ -43,63 +43,29 @@ get_header();
 <div class="container">
 	<div class="row">
 		<!-- Widget -->
-		<div class="col-md-4">
-			<div class="sidebar left">
-
-				<div class="my-account-nav-container">
-					
-					<ul class="my-account-nav">
-						<li class="sub-nav-title">Manage Account</li>
-						<li><a href="#"><i class="sl sl-icon-screen-desktop"></i> Dashboard</a></li>
-					    <?php
-                       if($user->roles[0] == "property_owner"){
+						 <?php
+                       if($user->roles[0] == "administrator"){
 					   ?>
-						<li><a href="<?php echo home_url(); ?>/my-profile/" class="current"><i class="sl sl-icon-user"></i> My Profile</a></li>
+						<?php include(locate_template('sidebar/admin-sidebar.php')); ?>
 						<?php
 						}
 						?>
-						
-						 <?php
-                       if($user->roles[0] == "tenant"){
-					   ?>
-						<li><a href="<?php echo home_url(); ?>/my-profile-tenant/" class="current"><i class="sl sl-icon-user"></i> My Profile</a></li>
 						<?php
-						}
-						?>
-						
-						
-					</ul>
-					
-					<ul class="my-account-nav">
-						<li class="sub-nav-title">Manage Listings</li>
-						<li><a href="my-properties.html"><i class="sl sl-icon-docs"></i> My Properties</a></li>
-						<li><a href="submit-property.html"><i class="sl sl-icon-action-redo"></i> Submit New Property</a></li>
-					</ul>
-
-					<ul class="my-account-nav">
-						<li><a href="<?php echo home_url(); ?>/change-password/"><i class="sl sl-icon-lock"></i> Change Password</a></li>
-						 <?php
                        if($user->roles[0] == "property_owner"){
 					   ?>
-						<li><a href="<?php echo wp_logout_url(home_url().'/signup/'); ?>"><i class="sl sl-icon-power"></i> Log Out</a></li>
+						<?php include(locate_template('sidebar/property-owner.php')); ?>
 						<?php
 						}
 						?>
 						<?php
                        if($user->roles[0] == "tenant"){
 					   ?>
-						<li><a href="<?php echo wp_logout_url(home_url().'/tenant-registration/'); ?>"><i class="sl sl-icon-power"></i> Log Out</a></li>
+						<?php include(locate_template('sidebar/tenant-sidebar.php')); ?>
 						<?php
 						}
 						?>
 						
-						
-					</ul>
-
-				</div>
-
-			</div>
-		</div>
+		
 
 		<div class="col-md-8">
 			<div class="row">

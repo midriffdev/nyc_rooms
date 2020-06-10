@@ -216,7 +216,7 @@ jQuery(document).ready(function($) {
 						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 						        
 								  if(response == "true"){
-									 alert("users Deleted successfully");
+									$('#Modaldelete').modal('show');
 									setTimeout(function(){
 									   window.location.reload();
 									   // or window.location = window.location.href; 
@@ -248,7 +248,7 @@ jQuery(document).ready(function($) {
 						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 						          
 								  if(response == "true"){
-									 alert("users activated successfully");
+								    $('#Modalactive').modal('show');
 									setTimeout(function(){
 									   window.location.reload();
 									   // or window.location = window.location.href; 
@@ -283,7 +283,7 @@ jQuery(document).ready(function($) {
 						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 						          
 								  if(response == "true"){
-									 alert("users inactive successfully");
+									 $('#Modalinactive').modal('show');
 									setTimeout(function(){
 									   window.location.reload();
 									   // or window.location = window.location.href; 
@@ -332,7 +332,7 @@ jQuery(document).ready(function($) {
 												jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 														
 														  if(response == "true"){
-															 alert("user Deleted successfully");
+															$('#Modaldelete').modal('show'); 
 															setTimeout(function(){
 															   window.location.reload();
 															   // or window.location = window.location.href; 
@@ -347,6 +347,106 @@ jQuery(document).ready(function($) {
 	    
 	   
 	});
+	
+	
+	/*------------ bulk actions on leads -------------*/
+	
+	jQuery('.bulk_actions_leads .apply_action_leads').click(function(){
+	  
+     var myarrayleads = new Array();
+     
+    var value = jQuery('.bulk_actions_leads select[class=select_action_leads]').val();
+	if(value == -1){
+	  alert("please choose a option");
+	} else {
+	      if(value == "delete"){
+	         var checkedNum = jQuery('input[class="checkleads"]:checked').length;
+		    if(checkedNum == 0){
+		        alert('Please choose one or more lead to delete');
+		    } else {
+		       if(checkedNum == 1){
+		        var r = confirm("Are you sure to delete this lead");
+			  } else {
+			    var r = confirm("Are you sure to delete these leads");
+			  }
+				if(r == true) {
+                       jQuery('input[class="checkleads"]:checked').each(function(){
+			                 myarrayleads.push(jQuery(this).val());
+			           });
+					   
+					   var data = {
+							'action': 'delete_multiple_leads',
+							'data':   myarrayleads
+	                   };
+					// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+						        
+								
+								
+								  if(response == "true"){
+									$('#Modaldelete').modal('show');
+									setTimeout(function(){
+									   window.location.reload();
+									   // or window.location = window.location.href; 
+								 }, 2000);
+								 
+								 }
+								 
+								 
+						});   
+               }
+		     
+		     }
+		 
+		 } 
+		 //jQuery('.agent_selected').each()
+	}
+	
+   });
+   
+   jQuery('.checkallleads').click(function(){
+	   jQuery(".checkleads").prop('checked', jQuery(this).prop('checked'));
+	});
+	
+	 jQuery('.all_leads_table .delete').click(function(){
+	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkleads"]:checked').length;
+				   
+	              var myarrayleads = new Array();
+	              var id = jQuery(this).data('id');
+				  
+				  if(checkedNum == 0){
+		               alert('Please Select this lead to delete');
+		          } else {
+		       
+	                        var r = confirm("Are you sure to delete this lead");
+					            if(r == true) {
+											   
+											   myarrayleads.push(id);
+											   
+											   
+											 var data = {
+													'action': 'delete_multiple_leads',
+													'data':   myarrayleads
+											   };
+											// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+												jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+														
+														  if(response == "true"){
+															$('#Modaldelete').modal('show'); 
+															setTimeout(function(){
+															   window.location.reload();
+															   // or window.location = window.location.href; 
+														 }, 2000);
+														 
+														 }
+												}); 
+							   }
+			  
+	            }
+	   
+	    
+	   
+	}); 
 	
 	
 	

@@ -177,13 +177,13 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 						<div class="listing-content">
 
 							<div class="listing-title">
-								<h4><a href="<?php echo $property->guid; ?>"><?php echo $property->post_title; ?></a></h4>
+								<h4><a href="<?php /*echo $property->guid;*/ echo site_url()?>/single-property/?property_id=<?= $sim_id?>"><?php echo $property->post_title; ?></a></h4>
 								<a href="https://maps.google.com/maps?q=<?php echo $address; ?>&amp;hl=en&amp;t=v&amp;hnear=<?php echo $address; ?>" class="listing-address popup-gmaps">
 									<i class="fa fa-map-marker"></i>
 									<?php echo $address; ?>
 								</a>
 
-								<a href="<?php echo $property->guid; ?>" class="details button border">Details</a>
+								<a href="<?php /*echo $property->guid;*/  echo site_url()?>/single-property/?property_id=<?= $sim_id?>" class="details button border">Details</a>
 							</div>
 
 							<ul class="listing-details">

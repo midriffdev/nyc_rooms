@@ -10,6 +10,7 @@ if($user->roles[0] == "property_owner"){
    header( 'Location:' . site_url() . '/admin-dashboard/');
 }
 if(isset($_POST['user_submit'])){
+      
   
 	 
       $userdata = array( 
@@ -19,6 +20,13 @@ if(isset($_POST['user_submit'])){
 				'user_email'    =>  $_POST['user_email']
 	             );
     wp_update_user($userdata );
+	
+	if( isset($_FILES['profilepicture']['name']) && !empty($_FILES['profilepicture']['name'])){
+	         
+	    nyc_property_profile_all_image_upload($_FILES,get_current_user_id());
+			 
+	}
+	
 	 
    update_user_meta(get_current_user_id(),'nickname', $_POST['user_name']); 
    update_user_meta(get_current_user_id(),'user_phone', $_POST['user_phone']);
@@ -84,18 +92,19 @@ get_header();
 
 		<div class="col-md-8">
 			<div class="row">
-                  <label class="reset_success"><?php echo $message; ?></label>
+                  <label class="reset_success"><?php //echo $message; ?></label>
+				<form method="post" class="profile"  action="<?php echo $_SERVER['REQUEST_URI']; ?>" enctype='multipart/form-data'>
 				<div class="col-md-8 my-profile">
 					<h4 class="margin-top-0 margin-bottom-30">My Account</h4>
-                    <form method="post" class="profile"  action="<?php echo $_SERVER['REQUEST_URI']; ?>" >
+                   
 					<label>Your Name</label>
 					<input value="<?php if(!empty($user->data->display_name)){echo $user->data->display_name;} ?>" type="text" name="user_name">
 
 					<label>Phone</label>
-					<input value="<?php echo get_user_meta(get_current_user_id(),'user_phone',true); ?>" type="text" name="user_phone">
+					<input value="<?php echo get_user_meta(get_current_user_id(),'user_phone',true); ?>" type="text" name="user_phone" pattern="[0-9]{10}" maxlength=10>
 
 					<label>Email</label>
-					<input value="<?php if(!empty($user->data->user_email)){echo $user->data->user_email;} ?>" type="text" name="user_email">
+					<input value="<?php if(!empty($user->data->user_email)){echo $user->data->user_email;} ?>" type="email" name="user_email">
 
 
 					<h4 class="margin-top-50 margin-bottom-25">About Me</h4>
@@ -116,23 +125,22 @@ get_header();
 					<label><i class="fa fa-linkedin"></i> Linkedin</label>
 					<input value="<?php echo get_user_meta(get_current_user_id(),'user_linkedin',true); ?>" type="text" name="user_linkedin" >
 					<button class="button margin-top-20 margin-bottom-20" type="submit" name="user_submit" >Save Changes</button>
-				</form>
 				</div>
 
 				<div class="col-md-4">
 					<!-- Avatar -->
 					<div class="edit-profile-photo">
-					<form action="<?php echo get_stylesheet_directory_uri() ?>/process_upload.php" method="post" enctype="multipart/form-data">
-					      <?php $profile  = get_user_meta(get_current_user_id(),'profile_picture',true);
-                               if($profile){
-							   ?>
-							    <img src="<?php echo $profile ;?>" alt="">
-							<?php
-							   } else {
-						  ?><img src="<?php echo get_stylesheet_directory_uri() ?>/images/agent-02.jpg" alt="">
-						  <?php
-						      }
-						  ?>
+				
+					       <?php
+						  $profile_imgid =  get_user_meta(get_current_user_id(),'profile_picture',true);
+						  if($profile_imgid){
+								echo wp_get_attachment_image( $profile_imgid, array('150', '150'), "", array( "class" => "img-responsive" ) );
+						   } else {
+						 ?>
+						       <img src="<?= get_stylesheet_directory_uri() ?>/images/agent-01.jpg" alt="">
+						 <?php
+						   }
+						 ?>
 						
 						<div class="change-photo-btn">
 							<div class="photoUpload">
@@ -140,14 +148,12 @@ get_header();
 							    <input type="file" class="upload" name="profilepicture" size="25" />
 							</div>
 						</div>
-						<div style="float: left;margin-top: 4%;">
-						   <input type="submit" name="submit" value="upload Profile" />
-						</div>
-					 </form>
+					
+					
 					</div>
 
 				</div>
-               
+               </form>
 
 			</div>
 		</div>
@@ -161,6 +167,26 @@ get_header();
 <div id="backtotop"><a href="#"></a></div>
 
 </div>
+   <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p><?=$message ?></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
 	</div><!-- #primary -->
 <style>
 label.reset_success {
@@ -169,3 +195,10 @@ label.reset_success {
 </style>
 <?php
 get_footer();
+if($message){
+   echo "<script>
+         jQuery(window).load(function(){
+             $('#myModal').modal('show');
+         });
+    </script>";
+}

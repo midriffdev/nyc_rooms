@@ -33,7 +33,7 @@ if(isset($_POST['reset_pass_Sbumit'])){
                       $userrole      =  array_keys($checkuserrole);
 	                  $user_role      =  $userrole[0];
 					  if($user_role == 'property_owner'){
-						  $redirect_to = get_site_url()."/signup/?action=reset_success";
+						  $redirect_to = get_site_url()."/login-register/?action=reset_success";
 						  wp_safe_redirect($redirect_to);
 						  exit();
 					  } else if($user_role == 'tenant'){
@@ -65,7 +65,7 @@ get_header();
 		   }
 		 }
    ?>
-  <form role="form" action="<?php echo "http://".$_SERVER["SERVER_NAME"].$_SERVER['REQUEST_URI']; ?>" method="post" >
+  <form role="form" action="<?php echo "https://".$_SERVER["SERVER_NAME"].$_SERVER['REQUEST_URI']; ?>" method="post" >
 			<div class="form-group input-group">
 				<span class="input-group-addon">New Password</span>
 				<input type="password" name="password" class="form-control" placeholder="Enter New Password" required />

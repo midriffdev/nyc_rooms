@@ -183,6 +183,16 @@ get_header();
 .tenant-questionary-cont{
   height: 120vh;
 }
+.tg-container.search_prop_tnt {
+    max-width: 100% !important;
+	display: block;
+}
 </style>
 <?php
 get_footer();
+?>
+<script>
+ jQuery(document).ready(function(){
+ jQuery('.page-id-72 .site-content .tg-container.tg-container--flex.tg-container--flex-space-between').addClass('search_prop_tnt');
+ });
+</script>
