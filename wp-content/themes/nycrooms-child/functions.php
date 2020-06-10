@@ -857,7 +857,6 @@ function get_lat_long($address){
     return $lat.','.$long;
 }
 
-//Create a custom post type leads
 add_action( 'init', 'nyc_create_custom_post_leads', 0 );
 function nyc_create_custom_post_leads() {
 	$labels = array(
