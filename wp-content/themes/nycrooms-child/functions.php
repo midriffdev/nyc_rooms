@@ -1013,4 +1013,5 @@ function nyc_get_properties_by_property_owner($id){
 	));
 	return $properties;
 }
+require_once( 'inc/init-function.php');
 ?>
