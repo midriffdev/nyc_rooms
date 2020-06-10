@@ -29,6 +29,7 @@ jQuery(document).ready(function($) {
 		var contact_name = jQuery('#contact_name').val();
 		var contact_email = jQuery('#contact_email').val();
 		var contact_phone = jQuery('#contact_phone').val();
+		var people_living_count = jQuery('#people_living_count').val();
 		if(title == ''){
 			jQuery('#title-err').html('<span class="error">Please enter title</span>');
 			is_error = true;		
@@ -113,6 +114,11 @@ jQuery(document).ready(function($) {
 			jQuery('#contact_email-err').html('<span class="error">Please enter contact email</span>');
 			is_error = true;		
 		}
+		
+		if(people_living_count == ''){
+			jQuery('#people_living_count-err').html('<span class="error">Please enter how people many living</span>');
+			is_error = true;		
+		}
 		if(is_error == false ){
 			var file_data = $('.dropzone')[0].dropzone.getAcceptedFiles();
 			var form_data = new FormData();	
@@ -138,6 +144,8 @@ jQuery(document).ready(function($) {
 			form_data.append("contact_name", contact_name);
 			form_data.append("contact_email", contact_email);
 			form_data.append("contact_phone", contact_phone);
+			form_data.append("people_living_count", people_living_count);
+			
 			var gallery_files=[];
 			for(var i = 0;i<file_data.length;i++){
 				form_data.append("file_"+i, file_data[i]);
@@ -154,7 +162,7 @@ jQuery(document).ready(function($) {
 				success: function(response) {
 				    if(response == "success"){
 						window.location.href = window.location.href + "?action=success";
-					}else{
+					} else {
 						window.location.href = window.location.href + "?action=false";
 					}
 				}

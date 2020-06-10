@@ -23,7 +23,7 @@
 								<li><a href="<?php echo get_site_url(); ?>/admin-recently-properties">Recently Submitted <span class="unapproved-listing-no"><?php echo nyc_get_recent_properties('draft')->post_count; ?></span></a></li>
 							</ul>
 						</li>
-						<li><a href="<?= home_url() ?>/add-property/"><i class="sl sl-icon-action-redo"></i> Submit New Property</a></li>
+						<li><a href="<?= home_url() ?>/add-property-admin/"><i class="sl sl-icon-action-redo"></i> Submit New Property</a></li>
 					</ul>
 
 					<ul class="my-account-nav">

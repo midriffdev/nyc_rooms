@@ -268,6 +268,7 @@ function nyc_add_property_ajax(){
 			add_post_meta($property_id, 'contact_email', $_POST['contact_email']);
 			add_post_meta($property_id, 'contact_phone', $_POST['contact_phone']);
 			add_post_meta($property_id, 'gallery_files', $_POST['gallery_files']);
+			add_post_meta($property_id, 'people_living_count', $_POST['people_living_count']);
 			if(isset($_FILES)){
 			  foreach($_FILES as $key=>$file){
 				  nyc_property_gallery_image_upload($key,$property_id);

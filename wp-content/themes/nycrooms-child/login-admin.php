@@ -1,20 +1,24 @@
 <?php
 /* Template Name: Admin Login */
 global $wpdb, $user_ID;
-$errors = array(); 
+$errors = array();
+$loginerror = ''; 
 if(is_user_logged_in()){
   header( 'Location:' . site_url() . '/admin-dashboard/');
 } 
-   
+
 if(isset($_POST['login'])){  
    
     global $wpdb;  
    
     //We shall SQL escape all inputs  
-    $username = $wpdb->escape($_REQUEST['username']);  
-    $password = $wpdb->escape($_REQUEST['password']);  
-    $remember = $wpdb->escape($_REQUEST['rememberme']);  
-   
+    $username = esc_sql($_REQUEST['username']);  
+    $password = esc_sql($_REQUEST['password']);
+	 $remember = '';
+     if(isset($_REQUEST['rememberme'])){
+       $remember = esc_sql($_REQUEST['rememberme']);  
+     }
+	 
     if($remember != '') $remember = "true";  
     else $remember = "false";  
    
