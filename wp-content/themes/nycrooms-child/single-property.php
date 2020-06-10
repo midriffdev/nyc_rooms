@@ -2,10 +2,6 @@
 /* Template Name: Single Property */
 get_header();
 $post_id = $_GET['property_id'];
-if(!is_user_logged_in()):
-	$_SESSION['action']['request'] = 'guest_checkout';
-	$_SESSION['action']['property_id'] = $post_id;
-endif;
 $address = get_post_meta($post_id, 'address',true)." ";
 $address .= get_post_meta($post_id, 'city',true)." ";
 $address .= get_post_meta($post_id, 'state',true).", ";
@@ -128,7 +124,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 				</div>
                  
 				<div class="checkoutproperty">
-				 <a href="<?= site_url() ?>/tenant-registration/" class="button checkout_property">Checkout Property</a>
+				 <a href="<?= site_url() ?>/tenant-registration/?request=guest_checkout&&property_id=<?= $post_id ?>" class="button checkout_property">Checkout Property</a>
 				</div>
 
 				<!-- Similar Listings Container -->
