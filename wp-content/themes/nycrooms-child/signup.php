@@ -9,7 +9,7 @@ if(is_user_logged_in()){
      if(isset($_REQUEST['register']) && $_SERVER['REQUEST_METHOD'] == "POST") 
       {  
          // Check username is present and not already in use  
-        $username = $wpdb->escape($_REQUEST['username']);  
+        $username = esc_sql($_REQUEST['username']);  
           
         if(empty($_REQUEST['username'])) 
         {   
@@ -23,7 +23,7 @@ if(is_user_logged_in()){
         }  
    
         // Check email address is present and valid  
-        $email = $wpdb->escape($_REQUEST['email']); 
+        $email = esc_sql($_REQUEST['email']); 
 		if(empty($_REQUEST['email'])) 
         {   
             $errors['email'] = "Please enter a email";  
@@ -87,17 +87,21 @@ if(is_user_logged_in()){
     }
 	
 	if(isset($_POST['login'])){  
-   
-    global $wpdb;  
-   
+	
     //We shall SQL escape all inputs  
-    $username = $wpdb->escape($_REQUEST['username']);  
-    $password = $wpdb->escape($_REQUEST['password']);  
-    $remember = $wpdb->escape($_REQUEST['rememberme']);  
-   
-    if($remember != '') $remember = "true";  
-    else $remember = "false";  
-   
+    $username = esc_sql($_REQUEST['username']);  
+    $password = esc_sql($_REQUEST['password']); 
+	
+	$remember = '';
+	if(isset($_REQUEST['rememberme'])){
+       $remember = esc_sql($_REQUEST['rememberme']);
+	}
+	
+	if($remember != ''){
+	  $remember = "true";  
+	} else {
+      $remember = "false"; 
+    }
     $login_data = array();  
     $login_data['user_login'] = $username;  
     $login_data['user_password'] = $password;  
@@ -306,7 +310,7 @@ get_header();
 
 			<!-- Login -->
 			<div class="tab-content" id="tab1" style="display: none;">
-			     <label class="form_errors" align="center"><?php echo $loginerror; ?></label>
+			     <label class="form_errors" align="center"><?php if(isset($loginerror)){echo $loginerror;} ?></label>
 				 <?php if(isset($_GET['action']) && $_GET['action'] == "reset_success") {?>
 				      <label class="reset_success" align="center"><?php echo "Your New Password has been reset successfully.You can Login now with new credentials sent to your e-mail"; ?></label>
 				 <?php } ?>
