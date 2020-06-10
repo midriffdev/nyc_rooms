@@ -857,19 +857,6 @@ function get_lat_long($address){
     return $lat.','.$long;
 }
 
-add_action('init', 'start_session', 1);
-function start_session() {
-if(!session_id()) {
-session_start();
-}
-}
-
-add_action('end_session_action','end_session');
-function end_session() {
- session_destroy();
-}
-
-
 //Create a custom post type leads
 add_action( 'init', 'nyc_create_custom_post_leads', 0 );
 function nyc_create_custom_post_leads() {
