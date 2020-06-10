@@ -33,8 +33,6 @@ function zakra_child_enqueue_styles() {
 }
 add_action( 'wp_enqueue_scripts', 'zakra_child_enqueue_styles' );
 
-require_once( 'inc/init-function.php');
-
 function xx__update_custom_roles() {
        add_role( 'property_owner', 'Property Owner', array( 'read' => true, 'level_0' => true ) );
        add_role( 'sales_agent', 'Sales Agent', array( 'read' => true, 'level_0' => true ) );
@@ -1015,4 +1013,5 @@ function nyc_get_properties_by_property_owner($id){
 	));
 	return $properties;
 }
+require_once( 'inc/init-function.php');
 ?>
