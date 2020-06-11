@@ -553,7 +553,7 @@ get_header();
 							</div>
 
 							<div class="listing-img-content">
-								<span class="listing-compact-title"> <?= get_the_title() ?> <i> $<?= get_post_meta(get_the_ID(),'price',true) ?> / <?= get_post_meta(get_the_ID(),'payment_method',true)  ?></i></span>
+								<span class="listing-compact-title"> <?= get_the_title() ?> <i> $<?= get_post_meta(get_the_ID(),'price',true) ?> / Weekly</i></span>
 
 								<ul class="listing-hidden-content">
 									<li>Rooms <span><?= get_post_meta(get_the_ID(),'rooms',true) ?></span></li>

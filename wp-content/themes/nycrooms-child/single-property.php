@@ -28,7 +28,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 					</span>
 				</div>
 				<div class="property-pricing">
-					<div class="property-price">$<?php echo ($price) ? $price : 'N/A'; ?>/<?php echo ($payment_method) ? $payment_method : 'N/A'; ?></div>
+					<div class="property-price">$<?php echo ($price) ? $price : 'N/A'; ?>/<?php echo  'Weekly'; ?></div>
 				</div>
 			</div>
 		</div>

@@ -182,6 +182,20 @@ get_header();
 				</div>
 			</div>
 			<!-- Row / End -->
+			<div class="row with-forms">
+			   <div class="col-md-8">
+					<h5>How many people will living the property?</h5>
+					<select class="chosen-select-no-single" id="people_living_count" >
+						<option label="blank"></option>		
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="not sure">Not sure </option>
+					</select>
+					<span id="people_living_count-err"></span>
+				</div>
+			</div>
+			
 
 			<!-- Row -->
 			<div class="row with-forms">
@@ -202,11 +216,12 @@ get_header();
 
 		</div>
 		<!-- Section / End -->
+		
 
 		<!-- Section -->
 		<h3>Gallery</h3>
 		<div class="submit-section prop_gallery">
-			<form action="http://localhost/nycrooms/add-property/" class="dropzone" ></form>
+			<form action="<?= site_url() ?>/add-property/" class="dropzone" ></form>
 		</div>
 		<!-- Section / End -->
 

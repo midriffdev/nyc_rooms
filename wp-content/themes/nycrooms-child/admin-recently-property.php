@@ -26,19 +26,23 @@ get_header();
 					<th></th>
 				</tr>
 				<?php 
-$args = wp_get_recent_posts( array(
-	'numberposts'      => 10,
-	'orderby'          => 'post_date',
-	'order'            => 'DESC',
-	'post_type'        => 'property',
-	'post_status'      => 'draft'
-) );
-$properties = new WP_Query( $args );
-if ( $properties->have_posts() ) {
+				
+$args = array(
+         'post_type'        => 'property',
+		 'post_status'       => 'available',
+         //'no_found_rows'    => true,
+         'suppress_filters' => false,
+		 'orderby'          => 'post_date',
+         'order'            => 'DESC',
+		 'numberposts'      => 20,
+        );
+$properties = wp_get_recent_posts( $args );
 
-						while ( $properties->have_posts() ) {
-							$properties->the_post();
-							$post_id = get_the_ID();
+//$properties = new WP_Query( $args );
+if ( !empty($properties) ) {
+
+						foreach ( $properties as $propertyall ) {
+							$post_id = $propertyall['ID'];
 							$address = get_post_meta($post_id, 'address',true)." ";
 							$address .= get_post_meta($post_id, 'city',true)." ";
 							$address .= get_post_meta($post_id, 'state',true).", ";
@@ -54,7 +58,7 @@ if ( $properties->have_posts() ) {
 					<td class="title-container">
 						<img src="<?php if($prop_image){ echo $prop_image; } ?>"alt="">
 						<div class="title">
-							<h4><a href="<?php echo get_the_guid(); ?>"><?php echo get_the_title(); ?></a></h4>
+							<h4><a href="<?php echo site_url().'/single-property/?property_id='.$post_id; ?>"><?php echo get_the_title($post_id); ?></a></h4>
 							<span><?php echo $address;?> </span>
 							<span class="table-property-price"><?php echo $price;?></span> <span class="rented--property recently_prop">Recently</span>
 						</div>
@@ -64,7 +68,7 @@ if ( $properties->have_posts() ) {
 					</td>
 					<td class="action">
 						<a href="#"><i class="fa fa-eye"></i> View</a>
-						<a href="<?php echo get_site_url();?>/edit-property/?pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
+						<a href="<?php echo site_url();?>/edit-property/?pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
 						<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>
 						<a href="#" class="delete delete-property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 					</td>
@@ -72,7 +76,7 @@ if ( $properties->have_posts() ) {
 				</tr>
 <?php 
 						}
-					}
+}
 					else{
 					    echo "<tr class='nyc-no-properties'><td>No Properties Found !</td></tr>";
 					}
