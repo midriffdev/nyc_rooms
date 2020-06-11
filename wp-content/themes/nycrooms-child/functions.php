@@ -258,6 +258,7 @@ function nyc_add_property_ajax(){
 			add_post_meta($property_id, 'relationship', $_POST['relationship']);
 			add_post_meta($property_id, 'couple_price', $_POST['couple_price']);
 			add_post_meta($property_id, 'payment_method', $_POST['payment_method']);
+			add_post_meta($property_id, 'noOfAllowed', $_POST['noOfAllowed']);
 			add_post_meta($property_id, 'address', $_POST['address']);
 			add_post_meta($property_id, 'city', $_POST['city']);
 			add_post_meta($property_id, 'state', $_POST['state']);
