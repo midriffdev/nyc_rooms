@@ -194,26 +194,7 @@ get_header();
 					</select>
 					<span id="people_living_count-err"></span>
 				</div>
-			</div>
-			
-
-			<!-- Row -->
-			<div class="row with-forms">
-
-				<div class="col-md-4">
-					<h5>No of Allowed</h5>
-					<select class="chosen-select-no-single" id="noOfAllowed">
-						<option label="blank"></option>	
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="3+">More then 3</option>
-					</select>
-					<span id="noOfAllowed-err"></span>
-				</div>
-			</div>
-			<!-- Row / End -->
-
+			</div>			
 		</div>
 		<!-- Section / End -->
 		

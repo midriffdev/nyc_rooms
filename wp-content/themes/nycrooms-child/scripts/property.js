@@ -16,7 +16,6 @@ jQuery(document).ready(function($) {
 		var relationship = jQuery('#prop_relationship').val();
 		var couple_price = jQuery('#prop_couple_price').val();
 		var payment_method = jQuery('#prop_payment_method').val();
-		var noOfAllowed = jQuery('#noOfAllowed').val();
 		var address = jQuery('#prop_address').val();
 		var city = jQuery('#prop_city').val();
 		var state = jQuery('#prop_state').val();
@@ -82,11 +81,7 @@ jQuery(document).ready(function($) {
 		if(payment_method == ''){
 			jQuery('#payment_method-err').html('<span class="error">Please select payment method</span>');
 			is_error = true;		
-		}		
-		if(noOfAllowed == ''){
-			jQuery('#noOfAllowed-err').html('<span class="error">Please select no of alloed</span>');
-			is_error = true;		
-		}		
+		}	
 		if(address == ''){
 			jQuery('#address-err').html('<span class="error">Please enter address</span>');
 			is_error = true;		
@@ -139,7 +134,6 @@ jQuery(document).ready(function($) {
 			form_data.append("relationship", relationship);
 			form_data.append("couple_price", couple_price);
 			form_data.append("payment_method", payment_method);
-			form_data.append("noOfAllowed", noOfAllowed);
 			form_data.append("address", address);
 			form_data.append("city", city);
 			form_data.append("state", state);
