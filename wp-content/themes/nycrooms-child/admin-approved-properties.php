@@ -73,7 +73,7 @@ if ( $properties->have_posts() ) {
 						<div class="title">
 							<h4><a href="<?php echo site_url().'/single-property/?property_id='.$post_id; ?>"><?php echo get_the_title($post_id); ?></a></h4>
 							<span><?php echo $address;?> </span>
-							<span class="table-property-price"><?php echo $price . '/Week';?></span> <span class="rented--property recently_prop">Recently</span>
+							<span class="table-property-price"><?php echo $price . '$ / Week';?></span> <span class="rented--property recently_prop">Recently</span>
 						</div>
 					</td>
 					<td>

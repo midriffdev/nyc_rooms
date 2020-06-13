@@ -295,7 +295,7 @@ get_header();
 						<div class="title">
 							<h4><a href="<?php echo get_the_guid(); ?>"><?php echo get_the_title(); ?></a></h4>
 							<span><?php echo $address;?> </span>
-							<span class="table-property-price"><?php echo $price . '/Week' ;?></span> <span class="active--property"><?php echo $status ;?></span>
+							<span class="table-property-price"><?php echo $price.'$ / Week' ;?></span> <span class="active--property"><?php echo $status ;?></span>
 						</div>
 					</td>
 					<td>
