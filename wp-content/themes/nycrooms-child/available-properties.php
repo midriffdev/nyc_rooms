@@ -257,7 +257,9 @@ get_header();
 						</div>
 					</form>
 				</div>
-
+                 <div class="col-md-12">
+					 <p class="showing-results"><?= $properties->found_posts; ?> Results Found On Page <?php echo $paged ;?> of <?php echo $properties->max_num_pages;?> </p>
+				 </div>
 
 				<table class="manage-table responsive-table all_properties_table">
 				<tbody>

@@ -1117,14 +1117,12 @@ function nyc_get_properties_admin_by_status($status){
 	));
 	return $properties;
 }
-function nyc_get_recent_properties($status){
-$args = wp_get_recent_posts( array(
-	'numberposts'      => 10,
-	'post_type'        => 'property',
-	'orderby'          => 'post_date',
-	'order'            => 'DESC',
-	'post_status'      => $status,
-) );
+function nyc_get_recent_properties(){
+$args =  array(
+					'numberposts'      => 20,
+					'post_type'        => 'property',
+					'post_status'      => 'draft',
+         );
 $properties = new WP_Query( $args );
 return $properties;
 }
