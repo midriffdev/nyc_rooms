@@ -302,7 +302,7 @@ function nyc_update_property_ajax(){
 			'post_title' 	=> $_POST['title'],
 			'post_content' 	=> $_POST['desc'],
 			'post_author' 	=> $_POST['post_author'],
-			'post_status' 	=> $_POST['property_id'],
+			'post_status' 	=> $_POST['post_status'],
 		));
 		if ($property_id) {
 			wp_set_post_terms($property_id, $_POST['type'], 'types' );
