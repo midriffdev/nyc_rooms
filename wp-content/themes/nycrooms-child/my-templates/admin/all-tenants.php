@@ -21,13 +21,6 @@ $countargs= array(
         'user_email',
         'display_name',
     ),
-	'meta_query' => array(
-		array(    
-			'key'   => 'user_phone',
-			'value' => $searchphone,
-			'compare' => 'REGEXP'
-		)
-	),
 	'order_by'=>'registered',
 	'order'=>'DESC',
 );
@@ -42,13 +35,6 @@ $args= array(
         'user_email',
         'display_name',
     ),
-	'meta_query' => array(
-		array(    
-			'key'   => 'user_phone',
-			'value' => $searchphone,
-			'compare' => 'REGEXP'
-		)
-	),
 	'order_by'=>'registered',
 	'order'=>'DESC',
 );
