@@ -3,6 +3,21 @@
 Template Name: Recently Properties
 */
 nyc_property_admin_authority();
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$args = array(
+         'post_type'        => 'property',
+		 'post_status'       => array('draft', 'available', 'rented'),
+         //'no_found_rows'    => true,
+         'suppress_filters' => false,
+		 'orderby'          => 'post_date',
+         'order'            => 'DESC',
+		 'numberposts'      => 20,
+		 'posts_per_page'   => 6,
+		 'paged' => $paged
+		 
+		 
+        );
+$properties = new WP_Query( $args );
 get_header();
 ?>
 <!-- Wrapper -->
@@ -17,9 +32,10 @@ get_header();
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
 
-				<table class="manage-table responsive-table">
+				<table class="manage-table responsive-table all_properties_table">
 				<tbody>
 				<tr>
+				    <th><input type="checkbox" class="checkallproperties"></th>
 					<th><i class="fa fa-file-text"></i> Property</th>
 					<th><i class="fa fa-user"></i> Owner</th>
 					<th><i class="fa fa-hand-pointer-o"></i> Action</th>
@@ -27,22 +43,14 @@ get_header();
 				</tr>
 				<?php 
 				
-$args = array(
-         'post_type'        => 'property',
-		 'post_status'       => 'available',
-         //'no_found_rows'    => true,
-         'suppress_filters' => false,
-		 'orderby'          => 'post_date',
-         'order'            => 'DESC',
-		 'numberposts'      => 20,
-        );
-$properties = wp_get_recent_posts( $args );
+
 
 //$properties = new WP_Query( $args );
-if ( !empty($properties) ) {
+if ( $properties->have_posts() ) {
 
-						foreach ( $properties as $propertyall ) {
-							$post_id = $propertyall['ID'];
+						while ( $properties->have_posts() ) {
+						    $properties->the_post();
+							$post_id = get_the_ID();
 							$address = get_post_meta($post_id, 'address',true)." ";
 							$address .= get_post_meta($post_id, 'city',true)." ";
 							$address .= get_post_meta($post_id, 'state',true).", ";
@@ -55,6 +63,7 @@ if ( !empty($properties) ) {
 				?>
 				<!-- Item #1 -->
 				<tr>
+				    <td><input type="checkbox" class="checkproperties" value="<?= $post_id ?>"></td>
 					<td class="title-container">
 						<img src="<?php if($prop_image){ echo $prop_image; } ?>"alt="">
 						<div class="title">
@@ -68,9 +77,8 @@ if ( !empty($properties) ) {
 					</td>
 					<td class="action">
 						<a href="#"><i class="fa fa-eye"></i> View</a>
-						<a href="<?php echo site_url();?>/edit-property/?pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
-						<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>
-						<a href="#" class="delete delete-property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
+						<a href="<?php echo site_url();?>/edit-property-admin/?pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
+						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 					</td>
 					<td class="recently-approved-btn"><button>Approve</button></td>
 				</tr>
@@ -94,19 +102,27 @@ if ( !empty($properties) ) {
 						<div class="clearfix"></div>
 						<div class="pagination-container margin-top-10 margin-bottom-45">
 							<nav class="pagination">
-								<ul>
-									<li><a href="#" class="current-page">1</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li class="blank">...</li>
-									<li><a href="#">22</a></li>
-								</ul>
+								<?php 
+									echo paginate_links( array(
+											'base'         => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
+											'total'        => $properties->max_num_pages,
+											'current'      => max( 1, get_query_var( 'paged' ) ),
+											'format'       => '?paged=%#%',
+											'show_all'     => false,
+											'type'         => 'list',
+											'end_size'     => 2,
+											'mid_size'     => 1,
+											'prev_next'    => false,
+											'add_args'     => false,
+											'add_fragment' => '',
+										) );
+                              ?>
 							</nav>
 
 							<nav class="pagination-next-prev">
 								<ul>
-									<li><a href="#" class="prev"><?php previous_posts_link("Geri"); ?></a></li>
-									<li><a href="#" class="next"><?php next_posts_link("İleri"); ?></a></li>
+									<li class="prev"><?php previous_posts_link( 'Previous',$properties->max_num_pages ); ?></li>
+									<li class="next"><?php next_posts_link( 'Next', $properties->max_num_pages);  ?></li>
 								</ul>
 							</nav>
 						</div>
@@ -114,6 +130,18 @@ if ( !empty($properties) ) {
 					</div>
 				</div>
 				<!-- Pagination Container / End -->
+				
+				<div>
+			        <label>Select bulk action</label>
+                  <div class="bulk_actions_properties">
+						<select class="select_action_properties">
+						 <option value="-1">Bulk Actions</option>
+						 <option value="delete">Delete</option>
+						</select>
+                    <input type="button" value="Apply" class="apply_action_properties">
+                 </div>
+                </div>
+				
 
 			</div>
 		</div>
@@ -126,9 +154,62 @@ if ( !empty($properties) ) {
 <!-- Back To Top Button -->
 <div id="backtotop"><a href="#"></a></div>
 
+
 </div>
 <!-- Wrapper / End -->
 
+<!-- Modal -->
+  <div class="modal fade" id="Modaldelete" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Properties Deleted Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+<style>
+.pagination-next-prev ul li.prev a {
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+.pagination-next-prev ul li.next a {
+    right: 0;
+    position: absolute;
+    top: 0;
+}
+
+.pagination ul span.page-numbers.current {
+    background: #274abb;
+    color: #fff;
+    padding: 8px 0;
+    width: 42px;
+    display: inline-block;
+    border-radius: 3px;
+}
+.bulk_actions_properties {
+    display: flex;
+}
+select.select_action_properties {
+    width: 30%;
+}
+input.apply_action_properties {
+    width: 30%;
+    margin-left: 5%;
+    padding: 0;
+}
+</style>
 <?php 
 get_footer();
 ?>

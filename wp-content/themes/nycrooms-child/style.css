@@ -14078,12 +14078,19 @@ input[type=submit] {padding: 1px 21px;}.btn-default {color: #333;background-colo
 /*****header(end)******/
 table.all_agents_table th:first-child{width:10% !important;}
 table.all_leads_table th:first-child{width:10% !important;}
+table.all_properties_table th:first-child{width:10% !important;}
+
+
 
 input.checkallagents {height: 18px;}
 input.checkagent {height: 18px;margin: 0 13px !important;}
 
 input.checkallleads {height: 18px;}
 input.checkleads {height: 18px;margin: 0 13px !important;}
+
+input.checkallproperties {height: 18px;}
+input.checkproperties {height: 18px;margin: 0 13px !important;}
+
 
 table.manage-table .title-container{padding: 50px 20px;}
 table.manage-table th {padding: 20px 0 !important;text-align: center;}

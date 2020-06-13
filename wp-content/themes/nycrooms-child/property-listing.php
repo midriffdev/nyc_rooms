@@ -3,14 +3,17 @@
 
 $argarray = array();
 if(isset($_GET['submit'])){
-
+$cityname = '';
 if(isset($_GET['city_other']) && !empty($_GET['city_other'])){
 	    $cityname = $_GET['city_other'];
-	} else {
-	    $cityname = $_GET['city_name'];
-	}
+} else {
+	     if(isset($_GET['city_name'])){    
+	        $cityname = $_GET['city_name'];
+		 }
+		
+}
  
- if($_GET['gender'] != 'other'){
+ if(isset($_GET['gender']) && $_GET['gender'] != 'other'){
  
        $argarray =  array(
         //comparison between the inner meta fields conditionals
@@ -64,7 +67,7 @@ if(isset($_GET['city_other']) && !empty($_GET['city_other'])){
 								),
 								array(
 									'key'          => 'accomodation',
-									'value'        => $_GET['property_type'] ,
+									'value'        => isset($_GET['property_type']) ? $_GET['property_type'] : '' ,
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',

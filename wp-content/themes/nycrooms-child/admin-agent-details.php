@@ -1,7 +1,8 @@
 <?php
 /* Template Name: Admin Agent Details */
 $getuser = get_user_by('id',$_GET['agentid']);
-
+$usererror = '';
+$usersuccess = '';
 if(isset($_POST['add_agent'])){
 
 	  

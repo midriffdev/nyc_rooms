@@ -292,6 +292,97 @@ function nyc_add_property_ajax(){
 add_action( 'wp_ajax_nyc_add_property_ajax', 'nyc_add_property_ajax' );
 add_action( 'wp_ajax_nopriv_nyc_add_property_ajax', 'nyc_add_property_ajax' );
 
+
+function nyc_update_property_ajax(){
+	if(isset($_POST['action']) && $_POST['action'] == 'nyc_update_property_ajax'){
+			
+	     $property_id = wp_update_post(array (
+			'ID'		=> $_POST['property_id'],
+			'post_title' 	=> $_POST['title'],
+			'post_content' 	=> $_POST['desc'],
+			'post_author' 	=> $_POST['post_author'],
+			'post_status' 	=> $_POST['property_id'],
+		));
+		if ($property_id) {
+			wp_set_post_terms($property_id, $_POST['type'], 'types' );
+			update_post_meta($property_id, 'status', $_POST['status']);
+			update_post_meta($property_id, 'price', $_POST['price']);
+			update_post_meta($property_id, 'accomodation', $_POST['accomodation']);
+			update_post_meta($property_id, 'rooms', $_POST['rooms']);
+			update_post_meta($property_id, 'hear', $_POST['hear']);
+			update_post_meta($property_id, 'gender', $_POST['gender']);
+			update_post_meta($property_id, 'rm_lang', $_POST['rm_lang']);
+			update_post_meta($property_id, 'relationship', $_POST['relationship']);
+			update_post_meta($property_id, 'couple_price', $_POST['couple_price']);
+			update_post_meta($property_id, 'payment_method', $_POST['payment_method']);
+			update_post_meta($property_id, 'address', $_POST['address']);
+			update_post_meta($property_id, 'city', $_POST['city']);
+			update_post_meta($property_id, 'state', $_POST['state']);
+			update_post_meta($property_id, 'zip', $_POST['zip']);
+			update_post_meta($property_id, 'agent', $_POST['agent']);
+			update_post_meta($property_id, 'amenities', $_POST['amenities']);
+			update_post_meta($property_id, 'contact_name', $_POST['contact_name']);
+			update_post_meta($property_id, 'contact_email', $_POST['contact_email']);
+			update_post_meta($property_id, 'contact_phone', $_POST['contact_phone']);
+			update_post_meta($property_id, 'gallery_files', $_POST['gallery_files']);
+			update_post_meta($property_id, 'people_living_count', $_POST['people_living_count']);
+			if(isset($_FILES)){
+			  foreach($_FILES as $key=>$file){
+				  nyc_property_gallery_image_upload($key,$property_id);
+			  }
+			}
+			echo 'success';
+		}else{
+		    echo 'false';
+		}
+	}else{
+	    echo 'false';
+	}
+	exit;
+}
+add_action( 'wp_ajax_nyc_update_property_ajax', 'nyc_update_property_ajax' );
+add_action( 'wp_ajax_nopriv_nyc_update_property_ajax', 'nyc_update_property_ajax' );
+
+
+
+
+
+add_action( 'wp_ajax_nyc_get_existing_file_ajax', 'nyc_get_existing_file_ajax' );
+add_action( 'wp_ajax_nopriv_nyc_get_existing_file_ajax', 'nyc_get_existing_file_ajax' );
+
+function nyc_get_existing_file_ajax(){
+          $gallery_files_ids   = explode(',',get_post_meta($_POST['property_id'],'gallery_files',true)); 
+		  $arrayfiles = array();
+		    foreach($gallery_files_ids as $gallery_files){
+			   $ids = get_post_meta($_POST['property_id'],$gallery_files,true);
+			   $filename = basename(get_attached_file($ids));
+			   $arrayfiles[] = $filename;
+			   
+			}
+
+			 $file_list = array();
+			 $uploaddir = wp_upload_dir();
+
+			  $dir       =  $uploaddir['path'].'/';
+			  $pathurl   =  $uploaddir['url'].'/';
+			 
+			 
+			  foreach($arrayfiles as $file){
+			 // File path
+                $file_path = $dir.$file;
+				$file_pathurl  = $pathurl.$file;
+				if(!is_dir($file_path)){
+                   $size = filesize($file_path);
+                   $file_list[] = array('name'=>$file,'size'=>$size,'path'=>$file_path);
+				}
+            }
+           echo json_encode($file_list);  
+				
+  exit; 
+}
+
+
+
 function nyc_delete_property_ajax(){
 	if(isset($_POST['action']) && $_POST['action'] == 'nyc_delete_property_ajax'){
 	   $post=wp_delete_post($_POST['property_id'],true);
@@ -319,13 +410,14 @@ function nyc_property_gallery_image_upload($file_name,$post_id){
 	   require_once(ABSPATH . 'wp-admin/includes/image.php');
 	   $attach_data = wp_generate_attachment_metadata($attach_id, $uploadfile);
 	   $update = wp_update_attachment_metadata($attach_id, $attach_data); // Updated the image details
-	   add_post_meta($post_id, $file_name, $attach_id);
+	   update_post_meta($post_id, $file_name, $attach_id);
 }
 
 function nyc_property_profile_image_upload($FILES,$userid){
 		$uploaddir = wp_upload_dir();
 		$tmp_file = $FILES['agent_profile_picture']["tmp_name"];
 		$uploadfile = $uploaddir['path'] . '/' . $FILES['agent_profile_picture']['name'];
+		
 		move_uploaded_file($tmp_file, $uploadfile);
 		$wp_filetype = wp_check_filetype(basename($uploadfile), null);
 		$attachment = array(
@@ -779,6 +871,20 @@ function delete_multiple_leads() {
 	wp_die();
 }
 
+add_action( 'wp_ajax_nopriv_delete_multiple_properties', 'delete_multiple_properties' );
+add_action( 'wp_ajax_delete_multiple_properties', 'delete_multiple_properties' );
+function delete_multiple_properties() {
+	global $wpdb;
+	foreach($_POST['data'] as $ids){
+	  wp_trash_post($ids);
+	}
+	echo "true";
+	wp_die();
+}
+
+
+
+
 
 
 add_action( 'wp_ajax_nopriv_active_multiple_agents', 'active_multiple_agents' );
@@ -1014,5 +1120,19 @@ function nyc_get_properties_by_property_owner($id){
 	));
 	return $properties;
 }
+
+add_filter( 'posts_where', 'nyc_get_properties_by_title', 10, 2 );
+function nyc_get_properties_by_title( $where, $wp_query )
+{
+    global $wpdb;
+    if ( $wpse18703_title = $wp_query->get( '_meta_or_title' ) ) {
+        $where .= ' AND ' . $wpdb->posts . '.post_title LIKE \'' . esc_sql( $wpdb->esc_like( $wpse18703_title ) ) . '%\'';
+    }
+    return $where;
+}
+
+
+
+
 require_once( 'inc/init-function.php');
 ?>

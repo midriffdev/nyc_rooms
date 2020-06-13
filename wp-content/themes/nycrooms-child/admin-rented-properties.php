@@ -3,9 +3,120 @@
 Template Name: Rent Properties
 */
 nyc_property_admin_authority();
+$argarray = array();
+if(isset($_GET['update_search'])){
+
+    $argarray =  array(
+        //comparison between the inner meta fields conditionals
+        'relation'    => 'AND',
+        //meta field condition one
+		array(
+            'key'          => 'accomodation',
+            'value'        => $_GET['property_type'],
+            'compare'      => 'LIKE',	
+        ),
+        //meta field condition one
+        array(
+            'key'          => 'rooms',
+            'value'        => $_GET['rooms'],
+            //I think you really want != instead of NOT LIKE, fix me if I'm wrong
+            //'compare'      => 'NOT LIKE',
+            'compare'      => 'LIKE',
+        )
+		
+	);
+	
+	
+	if(!empty($_GET['min-price-input']) && empty($_GET['max-price-input']) ){
+     $argarray[] =  array(
+            'key'          => 'price',
+            'value'        => str_replace(' ', '', $_GET['min-price-input']),
+            //I think you really want != instead of NOT LIKE, fix me if I'm wrong
+            //'compare'      => 'NOT LIKE',
+            'compare'      => '<=',
+			'type'          => 'NUMERIC'
+                   );
+	}
+	
+	if(empty($_GET['min-price-input']) && !empty($_GET['max-price-input']) ){
+     $argarray[] =  array(
+            'key'          => 'price',
+            'value'        => str_replace(' ', '', $_GET['max-price-input']),
+            //I think you really want != instead of NOT LIKE, fix me if I'm wrong
+            //'compare'      => 'NOT LIKE',
+            'compare'      => '<=',
+			'type'          => 'NUMERIC'
+                   );
+	}
+	
+	if(!empty($_GET['min-price-input']) && !empty($_GET['max-price-input']) ){
+     $argarray[] =  array(
+							'key'          => 'price',
+							'value'        => str_replace(' ', '', $_GET['min-price-input']),
+							//I think you really want != instead of NOT LIKE, fix me if I'm wrong
+							//'compare'      => 'NOT LIKE',
+							'compare'      => '>=',
+							'type'          => 'NUMERIC'
+                   );
+	
+    $argarray[] =  array(
+					'key'          => 'price',
+					'value'        => str_replace(' ', '', $_GET['max-price-input']),
+					//I think you really want != instead of NOT LIKE, fix me if I'm wrong
+					//'compare'      => 'NOT LIKE',
+					'compare'      => '<=',
+					'type'          => 'NUMERIC'
+                   );	
+				   
+	}
+		
+		
+	
+
+}
+
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+$args = array(
+'post_type'=> 'property',
+'post_status' => array( 'rented'),
+'posts_per_page'   => 6,
+         //'no_found_rows'    => true,
+'suppress_filters' => false,
+'paged' => $paged
+);
+
+if(isset($_GET['Property_name']) && !empty($_GET['Property_name'])){
+   
+   $args['_meta_or_title'] = $_GET['Property_name'];
+
+}
+
+
+ if(isset($_GET['furnish_unfurnish_type']) && !empty($_GET['furnish_unfurnish_type'])){
+
+   
+			  $args['tax_query'] = array(
+												array(
+													'taxonomy' => 'types',
+													'field' => 'slug',
+													'terms' => $_GET['furnish_unfurnish_type'],
+												)
+								   );
+						  
+	   
+	   
+						   
+}
+
+if(!empty($argarray)){
+   $args['meta_query'] = $argarray;
+} 
+
+$properties = new WP_Query( $args );
+
 get_header();
 ?>
-
 
 <!-- Wrapper -->
 <div id="wrapper" class="dashbaord__wrapper">
@@ -15,154 +126,150 @@ get_header();
 <div class="container">
 	<div class="row">
 <?php include(locate_template('sidebar/admin-sidebar.php')); ?>
-
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
 
 				<div class="admin-advanced-searchfilter">
 					<h2>Advanced filter</h2>
-					<form>
-					<div class="row with-forms">
-						<!-- Form -->
-						<div class="main-search-box no-shadow">
+					<form method="get" id="advance-search">
+						<div class="row with-forms">
+							<!-- Form -->
+							<div class="main-search-box no-shadow">
 
-							<!-- Row With Forms -->
-							<div class="row with-forms">
-								<!-- Main Search Input -->
-								<div class="col-md-12">
-									<input type="text" placeholder="Enter Property Name" value=""/>
+								<!-- Row With Forms -->
+								<div class="row with-forms">
+									<!-- Main Search Input -->
+									<div class="col-md-12">
+										<input type="text" placeholder="Enter Property Name" value="" name="Property_name"/>
+									</div>
 								</div>
-							</div>
-							<!-- Row With Forms / End -->
+								<!-- Row With Forms / End -->
 
-							<!-- Row With Forms -->
-							<div class="row with-forms">
-								<div class="col-md-6">
-									<select data-placeholder="Any Type" class="chosen-select-no-single" >
-										<option>Any Type</option>	
-										<option>Furnished</option>
-										<option>Unfurnished</option>
-									</select>
-								</div>
-								<div class="col-md-6">
-									<select data-placeholder="Any Status" class="chosen-select-no-single" >
-										<option>Type of Accomodation</option>	
-										<option>Apartment</option>
-										<option>Room</option>
-									</select>
-								</div>
-							</div>
-							<!-- Row With Forms / End -->	
-							
-
-							<!-- Row With Forms -->
-							<div class="row with-forms">
-
-								<div class="col-md-4">
-									<select data-placeholder="Any Status" class="chosen-select-no-single" >
-										<option>Rooms</option>	
-										<option>1</option>
-										<option>2</option>
-										<option>3</option>
-										<option>4</option>
-										<option>5</option>
-										<option>More than 5</option>
-									</select>
-								</div>
-								<div class="col-md-4">
-									<!-- Select Input -->
-									<div class="select-input disabled-first-option">
-										<input type="text" placeholder="Min Price" data-unit="USD">
-										<select>		
-											<option>Min Price</option>
-											<option>1 000</option>
-											<option>2 000</option>	
-											<option>3 000</option>	
-											<option>4 000</option>	
-											<option>5 000</option>	
-											<option>10 000</option>	
-											<option>15 000</option>	
-											<option>20 000</option>	
-											<option>30 000</option>
-											<option>40 000</option>
-											<option>50 000</option>
-											<option>60 000</option>
-											<option>70 000</option>
-											<option>80 000</option>
-											<option>90 000</option>
-											<option>100 000</option>
-											<option>110 000</option>
-											<option>120 000</option>
-											<option>130 000</option>
-											<option>140 000</option>
-											<option>150 000</option>
+								<!-- Row With Forms -->
+								<div class="row with-forms">
+									<div class="col-md-6">
+										<select data-placeholder="Any Type" class="chosen-select-no-single" name="furnish_unfurnish_type">
+											<option value="">Any Type</option>	
+											<option value="furnished">Furnished</option>
+											<option value="unfurnished">Unfurnished</option>
 										</select>
 									</div>
-									<!-- Select Input / End -->
-								</div>
-								<div class="col-md-4">
-									<!-- Select Input -->
-									<div class="select-input disabled-first-option">
-										<input type="text" placeholder="Max Price" data-unit="USD">
-										<select>		
-											<option>Max Price</option>
-											<option>1 000</option>
-											<option>2 000</option>	
-											<option>3 000</option>	
-											<option>4 000</option>	
-											<option>5 000</option>	
-											<option>10 000</option>	
-											<option>15 000</option>	
-											<option>20 000</option>	
-											<option>30 000</option>
-											<option>40 000</option>
-											<option>50 000</option>
-											<option>60 000</option>
-											<option>70 000</option>
-											<option>80 000</option>
-											<option>90 000</option>
-											<option>100 000</option>
-											<option>110 000</option>
-											<option>120 000</option>
-											<option>130 000</option>
-											<option>140 000</option>
-											<option>150 000</option>
+									<div class="col-md-6">
+										<select data-placeholder="Any Status" class="chosen-select-no-single" name="property_type" >
+											<option value="">Type of Accomodation</option>	
+											<option value="apartment">Apartment</option>
+											<option value="room">Room</option>
 										</select>
 									</div>
-									<!-- Select Input / End -->
+								</div>
+								<!-- Row With Forms / End -->	
+								
+
+								<!-- Row With Forms -->
+								<div class="row with-forms">
+
+									<div class="col-md-4">
+										<select data-placeholder="Any Status" class="chosen-select-no-single" name="rooms">
+											<option value="">Rooms</option>	
+											<option value="1" >1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="more than 5">More than 5</option>
+										</select>
+									</div>
+									<div class="col-md-4">
+										<!-- Select Input -->
+										<div class="select-input disabled-first-option">
+											<input type="text" placeholder="Min Price" data-unit="USD" name="min-price-input">
+											<select name="min-price">		
+												<option value="">Min Price</option>
+												<option value="1000">1 000</option>
+												<option value="2000">2 000</option>	
+												<option value="3000">3 000</option>	
+												<option value="4000">4 000</option>	
+												<option value="5000">5 000</option>	
+												<option value="10000">10 000</option>	
+												<option value="15000">15 000</option>	
+												<option value="20000">20 000</option>	
+												<option value="30000">30 000</option>
+												<option value="40000">40 000</option>
+												<option value="50000">50 000</option>
+												<option value="60000">60 000</option>
+												<option value="70000">70 000</option>
+												<option value="80000">80 000</option>
+												<option value="90000">90 000</option>
+												<option value="100000">100 000</option>
+												<option value="110000">110 000</option>
+												<option value="120000">120 000</option>
+												<option value="130000">130 000</option>
+												<option value="140000">140 000</option>
+												<option value="150000">150 000</option>
+											</select>
+										</div>
+										<!-- Select Input / End -->
+									</div>
+									<div class="col-md-4">
+										<!-- Select Input -->
+										<div class="select-input disabled-first-option">
+											<input type="text" placeholder="Max Price" data-unit="USD" name="max-price-input">
+											<select name="max-price">		
+												<option value="">Max Price</option>
+												<option value="1000">1 000</option>
+												<option value="2000">2 000</option>	
+												<option value="3000">3 000</option>	
+												<option value="4000">4 000</option>	
+												<option value="5000">5 000</option>	
+												<option value="10000">10 000</option>	
+												<option value="15000">15 000</option>	
+												<option value="20000">20 000</option>	
+												<option value="30000">30 000</option>
+												<option value="40000">40 000</option>
+												<option value="50000">50 000</option>
+												<option value="60000">60 000</option>
+												<option value="70000">70 000</option>
+												<option value="80000">80 000</option>
+												<option value="90000">90 000</option>
+												<option value="100000">100 000</option>
+												<option value="110000">110 000</option>
+												<option value="120000">120 000</option>
+												<option value="130000">130 000</option>
+												<option value="140000">140 000</option>
+												<option value="150000">150 000</option>
+											</select>
+										</div>
+										<!-- Select Input / End -->
+									</div>
+
+								</div>
+								<!-- Row With Forms / End -->
+
+								<!-- Search Button -->
+								<div class="row with-forms">
+									<div class="col-md-12">
+										<button class="button fs-map-btn" name="update_search" type="submit">Search</button>
+									</div>
 								</div>
 
 							</div>
-							<!-- Row With Forms / End -->
-
-							<!-- Search Button -->
-							<div class="row with-forms">
-								<div class="col-md-12">
-									<button class="button fs-map-btn">Search</button>
-								</div>
-							</div>
-
+							<!-- Box / End -->
 						</div>
-						<!-- Box / End -->
-					</div>
 					</form>
 				</div>
 
-				<table class="manage-table responsive-table">
+
+				<table class="manage-table responsive-table all_properties_table">
 				<tbody>
 				<tr>
+				    <th><input type="checkbox" class="checkallproperties"></th>
 					<th><i class="fa fa-file-text"></i> Property</th>
 					<th><i class="fa fa-user"></i> Owner</th>
 					<th><i class="fa fa-hand-pointer-o"></i> Action</th>
 				</tr>
-				<?php
-$args = array(
-'post_type'=> 'property',
-'post_status' => array('rented') ,
 
-
-);
-$properties = new WP_Query( $args );
+				<!-- Item #1 --><?php
+					
 					if ( $properties->have_posts() ) {
 
 						while ( $properties->have_posts() ) {
@@ -178,23 +285,23 @@ $properties = new WP_Query( $args );
 							$contact_name = get_post_meta($post_id, 'contact_name',true);
 							$status = get_post_meta($post_id, 'status',true);
 				?>
-				<!-- Item #1 -->
+					
 				<tr>
+				    <td><input type="checkbox" class="checkproperties" value="<?= $post_id ?>"></td>
 					<td class="title-container">
 						<img src="<?php if($prop_image){ echo $prop_image; } ?>" alt="">
 						<div class="title">
 							<h4><a href="<?php echo get_the_guid(); ?>"><?php echo get_the_title(); ?></a></h4>
 							<span><?php echo $address;?> </span>
-							<span class="table-property-price"><?php echo $price;?></span> <span class="rented--property">Rented</span>
+							<span class="table-property-price"><?php echo $price ;?></span> <span class="active--property"><?php echo $status ;?></span>
 						</div>
 					</td>
 					<td>
-						<div class="owner--name"><a href="#"><?php echo $contact_name;?></a></div>
+						<div class="owner--name"><a href="#"><?php echo $contact_name ; ?></a></div>
 					</td>
 					<td class="action">
-						<a href="<?php echo get_site_url();?>/edit-property/?pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
-						<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>
-						<a href="#" class="delete delete-property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
+						<a href= "<?php echo site_url();?>/edit-property-admin/?pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
+						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 					</td>
 				</tr>
 <?php 
@@ -204,9 +311,7 @@ $properties = new WP_Query( $args );
 					    echo "<tr class='nyc-no-properties'><td>No Properties Found !</td></tr>";
 					}
 				?>
-			
-				
-				</tbody>
+			</tbody>
 				</table>
 
 				<!-- Pagination Container -->
@@ -217,19 +322,27 @@ $properties = new WP_Query( $args );
 						<div class="clearfix"></div>
 						<div class="pagination-container margin-top-10 margin-bottom-45">
 							<nav class="pagination">
-								<ul>
-									<li><a href="#" class="current-page">1</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li class="blank">...</li>
-									<li><a href="#">22</a></li>
-								</ul>
+								<?php 
+									echo paginate_links( array(
+											'base'         => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
+											'total'        => $properties->max_num_pages,
+											'current'      => max( 1, get_query_var( 'paged' ) ),
+											'format'       => '?paged=%#%',
+											'show_all'     => false,
+											'type'         => 'list',
+											'end_size'     => 2,
+											'mid_size'     => 1,
+											'prev_next'    => false,
+											'add_args'     => false,
+											'add_fragment' => '',
+										) );
+                              ?>
 							</nav>
 
 							<nav class="pagination-next-prev">
 								<ul>
-									<li><a href="#" class="prev">Previous</a></li>
-									<li><a href="#" class="next">Next</a></li>
+									<li class="prev"><?php previous_posts_link( 'Previous',$properties->max_num_pages ); ?></li>
+									<li class="next"><?php next_posts_link( 'Next', $properties->max_num_pages);  ?></li>
 								</ul>
 							</nav>
 						</div>
@@ -237,6 +350,18 @@ $properties = new WP_Query( $args );
 					</div>
 				</div>
 				<!-- Pagination Container / End -->
+				
+				<div>
+			        <label>Select bulk action</label>
+                  <div class="bulk_actions_properties">
+						<select class="select_action_properties">
+						 <option value="-1">Bulk Actions</option>
+						 <option value="delete">Delete</option>
+						</select>
+                    <input type="button" value="Apply" class="apply_action_properties">
+                 </div>
+                </div>
+				
 
 			</div>
 		</div>
@@ -249,9 +374,62 @@ $properties = new WP_Query( $args );
 <!-- Back To Top Button -->
 <div id="backtotop"><a href="#"></a></div>
 
+<!-- Modal -->
+  <div class="modal fade" id="Modaldelete" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Properties Deleted Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+<style>
+.pagination-next-prev ul li.prev a {
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+.pagination-next-prev ul li.next a {
+    right: 0;
+    position: absolute;
+    top: 0;
+}
+
+.pagination ul span.page-numbers.current {
+    background: #274abb;
+    color: #fff;
+    padding: 8px 0;
+    width: 42px;
+    display: inline-block;
+    border-radius: 3px;
+}
+.bulk_actions_properties {
+    display: flex;
+}
+select.select_action_properties {
+    width: 30%;
+}
+input.apply_action_properties {
+    width: 30%;
+    margin-left: 5%;
+    padding: 0;
+}
+</style>
+
+
 </div>
 <!-- Wrapper / End -->
-
 <?php
 get_footer();
 ?>

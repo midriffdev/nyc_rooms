@@ -2,6 +2,88 @@
 /*
 Template Name: Owner Detail
 */
+$getuser = get_user_by('id',$_GET['uid']);
+$usererror = '';
+$usersuccess = '';
+if(isset($_POST['update_owner'])){
+
+		   if( $_POST['email'] != $getuser->user_email  ) {
+	     
+	    if(email_exists( $_POST['email'] )){
+            $usererror ="Sorry!! Email Already Exists";
+		} else {
+	  
+	  
+	               $user_data = wp_update_user( 
+		                                 array(
+											   'ID' => $getuser->ID, 
+											   'user_email' => $_POST['email'],
+											   'display_name' => $_POST['Your_name']
+				                         ) 
+				   
+				   );
+				   
+				    if ( is_wp_error( $user_data ) ) {
+    
+                   $usererror =  'Error in update user';
+                   } else {
+		   
+	   
+						   if( isset($_FILES['profilepicture']['name']) && !empty($_FILES['profilepicture']['name'])){
+								 
+								 nyc_property_profile_all_image_upload($_FILES,$getuser->ID);
+								 
+						   }
+								 update_user_meta($getuser->ID,'user_name', $_POST['Your_name']); 
+								 update_user_meta($getuser->ID,'user_phone', $_POST['phone']);
+								 update_user_meta($getuser->ID,'user_email', $_POST['email']);
+								 update_user_meta($getuser->ID,'about', $_POST['about']);
+								 update_user_meta($getuser->ID,'user_twitter', $_POST['twitter']);
+								 update_user_meta($getuser->ID,'user_facebook', $_POST['facebook']);
+								 update_user_meta($getuser->ID,'user_google', $_POST['googleplus']);
+								 update_user_meta($getuser->ID,'user_linkedin', $_POST['linkedin']); 
+								 $usersuccess = "Owner updated Successfully";
+
+                   }						
+        }
+		
+      } else {
+	  
+	  
+	        $user_data = wp_update_user( 
+		                                 array(
+											   'ID' => $getuser->ID, 
+											   'user_email' => $_POST['email'],
+											   'display_name' => $_POST['Your_name']
+				                         ) 
+				   
+				   );
+				   
+				    if ( is_wp_error( $user_data ) ) {
+    
+                   $usererror =  'Error in update user';
+                   } else {
+		   
+	   
+						   if( isset($_FILES['profilepicture']['name']) && !empty($_FILES['profilepicture']['name'])){
+								 
+								 nyc_property_profile_all_image_upload($_FILES,$getuser->ID);
+								 
+						   }
+								 update_user_meta($getuser->ID,'user_name', $_POST['Your_name']); 
+								 update_user_meta($getuser->ID,'user_phone', $_POST['phone']);
+								 update_user_meta($getuser->ID,'user_email', $_POST['email']);
+								 update_user_meta($getuser->ID,'about', $_POST['about']);
+								 update_user_meta($getuser->ID,'user_twitter', $_POST['twitter']);
+								 update_user_meta($getuser->ID,'user_facebook', $_POST['facebook']);
+								 update_user_meta($getuser->ID,'user_google', $_POST['googleplus']);
+								 update_user_meta($getuser->ID,'user_linkedin', $_POST['linkedin']); 
+								 $usersuccess = "Owner updated Successfully";
+
+                   }						
+    }
+	
+ }
 get_header();
 ?>
 
@@ -13,92 +95,100 @@ get_header();
 ================================================== -->
 <div class="admin-teanent-detailpage">
 	<div class="container">
-
-	<div class="admin-teanent-account-details">
-		<div class="row">
-			<div class="col-md-12">
-				<h4 class="margin-top-0 margin-bottom-30 admin-teanentdetail-title">Account Details</h4>
-			</div>
-		</div>
-		<?php
-		$user_id = $_GET['uid'];
-		$data = get_userdata($user_id);
-		//echo '<pre>';print_r($data); echo '</pre>';
-		$name =  $data->user_nicename;
-		$phone = get_user_meta($user_id,'phone',true);
-		$email = $data->user_email;
-		?>
-		<div class="row">
-			<div class="col-md-6 my-profile">
-				
-				<div class="row">
-					<div class="col-md-6">
-						<label>Your Name</label>
-						<input value="<?php echo $name;?>" type="text">
-					</div>
-					<div class="col-md-6">
-						<label>Phone</label>
-						<input value="<?php echo $phone;?>" type="text">
-					</div>
-				</div>
-				
+<div class="admin-teanent-account-details">
 				<div class="row">
 					<div class="col-md-12">
-						<label>Email</label>
-						<input value="<?php echo $email;?>" type="text">
+						<h4 class="margin-top-0 margin-bottom-30 admin-teanentdetail-title">Account Details</h4>
 					</div>
 				</div>
-
 				<div class="row">
-					<div class="col-md-12">
-						<h4 class="margin-top-50 margin-bottom-25">About Me</h4>
-						<textarea name="about" id="about" cols="30" rows="10">Maecenas quis consequat libero, a feugiat eros. Nunc ut lacinia tortor morbi ultricies laoreet ullamcorper phasellus semper</textarea>
-					</div>
-				</div>
-				<button class="button margin-top-20 margin-bottom-20">Save Changes</button>
-			</div>
-
-			<div class="col-md-6 admin-teanent-right">
-
-				<div class="row">
-					<div class="col-md-12">
-						<!-- Avatar -->
-						<div class="edit-profile-photo">
-							<img src="<?php echo get_stylesheet_directory_uri();?>/images/agent-03.jpg" alt="">
-							<div class="change-photo-btn">
-								<div class="photoUpload">
-								    <span><i class="fa fa-upload"></i> Upload Photo</span>
-								    <input type="file" class="upload" />
+				        
+						
+				    <form method="post" enctype="multipart/form-data">
+						<div class="col-md-6 my-profile">
+							
+							<div class="row">
+								<div class="col-md-6">
+									<label>Your Name</label>
+									<?php 
+									 $get_username_meta = get_user_meta($getuser->ID,'user_name',true);
+									?>
+									<input type="text" name="Your_name" placeholder="Enter Your Name" value="<?php if($get_username_meta){ echo get_user_meta($getuser->ID,'user_name',true); } else { echo $getuser->data->display_name ;} ?>">
+								</div>
+								<div class="col-md-6">
+									<label>Phone</label>
+									<input  type="text" name="phone" placeholder="Phone" required pattern="[0-9]{10}" maxlength=10 value="<?php echo get_user_meta($getuser->ID,'user_phone',true); ?>">
 								</div>
 							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<h4 class="margin-top-50">Social</h4>
-					</div>
-					<div class="col-md-6">
-						<label><i class="fa fa-twitter"></i> Twitter</label>
-						<input value="https://www.twitter.com/" type="text">
-					</div>
-					<div class="col-md-6">
-						<label><i class="fa fa-facebook-square"></i> Facebook</label>
-						<input value="https://www.facebook.com/" type="text">
-					</div>
-					<div class="col-md-6">
-						<label><i class="fa fa-google-plus"></i> Google+</label>
-						<input value="https://www.google.com/" type="text">
-					</div>
-					<div class="col-md-6">
-						<label><i class="fa fa-linkedin"></i> Linkedin</label>
-						<input value="https://www.linkedin.com/" type="text">
-					</div>
-				</div>
+							
+							
+							<div class="row">
+								<div class="col-md-12">
+									<label>Email</label>
+									<input type="text" name="email" placeholder="Email" required value="<?php echo $getuser->data->user_email; ?>">
+								</div>
+							</div>
 
+							<div class="row">
+								<div class="col-md-12">
+									<h4 class="margin-top-50 margin-bottom-25">About Me</h4>
+									<textarea name="about" id="about" cols="30" rows="10" placeholder="About"><?php echo get_user_meta($getuser->ID,'about',true); ?></textarea>
+								</div>
+							</div>
+							
+						</div>
+
+						<div class="col-md-6 admin-teanent-right">
+
+							<div class="row">
+								<div class="col-md-12">
+									<!-- Avatar -->
+									<div class="edit-profile-photo">
+										<?php
+												  $profile_imgid =  get_user_meta($getuser->ID,'profile_picture',true);
+												  if($profile_imgid){
+														echo wp_get_attachment_image( $profile_imgid, array('300', '225'), "", array( "class" => "img-responsive" ) );
+												   } else {
+						                  ?>
+						                      <img src="<?= get_stylesheet_directory_uri() ?>/images/agent-01.jpg" alt="">
+												 <?php
+												   }
+												 ?>
+										<div class="change-photo-btn">
+											<div class="photoUpload">
+												<span><i class="fa fa-upload"></i> Upload Photo</span>
+												<input type="file" class="upload" name="profilepicture">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<h4 class="margin-top-50">Social</h4>
+								</div>
+								<div class="col-md-6">
+									<label><i class="fa fa-twitter"></i> Twitter</label>
+									<input value="<?php echo get_user_meta($getuser->ID,'user_twitter',true); ?>" type="text" placeholder="Twitter" name="twitter">
+								</div>
+								<div class="col-md-6">
+									<label><i class="fa fa-facebook-square"></i> Facebook</label>
+									<input value="<?php echo get_user_meta($getuser->ID,'user_facebook',true); ?>" type="text" placeholder="Facebook" name="facebook">
+								</div>
+								<div class="col-md-6">
+									<label><i class="fa fa-google-plus"></i> Google+</label>
+									<input value="<?php echo get_user_meta($getuser->ID,'user_google',true); ?>" type="text" placeholder="Googleplus" name="googleplus" >
+								</div>
+								<div class="col-md-6">
+									<label><i class="fa fa-linkedin"></i> Linkedin</label>
+									<input value="<?php echo get_user_meta($getuser->ID,'user_linkedin',true); ?>" type="text" placeholder="linkedin" name="linkedin">
+								</div>
+							</div>
+							<button class="button margin-top-20 margin-bottom-20" type="submit" name="update_owner">Save Changes</button>
+						</div>
+					</form>
+				</div>
 			</div>
-		</div>
-	</div>
 
 	<div class="admin-teanent-contract-details">
 		<div class="row">
@@ -248,12 +338,58 @@ get_header();
 <div id="backtotop"><a href="#"></a></div>
 
 
+
 <!-- Scripts
 ================================================== -->
 
 </div>
 <!-- Wrapper / End -->
 
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>
+		  <?php
+            if(!empty($usererror)){
+		         echo $usererror;
+						
+			}
+					
+		    if(!empty($usersuccess)){
+	          echo $usersuccess; 
+			}
+		    ?>
+		  </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+
 <?php
 get_footer();
+if(!empty($usererror)){
+   echo "<script>
+         jQuery(window).load(function(){
+             $('#myModal').modal('show');
+         });
+    </script>";
+}
+if(!empty($usersuccess)){
+   echo "<script>
+         jQuery(window).load(function(){
+             $('#myModal').modal('show');
+         });
+    </script>";
+}
 ?>
