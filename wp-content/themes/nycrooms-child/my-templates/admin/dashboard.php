@@ -171,7 +171,7 @@ get_header();
 							<a href="#">
 								<div class="statistic__item_cont">
 									<div class="statistic__item_title-sec">
-										<h2 class="counter-value">50</h2>
+										<h2 class="counter-value"><?php echo nyc_count_user_by_role_today('tenant'); ?></h2>
 	                            		<span class="desc">Recently Added Tenants</span>
 									</div>
 									<div class="statistic__item_img-sec">

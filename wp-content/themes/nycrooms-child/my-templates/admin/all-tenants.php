@@ -31,7 +31,7 @@ $countargs= array(
         'user_email',
         'display_name',
     ),
-	'order_by'=>'registered',
+	'order_by'=>'ID',
 	'order'=>'DESC',
 );
 $args= array(
@@ -45,7 +45,7 @@ $args= array(
         'user_email',
         'display_name',
     ),
-	'order_by'=>'registered',
+	'order_by'=>'ID',
 	'order'=>'DESC',
 );
 if($searchphone){
