@@ -31,7 +31,6 @@ $countargs= array(
 	'order_by'=>'registered',
 	'order'=>'DESC',
 );
-$users    = get_users($countargs);
 $args= array(
 	'offset'     	=> $offset,
 	'number'	  	=> $number,
@@ -53,6 +52,11 @@ $args= array(
 	'order_by'=>'registered',
 	'order'=>'DESC',
 );
+if($searchphone){
+	$countargs['meta_query']=array( array( 'key'   => 'user_phone', 'value' => $searchphone, 'compare' => 'REGEXP' ) );
+	$args['meta_query']=array( array( 'key'   => 'user_phone', 'value' => $searchphone, 'compare' => 'REGEXP' )	);
+}
+$users    = get_users($countargs);
 $query    = get_users($args);
 $total_users = count($users);
 $total_query = count($query);
