@@ -6,7 +6,7 @@
 					
 					<ul class="my-account-nav">
 						<li class="sub-nav-title">Manage Account</li>
-						<li><a href="<?= home_url();?>/admin-dashboard/"><i class="sl sl-icon-screen-desktop"></i> Dashboard</a></li>
+						<li><a href="<?= home_url();?>/admin/" id="sidebar-dashboard"><i class="sl sl-icon-screen-desktop"></i> Dashboard</a></li>
 						<li><a href="<?= home_url();?>/profile-admin/"><i class="sl sl-icon-user"></i> My Profile</a></li>
 					</ul>
 					
@@ -42,16 +42,10 @@
 
 					<ul class="my-account-nav">
 						<li class="sub-nav-title">Manage Tenants</li>
-						<li class="list-has--submenu admin-propertieslistings">
-							<a href="#">
-								<i class="sl sl-icon-docs"></i>Tenants <i class="sl sl-icon-arrow-down listing-dropdown-icon"></i>
-							</a>
-							<ul class="list--submenu ">
-								<li><a href="<?php echo get_site_url(); ?>/all-tenants/">All Tenants <span class="all-listing-no active-listing-no">1000</span></a></li>
-								<li><a href="<?php echo get_site_url(); ?>/recent-tenants/">Recently Added<span class="active-listing-no">20</span></a></li>
-							</ul>
+						<li class="admin-propertieslistings">
+							<a href="<?php echo get_site_url(); ?>/admin/all-tenants/" id="sidebar-alltenant">All Tenants <span class="all-listing-no active-listing-no"><?php echo nyc_count_user_by_role('tenant'); ?></span></a>
 						</li>
-						<li><a href="<?php echo get_site_url(); ?>/add-tenant/"><i class="sl sl-icon-action-redo"></i> Add New Teanent</a></li>
+						<li><a href="<?php echo get_site_url(); ?>/admin/add-tenant/" id="sidebar-addtenant"><i class="sl sl-icon-action-redo"></i> Add New Teanent</a></li>
 					</ul>
 
 					<ul class="my-account-nav">

@@ -25,6 +25,7 @@ function zakra_child_enqueue_styles() {
 	wp_enqueue_style( 'color-css', get_stylesheet_directory_uri().'/css/color.css');
 	//wp_enqueue_style( 'bootstrap-css', get_stylesheet_directory_uri().'/css/bootstrap.min.css');
 	wp_enqueue_script( 'property-js', get_stylesheet_directory_uri().'/scripts/property.js', array( 'jquery' ), '1.0', true );
+	wp_enqueue_script( 'dashboard-js', get_stylesheet_directory_uri().'/inc/js/admin-dashboard.js', array( 'jquery' ), '1.0', true );
 	wp_enqueue_script( 'bootstrap-js', get_stylesheet_directory_uri().'/scripts/bootstrap.min.js', array( 'jquery' ), '1.0', true );
     wp_localize_script( 'property-js', 'my_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 	

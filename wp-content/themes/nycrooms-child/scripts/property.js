@@ -82,7 +82,7 @@ jQuery(document).ready(function($) {
 		if(payment_method == ''){
 			jQuery('#payment_method-err').html('<span class="error">Please select payment method</span>');
 			is_error = true;		
-		}		
+		}	
 		if(address == ''){
 			jQuery('#address-err').html('<span class="error">Please enter address</span>');
 			is_error = true;		

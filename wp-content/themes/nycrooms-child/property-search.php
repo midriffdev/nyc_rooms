@@ -44,6 +44,29 @@ get_header();
 							    <input type="button" name="next" class="next action-button" value="Next" />
 						  </fieldset>
 						  <fieldset>
+						   		<div class="teanent-question-wrapper">
+							    	<div class="teanent-question--title">
+							    		<h2 class="fs-title">State</h2>
+							    	</div>
+							    	<ul class="state-qestions ">
+							    		<li>
+							    			<div class="teanent-question-innersec ">
+							    				<select class="chosen-select-no-single" name="state">
+													<option label="blank"></option>		
+													<option value="nebraska" >Nebraska</option>
+													<option value="montana" >Montana</option>
+													<option value="nevada" >Nevada</option>
+													<option value="new jersy" >New Jersy</option>
+													<option value="new york" >New York</option>
+												</select>
+									    	</div>
+							    		</li>
+							    	</ul>
+							    </div>
+						    	<input type="button" name="previous" class="previous action-button" value="Previous" />
+						    	<input type="button" name="next" class="next action-button" value="Next" />
+						  </fieldset>
+						  <fieldset>
 							    <div class="teanent-question-wrapper">
 							    	<div class="teanent-question--title">
 							    		<h2 class="fs-title">What City would you like To Live in? </h2>
@@ -102,29 +125,6 @@ get_header();
 							    </div>
 							    <input type="button" name="previous" class="previous action-button" value="Previous" />
 							    <input type="button" name="next" class="next action-button" value="Next" />
-						  </fieldset>
-						  <fieldset>
-						   		<div class="teanent-question-wrapper">
-							    	<div class="teanent-question--title">
-							    		<h2 class="fs-title">State</h2>
-							    	</div>
-							    	<ul class="state-qestions ">
-							    		<li>
-							    			<div class="teanent-question-innersec ">
-							    				<select class="chosen-select-no-single" name="state">
-													<option label="blank"></option>		
-													<option value="nebraska" >Nebraska</option>
-													<option value="montana" >Montana</option>
-													<option value="nevada" >Nevada</option>
-													<option value="new jersy" >New Jersy</option>
-													<option value="new york" >New York</option>
-												</select>
-									    	</div>
-							    		</li>
-							    	</ul>
-							    </div>
-						    	<input type="button" name="previous" class="previous action-button" value="Previous" />
-						    	<input type="button" name="next" class="next action-button" value="Next" />
 						  </fieldset>
 						  <fieldset>
 						   		<div class="teanent-question-wrapper">
