@@ -7,6 +7,19 @@ function nyc_count_user_by_role($roles=''){
 	$users = new WP_User_Query($args);
 	return $users->get_total();
 }
+
+function nyc_count_user_by_role_today($roles=''){
+	$args = array(   
+		'role__in' => $roles,
+		'count_total' => true,
+		'date_query' => [
+			[ 'after'  => 'today', 'inclusive' => true ],
+		],
+	);
+	$users = new WP_User_Query($args);
+	return $users->get_total();
+}
+
 function nyc_all_user_by_role($roles=''){
 	$args = array(
 		'role'    => $roles,
@@ -153,4 +166,33 @@ function nyc_export_as_CSV($ids='') {
 	echo $csv; 
 	exit();
 }
+function nyc_wp_new_user_notification( $user_id, $plaintext_pass = '' ) {
+	$user = new WP_User($user_id);
+
+	$user_login = stripslashes($user->user_login);
+	$user_email = stripslashes($user->user_email);
+
+	$message  = sprintf(__('New user registration on your blog %s:'), get_option('blogname')) . "\r\n\r\n";
+	$message .= sprintf(__('Username: %s'), $user_login) . "\r\n";
+	$message .= sprintf(__('E-mail: %s'), $user_email) . "\r\n";
+	wp_mail(get_option('admin_email'), sprintf(__('[%s] New User Registration'), get_option('blogname')), $message);
+
+	if ( empty($plaintext_pass) )
+		return;
+
+    $user_login = stripslashes( $user->user_login );
+    $user_email = stripslashes( $user->user_email );
+    $login_url  = wp_login_url();
+    $message  = __( 'Hi there,' ) . "\r\n\r\n";
+    $message .= sprintf( __( "Welcome to %s! Here's how to log in:" ), get_option('blogname') ) . "\r\n\r\n";
+    $message .= wp_login_url() . "\r\n";
+    $message .= sprintf( __('Username: %s'), $user_login ) . "\r\n";
+    $message .= sprintf( __('Email: %s'), $user_email ) . "\r\n";
+    $message .= sprintf( __('Password: %s'), $plaintext_pass ) . "\r\n";
+    $message .= sprintf( __('If you have any problems, please contact me at %s.'), get_option('admin_email') ) . "\r\n\r\n";
+    $message .= __( 'bye!' );
+
+	wp_mail($user_email, sprintf(__('[%s] Your username and password'), get_option('blogname')), $message);
+}
+
 ?>

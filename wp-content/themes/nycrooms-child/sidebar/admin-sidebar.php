@@ -58,7 +58,7 @@
 					<ul class="my-account-nav">
 						<li class="sub-nav-title">Manage Property Leads</li>
 						<li class="admin-propertieslistings"><a href="<?= home_url();?>/all-leads/" >All leads <span class="all-listing-no active-listing-no"><?= get_all_leads() ?></span></a></li>
-						<li class="admin-propertieslistings"><a href="<?= home_url();?>/recent-leads/" class="current">Recently Added Lead<span class="active-listing-no">
+						<li class="admin-propertieslistings"><a href="<?= home_url();?>/recent-leads/" >Recently Added Lead<span class="active-listing-no">
 						<?= get_recent_leads()?>
 						</span></a></li>
 					</ul>

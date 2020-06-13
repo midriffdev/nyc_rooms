@@ -121,7 +121,8 @@ jQuery(document).ready(function($) {
 			is_error = true;		
 		}
 		if(is_error == false ){
-			var file_data = $('.dropzone')[0].dropzone.getAcceptedFiles();
+			var drop_doc_data = $('.dropzone_documents')[0].dropzone.getAcceptedFiles();
+			var file_data = $('.dropzone_gallery')[0].dropzone.getAcceptedFiles();
 			var form_data = new FormData();	
 			form_data.append("title", title);
 			form_data.append("status", status);
@@ -152,7 +153,13 @@ jQuery(document).ready(function($) {
 				form_data.append("file_"+i, file_data[i]);
 				gallery_files.push("file_"+i);
 			}
+			var document_files=[];
+			for(var i = 0;i<drop_doc_data.length;i++){
+				form_data.append("doc_"+i, drop_doc_data[i]);
+				document_files.push("doc_"+i);
+			}
 			form_data.append("gallery_files", gallery_files);
+			form_data.append("document_files", document_files);
 			form_data.append( "action", 'nyc_add_property_ajax');   
 			jQuery.ajax({
 				type : "post",
@@ -161,6 +168,7 @@ jQuery(document).ready(function($) {
 				processData: false,
 				contentType: false,
 				success: function(response) {
+				   console.log(response);
 				    if(response == "success"){
 						window.location.href = window.location.href + "?action=success";
 					} else {

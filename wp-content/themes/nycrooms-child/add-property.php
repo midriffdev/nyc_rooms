@@ -202,7 +202,15 @@ get_header();
 		<!-- Section -->
 		<h3>Gallery</h3>
 		<div class="submit-section prop_gallery">
-			<form action="<?= site_url() ?>/add-property/" class="dropzone" ></form>
+			<form action="<?= site_url() ?>/add-property/" class="dropzone dropzone_gallery" ></form>
+		</div>
+		<!-- Section / End -->
+
+
+		<!-- Section -->
+		<h3>Required Documents</h3>
+		<div class="submit-section prop_req_docs">
+			<form action="<?= site_url() ?>/add-property/" class="dropzone dropzone_documents" ></form>
 		</div>
 		<!-- Section / End -->
 
@@ -393,5 +401,10 @@ get_footer();
 <script>				
 jQuery(".dropzone").dropzone({
 	dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
-});
+	addRemoveLinks: true,
+	removedfile: function(file) {
+		var _ref;
+		return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+	  }
+});				
 </script>

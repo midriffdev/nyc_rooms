@@ -21,16 +21,17 @@ if(isset($_POST['add_tenant'])){
 		$errors = true;
 	}
 	if($errors == false){
+		$userPass = wp_generate_password();
 		$userdata = array(
 						'user_login'  	=> $email,
-						'user_pass'   	=> wp_generate_password(), // random password, you can also send a notification to new users, so they could set a password themselves
+						'user_pass'   	=> $userPass, // random password, you can also send a notification to new users, so they could set a password themselves
 						'user_email' 	=> $email,
 						'first_name'	=> $fname,
 						'last_name' 	=> $lname,
 						'role'      	=> 'tenant'
 		);
 		$user_id = wp_insert_user( $userdata );	   
-		if( isset($_FILES['tenant_profile_picture']['name']) && !empty($_FILES['tenant_profile_picture']['name'])){		 
+		if( isset($_FILES['profile_picture']['name']) && !empty($_FILES['profile_picture']['name'])){		 
 			 nyc_user_profile_image_upload($_FILES,'profile_picture',$user_id);		 
 		}	   
 		if($user_id){
@@ -44,6 +45,7 @@ if(isset($_POST['add_tenant'])){
 			update_user_meta($user_id, 'user_googleplus', $googleplus );
 			update_user_meta($user_id, 'user_linkedin', $linkedin );
 			update_user_meta( $user_id, 'user_status','active');
+			nyc_wp_new_user_notification($user_id,$userPass);
 			$createmsg = "Tenant profile added successfully";	
 		}
 	}
@@ -125,7 +127,7 @@ if(isset($_POST['add_tenant'])){
 										<div class="change-photo-btn">
 											<div class="photoUpload">
 												<span><i class="fa fa-upload"></i> Upload Photo</span>
-												<input type="file" class="upload" id="imgupload" name="tenant_profile_picture">
+												<input type="file" class="upload" id="imgupload" name="profile_picture">
 											</div>
 										</div>
 									</div>
