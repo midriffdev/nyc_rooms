@@ -10,25 +10,6 @@ get_header();
 
 <!-- Titlebar
 ================================================== -->
-<div id="titlebar">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-
-				<h2>Lead Detail</h2>
-
-				<!-- Breadcrumbs -->
-				<nav id="breadcrumbs">
-					<ul>
-						<li><a href="#">Home</a></li>
-						<li>Lead Detail</li>
-					</ul>
-				</nav>
-
-			</div>
-		</div>
-	</div>
-</div>
 
 
 <!-- Content

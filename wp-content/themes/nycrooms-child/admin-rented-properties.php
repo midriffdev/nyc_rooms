@@ -293,15 +293,16 @@ get_header();
 					<td class="title-container">
 						<img src="<?php if($prop_image){ echo $prop_image; } ?>" alt="">
 						<div class="title">
-							<h4><a href="<?php echo get_the_guid(); ?>"><?php echo get_the_title(); ?></a></h4>
+							<h4><a href="<?php echo site_url().'/single-property/?property_id='.$post_id; ?>"><?php echo get_the_title($post_id); ?></a></h4>
 							<span><?php echo $address;?> </span>
-							<span class="table-property-price"><?php echo $price ;?></span> <span class="active--property"><?php echo $status ;?></span>
+							<span class="table-property-price"><?php echo $price.'$ / Week' ;?></span> <span class="active--property"><?php echo $status ;?></span>
 						</div>
 					</td>
 					<td>
 						<div class="owner--name"><a href="#"><?php echo $contact_name ; ?></a></div>
 					</td>
 					<td class="action">
+					    <a href="<?= site_url().'/single-property/?property_id='.$post_id  ?> "><i class="fa fa-eye"></i> View</a>
 						<a href= "<?php echo site_url();?>/edit-property-admin/?pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
 						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 					</td>

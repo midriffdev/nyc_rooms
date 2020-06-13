@@ -1,12 +1,12 @@
 <?php 
 /*
-Template Name: Recently Properties
+Template Name: Admin Approved Properties
 */
 nyc_property_admin_authority();
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $args = array(
          'post_type'        => 'property',
-		 'post_status'       => array('draft'),
+		 'post_status'       => array('available','rented'),
          //'no_found_rows'    => true,
          'suppress_filters' => false,
 		 'orderby'          => 'post_date',
@@ -85,7 +85,7 @@ if ( $properties->have_posts() ) {
 						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 					</td>
 					<td class="recently-approved-btn">
-					  <button class="approve_property" data-id="<?php echo $post_id; ?>">Approve</button>
+				       <button class="unapprove_property" data-id="<?php echo $post_id; ?>">UnApprove</button>
 					</td>
 				</tr>
 <?php 
@@ -143,7 +143,7 @@ if ( $properties->have_posts() ) {
 						<select class="select_action_properties">
 							 <option value="-1">Bulk Actions</option>
 							 <option value="delete">Delete</option>
-							 <option value="approve">Approve</option>
+							 <option value="unapprove">UnApprove</option>
 						</select>
                     <input type="button" value="Apply" class="apply_action_properties">
                  </div>
@@ -184,7 +184,7 @@ if ( $properties->have_posts() ) {
       
     </div>
   </div>
-  <div class="modal fade" id="ModalApproveProp" role="dialog">
+  <div class="modal fade" id="ModalUnApproveProp" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -193,7 +193,7 @@ if ( $properties->have_posts() ) {
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-          <p>Properties Approved Successfully</p>
+          <p>Properties UnApproved Successfully</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -202,7 +202,6 @@ if ( $properties->have_posts() ) {
       
     </div>
   </div>
-  
   
 <style>
 .pagination-next-prev ul li.prev a {

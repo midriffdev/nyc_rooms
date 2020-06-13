@@ -553,7 +553,39 @@ jQuery(document).ready(function($) {
 		     
 		       }
 			 //jQuery('.agent_selected').each()
-		     }
+		     } else if(value == 'unapprove'){
+		       var checkedNum = jQuery('input[class="checkproperties"]:checked').length;
+		     if(checkedNum == 0){
+		         alert('Please choose one or more properties to approve');
+		     } else {
+		       
+				
+                       jQuery('input[class="checkproperties"]:checked').each(function(){
+			                 myarrayproperties.push(jQuery(this).val());
+			           });
+					   
+					   var data = {
+									'action': 'unapprove_multiple_properties',
+									'data':   myarrayproperties
+	                   };
+	// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+						            console.log(response);
+								    if(response == "true"){
+									 $('#ModalUnApproveProp').modal('show');
+									setTimeout(function(){
+									   window.location.reload();
+									   // or window.location = window.location.href; 
+								    }, 2000);
+								 
+								   }
+								 
+						  });
+		
+		     
+		       }
+			 //jQuery('.agent_selected').each()
+		     } 
 	}
 	
    });
@@ -635,6 +667,41 @@ jQuery(document).ready(function($) {
 	            }
 
 	});
+	
+	jQuery('.unapprove_property').click(function(){
+	
+	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
+				  var myunapprovearray = new Array();
+	              var id = jQuery(this).data('id');
+				  
+				  if(checkedNum == 0){
+		               alert('Please select this property to unApprove');
+		          } else {
+		       
+								        myunapprovearray.push(id);
+											 var data = {
+													'action': 'unapprove_multiple_properties',
+													'data':   myunapprovearray
+											   };
+											// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+												jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+														
+														  if(response == "true"){
+															$('#ModalUnApproveProp').modal('show'); 
+															setTimeout(function(){
+															   window.location.reload();
+															   // or window.location = window.location.href; 
+														 }, 2000);
+														 
+														 }
+														 
+												}); 
+							  
+			  
+	            }
+
+	});
+	
 	
 	
 });

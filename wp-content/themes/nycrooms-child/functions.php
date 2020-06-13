@@ -303,7 +303,7 @@ function nyc_update_property_ajax(){
 			'post_title' 	=> $_POST['title'],
 			'post_content' 	=> $_POST['desc'],
 			'post_author' 	=> $_POST['post_author'],
-			'post_status' 	=> $_POST['property_id'],
+			'post_status' 	=> $_POST['post_status'],
 		));
 		if ($property_id) {
 			wp_set_post_terms($property_id, $_POST['type'], 'types' );
@@ -927,6 +927,24 @@ function approve_multiple_properties() {
 	wp_die();
 }
 
+add_action( 'wp_ajax_nopriv_unapprove_multiple_properties', 'unapprove_multiple_properties' );
+add_action( 'wp_ajax_unapprove_multiple_properties', 'unapprove_multiple_properties' );
+function unapprove_multiple_properties() {
+	global $wpdb;
+	foreach($_POST['data'] as $ids){
+	$getpropstatus = get_post_status( $ids );
+	   if($getpropstatus != 'draft'){
+			   wp_update_post(array(
+					'ID'    =>  $ids,
+					'post_status'   => 'draft'
+			   ));
+	   }
+	}
+	echo "true";
+	wp_die();
+}
+
+
 
 
 
@@ -1120,13 +1138,24 @@ function nyc_get_properties_admin_by_status($status){
 }
 function nyc_get_recent_properties(){
 $args =  array(
-					'numberposts'      => 20,
+					'numberposts'      => -1,
 					'post_type'        => 'property',
 					'post_status'      => 'draft',
          );
 $properties = new WP_Query( $args );
-return $properties;
+return $properties->found_posts;
 }
+
+function nyc_get_admin_approved_properties(){
+$args =  array(
+					'numberposts'      => -1,
+					'post_type'        => 'property',
+					'post_status'      => array('available','rented'),
+         );
+$properties = new WP_Query( $args );
+return $properties->found_posts;
+}
+
 
 function pagination_bar() { ?>
 <div class="row fs-listings">
