@@ -33,8 +33,8 @@
 								<i class="sl sl-icon-docs"></i>Property Owners <i class="sl sl-icon-arrow-down listing-dropdown-icon"></i>
 							</a>
 							<ul class="list--submenu">
-								<li><a href="<?php echo get_site_url(); ?>/admin-property-owner-all/" >All Owners <span class="all-listing-no active-listing-no">2000</span></a></li>
-								<li><a href="<?php echo get_site_url(); ?>/recent-property-owner/" >Recently Added<span class="active-listing-no">20</span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/admin-property-owner-all/" >All Owners <span class="all-listing-no active-listing-no"><?=get_all_property_owner_counts() ?> </span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/recent-property-owner/" >Recently Added<span class="active-listing-no"><?=get_all_property_owner_recent_counts() ?></span></a></li>
 							</ul>
 						</li>
 						<li><a href="<?php echo get_site_url(); ?>/add-property-owner/"><i class="sl sl-icon-action-redo"></i> Add New Owner</a></li>
