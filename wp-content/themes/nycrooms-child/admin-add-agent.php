@@ -1,5 +1,8 @@
 <?php
 /* Template Name: Admin Add Agent */
+$usererror = '';
+$usersuccess = '';
+nyc_property_admin_authority();
 if(isset($_POST['add_agent'])){
 
 if( email_exists( $_POST['email'] ) ) {
@@ -53,7 +56,7 @@ get_header();
 <div class="container">
 	<div class="row">
          <!-- Widget -->
-		<?php get_template_part('sidebar/admin-sidebar'); ?>
+		 <?php include(locate_template('sidebar/admin-sidebar.php')); ?>
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
 
@@ -204,14 +207,14 @@ get_header();
 
 <?php
 get_footer();
-if($usererror){
+if(!empty($usererror)){
    echo "<script>
          jQuery(window).load(function(){
              $('#myModal').modal('show');
          });
     </script>";
 }
-if($usersuccess){
+if(!empty($usersuccess)){
    echo "<script>
          jQuery(window).load(function(){
              $('#myModal').modal('show');

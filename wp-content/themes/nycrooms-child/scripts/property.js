@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+     /*------------- Edit Property ---------------*/
 	jQuery(".preview").click(function(e){
 		e.preventDefault();
 		jQuery(".preview").attr("disabled", true);
@@ -170,6 +171,12 @@ jQuery(document).ready(function($) {
 		}
 		jQuery(".preview").attr("disabled", false);
 	});
+	
+	
+	
+	
+	
+	
 	jQuery('.delete-property').click(function (e) {
 	    e.preventDefault();
 		// escape here if the confirm is false;
@@ -193,6 +200,8 @@ jQuery(document).ready(function($) {
 		});
 	});
 	
+	/*----------Bulk Actions on Agents -------------*/
+	
 	jQuery('.bulk_actions .apply_action').click(function(){
 	  
      var myarray = new Array();
@@ -201,10 +210,11 @@ jQuery(document).ready(function($) {
 	if(value == -1){
 	  alert("please choose a option");
 	} else {
+	
 	      if(value == "delete"){
 	         var checkedNum = jQuery('input[class="checkagent"]:checked').length;
 		    if(checkedNum == 0){
-		        alert('Please choose one or more agent to delete');
+		        alert('Please choose one or more user to delete');
 		    } else {
 		       if(checkedNum == 1){
 		        var r = confirm("Are you sure to delete this user");
@@ -230,7 +240,7 @@ jQuery(document).ready(function($) {
 									   // or window.location = window.location.href; 
 								 }, 2000);
 								 
-								 }
+								  }
 						});   
                }
 		     
@@ -318,20 +328,17 @@ jQuery(document).ready(function($) {
 	
 	jQuery('.delete_agent_profile').click(function(){
 	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkagent"]:checked').length;
-				   
-	              var mydeletearray = new Array();
+				  var mydeletearray = new Array();
 	              var id = jQuery(this).data('id');
 				  
 				  if(checkedNum == 0){
-		               alert('Please Select this agent to delete');
+		               alert('Please Select this user to delete');
 		          } else {
 		       
 	                        var r = confirm("Are you sure to delete this user");
 					            if(r == true) {
-											   
+								
 											   mydeletearray.push(id);
-											   
-											   
 											 var data = {
 													'action': 'delete_multiple_agents',
 													'data':   mydeletearray
@@ -456,8 +463,105 @@ jQuery(document).ready(function($) {
 	   
 	}); 
 	
+	/*-------------- Bulk Actions on Properties --------------*/
 	
 	
+   jQuery('.bulk_actions_properties .apply_action_properties').click(function(){
+	  
+		 var myarrayproperties = new Array();
+		 
+		var value = jQuery('.bulk_actions_properties select[class=select_action_properties]').val();
+		if(value == -1){
+		  alert("please choose a option");
+		} else {
+			  if(value == "delete"){
+				 var checkedNum = jQuery('input[class="checkproperties"]:checked').length;
+				if(checkedNum == 0){
+					alert('Please choose one or more properties to delete');
+				} else {
+				   if(checkedNum == 1){
+					var r = confirm("Are you sure to delete this property");
+				  } else {
+					var r = confirm("Are you sure to delete these properties");
+				  }
+					if(r == true) {
+						   jQuery('input[class="checkproperties"]:checked').each(function(){
+								 myarrayproperties.push(jQuery(this).val());
+						   });
+						   
+						   var data = {
+								'action': 'delete_multiple_properties',
+								'data':   myarrayproperties
+						   };
+						// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+							jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+									
+									  
+									
+									  if(response == "true"){
+										$('#Modaldelete').modal('show');
+										setTimeout(function(){
+										   window.location.reload();
+										   // or window.location = window.location.href; 
+									 }, 2000);
+									 
+									 }
+									 
+									 
+							});   
+				   }
+				 
+				 }
+			 
+			 } 
+			 //jQuery('.agent_selected').each()
+		}
+	
+   });
+   
+   jQuery('.checkallproperties').click(function(){
+	   jQuery(".checkproperties").prop('checked', jQuery(this).prop('checked'));
+	});
+	
+	 jQuery('.all_properties_table .delete_admin_property').click(function(){
+	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
+				   
+	              var myarrayprop = new Array();
+	              var id = jQuery(this).data('id');
+				  
+				  if(checkedNum == 0){
+		               alert('Please Select this Property to delete');
+		          } else {
+		       
+	                        var r = confirm("Are you sure to delete this Property");
+					            if(r == true) {
+											   
+											   myarrayprop.push(id);
+											   
+											   
+											 var data = {
+													'action': 'delete_multiple_properties',
+													'data':   myarrayprop
+											   };
+											// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+												jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+														
+														  if(response == "true"){
+															$('#Modaldelete').modal('show'); 
+															setTimeout(function(){
+															   window.location.reload();
+															   // or window.location = window.location.href; 
+														     }, 2000);
+														 
+														 }
+												}); 
+							   }
+			  
+	            }
+	   
+	    
+	   
+	});  
 	
 	
 	

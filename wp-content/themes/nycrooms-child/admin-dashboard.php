@@ -110,7 +110,10 @@ get_header();
 						$tenant = $avail_roles['tenant'];
 						$administrator = $avail_roles['administrator']; 
 						$sales_agent = $avail_roles['sales_agent'];
-						$property_owner = $avail_roles['property_owner'];
+						$property_owner = '';
+						if(isset($avail_roles['property_owner'])){
+						   $property_owner = $avail_roles['property_owner'];
+						}
 ?>
 						<li class="statistic__item item--dark">
 							<a href="<?php echo get_site_url();?>/admin-property-owner"> 

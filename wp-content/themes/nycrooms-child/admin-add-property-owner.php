@@ -1,56 +1,106 @@
-<?php 
-/*
-Template Name: Admin Add Property Owner
-*/
+<?php
+/* Template Name: Admin Add Property Owner */
 nyc_property_admin_authority();
+$usererror = '';
+$usersuccess = '';
+if(isset($_POST['add_owner'])){
+
+		   $name = explode(' ', $_POST['Your_name']);
+		   $first_name = $name[0];
+		   $last_name = $name[1];
+
+  if( email_exists( $_POST['email'] ) ) {
+     $usererror ="Sorry!! Email Already Exists";
+  } else {
+      $userdata = array(
+					'user_login'  => $_POST['email'],
+					'user_pass'   =>  wp_generate_password(), // random password, you can also send a notification to new users, so they could set a password themselves
+					'user_email' => $_POST['email'],
+					'first_name' => $first_name,
+					'last_name' => $last_name,
+					'role'  => 'property_owner'
+				);
+	   $user_id = wp_insert_user( $userdata );
+	   
+	   if( isset($_FILES['profilepicture']['name']) && !empty($_FILES['profilepicture']['name'])){
+	         
+			 nyc_property_profile_all_image_upload($_FILES,$user_id);
+			 
+	   }
+	   
+	    if($user_id){
+		     update_user_meta($user_id,'user_name', $_POST['Your_name']); 
+			 update_user_meta($user_id,'user_phone', $_POST['phone']);
+			 update_user_meta($user_id,'user_email', $_POST['email']);
+			 update_user_meta($user_id,'about', $_POST['about']);
+			 update_user_meta($user_id,'user_twitter', $_POST['twitter']);
+			 update_user_meta($user_id,'user_facebook', $_POST['facebook']);
+			 update_user_meta($user_id,'user_google', $_POST['googleplus']);
+			 update_user_meta($user_id,'user_linkedin', $_POST['linkedin']); 
+			$usersuccess = "Owner Added Successfully";	
+			
+	   }
+	   
+  
+  }
+  
+}
 get_header();
 ?>
 <!-- Wrapper -->
 <div id="wrapper" class="dashbaord__wrapper">
+
+<!-- Titlebar
+================================================== -->
 
 
 <!-- Content
 ================================================== -->
 <div class="container">
 	<div class="row">
-      <?php include(locate_template('sidebar/admin-sidebar.php')); ?>
+         <!-- Widget -->
+		 <?php include(locate_template('sidebar/admin-sidebar.php')); ?>
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
 
-				<div class="admin-owner-account-details">
-					<div class="row">
-						<div class="col-md-12">
-							<h4 class="margin-top-0 margin-bottom-30 admin-teanentdetail-title">Account Details</h4>
-						</div>
+			<div class="admin-teanent-account-details">
+				<div class="row">
+					<div class="col-md-12">
+						<h4 class="margin-top-0 margin-bottom-30 admin-teanentdetail-title">Account Details</h4>
 					</div>
-					<div class="row">
+				</div>
+				<div class="row">
+				        
+						
+				    <form method="post" enctype="multipart/form-data">
 						<div class="col-md-6 my-profile">
 							
 							<div class="row">
 								<div class="col-md-6">
 									<label>Your Name</label>
-									<input value="Jennie Wilson" type="text">
+									<input type="text" name="Your_name" placeholder="Enter Your Name">
 								</div>
 								<div class="col-md-6">
 									<label>Phone</label>
-									<input value="(123) 123-456" type="text">
+									<input  type="text" name="phone" placeholder="Phone" required pattern="[0-9]{10}" maxlength=10>
 								</div>
 							</div>
+							
 							
 							<div class="row">
 								<div class="col-md-12">
 									<label>Email</label>
-									<input value="jennie@example.com" type="text">
+									<input type="text" name="email" placeholder="Email" required>
 								</div>
 							</div>
 
 							<div class="row">
 								<div class="col-md-12">
 									<h4 class="margin-top-50 margin-bottom-25">About Me</h4>
-									<textarea name="about" id="about" cols="30" rows="10">Maecenas quis consequat libero, a feugiat eros. Nunc ut lacinia tortor morbi ultricies laoreet ullamcorper phasellus semper</textarea>
+									<textarea name="about" id="about" cols="30" rows="10" placeholder="About"></textarea>
 								</div>
 							</div>
-							<button class="button margin-top-20 margin-bottom-20">Save Changes</button>
+							
 						</div>
 
 						<div class="col-md-6 admin-teanent-right">
@@ -59,11 +109,11 @@ get_header();
 								<div class="col-md-12">
 									<!-- Avatar -->
 									<div class="edit-profile-photo">
-										<img src="images/agent-03.jpg" alt="">
+										<img src="<?= get_stylesheet_directory_uri() ?>/images/agent-01.jpg" alt="">
 										<div class="change-photo-btn">
 											<div class="photoUpload">
-											    <span><i class="fa fa-upload"></i> Upload Photo</span>
-											    <input type="file" class="upload">
+												<span><i class="fa fa-upload"></i> Upload Photo</span>
+												<input type="file" class="upload" name="profilepicture">
 											</div>
 										</div>
 									</div>
@@ -75,25 +125,26 @@ get_header();
 								</div>
 								<div class="col-md-6">
 									<label><i class="fa fa-twitter"></i> Twitter</label>
-									<input value="https://www.twitter.com/" type="text">
+									<input  type="text" placeholder="Twitter" name="twitter">
 								</div>
 								<div class="col-md-6">
 									<label><i class="fa fa-facebook-square"></i> Facebook</label>
-									<input value="https://www.facebook.com/" type="text">
+									<input type="text" placeholder="Facebook" name="facebook">
 								</div>
 								<div class="col-md-6">
 									<label><i class="fa fa-google-plus"></i> Google+</label>
-									<input value="https://www.google.com/" type="text">
+									<input type="text" placeholder="Googleplus" name="googleplus" >
 								</div>
 								<div class="col-md-6">
 									<label><i class="fa fa-linkedin"></i> Linkedin</label>
-									<input value="https://www.linkedin.com/" type="text">
+									<input type="text" placeholder="linkedin" name="linkedin">
 								</div>
 							</div>
-
+							<button class="button margin-top-20 margin-bottom-20" type="submit" name="add_owner">Save Changes</button>
 						</div>
-					</div>
+					</form>
 				</div>
+			</div>
 
 			</div>
 		</div>
@@ -106,9 +157,53 @@ get_header();
 <!-- Back To Top Button -->
 <div id="backtotop"><a href="#"></a></div>
 
-
 </div>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>
+		  <?php
+            if(!empty($usererror)){
+		         echo $usererror;
+						
+			}
+					
+		    if(!empty($usersuccess)){
+	          echo $usersuccess; 
+			}
+		    ?>
+		  </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 <!-- Wrapper / End -->
+
 <?php
 get_footer();
+if(!empty($usererror)){
+   echo "<script>
+         jQuery(window).load(function(){
+             $('#myModal').modal('show');
+         });
+    </script>";
+}
+if(!empty($usersuccess)){
+   echo "<script>
+         jQuery(window).load(function(){
+             $('#myModal').modal('show');
+         });
+    </script>";
+}
 ?>

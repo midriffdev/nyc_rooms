@@ -25,7 +25,7 @@ if(isset($_POST['user_submit'])){
 			 
 	}
 	 
-   update_user_meta(get_current_user_id(),'nickname', $_POST['user_name']); 
+   update_user_meta(get_current_user_id(),'user_name', $_POST['user_name']); 
    update_user_meta(get_current_user_id(),'user_phone', $_POST['user_phone']);
    update_user_meta(get_current_user_id(),'about', $_POST['about']);
    update_user_meta(get_current_user_id(),'user_twitter', $_POST['user_twitter']);
