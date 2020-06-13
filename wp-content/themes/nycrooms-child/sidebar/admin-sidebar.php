@@ -20,7 +20,7 @@
 								<li><a href="<?php echo get_site_url(); ?>/admin-properties" class="current">All Properties <span class="all-listing-no active-listing-no"><?php echo nyc_get_properties_admin_by_status(array('draft', 'available', 'rented','Pending Review'))->post_count; ?></span></a></li>
 								<li><a href="<?php echo get_site_url(); ?>/admin-available-properties" >Available <span class="active-listing-no"><?php echo nyc_get_properties_admin_by_status(array('available'))->post_count; ?></span></a></li>
 								<li><a href="<?php echo get_site_url(); ?>/admin-rented-properties" >Rented <span class="rented-listing-no"><?php echo nyc_get_properties_admin_by_status(array('rented'))->post_count; ?></span></a></li>
-								<li><a href="<?php echo get_site_url(); ?>/admin-recently-properties">Recently Submitted <span class="unapproved-listing-no"><?php echo nyc_get_recent_properties('draft')->post_count; ?></span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/admin-recently-properties">Recently Submitted <span class="unapproved-listing-no"><?php echo nyc_get_recent_properties('draft')->found_posts; ?></span></a></li>
 							</ul>
 						</li>
 						<li><a href="<?= home_url() ?>/add-property-admin/"><i class="sl sl-icon-action-redo"></i> Submit New Property</a></li>
@@ -33,8 +33,8 @@
 								<i class="sl sl-icon-docs"></i>Property Owners <i class="sl sl-icon-arrow-down listing-dropdown-icon"></i>
 							</a>
 							<ul class="list--submenu">
-								<li><a href="<?php echo get_site_url(); ?>/admin-property-owner-all/" >All Owners <span class="all-listing-no active-listing-no">2000</span></a></li>
-								<li><a href="<?php echo get_site_url(); ?>/recent-property-owner/" >Recently Added<span class="active-listing-no">20</span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/admin-property-owner-all/" >All Owners <span class="all-listing-no active-listing-no"><?=get_all_property_owner_counts() ?> </span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/recent-property-owner/" >Recently Added<span class="active-listing-no"><?=get_all_property_owner_recent_counts() ?></span></a></li>
 							</ul>
 						</li>
 						<li><a href="<?php echo get_site_url(); ?>/add-property-owner/"><i class="sl sl-icon-action-redo"></i> Add New Owner</a></li>

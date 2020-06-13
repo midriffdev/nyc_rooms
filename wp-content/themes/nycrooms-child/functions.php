@@ -911,6 +911,23 @@ function inactive_multiple_agents() {
 }
 
 
+add_action( 'wp_ajax_nopriv_approve_multiple_properties', 'approve_multiple_properties' );
+add_action( 'wp_ajax_approve_multiple_properties', 'approve_multiple_properties' );
+function approve_multiple_properties() {
+	global $wpdb;
+	foreach($_POST['data'] as $ids){
+	$status = get_post_meta( $ids, 'status',true);
+	   wp_update_post(array(
+			'ID'    =>  $ids,
+			'post_status'   =>  $status
+	   ));
+	}
+	echo "true";
+	wp_die();
+}
+
+
+
 
 
 function nyc_add_to_favorite() {
@@ -1029,6 +1046,40 @@ function get_all_leads(){
 
 }
 
+function get_all_property_owner_counts(){
+
+$argspage = array(
+         'role__in' => 'property_owner',
+		 'number' => -1
+
+        );
+		
+$users = new WP_User_Query( $argspage ); 
+$user_count_propowner = $users->get_results();
+
+return count($user_count_propowner);
+
+}
+
+function get_all_property_owner_recent_counts(){
+$argspage = array(
+         'role__in' => 'property_owner',
+		 'number' => -1
+
+        );
+$users = new WP_User_Query( $argspage ); 
+$user_count_propowner = $users->get_results();
+$count = count($user_count_propowner);
+if($count <= 20){
+      $count = $count;
+} else{
+      $count = 20;
+}
+return $count;
+
+}
+
+
 function get_recent_leads(){
     $args = array(
          'post_type'        => 'leads',
@@ -1066,14 +1117,12 @@ function nyc_get_properties_admin_by_status($status){
 	));
 	return $properties;
 }
-function nyc_get_recent_properties($status){
-$args = wp_get_recent_posts( array(
-	'numberposts'      => 10,
-	'post_type'        => 'property',
-	'orderby'          => 'post_date',
-	'order'            => 'DESC',
-	'post_status'      => $status,
-) );
+function nyc_get_recent_properties(){
+$args =  array(
+					'numberposts'      => 20,
+					'post_type'        => 'property',
+					'post_status'      => 'draft',
+         );
 $properties = new WP_Query( $args );
 return $properties;
 }

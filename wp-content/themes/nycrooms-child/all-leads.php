@@ -160,7 +160,6 @@ get_header();
 					<td class="lead-email-address"><?= get_post_meta($property_id,'contact_email',true); ?></td>
 					<td class="action">
 						<a href="<?= site_url() . '/lead-details/?leadid='.get_the_ID() ?>"><i class="fa fa-eye"></i> View</a>
-						<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>
 						<a class="delete" data-id="<?= get_the_ID() ?>" style="cursor:pointer;"><i class="fa fa-remove"></i> Delete</a>
 					</td>
 				</tr>

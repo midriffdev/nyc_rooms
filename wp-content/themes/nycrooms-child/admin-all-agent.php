@@ -176,7 +176,6 @@ get_header();
 					<td><div class="owner-status"><?php echo get_user_meta($agents->ID,'user_agent_status',true); ?></div></td>
 					<td class="action">
 						<a href="<?= home_url() . '/agent-details/?agentid='.$agents->ID  ?>"><i class="fa fa-pencil"></i> Edit</a>
-						<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>
 						<a  class="delete_agent_profile" data-id="<?= $agents->ID ?>" style="cursor:pointer;"><i class="fa fa-remove"></i> Delete</a>
 					</td>
 				</tr>

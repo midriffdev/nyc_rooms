@@ -315,12 +315,9 @@ jQuery(document).ready(function($) {
 			 
 		    
 		 }
-		 
-		 
-	    //jQuery('.agent_selected').each()
 	}
 	
-   });
+    });
    
    jQuery('.checkallagents').click(function(){
 	   jQuery(".checkagent").prop('checked', jQuery(this).prop('checked'));
@@ -358,10 +355,13 @@ jQuery(document).ready(function($) {
 							   }
 			  
 	            }
-	   
-	    
-	   
+
 	});
+	
+	
+	
+	
+	
 	
 	
 	/*------------ bulk actions on leads -------------*/
@@ -513,9 +513,40 @@ jQuery(document).ready(function($) {
 				 
 				 }
 			 
-			 } 
+			 } else if(value == 'approve'){
+		       var checkedNum = jQuery('input[class="checkproperties"]:checked').length;
+		     if(checkedNum == 0){
+		         alert('Please choose one or more properties to approve');
+		     } else {
+		       
+				
+                       jQuery('input[class="checkproperties"]:checked').each(function(){
+			                 myarrayproperties.push(jQuery(this).val());
+			           });
+					   
+					   var data = {
+									'action': 'approve_multiple_properties',
+									'data':   myarrayproperties
+	                   };
+	// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+						         
+								   if(response == "true"){
+									 $('#ModalApproveProp').modal('show');
+									setTimeout(function(){
+									   window.location.reload();
+									   // or window.location = window.location.href; 
+								    }, 2000);
+								 
+								   }
+								 
+						  });
+		
+		     
+		       }
 			 //jQuery('.agent_selected').each()
-		}
+		     }
+	}
 	
    });
    
@@ -563,9 +594,39 @@ jQuery(document).ready(function($) {
 	   
 	});  
 	
+	jQuery('.approve_property').click(function(){
 	
-	
-	
+	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
+				  var myapprovearray = new Array();
+	              var id = jQuery(this).data('id');
+				  
+				  if(checkedNum == 0){
+		               alert('Please select this property to approve');
+		          } else {
+		       
+								        myapprovearray.push(id);
+											 var data = {
+													'action': 'approve_multiple_properties',
+													'data':   myapprovearray
+											   };
+											// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+												jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+														
+														  if(response == "true"){
+															$('#ModalApproveProp').modal('show'); 
+															setTimeout(function(){
+															   window.location.reload();
+															   // or window.location = window.location.href; 
+														 }, 2000);
+														 
+														 }
+														 
+												}); 
+							  
+			  
+	            }
+
+	});
 	
 	
 });
