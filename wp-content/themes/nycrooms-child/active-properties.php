@@ -42,14 +42,13 @@ get_header();
 								<td class="title-container">
 									<img src="<?php if($prop_image){ echo $prop_image; } ?>" alt="">
 									<div class="title">
-										<h4><a href="<?php echo get_the_guid(); ?>"><?php echo get_the_title(); ?></a></h4>
+										<h4><a href="<?php echo site_url() .'/single-property/?property_id='.$post_id ?>"><?php echo get_the_title(); ?></a></h4>
 										<span><?php echo $address; ?></span>
 										<span class="table-property-price">$<?php echo ($price) ? $price : 'N/A'; ?>/<?php echo ($payment_method) ? $payment_method : 'N/A'; ?></span> <span class="active--property">Active</span>
 									</div>
 								</td>
 								<td class="action">
-									<a href="#"><i class="fa fa-pencil"></i> Edit</a>
-									<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>
+									<a href="<?= site_url().'/edit-property-owner/?pid='.$post_id ?>"><i class="fa fa-pencil"></i> Edit</a>
 									<a href="#" class="delete delete-property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 								</td>
 							</tr>
