@@ -31,7 +31,7 @@ if(isset($_POST['add_tenant'])){
 		);
 		$user_id = wp_insert_user( $userdata );	   
 		if( isset($_FILES['tenant_profile_picture']['name']) && !empty($_FILES['tenant_profile_picture']['name'])){		 
-			 nyc_user_profile_image_upload($_FILES,'tenant_profile_picture',$user_id);		 
+			 nyc_user_profile_image_upload($_FILES,'profile_picture',$user_id);		 
 		}	   
 		if($user_id){
 			update_user_meta($user_id, 'user_full_name', $fname .' '.$lname);

@@ -1,4 +1,14 @@
 <?php 
+if(isset($_GET['download-csv']) && $_GET['download-csv'] == 'true'){
+	ob_end_clean();   
+	nyc_export_as_CSV();	
+}
+if(isset($_GET['action-csv']) && $_GET['action-csv'] != ''){
+	ob_end_clean();   
+	nyc_export_as_CSV($_GET['action-csv']);	
+}
+global $wp;
+$current_url = home_url( add_query_arg( array(), $wp->request ) );
 nyc_property_admin_authority();
 get_header();
 $serachname = '';
@@ -47,6 +57,7 @@ $query    = get_users($args);
 $total_users = count($users);
 $total_query = count($query);
 $total_pages = ceil($total_users / $number);
+
 ?>
 <!-- Wrapper -->
 <style>
@@ -125,8 +136,11 @@ input.checkbulk{
 					</div>
 					</form>
 				</div>
-				<div class="col-md-12">
+				<div class="col-md-10">
 					 <p class="showing-results"><?php echo $total_query; ?> Results Found On Page <?php echo $paged ;?> of <?php echo $total_pages;?> </p>
+				</div>
+				<div class="col-md-2 mx-auto">
+					 <p class="showing-results"><?php if($total_query){ echo '<a href="'.$current_url.'/?download-csv=true">Download CSV</a>'; } ?></p>
 				</div>
 				<table class="manage-table responsive-table admin-teanent-maintable all_agents_table">
 				<tbody>
@@ -184,6 +198,7 @@ input.checkbulk{
 						 <option value="active">Active</option>
 						 <option value="inactive">Inactive</option>
 						 <option value="delete">Delete</option>
+						 <option value="download-csv">Downlaod CSV</option>
 						</select>
                     <input type="button" value="Apply" class="user_apply_action">
                  </div>

@@ -70,7 +70,7 @@ jQuery(document).ready(function($) {
 		}else if(value == 'inactive'){
 		var checkedNum = jQuery('input[class="checkbulk"]:checked').length;
 		if(checkedNum == 0){
-			alert('Please choose one or more agent to inactive');
+			alert('Please choose one or more user to inactive');
 		}else{
 		jQuery('input[class="checkbulk"]:checked').each(function(){
 			 myarray.push(jQuery(this).val());
@@ -90,6 +90,25 @@ jQuery(document).ready(function($) {
 				}, 2000);
 			}
 		});
+		}
+		}else if(value == 'download-csv'){
+		var checkedNum = jQuery('input[class="checkbulk"]:checked').length;
+		if(checkedNum == 0){
+			alert('Please choose one or more user to download csv');
+		}else{
+		jQuery('input[class="checkbulk"]:checked').each(function(){
+			 myarray.push(jQuery(this).val());
+		});
+			var curr_page = window.location.href,
+			next_page = "";
+			if(curr_page.indexOf("?") > -1) {
+				next_page = curr_page+"&action-csv="+myarray;
+			} else {
+				next_page = curr_page+"?action-csv="+myarray;
+			}
+			console.log(next_page);
+			// Redirect to next page
+			window.location.href = next_page;		
 		}
 		}
 		}

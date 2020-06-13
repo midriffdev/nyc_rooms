@@ -34,9 +34,9 @@ if(isset($_POST['update_user'])){
                    } else {
 		   
 	   
-						   if( isset($_FILES['user_profile_picture']['name']) && !empty($_FILES['user_profile_picture']['name'])){
+						   if( isset($_FILES['profile_picture']['name']) && !empty($_FILES['profile_picture']['name'])){
 								 
-								 nyc_user_profile_image_upload($_FILES,'user_profile_picture',$getuser->ID);
+								 nyc_user_profile_image_upload($_FILES,'profile_picture',$getuser->ID);
 								 
 						   }
 								update_user_meta($getuser->ID, 'user_full_name', $_POST['first_name'] .' '.$_POST['last_name']);
@@ -176,7 +176,7 @@ if(isset($_POST['update_user'])){
 														echo wp_get_attachment_image( $profile_imgid, array('300', '225'), "", array( "class" => "img-responsive" ) );
 												   } else {
 						                  ?>
-						                      <img src="<?= get_stylesheet_directory_uri() ?>/images/male-icon.jpg" alt="">
+						                      <img src="<?php echo get_stylesheet_directory_uri() ?>/images/male-icon.png" alt="">
 												 <?php
 												   }
 												 ?>
@@ -184,7 +184,7 @@ if(isset($_POST['update_user'])){
 										<div class="change-photo-btn">
 											<div class="photoUpload">
 												<span><i class="fa fa-upload"></i> Upload Photo</span>
-												<input type="file" class="upload" id="imgupload" name="user_profile_picture">
+												<input type="file" class="upload" id="imgupload" name="profile_picture">
 											</div>
 										</div>
 									</div>
