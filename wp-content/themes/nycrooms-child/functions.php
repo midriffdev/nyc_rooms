@@ -375,7 +375,7 @@ function nyc_get_existing_file_ajax(){
 				$file_pathurl  = $pathurl.$file;
 				if(!is_dir($file_path)){
                    $size = filesize($file_path);
-                   $file_list[] = array('name'=>$file,'size'=>$size,'path'=>$file_path);
+                   $file_list[] = array('name'=>$file,'size'=>$size,'path'=> base64_encode($file_path));
 				}
             }
            echo json_encode($file_list);  
@@ -989,16 +989,21 @@ if($user_id){
 return $is_bookmark;
 }
 
-function get_lat_long($address){
+function get_lat_long($address,$region){	
 
     $address = str_replace(" ", "+", $address);	
+	$region  = str_replace(" ", "+", $region);	
+	
 
-    $json = file_get_contents("https://maps.google.com/maps/api/geocode/json?key=AIzaSyAgeuuDfRlweIs7D6uo4wdIHVvJ0LonQ6g&&address=$address");
+    $json = file_get_contents("https://maps.google.com/maps/api/geocode/json?key=AIzaSyDkB8x8TIEGgMQIeZjIEJILbKOn_5uEP8I&&address=$address&&region=$region");
     $json = json_decode($json);
 
     $lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
     $long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
-    return $lat.','.$long;
+    return array( 
+	              'longitude' => $long,
+	              'latitude' => $lat,
+				 );
 }
 
 add_action( 'init', 'nyc_create_custom_post_leads', 0 );

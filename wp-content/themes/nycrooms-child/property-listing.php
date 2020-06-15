@@ -584,7 +584,15 @@ get_header();
 						 <input type="hidden" class="property_image" value="<?= $imgsrc[0] ?>">
 						 <input type="hidden" class="property_title" value="<?= get_the_title() ?>">
 						 <input type="hidden" class="property_address" value="<?= get_post_meta(get_the_ID(),'address',true) ?>">
-						 
+						<?php
+						 $propertyaddress = get_post_meta(get_the_ID(),'address',true);
+						 $region = get_post_meta(get_the_ID(),'state',true);
+						 $longlat = get_lat_long($propertyaddress,$region);
+						 $longitude  =   $longlat['longitude'];
+						 $latitude   =   $longlat['latitude'];
+						?>
+						<input type="hidden" class="property_longitude" value="<?= $longitude ?>">
+						<input type="hidden" class="property_latitude" value="<?= $latitude ?>">
 					</div>
 				</div>
 				
