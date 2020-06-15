@@ -396,8 +396,9 @@ get_footer();
   Dropzone.autoDiscover = false;
   jQuery(".dropzone").dropzone({
   dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
+  addRemoveLinks: true,
   init: function() { 
-			myDropzone = this;  
+			myDropzone = this; 		
 			 var property_id = $('#property_id').val(); 
 			jQuery.ajax({
 			  type: 'post',
@@ -406,18 +407,22 @@ get_footer();
 			  data: {action:'nyc_get_existing_file_ajax',property_id:property_id},
 			  success: function(response){
 				  $.each(response, function(key,value) {
-						  var mockFile = { name: value.name, size: value.size };
-						  myDropzone.emit("addedfile", mockFile);
-						  myDropzone.emit("thumbnail", mockFile, value.path);
-						  myDropzone.emit("complete", mockFile);
-						  
-
-				}); 
+                          if(value.size != false){
+						     var mockFile = { name: value.name, size: value.size };
+							  myDropzone.emit("addedfile", mockFile);
+							  myDropzone.emit("thumbnail", mockFile, value.path);
+							  myDropzone.emit("complete", mockFile);
+                              
+						  }
+						 
+				  }); 
 
 			  }
-			 });
+			 });	 
    }
-});
+   
+   
+}); 
 
 jQuery(document).ready(function($) {
    
@@ -587,7 +592,7 @@ jQuery(".preview-update").click(function(e){
 				processData: false,
 				contentType: false,
 				success: function(response) {
-				     if(response == "success"){
+				    if(response == "success"){
 						window.location.href = window.location.href + "&&action=success";
 					} else {
 						window.location.href = window.location.href + "&&action=false";

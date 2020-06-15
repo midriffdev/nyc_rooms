@@ -110,7 +110,6 @@ if(is_user_logged_in()){
 	if(!$userrolecheck){
 	  $userrolecheck = get_user_by('email', $username);
 	}
-	
    
      if($userrolecheck->roles[0] != "property_owner"){
 	   $loginerror = "Invalid login details";
