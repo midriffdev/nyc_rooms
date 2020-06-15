@@ -397,7 +397,7 @@ get_footer();
 	dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
 }); 
 
-   /* Dropzone.autoDiscover = false;
+  Dropzone.autoDiscover = false;
   jQuery(".dropzone").dropzone({
   dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
   init: function() { 
@@ -421,7 +421,7 @@ get_footer();
 			  }
 			 });
    }
-});  */
+});
 
 jQuery(document).ready(function($) {
    
