@@ -375,7 +375,7 @@ function nyc_get_existing_file_ajax(){
 				$file_pathurl  = $pathurl.$file;
 				if(!is_dir($file_path)){
                    $size = filesize($file_path);
-                   $file_list[] = array('name'=>$file,'size'=>$size,'path'=> base64_encode($file_path));
+                   $file_list[] = array('name'=>$file,'size'=>$size,'path'=> $file_path);
 				}
             }
            echo json_encode($file_list);  
