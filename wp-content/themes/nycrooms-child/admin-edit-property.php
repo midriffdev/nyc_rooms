@@ -392,11 +392,7 @@ get_header();
 get_footer();
 ?>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/dropzone.js"></script>
-<script type="text/javascript">				
- jQuery(".dropzone").dropzone({
-	dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
-}); 
-
+<script type="text/javascript">
   Dropzone.autoDiscover = false;
   jQuery(".dropzone").dropzone({
   dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
