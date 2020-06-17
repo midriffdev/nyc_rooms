@@ -75,7 +75,7 @@ if(is_user_logged_in()){
 				
 				 if(!is_wp_error($user_verify)){
 				   wp_new_user_notification($user, null, 'both');
-				   header( 'Location:' . site_url() . '/my-profile/?success=1&u=' . $username );  
+				   header( 'Location:' . site_url() . '/property-owner/?success=1&u=' . $username );  
 				}
 				
 			 }
@@ -120,7 +120,7 @@ if(is_user_logged_in()){
 			$loginerror = "Invalid login details";  
 		   // Note, I have created a page called "Error" that is a child of the login page to handle errors. This can be anything, but it seemed a good way to me to handle errors.  
 		 } else {    
-		   echo "<script type='text/javascript'>window.location.href='". site_url().'/my-profile/' ."'</script>";  
+		   echo "<script type='text/javascript'>window.location.href='". site_url().'/property-owner/' ."'</script>";  
 		   exit();  
 		 }
    }
@@ -129,7 +129,7 @@ if(is_user_logged_in()){
 
 $client_id = '675017533078473'; // Facebook APP Client ID
 $client_secret = 'a2183f77e4e5c2944b2c5f1ed9fcabb6'; // Facebook APP Client secret
-$redirect_uri =  site_url() . '/login-register/'; // URL of page/file that processes a request
+$redirect_uri =  site_url() . '/owner-registeration/'; // URL of page/file that processes a request
  
  /*----------------- Facebook Login -------------------------*/
  
@@ -195,7 +195,7 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 			
 			if( $user_id ) {
 			    wp_set_auth_cookie( $user_id, true );
-				wp_redirect( home_url() . '/my-profile/');
+				wp_redirect( home_url() . '/property-owner/');
 				exit;
 			}
  
@@ -216,7 +216,7 @@ $login_url = 'https://www.facebook.com/dialog/oauth?' . urldecode( http_build_qu
 // init configuration
 $clientID = '442563866929-35p9pvj6om2jepgi700mgs0blocjh839.apps.googleusercontent.com';
 $clientSecret = '3mzvZQJVFDFBbTQhOO5EOcZx';
-$redirectUri =  site_url().'/login-register/';
+$redirectUri =  site_url().'/owner-registeration/';
 // create Client Request to access Google API
 $client = new Google_Client();
 $client->setClientId($clientID);
@@ -259,7 +259,7 @@ if (isset($_GET['code'])) {
 			
 			if( $user_id ) {
 			    wp_set_auth_cookie( $user_id, true );
-				wp_redirect( home_url() . '/my-profile/');
+				wp_redirect( home_url() . '/property-owner/');
 				exit;
 			}
 			
