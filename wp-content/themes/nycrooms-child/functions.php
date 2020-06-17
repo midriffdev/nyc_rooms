@@ -520,10 +520,10 @@ function nyc_property_owner_authority(){
 		if(in_array('administrator',$roles) || in_array('property_owner',$roles)){
 		  
 		} else {
-		   wp_redirect(home_url());
+		   wp_redirect(get_site_url().'/login-register');
 		}
 	}else{
-		wp_redirect(home_url());
+		wp_redirect(get_site_url().'/login-register');
 	}
 }
 

@@ -106,7 +106,7 @@ input.checkbulk{
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
                 <div class="admin-advanced-searchfilter">
-					<h2>Teanent filter</h2>
+					<h2>Tenent filter</h2>
 					<form action='' >
 					<div class="row with-forms">
 						<!-- Form -->

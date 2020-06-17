@@ -95,7 +95,7 @@ get_header();
 							<a href="<?php echo get_site_url();?>/admin-recently-properties">
 								<div class="statistic__item_cont">
 									<div class="statistic__item_title-sec">
-										<h2 class="counter-value"><?php echo nyc_get_recent_properties('draft')->post_count; ?></h2>
+										<h2 class="counter-value"><?php echo nyc_get_recent_properties(); ?></h2>
 	                            		<span class="desc">Recently Added </span>
 									</div>
 									<div class="statistic__item_img-sec">

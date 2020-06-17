@@ -72,6 +72,26 @@ add_action( 'template_redirect', function(){
         include get_stylesheet_directory() . '/my-templates/admin/add-tenant.php';
         die;
     }
+    if ( is_page('tenant') ) {
+        include get_stylesheet_directory() . '/my-templates/tenant/profile.php';
+        die;
+    }
+    if ( is_page('tenant/active-properties') ) {
+        include get_stylesheet_directory() . '/my-templates/tenant/active-properties.php';
+        die;
+    }	
+    if ( is_page('tenant/bookmarked-properties') ) {
+        include get_stylesheet_directory() . '/my-templates/tenant/bookmark-properties.php';
+        die;
+    }	
+    if ( is_page('tenant/past-properties') ) {
+        include get_stylesheet_directory() . '/my-templates/tenant/past-properties.php';
+        die;
+    }		
+    if ( is_page('tenant/contracts') ) {
+        include get_stylesheet_directory() . '/my-templates/tenant/contracts.php';
+        die;
+    }	
 } );
 
 function nyc_user_profile_image_upload($FILES,$name,$userid){
@@ -195,4 +215,43 @@ function nyc_wp_new_user_notification( $user_id, $plaintext_pass = '' ) {
 	wp_mail($user_email, sprintf(__('[%s] Your username and password'), get_option('blogname')), $message);
 }
 
+function nyc_tenant_check_authentication(){
+	if(!is_user_logged_in()){
+     header( 'Location:' . site_url() . '/tenant-registration/');
+	}
+	$user = wp_get_current_user();
+	if($user->roles[0] == "property_owner"){
+		header( 'Location:' . site_url() . '/my-profile/');
+	} else if($user->roles[0] == "administrator"){
+	   header( 'Location:' . site_url() . '/admin/');
+	}
+}
+
+function nyc_remove_add_to_favorite() {
+    // Get the existing meta for 'meta_key'
+	if(isset($_POST['action']) && $_POST['action'] == 'nyc_remove_add_to_favorite'){
+		$user_id=get_current_user_id(); 
+		if($user_id){
+		$meta_key='nyc_bookmark';
+		$new_value=$_POST['property_id'];
+		$new_data = array();
+		$old_data= get_user_meta($user_id, $meta_key, true);
+		if(in_array($new_value, $old_data)){
+		$pos = array_search($new_value, $old_data);
+		unset($old_data[$pos]);
+		}else{
+			$new_data[] = $new_value;
+		}
+		foreach($old_data as $data){
+			$new_data[] = $data;
+		}
+		update_user_meta($user_id, $meta_key, $new_data);
+		}else{
+			echo "false";
+		}
+	}
+	exit;
+}
+add_action( 'wp_ajax_nyc_remove_add_to_favorite', 'nyc_remove_add_to_favorite' );
+add_action( 'wp_ajax_nopriv_nyc_remove_add_to_favorite', 'nyc_remove_add_to_favorite' );
 ?>
