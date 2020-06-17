@@ -1,9 +1,8 @@
 <?php
 /* Template Name: Admin Edit Tenant */
-
+nyc_property_admin_authority();
 $getuser = wp_get_current_user();
 $user_id = $getuser->ID;
-nyc_tenant_check_authentication();
 if(isset($_POST['update_user'])){
     $userdata = array( 
 	            'ID' => $user_id,
