@@ -79,7 +79,7 @@ if(is_user_logged_in()){
 				
 				 if(!is_wp_error($user_verify)){
 				   wp_new_user_notification($user, null, 'both');
-				   header( 'Location:' . site_url() . '/my-profile-tenant/?success=1&u=' . $username );  
+				   header( 'Location:' . site_url() . '/tenant/?success=1&u=' . $username );  
 				}
 				
 			 }
@@ -126,7 +126,7 @@ if(is_user_logged_in()){
 			$loginerror = "Invalid login details";  
 		   // Note, I have created a page called "Error" that is a child of the login page to handle errors. This can be anything, but it seemed a good way to me to handle errors.  
 		   } else {    
-			   echo "<script type='text/javascript'>window.location.href='". site_url().'/my-profile-tenant/' ."'</script>";  
+			   echo "<script type='text/javascript'>window.location.href='". site_url().'/tenant/' ."'</script>";  
 			   exit();  
 		   } 
 	}
@@ -259,7 +259,7 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 			
 			if( $user_id ) {
 			    wp_set_auth_cookie( $user_id, true );
-				wp_redirect( home_url() . '/my-profile-tenant/');
+				wp_redirect( home_url() . '/tenant/');
 				exit;
 			}
  
@@ -327,7 +327,7 @@ if (isset($_GET['code'])) {
 			
 			if( $user_id ) {
 			    wp_set_auth_cookie( $user_id, true );
-				wp_redirect( home_url() . '/my-profile-tenant/');
+				wp_redirect( home_url() . '/tenant/');
 				exit;
 			}
 			
