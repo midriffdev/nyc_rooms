@@ -44,7 +44,7 @@ get_header();
 									<div class="title">
 										<h4><a href="<?php echo site_url() .'/single-property/?property_id='.$post_id ?>"><?php echo get_the_title(); ?></a></h4>
 										<span><?php echo $address; ?></span>
-										<span class="table-property-price">$<?php echo ($price) ? $price : 'N/A'; ?>/<?php echo ($payment_method) ? $payment_method : 'N/A'; ?></span> <span class="active--property">Active</span>
+										<span class="table-property-price">$<?php echo ($price) ? $price : 'N/A'; ?>/ Weekly</span> <span class="active--property">Active</span>
 									</div>
 								</td>
 								<td class="action">

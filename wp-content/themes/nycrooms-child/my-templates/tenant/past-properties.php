@@ -1,5 +1,5 @@
 <?php
-/* Template Name: Active Properties Tenant */
+/* Template Name: Past Properties Tenant */
 if(!is_user_logged_in()){
      header( 'Location:' . site_url() . '/tenant-registration/');
 }
@@ -13,11 +13,14 @@ get_header();
 ?>
 <!-- Wrapper -->
 <div id="wrapper">
+
 <!-- Content
 ================================================== -->
 <div class="container">
 	<div class="row">
-       <?php include(locate_template('sidebar/tenant-sidebar.php')); ?>
+	    <!-- Widget -->
+		<?php include(locate_template('sidebar/tenant-sidebar.php')); ?>
+		
 		<div class="col-md-8">
 			<table class="manage-table responsive-table">
 
@@ -34,7 +37,7 @@ get_header();
 						<div class="title">
 							<h4><a href="#">Serene Uptown</a></h4>
 							<span>6 Bishop Ave. Perkasie, PA </span>
-							<span class="table-property-price">$900 / monthly</span> <span class="active--property">Active</span>
+							<span class="table-property-price">$900 / monthly</span> <span class="rented--property">Past</span>
 						</div>
 					</td>
 					<td class="expire-date">December 30, 2016</td>
@@ -50,7 +53,7 @@ get_header();
 						<div class="title">
 							<h4><a href="#">Oak Tree Villas</a></h4>
 							<span>71 Lower River Dr. Bronx, NY</span>
-							<span class="table-property-price">$700 / monthly</span> <span class="active--property">Active</span>
+							<span class="table-property-price">$700 / monthly</span> <span class="rented--property">Past</span>
 						</div>
 					</td>
 					<td class="expire-date">December 12, 2016</td>
@@ -66,7 +69,7 @@ get_header();
 						<div class="title">
 							<h4><a href="#">Selway Apartments</a></h4>
 							<span>33 William St. Northbrook, IL </span>
-							<span class="table-property-price">$200 / monthly</span> <span class="active--property">Active</span>
+							<span class="table-property-price">$200 / monthly</span> <span class="rented--property">Past</span>
 						</div>
 					</td>
 					<td class="expire-date">December 04, 2016</td>
@@ -82,7 +85,7 @@ get_header();
 						<div class="title">
 							<h4><a href="#">Old Town Manchester</a></h4>
 							<span> 7843 Durham Avenue, MD  </span>
-							<span class="table-property-price">$500 / monthly</span> <span class="active--property">Active</span>
+							<span class="table-property-price">$500 / monthly</span> <span class="rented--property">Past</span>
 						</div>
 					</td>
 					<td class="expire-date">November 27, 2016</td>
@@ -104,6 +107,12 @@ get_header();
 
 
 </div>
+<script>
+jQuery(document).ready(function($) {
+	jQuery('#sidebar-past').addClass('current');
+	jQuery('.list-has--submenu').addClass('show--submenu');
+});
+</script>
 <!-- Wrapper / End -->
 <?php
 get_footer();

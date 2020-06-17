@@ -4,6 +4,11 @@ Template Name: Add Property
 */
 nyc_property_owner_authority();
 get_header();
+$getuser = wp_get_current_user();
+$user_id = $getuser->ID;
+$full_name = get_user_meta($user_id,'first_name',true). " " . get_user_meta($user_id,'last_name',true);
+$email = $getuser->data->user_email;
+$phone = get_user_meta($user_id,'user_phone',true);
 ?>
 <!-- Wrapper -->
 <div id="wrapper">
@@ -358,21 +363,21 @@ get_header();
 				<!-- Name -->
 				<div class="col-md-4">
 					<h5>Name</h5>
-					<input type="text" id="contact_name">
+					<input type="text" id="contact_name" value="<?php echo $full_name; ?>">
 					<span id="contact_name-err"></span>
 				</div>
 
 				<!-- Email -->
 				<div class="col-md-4">
 					<h5>E-Mail</h5>
-					<input type="text" id="contact_email">
+					<input type="text" id="contact_email" value="<?php echo $email; ?>">
 					<span id="contact_email-err"></span>
 				</div>
 
 				<!-- Name -->
 				<div class="col-md-4">
 					<h5>Phone <span>(optional)</span></h5>
-					<input type="text" id="contact_phone">
+					<input type="text" id="contact_phone" value="<?php echo $phone; ?>">
 				</div>
 
 			</div>
@@ -398,8 +403,10 @@ get_header();
 get_footer();
 ?>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/dropzone.js"></script>
-<script>				
+<script>		
+Dropzone.autoDiscover = false;		
 jQuery(".dropzone").dropzone({
+	url: "/file/post",
 	dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
 	addRemoveLinks: true,
 	removedfile: function(file) {
