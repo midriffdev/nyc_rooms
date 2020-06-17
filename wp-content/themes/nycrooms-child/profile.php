@@ -5,9 +5,9 @@ if(!is_user_logged_in()){
 }
 $user = wp_get_current_user();
 if($user->roles[0] == "tenant"){
-    header( 'Location:' . site_url() . '/my-profile-tenant/');
+    header( 'Location:' . site_url() . '/tenant/');
 } else if($user->roles[0] == "administrator"){
-   header( 'Location:' . site_url(). '/admin-dashboard/');
+   header( 'Location:' . site_url(). '/admin/');
 }
 if(isset($_POST['user_submit'])){
    

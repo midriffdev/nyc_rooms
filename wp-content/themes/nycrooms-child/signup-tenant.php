@@ -6,7 +6,7 @@ $errors = array();
 $loginerror = '';
 $success_msg = '';
 if(is_user_logged_in()){
-  header( 'Location:' . site_url() . '/my-profile-tenant/');
+  header( 'Location:' . site_url() . '/tenant/');
 }
    
      if(isset($_REQUEST['register']) && $_SERVER['REQUEST_METHOD'] == "POST") 

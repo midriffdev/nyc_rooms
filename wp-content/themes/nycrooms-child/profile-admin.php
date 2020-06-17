@@ -1,13 +1,13 @@
 <?php
 /* Template Name: Profile Admin */
 if(!is_user_logged_in()){
-     header( 'Location:' . site_url() . '/login-admin/');
+     header( 'Location:' . site_url() . '/admin/');
 }
 $user = wp_get_current_user();
 if($user->roles[0] == "property_owner"){
-    header( 'Location:' . site_url() . '/my-profile/');
+    header( 'Location:' . site_url() . '/property-owner/');
 } else if($user->roles[0] == "tenant"){
-   header( 'Location:' . site_url() . '/my-profile-tenant/');
+   header( 'Location:' . site_url() . '/tenant/');
 }
 if(isset($_POST['user_submit'])){
   

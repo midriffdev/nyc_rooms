@@ -1,7 +1,10 @@
 <?php
-/* Template Name: Single Property */
+/* 
+ * Template Name: Single Property
+ * Template Post Type: property
+ */
 get_header();
-$post_id = $_GET['property_id'];
+$post_id = get_the_ID();
 $address = get_post_meta($post_id, 'address',true)." ";
 $address .= get_post_meta($post_id, 'city',true)." ";
 $address .= get_post_meta($post_id, 'state',true).", ";
@@ -47,7 +50,11 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 			<?php
 				foreach($gallery_files as $file){
 				    $img_src=wp_get_attachment_url(get_post_meta($post_id, $file ,true ));
-					echo '<a href="'.$img_src.'" data-background-image="'.$img_src.'" class="item mfp-gallery"></a>';
+					if($img_src){
+					    if(img_exist($img_src)){
+					       echo '<a href="'.$img_src.'" data-background-image="'.$img_src.'" class="item mfp-gallery"></a>';
+						}
+					}
 				}
 			?>
 			</div>
@@ -57,7 +64,11 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 			<?php
 				foreach($gallery_files as $file){
 				    $img_src=wp_get_attachment_url(get_post_meta($post_id, $file ,true ));
-					echo '<div class="item"><img src="'.$img_src.'" alt=""></div>';
+					if($img_src){
+					   if(img_exist($img_src)){
+					   echo '<div class="item"><img src="'.$img_src.'" alt=""></div>';
+					   }
+					}
 				}
 			?>
 			</div>

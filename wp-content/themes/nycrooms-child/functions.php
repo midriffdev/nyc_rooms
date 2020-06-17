@@ -1483,8 +1483,11 @@ function nyc_get_properties_by_title( $where, $wp_query )
     return $where;
 }
 
-
-
-
+function img_exist($url = NULL)
+{
+    if (!$url) return false;
+    $headers = get_headers($url);
+    return stripos($headers[0], "200 OK") ? true : false;
+}
 require_once( 'inc/init-function.php');
 ?>

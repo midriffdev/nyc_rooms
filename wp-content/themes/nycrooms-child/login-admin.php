@@ -4,7 +4,7 @@ global $wpdb, $user_ID;
 $errors = array();
 $loginerror = ''; 
 if(is_user_logged_in()){
-  header( 'Location:' . site_url() . '/admin-dashboard/');
+  header( 'Location:' . site_url() . '/admin/');
 } 
 
 if(isset($_POST['login'])){  
