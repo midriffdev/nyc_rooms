@@ -1,87 +1,34 @@
 <?php
 /* Template Name: Admin Edit Tenant */
 nyc_property_admin_authority();
-get_header();
+$getuser = wp_get_current_user();
+$user_id = $getuser->ID;
+nyc_tenant_check_authentication();
 if(isset($_POST['update_user'])){
-       if( $_POST['email'] != $getuser->user_email  ) {
-	     
-	    if(email_exists( $_POST['email'] )){
-            $usererror ="Sorry!! Email Already Exists";
-		} else {
-	  
-	  
-	        $user_data = wp_update_user( 
-		            array(
-					       'ID' => $getuser->ID, 
-		                   'user_email' => $_POST['email'],
-						   'display_name' => $_POST['first_name'].' ' .$_POST['last_name']
-				    ) 
-				   
-				   );
-				   
-				    if ( is_wp_error( $user_data ) ) {
-    
-                   $usererror =  'Error in update user';
-                   } else {
-		   
-	   
-						   if( isset($_FILES['profile_picture']['name']) && !empty($_FILES['profile_picture']['name'])){
-								 
-								 nyc_user_profile_image_upload($_FILES,'profile_picture',$getuser->ID);
-								 
-						   }
-								update_user_meta($getuser->ID, 'user_full_name', $_POST['first_name'] .' '.$_POST['last_name']);
-								update_user_meta($getuser->ID, 'user_email', $_POST['email']);
-								update_user_meta($getuser->ID, 'user_phone', $_POST['phone'] );
-								update_user_meta($getuser->ID, 'user_personal_address', $_POST['address']);
-								update_user_meta($getuser->ID, 'user_about',$_POST['about']);
-								update_user_meta($getuser->ID, 'user_twitter', $_POST['twitter'] );
-								update_user_meta($getuser->ID, 'user_facebook', $_POST['facebook'] );
-								update_user_meta($getuser->ID, 'user_googleplus', $_POST['googleplus'] );
-								update_user_meta($getuser->ID, 'user_linkedin', $_POST['linkedin'] );
-								$usersuccess = "User profile updated successfully";
-
-                   }						
-        }
-		
-      } else {
-	        $user_data = wp_update_user( 
-		            array(
-					       'ID' => $getuser->ID, 
-		                   'user_email' => $_POST['email'],
-						   'display_name' => $_POST['first_name'].' ' .$_POST['last_name']
-				    ) 
-				   
-				   );
-				   
-				    if ( is_wp_error( $user_data ) ) {
-    
-                   $usererror =  'Error in update user';
-                   } else {
-		   
-	   
-						   if( isset($_FILES['profile_picture']['name']) && !empty($_FILES['profile_picture']['name'])){
-								 
-								 nyc_user_profile_image_upload($_FILES,'profile_picture',$getuser->ID);
-								 
-						   }
-						        update_user_meta($getuser->ID, 'first_name', $_POST['first_name'] );
-			                    update_user_meta($getuser->ID, 'last_name', $_POST['last_name'] );
-								update_user_meta($getuser->ID, 'user_full_name', $_POST['first_name'] .' '.$_POST['last_name']);
-								update_user_meta($getuser->ID, 'user_email', $_POST['email']);
-								update_user_meta($getuser->ID, 'user_phone', $_POST['phone'] );
-								update_user_meta($getuser->ID, 'user_personal_address', $_POST['address']);
-								update_user_meta($getuser->ID, 'user_about',$_POST['about']);
-								update_user_meta($getuser->ID, 'user_twitter', $_POST['twitter'] );
-								update_user_meta($getuser->ID, 'user_facebook', $_POST['facebook'] );
-								update_user_meta($getuser->ID, 'user_googleplus', $_POST['googleplus'] );
-								update_user_meta($getuser->ID, 'user_linkedin', $_POST['linkedin'] );
-								$usersuccess = "Tenant profile updated successfully";
-
-                   }						
-    }
+    $userdata = array( 
+	            'ID' => $user_id,
+	            'user_nicename'		=>  $_POST['first_name'].' ' .$_POST['last_name'],
+				'display_name'		=> 	$_POST['first_name'].' ' .$_POST['last_name'],
+	             );
+    wp_update_user($userdata );
+	if( isset($_FILES['profile_picture']['name']) && !empty($_FILES['profile_picture']['name'])){		 
+		nyc_user_profile_image_upload($_FILES,'profile_picture',$user_id);	 
+	}	
+	update_user_meta($user_id, 'first_name', $_POST['first_name'] );
+	update_user_meta($user_id, 'last_name', $_POST['last_name'] );
+	update_user_meta($user_id, 'user_full_name', $_POST['first_name'] .' '.$_POST['last_name']);
+	update_user_meta($user_id, 'user_email', $_POST['email']);
+	update_user_meta($user_id, 'user_phone', $_POST['phone'] );
+	update_user_meta($user_id, 'user_personal_address', $_POST['address']);
+	update_user_meta($user_id, 'user_about',$_POST['about']);
+	update_user_meta($user_id, 'user_twitter', $_POST['twitter'] );
+	update_user_meta($user_id, 'user_facebook', $_POST['facebook'] );
+	update_user_meta($user_id, 'user_googleplus', $_POST['googleplus'] );
+	update_user_meta($user_id, 'user_linkedin', $_POST['linkedin'] );
+	$usersuccess =  "Profile Updated Successfully";
+   
 }
-
+get_header();
 ?>
 <!-- Wrapper -->
 <div id="wrapper">
@@ -98,13 +45,6 @@ if(isset($_POST['update_user'])){
 			</div>
 		</div>
 		<div class="row">
-		            <?php
-                         if(isset($usererror) && $usererror){
-						?>
-						    <label class="form_errors"><?= $usererror ?></label>
-						<?php
-						 }
-						?>
 						<?php
                          if(isset($usersuccess) && $usersuccess){
 						?>
@@ -118,24 +58,24 @@ if(isset($_POST['update_user'])){
 							<div class="row">
 								<div class="col-md-6">
 									<label>First Name</label>
-									<input value="<?php echo get_user_meta($getuser->ID,'first_name',true); ?>" type="text" name="first_name" placeholder="First Name" required>
+									<input value="<?php echo get_user_meta($user_id,'first_name',true); ?>" type="text" name="first_name" placeholder="First Name" required>
 								</div>
 								<div class="col-md-6">
 									<label>Last Name</label>
-									<input value="<?php echo get_user_meta($getuser->ID,'last_name',true); ?>" type="text" name="last_name" placeholder="Last Name" required>
+									<input value="<?php echo get_user_meta($user_id,'last_name',true); ?>" type="text" name="last_name" placeholder="Last Name" required>
 								</div>
 							</div>
 							
 							<div class="row">
 								<div class="col-md-12">
 									<label>Phone</label>
-									<input value="<?php echo get_user_meta($getuser->ID,'user_phone',true); ?>" type="text" name="phone" placeholder="Phone" required>
+									<input value="<?php echo get_user_meta($user_id,'user_phone',true); ?>" type="text" name="phone" placeholder="Phone" required>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-12">
 									<label>Email</label>
-									<input value="<?php echo $getuser->data->user_email; ?>" type="text" name="email" placeholder="Email" required>
+									<input value="<?php echo $getuser->data->user_email; ?>" type="text" name="email" placeholder="Email" readonly>
 								</div>
 							</div>
 
@@ -143,12 +83,12 @@ if(isset($_POST['update_user'])){
 							
 								 <div class="col-md-12">
 									<h4 class="margin-top-50 margin-bottom-25">Address</h4>
-									<textarea name="address" id="address" cols="30" rows="10" name="address" placeholder="Address"><?php echo get_user_meta($getuser->ID,'user_personal_address',true); ?></textarea>
+									<textarea name="address" id="address" cols="30" rows="10" name="address" placeholder="Address"><?php echo get_user_meta($user_id,'user_personal_address',true); ?></textarea>
 								</div>
 								
 								<div class="col-md-12">
 									<h4 class="margin-top-50 margin-bottom-25">About Me</h4>
-									<textarea name="about" id="about" cols="30" rows="10" placeholder="About"><?php echo get_user_meta($getuser->ID,'user_about',true); ?></textarea>
+									<textarea name="about" id="about" cols="30" rows="10" placeholder="About"><?php echo get_user_meta($user_id,'user_about',true); ?></textarea>
 								</div>
 								
 							</div>
@@ -162,10 +102,10 @@ if(isset($_POST['update_user'])){
 									<!-- Avatar -->
 									<div class="edit-profile-photo">
 									      <?php
-												  $profile_imgid =  get_user_meta($getuser->ID,'profile_picture',true);
-												  if($profile_imgid){
-														echo wp_get_attachment_image( $profile_imgid, array('300', '225'), "", array( "class" => "img-responsive" ) );
-												   } else {
+												$profile_imgid =  get_user_meta($user_id,'profile_picture',true);
+												if($profile_imgid){
+													echo wp_get_attachment_image( $profile_imgid, array('300', '225'), "", array( "class" => "img-responsive" ) );
+												} else {
 						                  ?>
 						                      <img src="<?php echo get_stylesheet_directory_uri() ?>/images/male-icon.png" alt="">
 												 <?php
@@ -187,19 +127,19 @@ if(isset($_POST['update_user'])){
 								</div>
 								<div class="col-md-6">
 									<label><i class="fa fa-twitter"></i> Twitter</label>
-									<input value="<?php echo get_user_meta($getuser->ID,'user_twitter',true); ?>" type="text" placeholder="Twitter" name="twitter">
+									<input value="<?php echo get_user_meta($user_id,'user_twitter',true); ?>" type="text" placeholder="Twitter" name="twitter">
 								</div>
 								<div class="col-md-6">
 									<label><i class="fa fa-facebook-square"></i> Facebook</label>
-									<input value="<?php echo get_user_meta($getuser->ID,'user_facebook',true); ?>" type="text" placeholder="Facebook" name="facebook">
+									<input value="<?php echo get_user_meta($user_id,'user_facebook',true); ?>" type="text" placeholder="Facebook" name="facebook">
 								</div>
 								<div class="col-md-6">
 									<label><i class="fa fa-google-plus"></i> Google+</label>
-									<input value="<?php echo get_user_meta($getuser->ID,'user_googleplus',true); ?>" type="text" placeholder="Googleplus" name="googleplus" >
+									<input value="<?php echo get_user_meta($user_id,'user_googleplus',true); ?>" type="text" placeholder="Googleplus" name="googleplus" >
 								</div>
 								<div class="col-md-6">
 									<label><i class="fa fa-linkedin"></i> Linkedin</label>
-									<input value="<?php echo get_user_meta($getuser->ID,'user_linkedin',true); ?>" type="text" placeholder="linkedin" name="linkedin">
+									<input value="<?php echo get_user_meta($user_id,'user_linkedin',true); ?>" type="text" placeholder="linkedin" name="linkedin">
 								</div>
 							</div>
 							<button class="button margin-top-20 margin-bottom-20" type="submit" name="update_user">Save Changes</button>
@@ -243,6 +183,7 @@ jQuery(document).ready(function(){
 	})(imgupload);
   oFReader.readAsDataURL(document.getElementById("imgupload").files[0]);
   });
+  jQuery('#sidebar-profile').addClass('current');
 });
 </script>
 <?php
