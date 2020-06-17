@@ -40,6 +40,10 @@ if(isset($_POST['reset_pass_Sbumit'])){
 					      $redirect_to = get_site_url()."/tenant-registration/?action=reset_success";
 						  wp_safe_redirect($redirect_to);
 						  exit();
+					  } else if($user_role == 'administrator'){
+					       $redirect_to = get_site_url()."/login-admin/?action=reset_success";
+						   wp_safe_redirect($redirect_to);
+						   exit();
 					  }
 					 
 		         }

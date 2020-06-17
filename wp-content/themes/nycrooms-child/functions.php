@@ -802,7 +802,10 @@ function kv_rest_setting_password($reset_key, $user_login, $user_email, $ID ,$ne
  	 $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/owner-registeration/" .'" >' . get_option('siteurl')."/login-register/" . "</a> <br><br>";
 	 } else if($user_role == 'tenant'){
 	  $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/tenant-registration/" .'" >' . get_option('siteurl')."/tenant-registration/" . "</a> <br><br>";
+	 } else if($user_role == 'administrator'){
+	  $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/login-admin/" .'" >' . get_option('siteurl')."/login-admin/" . "</a> <br><br>";
 	 }
+	 
       $headers = array('Content-Type: text/html; charset=UTF-8');
   	if ( $message && !wp_mail($user_email, 'Your New Password to login into eimams', $message,$headers) ) {
   	 	$msg = false; 
