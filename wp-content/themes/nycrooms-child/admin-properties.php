@@ -286,6 +286,9 @@ get_header();
 							$prop_image = wp_get_attachment_url(get_post_meta($post_id, 'file_0',true));
 							$contact_name = get_post_meta($post_id, 'contact_name',true);
 							$status = get_post_meta($post_id, 'status',true);
+							if(!$prop_image){
+							   $prop_image = wp_get_attachment_url(get_post_meta($post_id, 'file_1',true));
+							}
 				?>
 					
 				<tr>
