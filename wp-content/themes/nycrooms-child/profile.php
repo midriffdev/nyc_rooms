@@ -1,7 +1,7 @@
 <?php
 /* Template Name: Profile */
 if(!is_user_logged_in()){
-     header( 'Location:' . site_url() . '/property-owner/');
+     header( 'Location:' . site_url() . '/owner-registeration/');
 }
 $user = wp_get_current_user();
 if($user->roles[0] == "tenant"){

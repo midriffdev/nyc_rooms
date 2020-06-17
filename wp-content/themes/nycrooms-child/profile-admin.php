@@ -1,7 +1,7 @@
 <?php
 /* Template Name: Profile Admin */
 if(!is_user_logged_in()){
-     header( 'Location:' . site_url() . '/admin/');
+     header( 'Location:' . site_url() . '/login-admin/');
 }
 $user = wp_get_current_user();
 if($user->roles[0] == "property_owner"){
