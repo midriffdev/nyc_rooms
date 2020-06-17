@@ -599,11 +599,7 @@ jQuery(".preview-update").click(function(e){
 		if(desc == ''){
 			jQuery('#desc-err').html('<span class="error">Please enter desc</span>');
 			is_error = true;		
-		}		
-		if(agent == ''){
-			jQuery('#agent-err').html('<span class="error">Please select agent</span>');
-			is_error = true;		
-		}		
+		}			
 		if(contact_name == ''){
 			jQuery('#contact_name-err').html('<span class="error">Please enter contact name</span>');
 			is_error = true;		
