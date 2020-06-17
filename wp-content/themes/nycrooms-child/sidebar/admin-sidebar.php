@@ -7,7 +7,7 @@
 					<ul class="my-account-nav">
 						<li class="sub-nav-title">Manage Account</li>
 						<li><a href="<?= home_url();?>/admin/" id="sidebar-dashboard"><i class="sl sl-icon-screen-desktop"></i> Dashboard</a></li>
-						<li><a href="<?= home_url();?>/profile-admin/"><i class="sl sl-icon-user"></i> My Profile</a></li>
+						<li><a href="<?= home_url();?>/admin/edit-profile/"><i class="sl sl-icon-user"></i> My Profile</a></li>
 					</ul>
 					
 					<ul class="my-account-nav">
