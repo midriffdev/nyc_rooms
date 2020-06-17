@@ -254,4 +254,15 @@ function nyc_remove_add_to_favorite() {
 }
 add_action( 'wp_ajax_nyc_remove_add_to_favorite', 'nyc_remove_add_to_favorite' );
 add_action( 'wp_ajax_nopriv_nyc_remove_add_to_favorite', 'nyc_remove_add_to_favorite' );
+
+add_filter('wp_nav_menu_items', 'add_login_logout_link' , 10, 2 );
+function add_login_logout_link($items, $args) {
+		ob_start();
+		if(is_user_logged_in()){
+			$loginoutlink = '<a href="'.wp_logout_url(home_url()).'">Log out</a>';
+			ob_end_clean();
+			$items .= '<li>'. $loginoutlink .'</li>';			
+		}
+	return $items;
+}
 ?>
