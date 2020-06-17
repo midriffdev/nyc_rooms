@@ -5,7 +5,9 @@ $user_id = $getuser->ID;
 nyc_tenant_check_authentication();
 get_header();
 $bookmark_properties = get_user_meta($user_id,'nyc_bookmark',true);
+if($bookmark_properties){
 $bookmark_properties = array_filter($bookmark_properties);
+}
 ?>
 <!-- Wrapper -->
 <div id="wrapper">
