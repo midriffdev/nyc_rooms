@@ -304,7 +304,7 @@ function nyc_update_property_ajax(){
 				  $doc_gallery = get_post_meta($_POST['property_id'], 'document_files', true);
 				  $gallery_files = explode(',',$meta_gallery);
 				  $document_files = explode(',',$doc_gallery);
-				  if($meta_gallery  || $doc_gallery){
+				  if($meta_gallery ||  $doc_gallery) {
 				  $countgallery_meta = count($gallery_files);
 				  $countdoc_meta = count($document_files);
 				  
@@ -314,7 +314,7 @@ function nyc_update_property_ajax(){
 				  $FILESDOC = array();
 				  $gallery_files_post  =  $gallery_files;
 				  $doc_files_post      =  $document_files;
-				  if($meta_gallery){
+				  if($meta_gallery && $gallery_files[0] != ''){
 			      foreach($_FILES as $key=>$file){
 				     if("file_" == substr($key,0,5)){
 						if($i == 1){
@@ -341,7 +341,7 @@ function nyc_update_property_ajax(){
 
 			         }
 				  }
-				  if($doc_gallery){
+				  if($doc_gallery && $document_files[0] != ''){
 				  foreach($_FILES as $key=>$file){
 					  if("doc_" == substr($key,0,4)){
 							if($k == 1){
@@ -402,6 +402,10 @@ function nyc_update_property_ajax(){
 					        
 					   }
 				}
+				 if($gallery_files_post[0] == ''){
+				    unset($gallery_files_post[0]);
+				 }
+				  
 				
 				if(empty($doc_files_post)){
 				       if(!empty($_POST['document_files'])){
@@ -412,6 +416,11 @@ function nyc_update_property_ajax(){
 							$doc_files_post = $document_files;
 					   }
 				}
+				
+				  if($doc_files_post[0] == ''){
+				    unset($doc_files_post[0]);
+				 }
+				    
 			  
 			   $property_id = wp_update_post(array (
 					'ID'		=> $_POST['property_id'],
@@ -533,12 +542,15 @@ function nyc_delete_existing_file_ajax(){
 		  }
 		  
 	   $i++;
-	  }       
-            update_post_meta($_POST['property_id'],'gallery_files', implode(',',$gallery_files));
-			$check = get_post_meta($_POST['property_id'],'gallery_files', implode(',',$gallery_files));
-			 if($check == 'file_0'){
-			     delete_post_meta($_POST['property_id'],'gallery_files', 'file_0');
-             }			 
+	  
+	  }      
+              
+	         if(empty($gallery_files)){
+	              delete_post_meta($_POST['property_id'],'gallery_files', implode(',',$gallery_files));
+	          } else {
+			      update_post_meta($_POST['property_id'],'gallery_files', implode(',',$gallery_files));	
+			  }
+             
 			
 	  echo "success";
 	   
@@ -620,7 +632,14 @@ function nyc_delete_existing_file_doc_ajax(){
 		  $gallery_files[$i] = 'doc_'.$i;
 	   $i++;
 	  }
-	  update_post_meta($_POST['property_id'],'document_files', implode(',',$gallery_files));
+	   
+	   if(empty($gallery_files)){
+	       delete_post_meta($_POST['property_id'],'document_files', implode(',',$gallery_files));
+	   } else {
+	       update_post_meta($_POST['property_id'],'document_files', implode(',',$gallery_files));
+	   }
+	  
+	  
 	  echo "success";
 	   
    } else {
