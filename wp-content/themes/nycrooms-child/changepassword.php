@@ -10,7 +10,7 @@ if(isset($_POST['reset_pass_Sbumit'])){
             $errors['password'] = "Please enter a password";  
         } elseif(0 === preg_match("/.{12,}/", $_POST['password']))
         {  
-          $errors['password'] = "Password must be at least six characters";  
+          $errors['password'] = "Password must be at least 12 characters";  
         }  
         if(empty($_POST['cpassword'])) 
 		{   
