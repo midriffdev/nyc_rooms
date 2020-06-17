@@ -8,7 +8,7 @@
 						<li class="sub-nav-title">Manage Account</li>
 
 						<li><a href="<?= home_url();?>/admin/" id="sidebar-dashboard"><i class="sl sl-icon-screen-desktop"></i> Dashboard</a></li>
-						<li><a href="<?= home_url();?>/admin/edit-profile/" id="sidebar-profile"><i class="sl sl-icon-user"></i> My Profile</a></li>
+						<li><a href="<?= home_url();?>/profile-admin/" id="sidebar-profile"><i class="sl sl-icon-user"></i> My Profile</a></li>
 
 					</ul>
 					
