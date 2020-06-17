@@ -799,7 +799,7 @@ function kv_rest_setting_password($reset_key, $user_login, $user_email, $ID ,$ne
  	 $message .= sprintf(__('Username: %s'), $user_login) . "<br><br>";
   	 $message .= sprintf(__('Password: %s'), $new_password) . "<br><br>";
 	 if($user_role == 'property_owner'){
- 	 $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/signup/" .'" >' . get_option('siteurl')."/login-register/" . "</a> <br><br>";
+ 	 $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/owner-registeration/" .'" >' . get_option('siteurl')."/login-register/" . "</a> <br><br>";
 	 } else if($user_role == 'tenant'){
 	  $message .= __('You can now login with your new password at: ').'<a href="'.get_option('siteurl')."/tenant-registration/" .'" >' . get_option('siteurl')."/tenant-registration/" . "</a> <br><br>";
 	 }
