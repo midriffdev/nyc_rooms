@@ -203,10 +203,17 @@ get_header();
 		<!-- Section -->
 		<h3>Gallery</h3>
 		<div class="submit-section prop_gallery">
-			<form action="<?= site_url() ?>/add-property-admin/" class="dropzone" ></form>
+			<form action="<?= site_url() ?>/add-property-admin/" class="dropzone dropzone_gallery" ></form>
 		</div>
 		<!-- Section / End -->
-
+        
+		<!-- Section -->
+		<h3>Required Documents</h3>	
+		<div class="submit-section prop_req_docs">
+			<form action="<?= site_url() ?>/add-property-admin/" class="dropzone dropzone_documents" ></form>
+		</div>
+		<!-- Section / End -->
+		
 
 		<!-- Section -->
 		<h3>Location</h3>

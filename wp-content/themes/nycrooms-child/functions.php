@@ -298,45 +298,122 @@ add_action( 'wp_ajax_nopriv_nyc_add_property_ajax', 'nyc_add_property_ajax' );
 function nyc_update_property_ajax(){
 	if(isset($_POST['action']) && $_POST['action'] == 'nyc_update_property_ajax'){
 	            $gallery_files_post = array();
-			    if(isset($_FILES)){
+				$doc_files_post = array();
+			    if(isset($_FILES) && !empty($_FILES)){
 			      $meta_gallery = get_post_meta($_POST['property_id'], 'gallery_files', true);
+				  $doc_gallery = get_post_meta($_POST['property_id'], 'document_files', true);
 				  $gallery_files = explode(',',$meta_gallery);
-				  if($meta_gallery && !empty($gallery_files)){
+				  $document_files = explode(',',$doc_gallery);
+				  if($meta_gallery  || $doc_gallery){
 				  $countgallery_meta = count($gallery_files);
+				  $countdoc_meta = count($document_files);
+				  
 			      $i = 1; 
-			      $FILES = array();
+				  $k = 1;
+			      $FILESIMG = array();
+				  $FILESDOC = array();
 				  $gallery_files_post  =  $gallery_files;
+				  $doc_files_post      =  $document_files;
+				  if($meta_gallery){
 			      foreach($_FILES as $key=>$file){
+				     if("file_" == substr($key,0,5)){
 						if($i == 1){
 						  $key = 'file_'.$countgallery_meta;
 						} else {
 						   $incresecount = ($countgallery_meta + $i)- 1;
 						  $key = 'file_'.$incresecount;
 						}
-						$FILES[$key] = $file;
+						$FILESIMG[$key] = $file;
 					   
-					       nyc_property_gallery_image_upload_update($FILES,$key,$_POST['property_id']);
+					       nyc_property_gallery_image_upload_update($FILESIMG,$key,$_POST['property_id']);
 						   $gallery_files_post[] = $key;
 						   
 						 $i++;
-			      }	
+					 } 	 
+			      }
+				  } else {
+				      foreach($_FILES as $key=>$file){
+						   
+                               if("file_" == substr($key,0,5)){
+                                   nyc_property_gallery_image_upload_update($_FILES,$key,$_POST['property_id']);
+							       $gallery_files_post[] = $key;   
+							   }
+
+			         }
+				  }
+				  if($doc_gallery){
+				  foreach($_FILES as $key=>$file){
+					  if("doc_" == substr($key,0,4)){
+							if($k == 1){
+							  $key = 'doc_'.$countdoc_meta;
+							} else {
+							   $incresecount_doc = ($countdoc_meta + $k)- 1;
+							  $key = 'doc_'.$incresecount_doc;
+							}
+							$FILESDOC[$key] = $file;
+						   
+							   nyc_property_gallery_image_upload_update($FILESDOC,$key,$_POST['property_id']);
+							   $doc_files_post[] = $key;
+							   
+							 $k++;
+					  } 
+                  }
+                 } else {
+				         foreach($_FILES as $key=>$file){
+							   
+							   if("doc_" == substr($key,0,4)){
+							       nyc_property_gallery_image_upload_update($_FILES,$key,$_POST['property_id']);
+							       $doc_files_post[] = $key; 
+							   }
+
+			                }
+				     
+                 }				 
+					 
+				  
                    				  
 			     } else {
-				          foreach($_FILES as $key=>$file){
-                            nyc_property_gallery_image_upload_update($_FILES,$key,$_POST['property_id']);
-							 $gallery_files_post[] = $key;
-			              }
-						  
+				             
+							foreach($_FILES as $key=>$file){
+						   
+                               if("file_" == substr($key,0,5)){
+                                   nyc_property_gallery_image_upload_update($_FILES,$key,$_POST['property_id']);
+							       $gallery_files_post[] = $key;   
+							   }
+							   
+							   if("doc_" == substr($key,0,4)){
+							       nyc_property_gallery_image_upload_update($_FILES,$key,$_POST['property_id']);
+							       $doc_files_post[] = $key; 
+							   }
+
+			                }
 
 				 }
 				  
 	         }
+			   		  
 			    if(empty($gallery_files_post)){
-				       $gallery_files_post = explode(',',$_POST['gallery_files']);
+				        if(!empty($_POST['gallery_files'])){
+						   $gallery_files_post = explode(',',$_POST['gallery_files']);
+					   } else {
+					       $meta_gallery = get_post_meta($_POST['property_id'], 'gallery_files', true);
+				           $gallery_files = explode(',',$meta_gallery);
+				           $gallery_files_post = $gallery_files;
+					        
+					   }
 				}
-			 
+				
+				if(empty($doc_files_post)){
+				       if(!empty($_POST['document_files'])){
+				         $doc_files_post = explode(',',$_POST['document_files']);
+					   } else {
+					        $doc_gallery = get_post_meta($_POST['property_id'], 'document_files', true);
+							$document_files = explode(',',$doc_gallery);
+							$doc_files_post = $document_files;
+					   }
+				}
 			  
-			  $property_id = wp_update_post(array (
+			   $property_id = wp_update_post(array (
 					'ID'		=> $_POST['property_id'],
 					'post_title' 	=> $_POST['title'],
 					'post_content' 	=> $_POST['desc'],
@@ -365,11 +442,12 @@ function nyc_update_property_ajax(){
 					update_post_meta($property_id, 'contact_email', $_POST['contact_email']);
 					update_post_meta($property_id, 'contact_phone', $_POST['contact_phone']);
 					update_post_meta($property_id, 'gallery_files', implode(',',$gallery_files_post));
+					update_post_meta($property_id, 'document_files', implode(',',$doc_files_post));
 					update_post_meta($property_id, 'people_living_count', $_POST['people_living_count']);
 					echo 'success';
 				}else{
 					echo 'false';
-				} 
+				}
 	}else{
 	    echo 'false';
 	}
@@ -417,6 +495,137 @@ function nyc_get_existing_file_ajax(){
             }
            echo json_encode($file_list);  
 				
+  exit; 
+}
+
+add_action( 'wp_ajax_nyc_delete_existing_file_ajax', 'nyc_delete_existing_file_ajax' );
+add_action( 'wp_ajax_nopriv_nyc_delete_existing_file_ajax', 'nyc_delete_existing_file_ajax' );
+
+function nyc_delete_existing_file_ajax(){
+   if(isset($_POST['action']) && $_POST['action'] == 'nyc_delete_existing_file_ajax'){
+     $uploaddir = wp_upload_dir();
+	 $dir       =  $uploaddir['path'].'/';
+	 $pathurl   =  $uploaddir['url'].'/';
+     $property_id = $_POST['property_id'];
+	 $file_name  =  $_POST['file_name'];
+	 $file_url   = $pathurl . $file_name;
+	 $gallery_files_meta = get_post_meta($property_id,'gallery_files',true);
+	 $gallery_files = explode(',',$gallery_files_meta);
+	  foreach($gallery_files as $key => $metakeyattach){
+	        $attachment_id = get_post_meta($_POST['property_id'],$metakeyattach,true);
+		    $attachment_url = wp_get_attachment_url($attachment_id);
+			if($attachment_url == $file_url){
+			   wp_delete_attachment($attachment_id, true);
+			   delete_post_meta( $property_id, $metakeyattach,$attachment_id); 
+			   unset($gallery_files[$key]);
+			  
+			}	
+	  }
+	  
+	  $i = 0;
+	  foreach($gallery_files as $key => $newgalleryfiles){
+	      $attachment_id = get_post_meta($_POST['property_id'],$newgalleryfiles,true);
+		  if($attachment_id){
+			  delete_post_meta($_POST['property_id'],$newgalleryfiles,$attachment_id);
+			  unset($gallery_files[$key]);
+			  add_post_meta($_POST['property_id'],'file_'.$i,$attachment_id);
+			  $gallery_files[$i] = 'file_'.$i;
+		  }
+		  
+	   $i++;
+	  }       
+            update_post_meta($_POST['property_id'],'gallery_files', implode(',',$gallery_files));
+			$check = get_post_meta($_POST['property_id'],'gallery_files', implode(',',$gallery_files));
+			 if($check == 'file_0'){
+			     delete_post_meta($_POST['property_id'],'gallery_files', 'file_0');
+             }			 
+			
+	  echo "success";
+	   
+   } else {
+      echo "faliure";
+   }
+  exit; 
+}
+
+
+add_action( 'wp_ajax_nyc_get_existing_file_doc_ajax', 'nyc_get_existing_file_doc_ajax' );
+add_action( 'wp_ajax_nopriv_nyc_get_existing_file_doc_ajax', 'nyc_get_existing_file_doc_ajax' );
+
+function nyc_get_existing_file_doc_ajax(){
+          $gallery_files_ids   = explode(',',get_post_meta($_POST['property_id'],'document_files',true)); 
+		  $arrayfiles = array();
+		    foreach($gallery_files_ids as $gallery_files){
+			   $ids = get_post_meta($_POST['property_id'],$gallery_files,true);
+			   $filename = basename(get_attached_file($ids));
+			   $arrayfiles[] = $filename;
+			   
+			}
+
+			 $file_list = array();
+			 $uploaddir = wp_upload_dir();
+
+			  $dir       =  $uploaddir['path'].'/';
+			  $pathurl   =  $uploaddir['url'].'/';
+			 
+			 
+			  foreach($arrayfiles as $file){
+			 // File path
+                $file_path = $dir.$file;
+				$file_pathurl  = $pathurl.$file;
+				$type = pathinfo($file_pathurl, PATHINFO_EXTENSION);
+				$data = file_get_contents($file_pathurl);
+				$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+				
+				if(!is_dir($file_path)){
+                   $size = filesize($file_path);
+                   $file_list[] = array('name'=>$file,'size'=>$size,'path'=> $base64);
+				}
+            }
+           echo json_encode($file_list);  
+				
+  exit; 
+}
+
+
+add_action( 'wp_ajax_nyc_delete_existing_file_doc_ajax', 'nyc_delete_existing_file_doc_ajax' );
+add_action( 'wp_ajax_nopriv_nyc_delete_existing_file_doc_ajax', 'nyc_delete_existing_file_doc_ajax' );
+
+function nyc_delete_existing_file_doc_ajax(){
+   if(isset($_POST['action']) && $_POST['action'] == 'nyc_delete_existing_file_doc_ajax'){
+     $uploaddir = wp_upload_dir();
+	 $dir       =  $uploaddir['path'].'/';
+	 $pathurl   =  $uploaddir['url'].'/';
+     $property_id = $_POST['property_id'];
+	 $file_name  =  $_POST['file_name'];
+	 $file_url   = $pathurl . $file_name;
+	 $gallery_files_meta = get_post_meta($property_id,'document_files',true);
+	 $gallery_files = explode(',',$gallery_files_meta);
+	  foreach($gallery_files as $key => $metakeyattach){
+	        $attachment_id = get_post_meta($_POST['property_id'],$metakeyattach,true);
+		    $attachment_url = wp_get_attachment_url($attachment_id);
+			 if($attachment_url == $file_url){
+			   wp_delete_attachment($attachment_id, true);
+			   delete_post_meta( $property_id, $metakeyattach,$attachment_id); 
+			   unset($gallery_files[$key]);
+			  
+			}	
+	  }
+	  $i = 0;
+	  foreach($gallery_files as $key => $newgalleryfiles){
+	      $attachment_id = get_post_meta($_POST['property_id'],$newgalleryfiles,true);
+		  delete_post_meta($_POST['property_id'],$newgalleryfiles,$attachment_id);
+		  unset($gallery_files[$key]);
+		  add_post_meta($_POST['property_id'],'doc_'.$i,$attachment_id);
+		  $gallery_files[$i] = 'doc_'.$i;
+	   $i++;
+	  }
+	  update_post_meta($_POST['property_id'],'document_files', implode(',',$gallery_files));
+	  echo "success";
+	   
+   } else {
+      echo "faliure";
+   }
   exit; 
 }
 
@@ -1274,8 +1483,11 @@ function nyc_get_properties_by_title( $where, $wp_query )
     return $where;
 }
 
-
-
-
+function img_exist($url = NULL)
+{
+    if (!$url) return false;
+    $headers = get_headers($url);
+    return stripos($headers[0], "200 OK") ? true : false;
+}
 require_once( 'inc/init-function.php');
 ?>

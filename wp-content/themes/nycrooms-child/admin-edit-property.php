@@ -210,7 +210,14 @@ get_header();
 		<!-- Section -->
 		<h3>Gallery</h3>
 		<div class="submit-section prop_gallery">
-			<form action="<?= site_url() ?>/edit-property-admin/?pid="<?= $propertyID ?> class="dropzone" ></form>
+			<form action="<?= site_url() ?>/edit-property-admin/?pid="<?= $propertyID ?> class="dropzone dropzone_media" ></form>
+		</div>
+		<!-- Section / End -->
+		
+		<!-- Section -->
+		<h3>Required Documents</h3>
+		<div class="submit-section prop_req_docs">
+			<form action="<?= site_url() ?>/edit-property-admin/?pid="<?= $propertyID ?> class="dropzone dropzone_documents_update" ></form>
 		</div>
 		<!-- Section / End -->
 
@@ -373,9 +380,9 @@ get_header();
 
 
 		<div class="divider"></div>
-		<input type="hidden" id="property_id" value="<?= $propertyID ?>">
-		<input type="hidden" id="post_status" value="<?= $post_status ?>">
-		<input type="hidden" id="post_author" value="<?= $post_author ?>">
+		<input type="hidden" id="property_id" class="property_id" value="<?= $propertyID ?>">
+		<input type="hidden" id="post_status" class="post_status" value="<?= $post_status ?>">
+		<input type="hidden" id="post_author" class="post_author" value="<?= $post_author ?>">
 		
 		<button href="#" class="button preview-update margin-top-5">UPDATE PROPERTY <i class="fa fa-arrow-circle-right"></i></button>
 
@@ -394,12 +401,12 @@ get_footer();
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/dropzone.js"></script>
 <script type="text/javascript">
   Dropzone.autoDiscover = false;
-  jQuery(".dropzone").dropzone({
+  jQuery(".dropzone.dropzone_media").dropzone({
   dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
   addRemoveLinks: true,
   init: function() { 
-			myDropzone = this; 		
-			 var property_id = $('#property_id').val(); 
+			myDropzoneFiles = this; 		
+			 var property_id = $('.property_id').val(); 
 			jQuery.ajax({
 			  type: 'post',
 			  dataType: 'json',
@@ -409,20 +416,81 @@ get_footer();
 				  $.each(response, function(key,value) {
                           if(value.size != false){
 						     var mockFile = { name: value.name, size: value.size };
-							  myDropzone.emit("addedfile", mockFile);
-							  myDropzone.emit("thumbnail", mockFile, value.path);
-							  myDropzone.emit("complete", mockFile);
-                              
+							  myDropzoneFiles.emit("addedfile", mockFile);
+							  myDropzoneFiles.emit("thumbnail", mockFile, value.path);
+							  myDropzoneFiles.emit("complete", mockFile);
 						  }
 						 
 				  }); 
 
 			  }
 			 });	 
+   },
+   removedfile: function(file) {
+     var file_name    = file.name;
+     var property_id  = $('.property_id').val(); 
+	 jQuery.ajax({
+			  type: 'post',
+			  url: my_ajax_object.ajax_url,
+			  data: {action:'nyc_delete_existing_file_ajax',property_id:property_id,file_name:file_name},
+			  success: function(response){
+                     console.log(response);
+			  }
+	  });
+	var _ref;
+	return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0; 
+	
    }
    
    
 }); 
+
+
+
+jQuery(".dropzone.dropzone_documents_update").dropzone({
+  dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
+  addRemoveLinks: true,
+  init: function() { 
+			myDropzonedoc = this; 		
+			 var property_id = $('.property_id').val(); 
+			jQuery.ajax({
+			  type: 'post',
+			  dataType: 'json',
+			  url: my_ajax_object.ajax_url,
+			  data: {action:'nyc_get_existing_file_doc_ajax',property_id:property_id},
+			  success: function(response){
+				  $.each(response, function(key,value) {
+                          if(value.size != false){
+						     var mockFile = { name: value.name, size: value.size };
+							  myDropzonedoc.emit("addedfile", mockFile);
+							  //myDropzonedoc.emit("thumbnail", mockFile, value.path);
+							  myDropzonedoc.emit("complete", mockFile);
+						  }
+						 
+				  }); 
+
+			  }
+			 });	 
+   },
+   removedfile: function(file) {
+     var file_name    = file.name;
+     var property_id  = $('.property_id').val(); 
+	 jQuery.ajax({
+			  type: 'post',
+			  url: my_ajax_object.ajax_url,
+			  data: {action:'nyc_delete_existing_file_doc_ajax',property_id:property_id,file_name:file_name},
+			  success: function(response){
+                     console.log(response);
+			  }
+	  });
+	var _ref;
+	return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0; 
+	
+   }
+   
+   
+});
+  
 
 jQuery(document).ready(function($) {
    
@@ -550,7 +618,8 @@ jQuery(".preview-update").click(function(e){
 			is_error = true;		
 		}
 		if(is_error == false ){
-			var file_data = $('.dropzone')[0].dropzone.getAcceptedFiles();
+			var file_data = $('.dropzone.dropzone_media')[0].dropzone.getAcceptedFiles();
+			var drop_doc_data = $('.dropzone.dropzone_documents_update')[0].dropzone.getAcceptedFiles();
 			var form_data = new FormData();	
 			form_data.append("title", title);
 			form_data.append("status", status);
@@ -583,8 +652,14 @@ jQuery(".preview-update").click(function(e){
 				form_data.append("file_"+i, file_data[i]);
 				gallery_files.push("file_"+i);
 			}
+			var document_files=[];
+			for(var i = 0;i<drop_doc_data.length;i++){
+				form_data.append("doc_"+i, drop_doc_data[i]);
+				document_files.push("doc_"+i);
+			}
 			form_data.append("gallery_files", gallery_files);
-			form_data.append( "action", 'nyc_update_property_ajax');	
+			form_data.append("document_files", document_files);
+			form_data.append( "action" , 'nyc_update_property_ajax');	
 			 jQuery.ajax({
 				type : "post",
 				url : my_ajax_object.ajax_url,
@@ -592,7 +667,8 @@ jQuery(".preview-update").click(function(e){
 				processData: false,
 				contentType: false,
 				success: function(response) {
-				    if(response == "success"){
+				     console.log(response);
+				     if(response == "success"){
 						window.location.href = window.location.href + "&&action=success";
 					} else {
 						window.location.href = window.location.href + "&&action=false";

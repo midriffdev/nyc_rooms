@@ -4,7 +4,7 @@ require_once 'google-api/vendor/autoload.php';
 global $wpdb, $user_ID;
 $errors = array(); 
 if(is_user_logged_in()){
-  header( 'Location:' . site_url() . '/my-profile/');
+  header( 'Location:' . site_url() . '/property-owner/');
 } 
      if(isset($_REQUEST['register']) && $_SERVER['REQUEST_METHOD'] == "POST") 
       {  

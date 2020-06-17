@@ -549,8 +549,7 @@ get_header();
                      <div class="col-lg-6 col-md-12">
 					<div class="listing-item compact">
                   
-						<a href="<?= home_url().'/single-property/?property_id='.get_the_ID() ?>" class="listing-img-container">
-
+						<a href="<?= get_post_permalink( get_the_ID()) ?>" class="listing-img-container">
 							<div class="listing-badges">
 								<span>For Rent</span>
 							</div>
