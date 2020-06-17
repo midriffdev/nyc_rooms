@@ -66,7 +66,8 @@ $(".previous").click(function(){
 	animating = true;
 	
 	current_fs   = $(this).parent();
-	var stateval = $(this).parent().prev().find('select[name="state"]').val();
+	var stateval = $(this).parent().prev().prev().find('select[name="state"]').val();
+	  console.log(stateval);
 	if(typeof stateval == 'undefined'){
 	   previous_fs = $(this).parent().prev();
 	} else if(stateval != 'new jersey'){

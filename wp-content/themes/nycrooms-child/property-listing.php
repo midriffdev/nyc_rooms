@@ -43,7 +43,16 @@ if(isset($_GET['city_other']) && !empty($_GET['city_other'])){
             //I think you really want != instead of NOT LIKE, fix me if I'm wrong
             //'compare'      => 'NOT LIKE',
             'compare'      => 'LIKE',
+        ),
+		array(
+            'key'          => 'people_living_count',
+            'value'        => $_GET['people_living_count'] ,
+            //I think you really want != instead of NOT LIKE, fix me if I'm wrong
+            //'compare'      => 'NOT LIKE',
+            'compare'      => 'LIKE',
         )
+		
+		
 		
     );
     
@@ -71,7 +80,14 @@ if(isset($_GET['city_other']) && !empty($_GET['city_other'])){
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',
-								)
+								),
+								array(
+										'key'          => 'people_living_count',
+										'value'        => $_GET['people_living_count'] ,
+										//I think you really want != instead of NOT LIKE, fix me if I'm wrong
+										//'compare'      => 'NOT LIKE',
+										'compare'      => 'LIKE',
+                                )
 		
                     );
        
