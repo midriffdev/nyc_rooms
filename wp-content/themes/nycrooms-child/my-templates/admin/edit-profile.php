@@ -1,15 +1,6 @@
 <?php
 /* Template Name: Admin Edit Tenant */
-if(empty($_GET['uid'])){
-	wp_redirect(home_url());
-}
-if(!current_user_can('administrator') ) {
-     wp_redirect(home_url());
-}
-$getuser = get_user_by('id',$_GET['uid']);
-if(empty($getuser)){
-	 wp_redirect(home_url());
-}
+nyc_property_admin_authority();
 get_header();
 if(isset($_POST['update_user'])){
        if( $_POST['email'] != $getuser->user_email  ) {
