@@ -53,11 +53,9 @@ get_header();
 							    			<div class="teanent-question-innersec ">
 							    				<select class="chosen-select-no-single" name="state">
 													<option label="blank"></option>		
-													<option value="nebraska" >Nebraska</option>
-													<option value="montana" >Montana</option>
-													<option value="nevada" >Nevada</option>
-													<option value="new jersy" >New Jersy</option>
 													<option value="new york" >New York</option>
+													<option value="connecticut" >Connecticut</option>
+													<option value="new jersey" >New Jersey</option>
 												</select>
 									    	</div>
 							    		</li>
@@ -66,7 +64,7 @@ get_header();
 						    	<input type="button" name="previous" class="previous action-button" value="Previous" />
 						    	<input type="button" name="next" class="next action-button" value="Next" />
 						  </fieldset>
-						  <fieldset>
+						  <fieldset class="cities_all">
 							    <div class="teanent-question-wrapper">
 							    	<div class="teanent-question--title">
 							    		<h2 class="fs-title">What City would you like To Live in? </h2>
@@ -195,4 +193,7 @@ get_footer();
  jQuery(document).ready(function(){
  jQuery('.page-id-72 .site-content .tg-container.tg-container--flex.tg-container--flex-space-between').addClass('search_prop_tnt');
  });
+ 
+ 
+ 
 </script>

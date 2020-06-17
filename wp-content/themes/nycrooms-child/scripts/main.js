@@ -21,7 +21,14 @@ $(".next").click(function(){
 	animating = true;
 	
 	current_fs = $(this).parent();
-	next_fs = $(this).parent().next();
+	var stateval = current_fs.find('select[name="state"]').val();
+	if(typeof stateval == 'undefined'){
+	   next_fs = $(this).parent().next();
+	} else if(stateval != 'new jersey'){
+	  next_fs = $(this).parent().next().next();
+	} else if(stateval == 'new jersey') {
+	   next_fs = $(this).parent().next();
+	}
 	
 	//activate next step on progressbar using the index of next_fs
 	$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
@@ -58,8 +65,16 @@ $(".previous").click(function(){
 	if(animating) return false;
 	animating = true;
 	
-	current_fs = $(this).parent();
-	previous_fs = $(this).parent().prev();
+	current_fs   = $(this).parent();
+	var stateval = $(this).parent().prev().find('select[name="state"]').val();
+	if(typeof stateval == 'undefined'){
+	   previous_fs = $(this).parent().prev();
+	} else if(stateval != 'new jersey'){
+	   previous_fs = $(this).parent().prev().prev();
+	} else if(stateval == 'new jersey') {
+	   previous_fs = $(this).parent().prev();
+	}
+	
 	
 	//de-activate current step on progressbar
 	$("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");

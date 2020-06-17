@@ -41,7 +41,7 @@ get_header();
 								<td class="title-container">
 									<img src="<?php if($prop_image){ echo $prop_image; } ?>" alt="">
 									<div class="title">
-										<h4><a href="<?php echo site_url() .'/single-property/?property_id='.$post_id ?>"><?php echo get_the_title(); ?></a></h4>
+										<h4><a href="<?= get_post_permalink( get_the_ID()) ?>"><?php echo get_the_title(); ?></a></h4>
 										<span><?php echo $address; ?></span>
 										<span class="table-property-price">$<?php echo ($price) ? $price : 'N/A'; ?>/ Weekly</span> <span class="unapproved--property">Unapproved</span>
 									</div>
