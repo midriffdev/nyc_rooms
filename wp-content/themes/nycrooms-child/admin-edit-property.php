@@ -618,6 +618,7 @@ jQuery(".preview-update").click(function(e){
 			is_error = true;		
 		}
 		if(is_error == false ){
+		    jQuery('.loading').show();
 			var file_data = $('.dropzone.dropzone_media')[0].dropzone.getAcceptedFiles();
 			var drop_doc_data = $('.dropzone.dropzone_documents_update')[0].dropzone.getAcceptedFiles();
 			var form_data = new FormData();	
