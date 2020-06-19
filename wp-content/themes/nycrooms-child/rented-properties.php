@@ -49,6 +49,7 @@ get_header();
 								</td>
 								<td class="expire-date">December 30, 2016</td>
 								<td class="action">
+								    <a href="<?= get_post_permalink( get_the_ID()) ?>"><i class="fa fa-eye"></i> View</a>
 									<a href="<?= site_url().'/edit-property-owner/?pid='.$post_id ?>"><i class="fa fa-pencil"></i> Edit</a>
 									<a href="#" class="delete delete-property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 								</td>

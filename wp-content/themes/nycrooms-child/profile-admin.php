@@ -70,7 +70,7 @@ get_header();
 						<input value="<?php echo get_user_meta(get_current_user_id(),'user_phone',true); ?>" type="text" name="user_phone" pattern="[0-9]{10}" maxlength=10>
 
 						<label>Email</label>
-						<input value="<?php if(!empty($user->data->user_email)){echo $user->data->user_email;} ?>" type="email" name="user_email">
+						<input value="<?php if(!empty($user->data->user_email)){echo $user->data->user_email;} ?>" type="email" name="user_email" readonly>
 
 
 						<h4 class="margin-top-50 margin-bottom-25">About Me</h4>
@@ -111,7 +111,7 @@ get_header();
 							<div class="change-photo-btn">
 								<div class="photoUpload">
 									<span><i class="fa fa-upload"></i> Upload Photo</span>
-									<input type="file" class="upload" name="profilepicture" size="25" />
+									<input type="file" class="upload" id="imgupload" name="profilepicture" size="25" />
 								</div>
 							</div>
 						
@@ -129,9 +129,6 @@ get_header();
 </div>
 
 <div class="margin-top-55"></div>
-
-<!-- Back To Top Button -->
-<div id="backtotop"><a href="#"></a></div>
 
 </div>
 <!-- Modal -->
@@ -159,9 +156,32 @@ label.reset_success {
     color: green;
 }
 </style>
+<script>
+jQuery(document).ready(function(){
+ jQuery(document).on('change', '.upload', function(){
+  var name = document.getElementById("imgupload").files[0].name;
+  var form_data = new FormData();
+  var ext = name.split('.').pop().toLowerCase();
+  var error = false;
+  if(jQuery.inArray(ext, ['gif','png','jpg','jpeg']) == -1) 
+  {
+   alert("Invalid Image File");
+   error = true;
+  }
+  var oFReader = new FileReader();
+	oFReader.onload = (function(imgupload){ //trigger function on successful read
+	return function(e) {
+		var img = jQuery('.edit-profile-photo img').attr('srcset', e.target.result); //create image element 
+	};
+	})(imgupload);
+  oFReader.readAsDataURL(document.getElementById("imgupload").files[0]);
+  });
+  jQuery('#sidebar-profile').addClass('current');
+});
+</script>
 <?php
 get_footer();
-if($message){
+if(isset($message)){
    echo "<script>
          jQuery(window).load(function(){
              $('#myModal').modal('show');
