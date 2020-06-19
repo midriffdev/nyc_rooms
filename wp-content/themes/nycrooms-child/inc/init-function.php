@@ -72,6 +72,10 @@ add_action( 'template_redirect', function(){
         include get_stylesheet_directory() . '/my-templates/admin/add-tenant.php';
         die;
     }
+    if ( is_page('admin/deals') ) {
+        include get_stylesheet_directory() . '/my-templates/admin/all-deals.php';
+        die;
+    }
     if ( is_page('tenant') ) {
         include get_stylesheet_directory() . '/my-templates/tenant/profile.php';
         die;
