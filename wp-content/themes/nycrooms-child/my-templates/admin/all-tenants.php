@@ -211,7 +211,7 @@ input.checkbulk{
 						<div class="clearfix"></div>
 						<div class="pagination-container margin-top-10 margin-bottom-45">
 							<nav class="pagination">
-								<ul>
+							<ul>
 								<?php
 							if ($total_users > $total_query) { 
 								$current_page = max(1, get_query_var('paged')); 
@@ -225,7 +225,7 @@ input.checkbulk{
 								));
 							} 							
 								?>
-								</ul>
+							</ul>
 							</nav>
 
 							<nav class="pagination-next-prev">

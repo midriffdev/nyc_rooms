@@ -68,7 +68,7 @@
 					<ul class="my-account-nav">
 						<li class="sub-nav-title">Manage Deals</li>
 						<li class="admin-propertieslistings">
-							<a href="<?php echo get_site_url(); ?>/admin/deals/" id="sidebar-alldeals">All Deals <span class="all-listing-no active-listing-no">3000</span></a>
+							<a href="<?php echo get_site_url(); ?>/admin/deals/" id="sidebar-alldeals">All Deals <span class="all-listing-no active-listing-no"><?php echo nyc_get_count_custom_post_type('deals'); ?></span></a>
 						</li>
 						<li><a href="#"><i class="sl sl-icon-action-redo"></i> Add New Deal</a></li>
 					</ul>

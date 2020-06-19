@@ -269,4 +269,65 @@ function add_login_logout_link($items, $args) {
 		}
 	return $items;
 }
+
+function nyc_get_count_custom_post_type($type){
+	$args = array(
+	'post_type'=> $type,
+	'post_status' => array('publish'),
+	'posts_per_page'   => -1,
+	'suppress_filters' => false,
+	);
+
+	$deals = new WP_Query( $args );
+	$count = $deals->found_posts;
+	return ($count) ? $count: 0;
+}
+
+function nyc_delete_deal_ajax(){
+	if(isset($_POST['action']) && $_POST['action'] == 'nyc_delete_deal_ajax'){
+	   $deal=wp_delete_post($_POST['deal_id']);
+	   if($deal){
+		   echo 'success';
+	   }
+	}
+	exit;
+}
+add_action( 'wp_ajax_nyc_delete_deal_ajax', 'nyc_delete_deal_ajax' );
+add_action( 'wp_ajax_nopriv_nyc_delete_deal_ajax', 'nyc_delete_deal_ajax' );
+
+function nyc_bulk_delete_deal(){
+	if(isset($_POST['action']) && $_POST['action'] == 'nyc_bulk_delete_deal'){
+		global $wpdb;
+		if($_POST['bulkaction'] == 'delete'){
+			foreach($_POST['data'] as $ids){
+			  wp_delete_post($ids);
+			}
+			echo "true";
+		}
+	}
+	exit;
+}
+add_action( 'wp_ajax_nyc_bulk_delete_deal', 'nyc_bulk_delete_deal' );
+add_action( 'wp_ajax_nopriv_nyc_bulk_delete_deal', 'nyc_bulk_delete_deal' );
+
+add_action('init', 'dcc_rewrite_tags');
+function dcc_rewrite_tags() {
+    add_rewrite_tag('%view%', '([^&]+)');
+    add_rewrite_tag('%id%', '([^&]+)');
+}
+
+add_action('init', 'dcc_rewrite_rules');
+function dcc_rewrite_rules() {
+	add_rewrite_rule('^admin/deals/([^/]+)/([^/]+)/?$','index.php?pagename=admin/deals&view=$matches[1]&id=$matches[2]','top');
+}
+
+
+add_filter( 'template_redirect', 'prefix_url_rewrite_templates',1 );
+ 
+function prefix_url_rewrite_templates() {
+	if(get_query_var('view') == 'details' && !empty(get_query_var('view'))){
+	  include get_stylesheet_directory() . '/my-templates/admin/deal-detail.php';
+	  exit;
+	}
+}
 ?>
