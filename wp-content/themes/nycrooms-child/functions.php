@@ -1162,6 +1162,88 @@ function delete_multiple_leads() {
 	wp_die();
 }
 
+add_action( 'wp_ajax_nopriv_adding_multiple_deals', 'adding_multiple_deals' );
+add_action( 'wp_ajax_adding_multiple_deals', 'adding_multiple_deals' );
+function adding_multiple_deals(){
+	global $wpdb;
+	  if(isset($_POST['action']) && $_POST['action'] == 'adding_multiple_deals'){
+	   foreach($_POST['data'] as $ids){
+	      $lead_source     =  get_post_meta($ids,'lead_source',true);
+		  if($lead_source == "Property Form"){
+			  $DealDescription =  get_post_meta($ids,'lead_summary',true);
+			  $property_id     =  get_post_meta($ids, 'lead_checkout_property', true);
+			  $lead_user_id    =  get_post_meta($ids, 'lead_created_user_id',true);
+			  $lead_name       =  get_post_meta($ids, 'lead_name',true);
+			  $lead_email	   =  get_post_meta($ids, 'lead_email',true);
+			  $lead_phone	   =  get_post_meta($ids, 'lead_phone',true);
+			  $deal_id = wp_insert_post(array (
+											'post_type'		=> 'deals',
+											'post_title' 	=> 'deal submission',
+											'post_content' 	=> $DealDescription,
+											'post_author' 	=> get_current_user_id(),
+											'post_status'   => 'publish'
+								   ));
+			
+			
+							 if ($deal_id) {
+								add_post_meta($deal_id, 'lead_source',$lead_source);
+								add_post_meta($deal_id, 'property_id',$property_id);
+								add_post_meta($deal_id, 'user_id',$lead_user_id);
+								add_post_meta($deal_id, 'name',$lead_name);
+								add_post_meta($deal_id, 'email',$lead_email);
+								add_post_meta($deal_id, 'phone',$lead_phone);
+								add_post_meta($deal_id, 'lead_id',$ids);
+								add_post_meta($deal_id, 'description',$DealDescription);
+								add_post_meta($deal_id, 'deal_stage',1);
+								add_post_meta($deal_id, 'deal_created_by',get_current_user_id());
+								add_post_meta($ids,'is_deal_created','yes');
+								add_post_meta($ids,'deal_id',$deal_id);
+								
+							}
+		 }
+		 
+		 if($lead_source == "Appointment Form"){
+			  $DealDescription  =  get_post_meta($ids,'lead_summary',true);
+			  $lead_user_id     =  get_post_meta($ids, 'lead_created_user_id',true);
+			  $lead_name        =  get_post_meta($ids, 'lead_name',true);
+			  $lead_email	    =  get_post_meta($ids, 'lead_email',true);
+			  $lead_phone	    =  get_post_meta($ids, 'lead_phone',true);
+			  $lead_datetime    =  get_post_meta($ids, 'lead_datetime',true);	
+			  $deal_id = wp_insert_post(array (
+											'post_type'		=> 'deals',
+											'post_title' 	=> 'deal submission',
+											'post_content' 	=> $DealDescription,
+											'post_author' 	=> get_current_user_id(),
+											'post_status'   => 'publish'
+								   ));
+			
+			
+							 if ($deal_id) {
+							 
+								add_post_meta($deal_id, 'lead_source',$lead_source);
+								add_post_meta($deal_id, 'user_id',$lead_user_id);
+								add_post_meta($deal_id, 'name',$lead_name);
+								add_post_meta($deal_id, 'email',$lead_email);
+								add_post_meta($deal_id, 'phone',$lead_phone);
+								add_post_meta($deal_id, 'lead_id',$ids);
+								add_post_meta($deal_id, 'lead_datetime',$lead_datetime);
+								add_post_meta($deal_id, 'description',$DealDescription);
+								add_post_meta($deal_id, 'deal_stage',1);
+								add_post_meta($deal_id, 'deal_created_by',get_current_user_id());
+								add_post_meta($ids,'is_deal_created','yes');
+								add_post_meta($ids,'deal_id',$deal_id);
+								
+							}
+							
+		 }
+							
+	 
+	   }
+	   echo "true";
+	 }
+	wp_die();
+}
+
 add_action( 'wp_ajax_nopriv_delete_multiple_properties', 'delete_multiple_properties' );
 add_action( 'wp_ajax_delete_multiple_properties', 'delete_multiple_properties' );
 function delete_multiple_properties() {
@@ -1332,6 +1414,46 @@ function nyc_create_custom_post_leads() {
 	);
 	register_post_type( 'leads', $args );
 }
+
+add_action( 'init', 'nyc_create_custom_post_deals', 0 );
+
+function nyc_create_custom_post_deals() {
+	$labels = array(
+		'name'                => __( 'Deals' ),
+		'singular_name'       => __( 'Deals'),
+		'menu_name'           => __( 'Deals'),
+		'parent_item_colon'   => __( 'Parent Deals'),
+		'all_items'           => __( 'All Deals'),
+		'view_item'           => __( 'View Deals'),
+		'add_new_item'        => __( 'Add New Deals'),
+		'add_new'             => __( 'Add New'),
+		'edit_item'           => __( 'Edit Deals'),
+		'update_item'         => __( 'Update Deals'),
+		'search_items'        => __( 'Search Deals'),
+		'not_found'           => __( 'Not Found'),
+		'not_found_in_trash'  => __( 'Not found in Trash')
+	);
+	$args = array(
+		'label'               => __( 'deals'),
+		'description'         => __( 'Best Deals'),
+		'labels'              => $labels,
+		'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'revisions', 'custom-fields'),
+		'public'              => true,
+		'hierarchical'        => false,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => true,
+		'show_in_admin_bar'   => true,
+		'has_archive'         => true,
+		'can_export'          => true,
+		'exclude_from_search' => false,
+	    'yarpp_support'       => true,
+		'publicly_queryable'  => true,
+		'capability_type'     => 'page'
+	);
+	register_post_type( 'deals', $args );
+}
+
 
 function get_all_agents(){
    $argspage = array(

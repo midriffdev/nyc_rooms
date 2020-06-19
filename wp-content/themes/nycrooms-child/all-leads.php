@@ -131,10 +131,14 @@ get_header();
 
                  while ( $all_leads->have_posts() ) { 
                       $all_leads->the_post();
-							
+						 $checkdeal   = get_post_meta(get_the_ID(),'is_deal_created',true);
+					     $checkdealid = get_post_meta(get_the_ID(),'deal_id',true);	
                     ?> 
 					<tr>
-						<td><input type="checkbox" class="checkleads" value="<?= get_the_ID() ?>"></td>
+						<td>
+						<input type="checkbox" class="checkleads" value="<?= get_the_ID() ?>" <?php if($checkdeal && $checkdealid){ ?> disabled <?php } ?> >
+						
+						</td>
 						<td class="lead_number">#<?= get_the_ID() ?></td>
 						<td><div class="Lead--name"><a href="<?= get_post_permalink(get_the_ID()) ?>"><?= get_post_meta(get_the_ID(),'lead_name',true); ?></a></div></td>
 						<td class="lead-phone"><?= get_post_meta(get_the_ID(),'lead_phone',true); ?></td>
@@ -143,7 +147,17 @@ get_header();
 						<td class="action">
 							<a href="<?= get_post_permalink(get_the_ID()) ?>"><i class="fa fa-eye"></i> View</a>
 							<a class="delete" data-id="<?= get_the_ID() ?>" style="cursor:pointer;"><i class="fa fa-remove"></i> Delete</a>
-							<a href="#" class="into--deal"><i class="fa fa-share" aria-hidden="true"></i> Into Deal</a>
+							<?php 
+							   if($checkdeal && $checkdealid){
+							?>
+							   <a class="deal--done" disabled><i class="fa fa-check-square-o" aria-hidden="true"></i> Deal Done</a>
+							<?php
+							 } else {
+							?>
+							   <a style="cursor:pointer;" class="into--deal" data-id="<?= get_the_ID() ?>"><i class="fa fa-share" aria-hidden="true"></i> Into Deal</a>
+							<?php
+							}
+							?>
 						</td>
 				    </tr>
 					
@@ -202,8 +216,9 @@ get_header();
 			        <label>Select bulk action</label>
                   <div class="bulk_actions_leads">
 						<select class="select_action_leads">
-						 <option value="-1">Bulk Actions</option>
-						 <option value="delete">Delete</option>
+							 <option value="-1">Bulk Actions</option>
+							 <option value="intodeal">Into Deal</option>
+							 <option value="delete">Delete</option>
 						</select>
                     <input type="button" value="Apply" class="apply_action_leads">
                  </div>
@@ -240,6 +255,27 @@ get_header();
       
     </div>
   </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="ModalDeals" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Deals Created Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
   
 
 <!-- Scripts
