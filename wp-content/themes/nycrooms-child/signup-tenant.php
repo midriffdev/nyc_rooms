@@ -104,6 +104,8 @@ if(is_user_logged_in()){
 							add_post_meta($lead_id, 'lead_source','Property Form');
 							add_post_meta($lead_id, 'lead_chckt_prp_owner_email', get_post_meta($_REQUEST['guest_search_pid'],'contact_email',true));
 							add_post_meta($lead_id, 'lead_created_from', 'registered_user' );
+							add_post_meta($lead_id, 'lead_created_user_id', $user);
+							
 							
 							
 							
@@ -217,7 +219,7 @@ if(isset($_POST['guest_checkout'])){
 			add_post_meta($lead_id, 'lead_source','Property Form');
 			add_post_meta($lead_id, 'lead_chckt_prp_owner_email', get_post_meta($_POST['Property_search_id'],'contact_email',true));
 			add_post_meta($lead_id, 'lead_created_from', 'guest_user' );
-			
+			add_post_meta($lead_id, 'lead_created_user_id', null);
 			
 			
 			

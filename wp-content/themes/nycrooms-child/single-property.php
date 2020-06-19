@@ -27,6 +27,8 @@ $success_msg = '';
 			add_post_meta($lead_id, 'lead_source','Property Form');
 			add_post_meta($lead_id, 'lead_chckt_prp_owner_email', get_post_meta($_POST['Property_search_id'],'contact_email',true));
 			add_post_meta($lead_id, 'lead_created_from', 'logined_user' );
+			add_post_meta($lead_id, 'lead_created_user_id', $_POST['logined_user_id']);
+			
 			
 			
 			
@@ -55,7 +57,14 @@ $success_msg = '';
 		
 }
 if(isset($_POST['book_appointment'])){
-  
+      $user = wp_get_current_user();
+      if(!is_user_logged_in()){
+	     $user_id = null;
+	  } else {
+	     if($user->roles[0] == "tenant"){
+		      $user_id = $user->ID;
+		 }
+	  }
        $lead_id = wp_insert_post(array (
 						'post_type'		=> 'leads',
 						'post_title' 	=> 'Lead submission',
@@ -73,6 +82,8 @@ if(isset($_POST['book_appointment'])){
 			add_post_meta($lead_id, 'lead_summary', $_POST['appointment_description']);
 			add_post_meta($lead_id, 'lead_source','Appointment Form');
 			add_post_meta($lead_id, 'lead_created_from', 'Appointment_user' );
+			add_post_meta($lead_id, 'lead_created_user_id', $user_id);
+			
 			$strtotime =  strtotime($_POST['date'] . ' '.$_POST['time']);
 			$datetime =  date("F j, Y h:i:s A", $strtotime);
 			$subject = "New Lead Submission";
@@ -261,6 +272,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 									<input type="hidden" name="guest_name" value="<?=  $user_name ?>" />
 								    <input type="hidden" name="guest_email" value="<?= $user_email ?>" />
 									<input type="hidden" name="guest_phone" value="<?= $user_phone ?>">
+									<input type="hidden" name="logined_user_id" value="<?= $user->ID ?>">
 									<i class="im im-icon-Lock-2"></i>
 									<textarea class="WYSIWYG" name="guest_summary" id="summary" spellcheck="true" required></textarea>
 								</label>
