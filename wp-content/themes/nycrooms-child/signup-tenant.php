@@ -125,9 +125,6 @@ if(is_user_logged_in()){
 							if($mail){
 							
 								$success_msg = "We have recieved your request for property. We will contact you soon";
-								
-								
-							   
 							}
 						
 						}

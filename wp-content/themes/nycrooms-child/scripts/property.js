@@ -400,9 +400,7 @@ jQuery(document).ready(function($) {
 	                   };
 					// We can also pass the url value separately from ajaxurl for front end AJAX implementations
 						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
-						        
-								
-								
+						
 								  if(response == "true"){
 									$('#Modaldelete').modal('show');
 									setTimeout(function(){
@@ -412,20 +410,52 @@ jQuery(document).ready(function($) {
 								 
 								 }
 								 
-								 
 						});   
                }
 		     
 		     }
 		 
-		 } 
+		 } else if(value == "intodeal"){
+		        var checkedNum = jQuery('input[class="checkleads"]:checked').length;
+				if(checkedNum == 0){
+					alert('Please choose one or more lead to convert into deal');
+				} else {
+				          jQuery('input[class="checkleads"]:checked').each(function(){
+								 myarrayleads.push(jQuery(this).val());
+						   });
+						   
+						   var data = {
+								'action': 'adding_multiple_deals',
+								'data':   myarrayleads
+						   };
+						   
+						 
+						    
+						// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+							jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+					            
+									  if(response == "true"){
+										$('#ModalDeals').modal('show');
+										setTimeout(function(){
+										   window.location.reload();
+										   // or window.location = window.location.href; 
+										}, 2000);
+									 }
+									 
+							});   
+				 
+				 }
+		      
+         }		 
 		 //jQuery('.agent_selected').each()
 	}
 	
    });
    
    jQuery('.checkallleads').click(function(){
-	   jQuery(".checkleads").prop('checked', jQuery(this).prop('checked'));
+        
+	   jQuery(".checkleads").not(":disabled").prop('checked', jQuery(this).prop('checked'));
+	   
 	});
 	
 	 jQuery('.all_leads_table .delete').click(function(){
@@ -467,6 +497,41 @@ jQuery(document).ready(function($) {
 	    
 	   
 	}); 
+	
+	jQuery('.all_leads_table .into--deal').click(function(){
+	         
+	        var checkedNum = jQuery(this).closest('tr').find('input[class="checkleads"]:checked').length;
+	        var myarrayleads = new Array();
+	        var id = jQuery(this).data('id');
+				if(checkedNum == 0){
+					alert('Please select this lead to convert to deal');
+				} else {
+				        $(this).css('pointer-events','none');
+						
+				           myarrayleads.push(id);
+						   var data = {
+								'action': 'adding_multiple_deals',
+								'data':   myarrayleads
+						   };
+						   
+						 
+						    
+						// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+							jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+					            
+									  if(response == "true"){
+										$('#ModalDeals').modal('show');
+										setTimeout(function(){
+										   window.location.reload();
+										   // or window.location = window.location.href; 
+										}, 2000);
+									 }
+									 
+							});   
+				 
+				}
+	    
+	});
 	
 	/*-------------- Bulk Actions on Properties --------------*/
 	

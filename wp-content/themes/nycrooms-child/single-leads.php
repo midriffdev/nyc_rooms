@@ -3,7 +3,10 @@
  * Template Name: Lead Details 
  * Template Post Type: leads
  */
-$leadid = get_the_ID();
+$leadid      = get_the_ID();
+$checkdeal   = get_post_meta($leadid,'is_deal_created',true);
+$checkdealid = get_post_meta($leadid,'deal_id',true);
+	
 $lead_source = get_post_meta(get_the_ID(),'lead_source',true);
 if($lead_source == "Property Form"){
 $property_id = get_post_meta($leadid,'lead_checkout_property',true);
@@ -55,7 +58,17 @@ get_header();
 					</tbody>
 				</table>
 				<div class="create-deal-btnsec">
-					<button>Create Deal</button>
+                <?php
+				    if($checkdeal && $checkdealid){
+				?>
+				     <button class="deal_done" disabled>Deal Done</button>
+				<?php
+				   } else {
+				?>
+			         <button class="into_deal" data-id="<?= $leadid ?>" >Create Deal</button>
+				<?php
+				   }
+				?>
 				</div>
 			</div>
 			<div class="col-md-6">
@@ -138,7 +151,17 @@ get_header();
 				</div>
 				</div>
 				<div class="create-deal-btnsec">
-					<button>Create Deal</button>
+				<?php
+				    if($checkdeal && $checkdealid){
+				?>
+				 <button class="deal_done" disabled>Deal Done</button>
+				<?php
+				} else {
+				?>
+			     <button class="into_deal" data-id="<?= $leadid ?>" >Create Deal</button>
+				<?php
+				}
+				?>
 			    </div>
 			</div>
 			
@@ -161,6 +184,56 @@ get_header();
 
 
 </div>
+<!-- Modal -->
+<div class="modal fade" id="ModalDeals" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Deals Created Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 <!-- Wrapper / End -->
 <?php
 get_footer();
+?>
+<script>
+jQuery(document).ready(function(){
+ jQuery('.into_deal').click(function(){
+	        $(this).prop('disabled', true);
+	        var myarrayleads = new Array();
+	        var id = jQuery(this).data('id');
+			myarrayleads.push(id);
+			var data = {
+						 'action': 'adding_multiple_deals',
+						 'data':   myarrayleads
+			           };
+						   
+						 
+			  // We can also pass the url value separately from ajaxurl for front end AJAX implementations
+			jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+					            
+				if(response == "true"){
+						$('#ModalDeals').modal('show');
+						setTimeout(function(){
+						   window.location.reload();
+						   // or window.location = window.location.href; 
+						}, 2000);
+				}
+				
+			}); 
+			
+	    
+	});
+});
+</script>
