@@ -3,6 +3,97 @@
  * Template Name: Single Property
  * Template Post Type: property
  */
+$success_msg = '';
+ if(isset($_POST['guest_checkout'])){
+	
+		
+		 $lead_id = wp_insert_post(array (
+			'post_type'		=> 'leads',
+			'post_title' 	=> 'Lead submission',
+			'post_content' 	=> 'Lead submission by guest user',
+			'post_author' 	=> 1,
+			'post_status'   => 'publish'
+		));
+		
+		
+		 if ($lead_id) {
+			add_post_meta($lead_id, 'lead_name', $_POST['guest_name']);
+			add_post_meta($lead_id, 'lead_email', $_POST['guest_email']);
+			add_post_meta($lead_id, 'lead_phone', $_POST['guest_phone']);
+			add_post_meta($lead_id, 'lead_summary', $_POST['guest_summary']);
+			add_post_meta($lead_id, 'lead_checkout_property', $_POST['Property_search_id']);
+			add_post_meta($lead_id, 'lead_checkout_property_name', get_the_title($_POST['Property_search_id']));
+			add_post_meta($lead_id, 'lead_checkt_prp_owner', get_post_meta($_POST['Property_search_id'],'contact_name',true));
+			add_post_meta($lead_id, 'lead_source','Property Form');
+			add_post_meta($lead_id, 'lead_chckt_prp_owner_email', get_post_meta($_POST['Property_search_id'],'contact_email',true));
+			add_post_meta($lead_id, 'lead_created_from', 'logined_user' );
+			
+			
+			
+			
+			$subject = "New Lead Submission";
+			$to = get_option('admin_email');
+			$msg  = __( '<h4>Hello Admin,</h4>') . "\r\n\r\n";
+			$msg .= '<p>A new lead Submission by guest user with following Details:</p>';
+			$msg .= '<p>Name:'.$_POST['guest_name'] .'</p>';
+			$msg .= '<p>Email:'.$_POST['guest_email'] .'</p>';
+			$msg .= '<p>Phone:'.$_POST['guest_phone'] .'</p>';
+			$msg .= '<p>Property link: <a href="'.site_url() .'/single-property/?property_id='.$_POST['Property_search_id'].'">'.site_url().'/single-property/?property_id='.$_POST['Property_search_id'].'</a></p>';
+			$msg .= '<p>Requirements:</p><p>'.$_POST['guest_summary'] .'</p>';
+			$msg .=  '<p>Thanks!<p>';
+			$headers = array('Content-Type: text/html; charset=UTF-8');
+		    $mail = wp_mail($to, $subject, $msg,$headers);
+			if($mail){
+			
+			    $success_msg = "We have recieved your request for property. We will contact you soon";
+				
+				
+			   
+			}
+		
+		}
+		
+}
+if(isset($_POST['book_appointment'])){
+  
+       $lead_id = wp_insert_post(array (
+						'post_type'		=> 'leads',
+						'post_title' 	=> 'Lead submission',
+						'post_content' 	=> 'Lead submission by guest user',
+						'post_author' 	=> 1,
+						'post_status'   => 'publish'
+		           ));
+		
+		
+		 if ($lead_id) {
+			add_post_meta($lead_id, 'lead_name', $_POST['user_name']);
+			add_post_meta($lead_id, 'lead_email', $_POST['user_email']);
+			add_post_meta($lead_id, 'lead_phone', $_POST['user_num']);
+			add_post_meta($lead_id, 'lead_datetime', strtotime($_POST['date'] . ' '.$_POST['time']));
+			add_post_meta($lead_id, 'lead_summary', $_POST['appointment_description']);
+			add_post_meta($lead_id, 'lead_source','Appointment Form');
+			add_post_meta($lead_id, 'lead_created_from', 'Appointment_user' );
+			$strtotime =  strtotime($_POST['date'] . ' '.$_POST['time']);
+			$datetime =  date("F j, Y h:i:s A", $strtotime);
+			$subject = "New Lead Submission";
+			$to = get_option('admin_email');
+			$msg  = __( '<h4>Hello Admin,</h4>') . "\r\n\r\n";
+			$msg .= '<p>A new lead Submission by Appointment Form with following Details:</p>';
+			$msg .= '<p>Name:'.$_POST['user_name'] .'</p>';
+			$msg .= '<p>Email:'.$_POST['user_email'] .'</p>';
+			$msg .= '<p>Phone:'.$_POST['user_num'] .'</p>';
+			$msg .= '<p>Date & time:'. $datetime .'</p>';
+			$msg .= '<p>Requirements:</p><p>'.$_POST['appointment_description'] .'</p>';
+			$msg .=  '<p>Thanks!<p>';
+			$headers = array('Content-Type: text/html; charset=UTF-8');
+		    $mail = wp_mail($to, $subject, $msg,$headers);
+			if($mail){
+			    $success_msg = "We have recieved your request for property. We will contact you soon";
+			}
+		
+		}
+		
+}
 get_header();
 $post_id = get_the_ID();
 $address = get_post_meta($post_id, 'address',true)." ";
@@ -135,7 +226,68 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 				</div>
                  
 				<div class="checkoutproperty">
-				 <a href="<?= site_url() ?>/tenant-registration/?request=guest_checkout&&property_id=<?= $post_id ?>" class="button checkout_property">Checkout Property</a>
+				<?php
+				$user = wp_get_current_user();
+				$user_name  =  get_user_meta($user->ID ,'user_full_name',true);
+				$user_phone =  get_user_meta($user->ID ,'user_phone',true);
+				$user_email =  get_user_meta($user->ID ,'user_email',true);
+				
+				
+				if(!is_user_logged_in()){
+                ?>
+				  <a href="<?= site_url() ?>/tenant-registration/?request=guest_checkout&&property_id=<?= $post_id ?>" class="button checkout_property">Guest Checkout</a>
+				 
+				<?php
+                } else {
+				  if($user->roles[0] == "tenant"){
+                ?>
+				<button type="button" class="btn btn-info btn-lg button checkout_property popup" data-toggle="modal" data-target="#myModal">Request Info</button>
+
+				  <!-- Modal -->
+				<div id="myModal" class="modal fade" role="dialog">
+				  <div class="modal-dialog">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Request Info</h4>
+					  </div>
+					  <div class="modal-body">
+						<form method="post" class="guest--checkout">
+					        <p class="form-row form-row-wide guest-check-descp-sec">
+							    
+								<label for="password2">Descprition:
+									<input type="hidden" name="guest_name" value="<?=  $user_name ?>" />
+								    <input type="hidden" name="guest_email" value="<?= $user_email ?>" />
+									<input type="hidden" name="guest_phone" value="<?= $user_phone ?>">
+									<i class="im im-icon-Lock-2"></i>
+									<textarea class="WYSIWYG" name="guest_summary" id="summary" spellcheck="true" required></textarea>
+								</label>
+							</p>
+							<p class="form-row">
+							    <input type="hidden" value="<?= $post_id ?>" name="Property_search_id">
+								
+								<input type="submit" class="button border fw margin-top-10" name="guest_checkout" value="Submit" />
+							</p>
+						</form>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					  </div>
+					</div>
+
+				  </div>
+				</div>
+				<?php
+				 }
+				}
+				?>
+
+				<div class="appointment-popup">
+		             <button class="appointment-button" data-toggle="modal" data-target="#bookappntmntpopup">Book Appointment</button>
+	            </div>
+				 
 				</div>
 
 				<!-- Similar Listings Container -->
@@ -432,8 +584,84 @@ a.checkout_property {
 }
 </style>
 <?php
+if(!empty($success_msg)):
+?>
+<div id="myModal1" class="modal fade" role="dialog">
+		 <div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			  </div>
+			  <div class="modal-body">
+			    <?= $success_msg ?>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div>
+
+		    </div>
+</div>
+<?php
+endif;
 get_footer();
 ?>
+<!-- Modal for Amount details -->
+<div class="modal fade popup-main--section" id="bookappntmntpopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered bookappointment--popup" role="document">
+    <div class="modal-content">
+	 <form  method="post">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="fillamount-popup">
+        	<h3>Book an Appointment</h3>
+ 			
+        	
+        		<fieldset>
+        		<ul>
+        			<li>
+        				<label for="name">Name*:</label>
+		        		<input type="text" id="name" name="user_name" placeholder="Atchyut" required>
+        			</li>
+        			<li>
+        				<label for="mail">Email*:</label>
+		        		<input type="email" id="mail" name="user_email" placeholder="abc@xyz.com" required>
+        			</li>
+        			<li>
+        				<label for="tel">Contact Number*:</label>
+		        		<input type="text" id="tel" placeholder="Include country code" name="user_num"  maxlength=13 required>
+        			</li>
+        			<li>
+        				<label for="date">Date*:</label>
+        				<input type="date" name="date"  required>
+        			</li>
+        			<li>
+        				<label for="time">Time*:</label>
+        				<input type="time" name="time"  required>
+        			</li>
+        			<li>
+        				<label for="appointment_description">Appointment Description*:</label>
+        				<textarea id="appointment_description" name="appointment_description" placeholder="I wish to get an appointment to skype for resolving a software problem."required ></textarea>
+        			</li>
+        		</ul>
+		      </fieldset>
+    		
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-secondary dealdetail-popupsub" name="book_appointment">Submit</button>
+      </div>
+	</form>
+    </div>
+  </div>
+</div>
 <!-- Maps -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgeuuDfRlweIs7D6uo4wdIHVvJ0LonQ6g"></script>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/infobox.min.js"></script>
@@ -504,3 +732,11 @@ jQuery('.nyc_bookmark').click(function (e) {
 	});
 });
 </script>
+<?php
+if(!empty($success_msg)):
+   echo "<script>
+         jQuery(window).load(function(){
+             $('#myModal1').modal('show');
+         });
+    </script>";
+endif;

@@ -13,14 +13,14 @@ if(isset($_GET['search_leadsall'])){
                                  ),
 								//meta field condition one
 								array(
-									'key'          => 'lead_checkt_prp_owner',
+									'key'          => 'lead_name',
 									'value'        => $_GET['property_owner_name'],
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',
 								),
 								array(
-									'key'          => 'lead_chckt_prp_owner_email',
+									'key'          => 'lead_email',
 									'value'        => $_GET['property_owner_email'] ,
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
@@ -34,7 +34,7 @@ if(isset($_GET['search_leadsall'])){
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $args = array(
          'post_type'        => 'leads',
-		 'post_status'       => 'available',
+		 'post_status'       => 'publish',
          'posts_per_page'   => 6,
          //'no_found_rows'    => true,
          'suppress_filters' => false,
@@ -117,10 +117,12 @@ get_header();
 				<tbody>
 				<tr>
 				    <th><input type="checkbox" class="checkallleads"></th>
-					<th><i class="fa fa-file-text"></i> Property</th>
+					<th><i class="fa fa-list-ol"></i> Lead No</th>
 					<th><i class="fa fa-user"></i>Name</th>
+					<th ><i class="fa fa-phone"></i> Phone</th>
 					<th class="expire-date"><i class="fa fa-envelope" ></i>Email</th>
-					<th>Action</th>
+					<th><i class="fa fa-bolt" ></i> Lead Source</th>
+					<th></th>
 				</tr>
                  
 				 
@@ -129,40 +131,21 @@ get_header();
 
                  while ( $all_leads->have_posts() ) { 
                       $all_leads->the_post();
-					  
-					
-				     $property_id = get_post_meta(get_the_ID(),'lead_checkout_property',true);
-					  
-					        
-								
+							
                     ?> 
 					<tr>
-					<td><input type="checkbox" class="checkleads" value="<?= get_the_ID() ?>"></td>
-					<td class="title-container">
-						
-						<?php 
-						 $galleryfiles =  get_post_meta($property_id,'gallery_files',true);
-						 if($galleryfiles){
-								$galleryfiles = explode(',',$galleryfiles);
-								$attachment_id = get_post_meta($property_id,$galleryfiles[0],true);
-							    $imgsrc = wp_get_attachment_image_src( $attachment_id,array('300', '200'));
-								echo wp_get_attachment_image( $attachment_id, array('768', '512'), "", array( "class" => "img-responsive" ) );
-						 }
-						?>
-						
-						<div class="title">
-							<h4><a href="<?= site_url().'/single-property/?property_id='.$property_id ?>"><?= get_the_title($property_id) ?></a></h4>
-							<span><?= get_post_meta($property_id,'address',true); ?></span>
-							<span class="table-property-price">$<?= get_post_meta($property_id,'price',true); ?> / <?= get_post_meta($property_id,'payment_method',true); ?></span> <span class="active--property"><?= get_post_meta($property_id,'status',true); ?></span>
-						</div>
-					</td>
-					<td><div class="Lead--name"><a href="#"><?= get_post_meta($property_id,'contact_name',true); ?></a></div></td>
-					<td class="lead-email-address"><?= get_post_meta($property_id,'contact_email',true); ?></td>
-					<td class="action">
-						<a href="<?= site_url() . '/lead-details/?leadid='.get_the_ID() ?>"><i class="fa fa-eye"></i> View</a>
-						<a class="delete" data-id="<?= get_the_ID() ?>" style="cursor:pointer;"><i class="fa fa-remove"></i> Delete</a>
-					</td>
-				</tr>
+						<td><input type="checkbox" class="checkleads" value="<?= get_the_ID() ?>"></td>
+						<td class="lead_number">#<?= get_the_ID() ?></td>
+						<td><div class="Lead--name"><a href="<?= get_post_permalink(get_the_ID()) ?>"><?= get_post_meta(get_the_ID(),'lead_name',true); ?></a></div></td>
+						<td class="lead-phone"><?= get_post_meta(get_the_ID(),'lead_phone',true); ?></td>
+						<td class="lead-email-address"><?= get_post_meta(get_the_ID(),'lead_email',true); ?></td>
+						<td><?= get_post_meta(get_the_ID(),'lead_source',true); ?></td>
+						<td class="action">
+							<a href="<?= get_post_permalink(get_the_ID()) ?>"><i class="fa fa-eye"></i> View</a>
+							<a class="delete" data-id="<?= get_the_ID() ?>" style="cursor:pointer;"><i class="fa fa-remove"></i> Delete</a>
+							<a href="#" class="into--deal"><i class="fa fa-share" aria-hidden="true"></i> Into Deal</a>
+						</td>
+				    </tr>
 					
 					<?php  } 
 
@@ -181,20 +164,6 @@ get_header();
 
 				</tbody>
 				</table>
-				
-				<div>
-			        <label>Select bulk action</label>
-                  <div class="bulk_actions_leads">
-						<select class="select_action_leads">
-						 <option value="-1">Bulk Actions</option>
-						 <option value="delete">Delete</option>
-						</select>
-                    <input type="button" value="Apply" class="apply_action_leads">
-                 </div>
-                </div>
-
-			
-				
 				<div class="row fs-listings">
 						<div class="col-md-12">
 
@@ -229,7 +198,16 @@ get_header();
 
 						</div>
 			    </div>
-			
+			    <div>
+			        <label>Select bulk action</label>
+                  <div class="bulk_actions_leads">
+						<select class="select_action_leads">
+						 <option value="-1">Bulk Actions</option>
+						 <option value="delete">Delete</option>
+						</select>
+                    <input type="button" value="Apply" class="apply_action_leads">
+                 </div>
+                </div>
 				<!-- Pagination Container / End -->
 
 			</div>
@@ -306,7 +284,5 @@ input.apply_action_leads {
 }
 
 </style>
-
-
 <?php
 get_footer();

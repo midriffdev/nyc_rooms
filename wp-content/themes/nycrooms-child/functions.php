@@ -1348,7 +1348,7 @@ $user_count_agents = $users->get_results();
 function get_all_leads(){
    $args = array(
          'post_type'        => 'leads',
-		 'post_status'       => 'available',
+		 'post_status'       => 'publish',
          'posts_per_page'   => -1,
          //'no_found_rows'    => true,
          'suppress_filters' => false,
@@ -1396,7 +1396,7 @@ return $count;
 function get_recent_leads(){
     $args = array(
          'post_type'        => 'leads',
-		 'post_status'       => 'available',
+		 'post_status'       => 'publish',
          //'no_found_rows'    => true,
          'suppress_filters' => false,
 		 'orderby'          => 'post_date',

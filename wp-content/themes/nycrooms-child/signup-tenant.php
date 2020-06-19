@@ -10,9 +10,9 @@ if(is_user_logged_in()){
 }
    
      if(isset($_REQUEST['register']) && $_SERVER['REQUEST_METHOD'] == "POST") 
-      {  
-		  
-         // Check username is present and not already in use  
+      {	  
+	  
+        // Check username is present and not already in use  
         $username = esc_sql($_REQUEST['username']);  
           
         if(empty($_REQUEST['username'])) 
@@ -78,7 +78,62 @@ if(is_user_logged_in()){
 				
 				
 				 if(!is_wp_error($user_verify)){
+				      add_user_meta($user,'user_full_name', $_REQUEST['guest_name_reg']);
+					  add_user_meta($user,'user_email', $_REQUEST['email']);
+					  add_user_meta($user,'user_phone', $_REQUEST['guest_phone_reg']);
+					  
+				   //------------ atart creating leads ---------------
+				   if(isset($_REQUEST['guest_search_enq_req']) && $_REQUEST['guest_search_enq_req'] == "enquiry request" ):
+				   $lead_id = wp_insert_post(array (
+			                            'post_type'		=> 'leads',
+										'post_title' 	=> 'Lead submission',
+										'post_content' 	=> 'Lead submission by guest user',
+										'post_author' 	=> 1,
+										'post_status'   => 'publish'
+		                       ));
+		
+		
+						 if ($lead_id) {
+							add_post_meta($lead_id, 'lead_name', $_REQUEST['guest_name_reg']);
+							add_post_meta($lead_id, 'lead_email', $_REQUEST['email']);
+							add_post_meta($lead_id, 'lead_phone', $_REQUEST['guest_phone_reg']);
+							add_post_meta($lead_id, 'lead_summary', $_REQUEST['guest_summary_reg']);
+							add_post_meta($lead_id, 'lead_checkout_property', $_REQUEST['guest_search_pid']);
+							add_post_meta($lead_id, 'lead_checkout_property_name', get_the_title($_REQUEST['guest_search_pid']));
+							add_post_meta($lead_id, 'lead_checkt_prp_owner', get_post_meta($_REQUEST['guest_search_pid'],'contact_name',true));
+							add_post_meta($lead_id, 'lead_source','Property Form');
+							add_post_meta($lead_id, 'lead_chckt_prp_owner_email', get_post_meta($_REQUEST['guest_search_pid'],'contact_email',true));
+							add_post_meta($lead_id, 'lead_created_from', 'registered_user' );
+							
+							
+							
+							
+							$subject = "New Lead Submission";
+							$to = get_option('admin_email');
+							$msg  = __( '<h4>Hello Admin,</h4>') . "\r\n\r\n";
+							$msg .= '<p>A new lead Submission by guest user with following Details:</p>';
+							$msg .= '<p>Name:'.$_REQUEST['guest_name_reg'] .'</p>';
+							$msg .= '<p>Email:'.$_REQUEST['email'] .'</p>';
+							$msg .= '<p>Phone:'.$_REQUEST['guest_phone_reg'] .'</p>';
+							$msg .= '<p>Property link: <a href="'.site_url() .'/single-property/?property_id='.$_REQUEST['guest_search_pid'].'">'.site_url().'/single-property/?property_id='.$_REQUEST['guest_search_pid'].'</a></p>';
+							$msg .= '<p>Requirements:</p><p>'.$_REQUEST['guest_summary_reg'] .'</p>';
+							$msg .=  '<p>Thanks!<p>';
+							$headers = array('Content-Type: text/html; charset=UTF-8');
+							$mail = wp_mail($to, $subject, $msg,$headers);
+							if($mail){
+							
+								$success_msg = "We have recieved your request for property. We will contact you soon";
+								
+								
+							   
+							}
+						
+						}
+				      endif;
+                   // ------------ end creating leads --------------			   
 				   wp_new_user_notification($user, null, 'both');
+				   
+				    
 				   header( 'Location:' . site_url() . '/tenant/?success=1&u=' . $username );  
 				}
 				
@@ -86,7 +141,7 @@ if(is_user_logged_in()){
    
             // You could do all manner of other things here like send an email to the user, etc. I leave that to you.  
    
-        }
+        } 
    
     }
 	
@@ -135,6 +190,8 @@ if(is_user_logged_in()){
 
 /*------------ Guest Checkout ----------------------*/
 
+ if(isset($_GET['request']) && $_GET['request'] == 'guest_checkout'): 
+
 if(isset($_POST['guest_checkout'])){
 		
 		
@@ -145,7 +202,7 @@ if(isset($_POST['guest_checkout'])){
 			'post_title' 	=> 'Lead submission',
 			'post_content' 	=> 'Lead submission by guest user',
 			'post_author' 	=> 1,
-			'post_status'   => 'available'
+			'post_status'   => 'publish'
 		));
 		
 		
@@ -171,7 +228,7 @@ if(isset($_POST['guest_checkout'])){
 			$msg .= '<p>Name:'.$_POST['guest_name'] .'</p>';
 			$msg .= '<p>Email:'.$_POST['guest_email'] .'</p>';
 			$msg .= '<p>Phone:'.$_POST['guest_phone'] .'</p>';
-			$msg .= '<p>Property link: <a href="'.site_url() .'/single-property/?property_id='.$_SESSION['action']['property_id'].'">'.site_url().'/single-property/?property_id='.$_SESSION['action']['property_id'].'</a></p>';
+			$msg .= '<p>Property link: <a href="'.site_url() .'/single-property/?property_id='.$_POST['Property_search_id'].'">'.site_url().'/single-property/?property_id='.$_POST['Property_search_id'].'</a></p>';
 			$msg .= '<p>Requirements:</p><p>'.$_POST['guest_summary'] .'</p>';
 			$msg .=  '<p>Thanks!<p>';
 			$headers = array('Content-Type: text/html; charset=UTF-8');
@@ -187,7 +244,7 @@ if(isset($_POST['guest_checkout'])){
 		}
 		
 }
-
+ endif; 
 
 /*----------------- Facebook Login -------------------------*/
 
@@ -371,7 +428,7 @@ get_header();
 		<ul class="tabs-nav">
 			<li class=""><a href="#tab1">Log In</a></li>
 			<li><a href="#tab2">Register</a></li>
-			<li><a href="#tab3">Guest Checkout</a></li>
+			<?php if(isset($_GET['request']) && $_GET['request'] == 'guest_checkout'): ?><li><a href="#tab3">Guest Checkout</a></li><?php endif; ?>
 		</ul>
 
 		<div class="tabs-container alt">
@@ -423,89 +480,110 @@ get_header();
 			<!-- Register -->
 			<div class="tab-content" id="tab2" style="display: none;">
                 
-				<form method="post" class="register"  action="<?php echo $_SERVER['REQUEST_URI']; ?>" >
-					
-				<p class="form-row form-row-wide">
-					<label for="username2">Username:
-						<i class="im im-icon-Male"></i>
-						<input type="text" class="input-text" name="username" id="username2" value="" />
-					</label>
-					<label class="form_errors"><?php if(!empty($errors['username'])){ echo $errors['username'];} ?></label>
-				</p>
-					
-				<p class="form-row form-row-wide">
-					<label for="email2">Email Address:
-						<i class="im im-icon-Mail"></i>
-						<input type="text" class="input-text" name="email" id="email2" value="" />
-					</label>
-					<label class="form_errors"><?php if(!empty($errors['email'])){ echo $errors['email'];} ?></label>
-				</p>
-
-				<p class="form-row form-row-wide">
-					<label for="password1">Password:
-						<i class="im im-icon-Lock-2"></i>
-						<input class="input-text" type="password" name="password1" id="password1"/>
-					</label>
-					<label class="form_errors"><?php if(!empty($errors['password'])){ echo $errors['password'];} ?></label>
-				</p>
-
-				<p class="form-row form-row-wide">
-					<label for="password2">Repeat Password:
-						<i class="im im-icon-Lock-2"></i>
-						<input class="input-text" type="password" name="password2" id="password2"/>
-					</label>
-					<label class="form_errors"><?php if(!empty($errors['password_confirmation'])){ echo $errors['password_confirmation'];} ?></label>
-				</p>
+				<form method="post" class="register" action="<?php echo $_SERVER['REQUEST_URI']; ?>" >	
+				    
+					 <p class="form-row form-row-wide">
+						<label for="guest_name_reg">Name:
+							<i class="im im-icon-Male"></i>
+							<input type="text" class="input-text" name="guest_name_reg" id="guest_name_reg"  required />
+						</label>
+				     </p>
+					 <p class="form-row form-row-wide">
+						<label for="username2">Username:
+							<i class="im im-icon-Male"></i>
+							<input type="text" class="input-text" name="username" id="username2"  required />
+						</label>
+						<label class="form_errors"><?php if(!empty($errors['username'])){ echo $errors['username'];} ?></label>
+					 </p>
+				     <p class="form-row form-row-wide">
+								<label for="guest_phone_reg">Phone:
+									<i class="im im-icon-Phone"></i>
+									<input type="text" id="guest_phone_reg" name="guest_phone_reg" pattern="[0-9]{10}" maxlength=10 required>
+								</label>
+				     </p>
+					 <p class="form-row form-row-wide">
+						<label for="email2">Email Address:
+							<i class="im im-icon-Mail"></i>
+							<input type="email" class="input-text" name="email" id="email2" required />
+						</label>
+						<label class="form_errors"><?php if(!empty($errors['email'])){ echo $errors['email'];} ?></label>
+					</p>
+					<p class="form-row form-row-wide">
+						<label for="password1">Password:
+							<i class="im im-icon-Lock-2"></i>
+							<input class="input-text" type="password" name="password1" id="password1" required/>
+						</label>
+						<label class="form_errors"><?php if(!empty($errors['password'])){ echo $errors['password'];} ?></label>
+					</p>
+					<p class="form-row form-row-wide">
+						<label for="password2">Repeat Password:
+							<i class="im im-icon-Lock-2"></i>
+							<input class="input-text" type="password" name="password2" id="password2" required/>
+						</label>
+						<label class="form_errors"><?php if(!empty($errors['password_confirmation'])){ echo $errors['password_confirmation'];} ?></label>
+					</p>
+				<?php if(isset($_GET['request']) && $_GET['request'] == 'guest_checkout'): ?>
+				<p class="form-row form-row-wide guest-check-descp-sec">
+						<label for="guest_summary_reg">Descprition:
+							<i class="im im-icon-Lock-2"></i>
+							<textarea class="WYSIWYG" name="guest_summary_reg" id="guest_summary_reg" spellcheck="true" required></textarea>
+							<input type="hidden" value="<?= $_GET['property_id'] ?>" name="guest_search_pid">
+							<input type="hidden" value="enquiry request" name="guest_search_enq_req">
+							
+						</label>
+				</p>			
+				<?php endif; ?>
+				
 
 				<p class="form-row">
-					<input type="submit" class="button border fw margin-top-10" name="register" value="Register" />
+					<input type="submit" class="button border fw margin-top-10" name="register" value="Register <?php if(isset($_GET['request']) && $_GET['request'] == 'guest_checkout'): echo "& Send Enquiry"; endif; ?>" />
 				</p>
 
 				</form>
 			</div>
-			
+			<?php if(isset($_GET['request']) && $_GET['request'] == 'guest_checkout'): ?>
 			<!-- Guest Checkout -->
 			<div class="tab-content" id="tab3" style="display: none;">
 				<form method="post" class="guest--checkout">
-					
+					         
 							<p class="form-row form-row-wide">
 								<label for="username2">Name:
 									<i class="im im-icon-Male"></i>
-									<input type="text" class="input-text" name="guest_name" id="username2" value="" />
+									<input type="text" class="input-text" name="guest_name" id="username2" required />
 								</label>
 							</p>
 								
 							<p class="form-row form-row-wide">
 								<label for="email2">Email Address:
 									<i class="im im-icon-Mail"></i>
-									<input type="text" class="input-text" name="guest_email" id="email2" value="" />
+									<input type="email" class="input-text" name="guest_email" id="email2" required />
 								</label>
 							</p>
 
 							<p class="form-row form-row-wide">
 								<label for="password1">Phone:
 									<i class="im im-icon-Phone"></i>
-									<input type="tel" id="phone" name="guest_phone">
+									<input type="text" id="phone" name="guest_phone" pattern="[0-9]{10}" maxlength=10 required>
 								</label>
 							</p>
 
 							<p class="form-row form-row-wide guest-check-descp-sec">
 								<label for="password2">Descprition:
 									<i class="im im-icon-Lock-2"></i>
-									<textarea class="WYSIWYG" name="guest_summary" id="summary" spellcheck="true"></textarea>
+									<textarea class="WYSIWYG" name="guest_summary" id="summary" spellcheck="true" required></textarea>
 								</label>
 							</p>
 
 							<p class="form-row">
-							    <?php if(isset($_GET['request']) && $_GET['request'] == 'guest_checkout'): ?>
+							    
 							    <input type="hidden" value="<?= $_GET['property_id'] ?>" name="Property_search_id">
-								<?php endif; ?>
+								
 								<input type="submit" class="button border fw margin-top-10" name="guest_checkout" value="Submit" />
 							</p>
 
 				</form>
 			</div>
-			
+			<?php endif; ?>
 
 		</div>
 	</div>

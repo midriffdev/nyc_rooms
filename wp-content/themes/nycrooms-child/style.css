@@ -7,7 +7,6 @@ Author URI: http://nycrooms4rent.com/
 Template: nycrooms
 Version: 1.0
 */
-
 @charset "UTF-8";
 
 
@@ -78,7 +77,7 @@ Version: 1.0
 ---------------------------------------------------------------------- */
 @import url("css/bootstrap.css");					/* Default Reset, Typography, Forms, Responsive Grid etc. */
 @import url("css/icons.css");						/* Webfont Icons: FontAwesome, Line, Simple Line */
-@import url("https://fonts.googleapis.com/css?family=Varela+Round");
+@import url("http://fonts.googleapis.com/css?family=Varela+Round");
 
 
 /* ------------------------------------------------------------------- */
@@ -13615,6 +13614,37 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
     width: 75% !important;
 }
 .selectproperty-stagechange-modal .modal-body{height: 500px; overflow-y: scroll;}
+.appointment-button {
+    padding: 12px 23px;
+    background: #274abb;
+    color: #fff !important;
+    border-radius: 3px;
+    text-decoration: none !important;
+    display: inline-block;
+    border: 0;
+    transition: 0.5s;
+}
+.appointment-button:hover{opacity: 0.8;}
+.bookappointment--popup .modal-body {
+    height: 450px;
+    overflow-y: scroll;
+}
+.fillamount-popup > h3 {
+    text-align: center;
+    font-size: 26px;
+    position: relative;
+    margin: 0 0 61px 0;
+}
+.fillamount-popup h3::after {
+    position: absolute;
+    background: #333;
+    content: "";
+    height: 2px;
+    width: 46px;
+    left: 50%;
+    bottom: -20px;
+    transform: translateX(-50%);
+}
 /* --------------------############## Shubham CSS end ######################------------------ */
 
 /* ------------------------------------------------------------------- */
@@ -14058,8 +14088,6 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
 	.property-slider .item,
 	.property-slider.default .item  { height: 200px; }
 }
-
-
 /*****saurabh(08/06/2020)start******/
 
 /*------------ start Modal Popup Css ----------------------*/
