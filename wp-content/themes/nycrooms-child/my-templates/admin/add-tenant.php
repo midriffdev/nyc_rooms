@@ -6,6 +6,7 @@ get_header();
 if(isset($_POST['add_tenant'])){
 	$errors = false;
 	$email = $_POST['email'];
+	$username = $_POST['username'];
 	$fname = $_POST['first_name'];
 	$lname = $_POST['last_name'];
 	$phone = $_POST['phone'];
@@ -17,13 +18,20 @@ if(isset($_POST['add_tenant'])){
 	$linkedin = $_POST['linkedin'];
 	$about = $_POST['about'];
 	if( email_exists($email) ) {
-	    $erroremail = "Email ID already exist";
+	    $erroremail = "Email ID already exist.";
+		$errors = true;
+	}
+	if( empty($username) ) {
+	    $errorusername = "Username is required.";
+		$errors = true;
+	}elseif( username_exists($username) ) {
+	    $errorusername = "Username already exist.";
 		$errors = true;
 	}
 	if($errors == false){
 		$userPass = wp_generate_password();
 		$userdata = array(
-						'user_login'  	=> $email,
+						'user_login'  	=> $username,
 						'user_pass'   	=> $userPass, // random password, you can also send a notification to new users, so they could set a password themselves
 						'user_email' 	=> $email,
 						'first_name'	=> $fname,
@@ -73,8 +81,9 @@ if(isset($_POST['add_tenant'])){
 				    
 				    <form method="post" enctype="multipart/form-data">
 						<div class="col-md-6 my-profile">
-						<?php if(isset($erroremail)){ echo '<span style="color:#f81515;font-size: large">'.$erroremail.'</span>'; } ?>
-						<?php if(isset($createmsg)){ echo '<span style="color:#1db40a;font-size: large">'.$createmsg.'</span>'; } ?>
+						<?php if(isset($errorusername)){ echo '<p><span style="color:#f81515;font-size: large">'.$errorusername.'</span></p>'; } ?>
+						<?php if(isset($erroremail)){ echo '<p><span style="color:#f81515;font-size: large">'.$erroremail.'</span></p>'; } ?>						
+						<?php if(isset($createmsg)){ echo '<p><span style="color:#1db40a;font-size: large">'.$createmsg.'</span></p>'; } ?>
 							<div class="row">
 								<div class="col-md-6">
 									<label>First Name</label>
@@ -87,9 +96,13 @@ if(isset($_POST['add_tenant'])){
 							</div>
 							
 							<div class="row">
-								<div class="col-md-12">
+								<div class="col-md-6">
 									<label>Phone</label>
 									<input  type="text" name="phone" placeholder="Phone" required pattern="[0-9]{10}" value="<?php if(isset($phone)){ echo $phone; } ?>"  maxlength=10>
+								</div>
+								<div class="col-md-6">
+									<label>Username</label>
+									<input  type="text" name="username" placeholder="Username" value="<?php if(isset($username)){ echo $username; } ?>"  required>
 								</div>
 							</div>
 							

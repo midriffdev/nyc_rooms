@@ -64,7 +64,15 @@
 						<?= get_recent_leads()?>
 						</span></a></li>
 					</ul>
-
+					
+					<ul class="my-account-nav">
+						<li class="sub-nav-title">Manage Deals</li>
+						<li class="admin-propertieslistings">
+							<a href="<?php echo get_site_url(); ?>/admin/deals/" id="sidebar-alldeals">All Deals <span class="all-listing-no active-listing-no">3000</span></a>
+						</li>
+						<li><a href="#"><i class="sl sl-icon-action-redo"></i> Add New Deal</a></li>
+					</ul>
+					
 					<ul class="my-account-nav">
 						<li><a href="<?php echo home_url(); ?>/change-password/"><i class="sl sl-icon-lock"></i> Change Password</a></li>
 						<li><a href="<?php echo wp_logout_url(home_url().'/login-admin/'); ?>"><i class="sl sl-icon-power"></i> Log Out</a></li>

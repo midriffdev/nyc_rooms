@@ -42,14 +42,6 @@ get_header();
 ?>
  <div id="primary" class="content-area">
 <div id="wrapper">
-
-
-<!-- Titlebar
-================================================== -->
-
-
-<!-- Content
-================================================== -->
 <div class="container">
 	<div class="row">
 		<!-- Widget -->
