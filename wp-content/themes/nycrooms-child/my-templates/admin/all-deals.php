@@ -168,7 +168,7 @@ input.checkbulk{
 							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'phone',true); ?></td>
 							<td class="deal-stage-number"><?php echo 'Stage '.$deal_stage; ?></td>
 							<td class="action">
-								<a href="#"><i class="fa fa-eye"></i> View</a>
+								<a href="<?php echo get_site_url(); ?>/admin/deals/details/<?php echo $deal_id; ?>"><i class="fa fa-eye"></i> View</a>
 								<a href="#" class="delete delete-deal" data-id="<?php echo $deal_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 								<a href="#" class="deal__link"><i class="fa fa-clone"></i> Deal Link</a>
 							</td>

@@ -1,50 +1,21 @@
-<!DOCTYPE html>
-<head>
-<!-- Basic Page Needs
-================================================== -->
-<title>NYC Room</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-<!-- CSS
-================================================== -->
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/color.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-</head>
-
-<body>
-
+<?php
+nyc_property_admin_authority();
+$post_id = get_query_var( 'id' ); 
+$post = get_post($post_id);
+if(empty($post) || ($post->post_type != 'deals')){
+	wp_redirect(get_site_url().'/admin/deals'); 
+}
+get_header();
+$deal_stage = get_post_meta($post_id,'deal_stage',true);
+$lead_source = get_post_meta($post_id,'lead_source',true);
+$name = get_post_meta($post_id,'name',true);
+$email = get_post_meta($post_id,'email',true);
+$phone = get_post_meta($post_id,'phone',true);
+$description = get_post_meta($post_id,'description',true);
+$property_id = get_post_meta($post_id,'property_id',true);
+?>
 <!-- Wrapper -->
 <div id="wrapper">
-
-<!-- Titlebar
-================================================== -->
-<div id="titlebar">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-
-				<h2>Deal Detail</h2>
-
-				<!-- Breadcrumbs -->
-				<nav id="breadcrumbs">
-					<ul>
-						<li><a href="#">Home</a></li>
-						<li>Deal Detail</li>
-					</ul>
-				</nav>
-
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<!-- Content
-================================================== -->
 <div class="deal-detail-container">		
 	<div class="container">
 
@@ -53,10 +24,10 @@
 				<div class="deal-detail-stagesec">
 					<h3>Select Stage</h3>
 					<select data-placeholder="Any Status" class="chosen-select-no-single" >
-						<option>Select Stage</option>	
-						<option>Stage 1</option>
-						<option>Stage 2</option>
-						<option>Stage 3</option>
+						<option >Select Stage</option>	
+						<option value="1" <?php if($deal_stage == 1){ echo "selected";} ?>>Stage 1</option>
+						<option value="2" <?php if($deal_stage == 2){ echo "selected";} ?>>Stage 2</option>
+						<option value="3" <?php if($deal_stage == 3){ echo "selected";} ?>>Stage 3</option>
 					</select>
 				</div>
 			</div>
@@ -65,13 +36,19 @@
 					<h3>Allocate Agent</h3>
 					<select data-placeholder="Any Status" id="alocateagent-select" class="chosen-select-no-single" >
 						<option>Select Agent</option>	
-						<option>Agent 1</option>
-						<option>Agent 2</option>
-						<option>Agent 3</option>
-						<option>Agent 4</option>
-						<option>Agent 5</option>
+						<?php
+						$args = array(
+						 'role' => 'sales_agent',
+						 'orderby' => 'user_nicename',
+						 'order' => 'ASC'
+						);
+						 $agents = get_users($args);
+						 foreach ($agents as $agent) {
+						 echo '<option value="'.$agent->ID.'">'.$agent->display_name.'</option>';
+						 }						
+						?>
 					</select>
-
+					
 					<div class="allocategent-tostage">
 						<p>To</p>
 					<select data-placeholder="Any Status" class="chosen-select-no-single" >
@@ -85,7 +62,7 @@
 				</div>
 			</div>
 			<div class="col-md-6">
-				<div class="dealdetal-currentstage-status">Current Status:	<span>Stage 1</span></div>
+				<div class="dealdetal-currentstage-status">Current Status:	<span>Stage <?php echo $deal_stage; ?></span></div>
 				<div class="deal-detail-uniformbutton">
 					<ul>
 						<li><a href="#" class="deal-send-button deal-send-email" data-toggle="modal" data-target="#stagechange-propoertyselect">Send as Email</a></li>
@@ -95,7 +72,10 @@
 				</div>
 			</div>
 		</div>
-
+		
+		
+		<?php if($deal_stage == 1){ ?>
+		
 		<!------Stage 1---->
 		<div class="dealdetail--stageonecont">
 			<div class="row">
@@ -107,6 +87,11 @@
 			</div>
 
 			<div class="row dealdetail--stageinnersection">
+			
+			    <?php  if($lead_source == "Property Form"){ ?>
+				
+				<div class="col-md-12">
+				<?php if($property_id){ ?>
 				<div class="col-md-6">
 					<div class="dealdetail-propertydetail">
 						<h2>Property Details</h2>
@@ -117,7 +102,7 @@
 							<td class="title-container lead-detail-propertytitlesec">
 							<img src="images/listing-02.jpg" alt="">
 							<div class="title">
-							<h4><a href="#">Serene Uptown</a></h4>
+							<h4><a href="#"><?php echo get_the_title($property_id); ?></a></h4>
 							<span>6 Bishop Ave. Perkasie, PA </span>
 							<p>Owner: <span>Teri Dactyl</span></p>
 							<span class="table-property-price">$900 / monthly</span> <span class="active--property">Available</span>
@@ -126,10 +111,9 @@
 							</tr>
 						</tbody>
 					</table>
-					</div>
-					
+					</div>			
 				</div>
-
+				<?php } ?>
 				<div class="col-md-6">
 					<div class="leaddetail-teanentdetail dealdetail__tenantdetail">
 					<h2>Tenant Details</h2>
@@ -137,26 +121,28 @@
 						<ul>
 							<li>
 								<p>Name: </p>
-								<span>Shubham Chhabra</span>
+								<span><?php echo $name; ?></span>
 							</li>
 							<li>
 								<p>Email:</p>
-								<span>shubhamchhabra@gmail.com</span>
+								<span><?php echo $email; ?></span>
 							</li>
 							<li>
 								<p>Phone:</p>
-								<span>+918295585505</span>
+								<span><?php echo $phone; ?></span>
 							</li>
 							<li>
 								<p>Description:</p>
-								<span>I need room with 2 beds and proper air circulation with personal space. We are total 3 persons which are actively looking room for rent.</span>
+								<span><?php echo $description; ?></span>
 							</li>
 						</ul>
 					</div>
 					</div>
 				</div>
-
-				<div class="col-md-6">
+				</div>
+				<?php } ?>
+				<div class="col-md-12">
+				<?php if($lead_source == "Appointment Form"){ ?>
 					<div class="dealdetal__appointmentdetail-sec">
 						<div class="leaddetail-teanentdetail dealdetail__tenantdetail">
 							<h2>Appointment Details</h2>
@@ -164,15 +150,15 @@
 								<ul>
 									<li>
 										<p>Name: </p>
-										<span>Shubham Chhabra</span>
+										<span><?php echo $name; ?></span>
 									</li>
 									<li>
 										<p>Email:</p>
-										<span>shubhamchhabra@gmail.com</span>
+										<span><?php echo $email; ?></span>
 									</li>
 									<li>
 										<p>Phone:</p>
-										<span>+918295585505</span>
+										<span><?php echo $phone; ?></span>
 									</li>
 									<li>
 										<p>Date:</p>
@@ -184,14 +170,14 @@
 									</li>
 									<li>
 										<p>Description:</p>
-										<span>I need room with 2 beds and proper air circulation with personal space. We are total 3 persons which are actively looking room for rent.</span>
+										<span><?php echo $description; ?></span>
 									</li>
 								</ul>
 							</div>
 						</div>
 					</div>
+				<?php } ?>
 				</div>
-
 				<div class="col-md-6">
 					<div class="dealdetail-allocateagent-section">
 						<h2>Agent Details</h2>
@@ -211,13 +197,11 @@
 
 						</ul>
 					</div>
-
-					<div class="dealdetail--agentnotes-sec">
-						<h2>Agent Notes:</h2>
-						<p>I need room with 2 beds and proper air circulation with personal space. We are total 3 persons which are actively looking room for rent.</p>
-					</div>
 				</div>
-
+				<div class="dealdetail--agentnotes-sec col-md-6">
+					<h2>Agent Notes:</h2>
+					<p>I need room with 2 beds and proper air circulation with personal space. We are total 3 persons which are actively looking room for rent.</p>
+				</div>
 				
 
 				<div class="col-md-6">
@@ -290,8 +274,7 @@
 			</div>
 
 		</div>
-		
-
+		<?php }elseif($deal_stage == 2){ ?>
 		<!----Stage 2---->
 		<div class="row deal-stage-2">
 			<div class="current-stage-title">
@@ -593,7 +576,7 @@
 			</div>
 
 		</div>
-
+        <?php }elseif($deal_stage == 3){ ?>
 		<!-----Stage 3------->
 		<div class="row deal-stage-3">
 			<div class="current-stage-title">
@@ -637,15 +620,12 @@
 				</button>
 			</div>
 		</div>
-
+        <?php } ?>
 	</div>
 </div>
 
 
 <div class="margin-top-55"></div>
-
-<!-- Back To Top Button -->
-<div id="backtotop"><a href="#"></a></div>
 
 <!-- Modal for Amount details -->
 <div class="modal fade popup-main--section" id="fillamountdetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -1033,45 +1013,19 @@
   </div>
 </div>
 
-
 </div>
-
-<!-- Scripts
-================================================== -->
-
-<script type="text/javascript" src="scripts/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="scripts/jquery-migrate-3.1.0.min.js"></script>
-<script type="text/javascript" src="scripts/chosen.min.js"></script>
-<script type="text/javascript" src="scripts/magnific-popup.min.js"></script>
-<script type="text/javascript" src="scripts/owl.carousel.min.js"></script>
-<script type="text/javascript" src="scripts/rangeSlider.js"></script>
-<script type="text/javascript" src="scripts/sticky-kit.min.js"></script>
-<script type="text/javascript" src="scripts/slick.min.js"></script>
-<script type="text/javascript" src="scripts/masonry.min.js"></script>
-<script type="text/javascript" src="scripts/mmenu.min.js"></script>
-<script type="text/javascript" src="scripts/tooltips.min.js"></script>
-<script type="text/javascript" src="scripts/custom.js"></script>
-<script type="text/javascript" src="scripts/main.js"></script>
-
-<script type="text/javascript" src="scripts/dropzone.js"></script>
 <script>
-	$(".dropzone").dropzone({
-		dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
-	});
-
-	$(document).ready(function(){
-	    $('#alocateagent-select').on('change', function() {
-	        $(".allocategent-tostage").show();
+	jQuery(document).ready(function(){
+	    jQuery('#alocateagent-select').on('change', function() {
+	        jQuery(".allocategent-tostage").show();
 	    });
 
-	    $(".desellect-sellectedproperty").click(function(){
-	    	$(this).parent().addClass('selected-property-none'); 
+	    jQuery(".desellect-sellectedproperty").click(function(){
+	    	jQuery(this).parent().addClass('selected-property-none'); 
 	    });
 	});
 </script>
-</div>
 <!-- Wrapper / End -->
-
-</body>
-
-</html>
+<?php
+get_footer();
+?>
