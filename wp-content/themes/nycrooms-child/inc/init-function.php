@@ -95,7 +95,14 @@ add_action( 'template_redirect', function(){
     if ( is_page('tenant/contracts') ) {
         include get_stylesheet_directory() . '/my-templates/tenant/contracts.php';
         die;
-    }	
+    }
+	
+     if ( is_page('tenant/deal-details')) {
+        include get_stylesheet_directory() . '/my-templates/tenant/deal-detail-tenant.php';
+        die;
+    }
+	
+	
 } );
 
 function nyc_user_profile_image_upload($FILES,$name,$userid){
