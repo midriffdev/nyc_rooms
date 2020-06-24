@@ -149,6 +149,7 @@ input.checkbulk{
 					<th><i class="fa fa-user"></i>Name</th>
 					<th><i class="fa fa-envelope"></i> Email</th>
 					<th><i class="fa fa-phone" ></i> Phone</th>
+					<th><i class="fa fa-check-square-o" ></i> Source</th>
 					<th class="expire-date"><i class="fa fa-bars" aria-hidden="true"></i> Stage</th>
 					<th></th>
 				</tr>
@@ -166,6 +167,7 @@ input.checkbulk{
 							<td class="deal-member-name"><?php echo get_post_meta($deal_id,'name',true); ?></td>
 							<td class="deal-email-address"><?php echo get_post_meta($deal_id,'email',true); ?></td>
 							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'phone',true); ?></td>
+							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'lead_source',true); ?></td>
 							<td class="deal-stage-number"><?php echo 'Stage '.$deal_stage; ?></td>
 							<td class="action">
 								<a href="<?php echo get_site_url(); ?>/admin/deals/details/<?php echo $deal_id; ?>"><i class="fa fa-eye"></i> View</a>
