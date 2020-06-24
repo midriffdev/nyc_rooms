@@ -372,28 +372,97 @@ function cvf_demo_pagination_load_posts() {
         $first_btn = true;
         $last_btn = true;
         $start = $page * $per_page;
+		$meta_query = array();
+        $p_args = array(
+					'post_type'         => 'property',
+					'orderby'           => 'post_date',
+					'order'             => 'DESC',
+					'posts_per_page'    => $per_page,
+					'offset'            => $start,
+					'post__not_in'		=> $selected_property,
+				);
+		
+		$c_args = array(
+					'post_type'         => 'property',
+					'posts_per_page'    => -1,
+					'post__not_in'		=> $selected_property,
+				);
+		//Seacrh by title 		
+		if($_POST['search_name']){
+			$search_name = $_POST['search_name'];
+			$p_args['s'] = $search_name;
+			$c_args['s'] = $search_name;
+		}
+		
+		//Seacrh by post status 	
+		if($_POST['search_status']){
+			$p_args['post_status'] = array($_POST['search_status']);
+			$c_args['post_status'] = array($_POST['search_status']);
+		}else{
+			$p_args['post_status'] = array('available','rented');
+			$c_args['post_status'] = array('available','rented');
+		}
 
-        $properties = new WP_Query(
-            array(
-                'post_type'         => 'property',
-                'post_status '      => array('available'),
-                'orderby'           => 'post_date',
-                'order'             => 'DESC',
-                'posts_per_page'    => $per_page,
-                'offset'            => $start,
-				'post__not_in'		=> $selected_property,
-            )
-        );
-
-        $count = new WP_Query(
-            array(
-                'post_type'         => 'property',
-                'post_status '      => array('available'),
-                'posts_per_page'    => -1,
-				'post__not_in'		=> $selected_property,
-            )
-        );
+        //Seacrh by type  
+		if($_POST['search_type']){
+			$term_args = array(
+							array(
+							'taxonomy' => 'types',
+							'field' => 'term_id',
+							'terms' => $_POST['search_type']
+							)
+						);	
+			$p_args['tax_query'] = $term_args;
+			$c_args['tax_query'] = $term_args;						
+		}
+		
+        //Seacrh by accomdation  
+		if($_POST['search_accom']){
+			$meta_query[] = array(
+						'key'          => 'accomodation',
+						'value'        => $_POST['search_accom'],
+						'compare'      => '=',
+					   );						
+		}
+		
+        //Seacrh by rooms  
+		if($_POST['search_rooms']){
+			$meta_query[] = array(
+						'key'          => 'rooms',
+						'value'        => $_POST['search_rooms'],
+						'compare'      => '=',
+					   );						
+		}
+		
+        //Seacrh by min price   
+		if($_POST['search_min_price']){
+			$meta_query[] = array(
+						'key'          => 'price',
+						'value'        => $_POST['search_min_price'],
+						'compare'      => '>=',
+						'type'          => 'NUMERIC'
+					   );						
+		}
+		
+        //Seacrh by rooms  
+		if($_POST['search_max_price']){
+			$meta_query[] = array(
+						'key'          => 'price',
+						'value'        => $_POST['search_max_price'],
+						'compare'      => '<=',
+						'type'          => 'NUMERIC'
+					   );						
+		}
+		
+		if(!empty($meta_query)){
+			$p_args['meta_query'] = $meta_query;
+			$c_args['meta_query'] = $meta_query;
+		}
+		
+		$properties = new WP_Query($p_args);
+        $count = new WP_Query($c_args);
 		$count = $count->post_count; 
+		
 		$msg .= '<table class="manage-table responsive-table deal-suggestproperty-table">
 				<tbody>
 				<tr>

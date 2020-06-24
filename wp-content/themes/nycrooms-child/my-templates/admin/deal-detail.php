@@ -24,6 +24,9 @@ $deal_price = get_post_meta($post_id,'deal_price',true);
 $admin_notes = get_post_meta($post_id,'admin_notes',true);
 $selected_property = get_post_meta($post_id, 'selected_property', true);
 $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
+
+
+
 ?>
 <!-- Wrapper -->
 <style>
@@ -364,7 +367,7 @@ $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 							<div class="row with-forms">
 								<!-- Main Search Input -->
 								<div class="col-md-12">
-									<input type="text" placeholder="Enter Property Name" value=""/>
+									<input type="text" placeholder="Enter Property Name" id="search_name" value=""/>
 								</div>
 							</div>
 							<!-- Row With Forms / End -->
@@ -372,24 +375,33 @@ $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 							<!-- Row With Forms -->
 							<div class="row with-forms">
 								<div class="col-md-4">
-									<select data-placeholder="Any Status" class="chosen-select-no-single" >
-										<option>Any Status</option>	
-										<option>Available</option>
-										<option>Rented</option>
+									<select data-placeholder="Any Status" id="search_status" class="chosen-select-no-single" >
+										<option value="">Any Status</option>	
+										<option value="available">Available</option>
+										<option value="rented">Rented</option>
 									</select>
 								</div>
 								<div class="col-md-4">
-									<select data-placeholder="Any Type" class="chosen-select-no-single" >
-										<option>Any Type</option>	
-										<option>Furnished</option>
-										<option>Unfurnished</option>
+									<select data-placeholder="Any Type" id="search_type" class="chosen-select-no-single" >
+										<option value="">Any Type</option>	
+										<?php 
+										$types = get_terms([
+											'taxonomy' => 'types',
+											'hide_empty' => false,
+										]); 
+										
+										foreach($types as $type)
+										{
+											echo '<option value="'.$type->term_id.'">'.$type->name.'</option>';
+										}				
+										?>
 									</select>
 								</div>
 								<div class="col-md-4">
-									<select data-placeholder="Any Status" class="chosen-select-no-single" >
-										<option>Type of Accomodation</option>	
-										<option>Apartment</option>
-										<option>Room</option>
+									<select data-placeholder="Any Status" id="search_accom" class="chosen-select-no-single" >
+										<option value="">Type of Accomodation</option>	
+										<option value="Apartment">Apartment</option>
+										<option value="Room">Room</option>
 									</select>
 								</div>
 							</div>
@@ -400,43 +412,43 @@ $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 							<div class="row with-forms">
 
 								<div class="col-md-4">
-									<select data-placeholder="Any Status" class="chosen-select-no-single" >
-										<option>Rooms</option>	
-										<option>1</option>
-										<option>2</option>
-										<option>3</option>
-										<option>4</option>
-										<option>5</option>
-										<option>More than 5</option>
+									<select data-placeholder="Any Status" id="search_rooms" class="chosen-select-no-single" >
+										<option value="">Rooms</option>	
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="5+">More than 5</option>
 									</select>
 								</div>
 								<div class="col-md-4">
 									<!-- Select Input -->
 									<div class="select-input disabled-first-option">
-										<input type="text" placeholder="Min Price" data-unit="USD">
+										<input type="text" id="search_min_price" placeholder="Min Price" data-unit="USD">
 										<select>		
 											<option>Min Price</option>
-											<option>1 000</option>
-											<option>2 000</option>	
-											<option>3 000</option>	
-											<option>4 000</option>	
-											<option>5 000</option>	
-											<option>10 000</option>	
-											<option>15 000</option>	
-											<option>20 000</option>	
-											<option>30 000</option>
-											<option>40 000</option>
-											<option>50 000</option>
-											<option>60 000</option>
-											<option>70 000</option>
-											<option>80 000</option>
-											<option>90 000</option>
-											<option>100 000</option>
-											<option>110 000</option>
-											<option>120 000</option>
-											<option>130 000</option>
-											<option>140 000</option>
-											<option>150 000</option>
+											<option>1000</option>
+											<option>2000</option>	
+											<option>3000</option>	
+											<option>4000</option>	
+											<option>5000</option>	
+											<option>10000</option>	
+											<option>15000</option>	
+											<option>20000</option>	
+											<option>30000</option>
+											<option>40000</option>
+											<option>50000</option>
+											<option>60000</option>
+											<option>70000</option>
+											<option>80000</option>
+											<option>90000</option>
+											<option>100000</option>
+											<option>110000</option>
+											<option>120000</option>
+											<option>130000</option>
+											<option>140000</option>
+											<option>150000</option>
 										</select>
 									</div>
 									<!-- Select Input / End -->
@@ -444,30 +456,30 @@ $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 								<div class="col-md-4">
 									<!-- Select Input -->
 									<div class="select-input disabled-first-option">
-										<input type="text" placeholder="Max Price" data-unit="USD">
+										<input type="text" id="search_max_price" placeholder="Max Price" data-unit="USD">
 										<select>		
 											<option>Max Price</option>
-											<option>1 000</option>
-											<option>2 000</option>	
-											<option>3 000</option>	
-											<option>4 000</option>	
-											<option>5 000</option>	
-											<option>10 000</option>	
-											<option>15 000</option>	
-											<option>20 000</option>	
-											<option>30 000</option>
-											<option>40 000</option>
-											<option>50 000</option>
-											<option>60 000</option>
-											<option>70 000</option>
-											<option>80 000</option>
-											<option>90 000</option>
-											<option>100 000</option>
-											<option>110 000</option>
-											<option>120 000</option>
-											<option>130 000</option>
-											<option>140 000</option>
-											<option>150 000</option>
+											<option>1000</option>
+											<option>2000</option>	
+											<option>3000</option>	
+											<option>4000</option>	
+											<option>5000</option>	
+											<option>10000</option>	
+											<option>15000</option>	
+											<option>20000</option>	
+											<option>30000</option>
+											<option>40000</option>
+											<option>50000</option>
+											<option>60000</option>
+											<option>70000</option>
+											<option>80000</option>
+											<option>90000</option>
+											<option>100000</option>
+											<option>110000</option>
+											<option>120000</option>
+											<option>130000</option>
+											<option>140000</option>
+											<option>150000</option>
 										</select>
 									</div>
 									<!-- Select Input / End -->
@@ -509,6 +521,17 @@ $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 				<div class="stahe3-selectedproprtysec">
 				<div class="row">
 					<div class="col-md-6">
+					<?php 
+					if($property_id){ 
+						$auth = get_post($property_id);
+						$authid = $auth->post_author;
+						$address = get_post_meta($property_id, 'address',true)." ";
+						$address .= get_post_meta($property_id, 'city',true)." ";
+						$address .= get_post_meta($property_id, 'state',true).", ";
+						$address .= get_post_meta($property_id, 'zip',true)." ";	
+						$price = get_post_meta($property_id, 'price',true);				
+						$status = get_post_meta($property_id, 'status',true);
+					?>
 						<div class="dealdetail-propertydetail">
 						<h2>Selected Property Details</h2>
 						<table class="manage-table responsive-table">
@@ -516,18 +539,19 @@ $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 						<!-- Item #1 -->
 							<tr>
 							<td class="title-container lead-detail-propertytitlesec">
-							<img src="images/listing-02.jpg" alt="">
+							<img src="<?php echo wp_get_attachment_url(get_post_meta($property_id,'file_0',true)); ?>" alt="">
 							<div class="title">
-							<h4><a href="#">Serene Uptown</a></h4>
-							<span>6 Bishop Ave. Perkasie, PA </span>
-							<p>Owner: <span>Teri Dactyl</span></p>
-							<span class="table-property-price">$900 / monthly</span> <span class="active--property">Available</span>
+							<h4><a href="#"><?php echo get_the_title($property_id); ?></a></h4>
+							<span><?php echo $address; ?></span>
+							<p>Owner: <span><?php the_author_meta( 'display_name' , $authid );  ?></span></p>
+							<span class="table-property-price">$<?php echo $price; ?> / Weekly</span> <span class="active--property"><?php echo ucfirst($status); ?></span>
 							</div>
 							</td>
 							</tr>
 						</tbody>
 						</table>
 						</div>
+					<?php } ?>
 					</div>
 					<div class="col-md-6">
 						<h3>Add Notes</h3>
@@ -587,220 +611,6 @@ $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
   </div>
 </div>
 
-
-<!-- Modal for property select details -->
-<div class="modal fade popup-main--section" id="stagechange-propoertyselect" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered selectproperty-stagechange-modal" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="fillamount-popup">
-        	<h3>Select Property</h3>
-
- 			<div class="admin-advanced-searchfilter">
-					<h2>Advanced filter</h2>
-					<form>
-					<div class="row with-forms">
-						<!-- Form -->
-						<div class="main-search-box no-shadow">
-
-							<!-- Row With Forms -->
-							<div class="row with-forms">
-								<!-- Main Search Input -->
-								<div class="col-md-12">
-									<input type="text" placeholder="Enter Property Name" value=""/>
-								</div>
-							</div>
-							<!-- Row With Forms / End -->
-
-							<!-- Row With Forms -->
-							<div class="row with-forms">
-								<div class="col-md-4">
-									<select data-placeholder="Any Status" class="chosen-select-no-single" >
-										<option>Any Status</option>	
-										<option>Available</option>
-										<option>Rented</option>
-									</select>
-								</div>
-								<div class="col-md-4">
-									<select data-placeholder="Any Type" class="chosen-select-no-single" >
-										<option>Any Type</option>	
-										<option>Furnished</option>
-										<option>Unfurnished</option>
-									</select>
-								</div>
-								<div class="col-md-4">
-									<select data-placeholder="Any Status" class="chosen-select-no-single" >
-										<option>Type of Accomodation</option>	
-										<option>Apartment</option>
-										<option>Room</option>
-									</select>
-								</div>
-							</div>
-							<!-- Row With Forms / End -->	
-							
-
-							<!-- Row With Forms -->
-							<div class="row with-forms">
-
-								<div class="col-md-4">
-									<select data-placeholder="Any Status" class="chosen-select-no-single" >
-										<option>Rooms</option>	
-										<option>1</option>
-										<option>2</option>
-										<option>3</option>
-										<option>4</option>
-										<option>5</option>
-										<option>More than 5</option>
-									</select>
-								</div>
-								<div class="col-md-4">
-									<!-- Select Input -->
-									<div class="select-input disabled-first-option">
-										<input type="text" placeholder="Min Price" data-unit="USD">
-										<select>		
-											<option>Min Price</option>
-											<option>1 000</option>
-											<option>2 000</option>	
-											<option>3 000</option>	
-											<option>4 000</option>	
-											<option>5 000</option>	
-											<option>10 000</option>	
-											<option>15 000</option>	
-											<option>20 000</option>	
-											<option>30 000</option>
-											<option>40 000</option>
-											<option>50 000</option>
-											<option>60 000</option>
-											<option>70 000</option>
-											<option>80 000</option>
-											<option>90 000</option>
-											<option>100 000</option>
-											<option>110 000</option>
-											<option>120 000</option>
-											<option>130 000</option>
-											<option>140 000</option>
-											<option>150 000</option>
-										</select>
-									</div>
-									<!-- Select Input / End -->
-								</div>
-								<div class="col-md-4">
-									<!-- Select Input -->
-									<div class="select-input disabled-first-option">
-										<input type="text" placeholder="Max Price" data-unit="USD">
-										<select>		
-											<option>Max Price</option>
-											<option>1 000</option>
-											<option>2 000</option>	
-											<option>3 000</option>	
-											<option>4 000</option>	
-											<option>5 000</option>	
-											<option>10 000</option>	
-											<option>15 000</option>	
-											<option>20 000</option>	
-											<option>30 000</option>
-											<option>40 000</option>
-											<option>50 000</option>
-											<option>60 000</option>
-											<option>70 000</option>
-											<option>80 000</option>
-											<option>90 000</option>
-											<option>100 000</option>
-											<option>110 000</option>
-											<option>120 000</option>
-											<option>130 000</option>
-											<option>140 000</option>
-											<option>150 000</option>
-										</select>
-									</div>
-									<!-- Select Input / End -->
-								</div>
-
-							</div>
-							<!-- Row With Forms / End -->
-
-							<!-- Search Button -->
-							<div class="row with-forms">
-								<div class="col-md-12">
-									<button class="button fs-map-btn">Search</button>
-								</div>
-							</div>
-
-						</div>
-						<!-- Box / End -->
-					</div>
-					</form>
-				</div>
-
-				<table class="manage-table responsive-table deal-suggestproperty-table">
-				<tbody>
-				<tr>
-					<th><i class="fa fa-check-square-o"></i> Select</th>
-					<th class="deal-suggest-proptab-prop"><i class="fa fa-file-text"></i> Property</th>
-					<th class="expire-date"><i class="fa fa-calendar"></i> Expiration Date</th>
-					<th><i class="fa fa-user"></i> Owner</th>
-					<th></th>
-				</tr>
-
-				<!-- Item #1 -->
-				<tr>
-					<td class="select_property"><input id="check-2" type="checkbox" name="check"></td>
-					<td class="title-container">
-						<img src="images/listing-02.jpg" alt="">
-						<div class="title">
-							<h4><a href="#">Serene Uptown</a></h4>
-							<span>6 Bishop Ave. Perkasie, PA </span>
-							<span class="table-property-price">$900 / monthly</span> <span class="active--property">Available</span>
-						</div>
-					</td>
-					<td class="expire-date"></td>
-					<td>
-						<div class="owner--name"><a href="#">Teri Dactyl</a></div>
-					</td>
-					<td class="action">
-						<a href="#"><i class="fa fa-pencil"></i> Edit</a>
-						<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>
-						<a href="#" class="delete"><i class="fa fa-remove"></i> Delete</a>
-					</td>
-				</tr>
-
-				<!-- Item #2 -->
-				<tr>
-					<td class="select_property"><input id="check-2" type="checkbox" name="check"></td>
-					<td class="title-container">
-						<img src="images/listing-05.jpg" alt="">
-						<div class="title">
-							<h4><a href="#">Oak Tree Villas</a></h4>
-							<span>71 Lower River Dr. Bronx, NY</span>
-							<span class="table-property-price">$700 / monthly</span> <span class="rented--property">Rented</span>
-						</div>
-					</td>
-					<td class="expire-date">December 12, 2016</td>
-					<td>
-						<div class="owner--name"><a href="#">Teri Dactyl</a></div>
-					</td>
-					<td class="action">
-						<a href="#"><i class="fa fa-pencil"></i> Edit</a>
-						<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>
-						<a href="#" class="delete"><i class="fa fa-remove"></i> Delete</a>
-					</td>
-				</tr>
-				</tbody>
-				</table>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-secondary dealdetail-popupsub">Submit</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!--Modal for Contact Details -->
 <div class="modal fade popup-main--section" id="selected_property_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -1005,6 +815,37 @@ jQuery(document).ready(function($) {
 				jQuery('#selected_property_popup').modal('show');
 			});
 	});
+	
+	$('.deal_search_property').live('click',function(e){
+			jQuery('.loading').show();
+			var search_name = jQuery('#search_name').val();
+			var search_status = jQuery('#search_status').val();
+			var search_type = jQuery('#search_type').val();
+			var search_accom = jQuery('#search_accom').val();
+			var search_rooms = jQuery('#search_rooms').val();
+			var search_min_price = jQuery('#search_min_price').val();
+			var search_max_price = jQuery('#search_max_price').val();
+			var data = {
+				page: 1,
+				deal_id: deal_id,
+				search_name: search_name,
+				search_status: search_status,
+				search_type: search_type,
+				search_accom: search_accom,
+				search_rooms: search_rooms,
+				search_min_price: search_min_price,
+				search_max_price: search_max_price,
+				action: "demo-pagination-load-posts"
+			};
+
+			// Send the data
+			$.post(ajaxurl, data, function(response) {
+				// If successful Append the data into our html container
+				$(".nyc_load_property").html(response);
+				jQuery('.loading').hide();
+			}); 
+	});
+	
 	jQuery('#alocateagent-select').chosen().change(function() {
         var selectedAgent = $(this).children("option:selected").val();
 		jQuery('.loading').show();
