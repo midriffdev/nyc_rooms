@@ -51,7 +51,7 @@ get_header();
 						<h4><a href="<?= get_post_permalink($property_id) ?>"><?= get_the_title($property_id) ?></a></h4>
 						<span><?= get_post_meta($property_id,'address',true); ?></span>
 						<p>Owner: <span><?=get_post_meta($property_id,'contact_name',true) ?></span></p>
-						<span class="table-property-price"><?= get_post_meta($property_id,'price',true); ?> / <?= get_post_meta($property_id,'payment_method',true); ?></span> <span class="active--property"><?= get_post_meta($property_id,'status',true); ?></span>
+						<span class="table-property-price">$<?= get_post_meta($property_id,'price',true); ?> / Weekly</span> <span class="active--property"><?= get_post_meta($property_id,'status',true); ?></span>
 						</div>
 						</td>
 						</tr>

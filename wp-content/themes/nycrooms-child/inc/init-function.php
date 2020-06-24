@@ -100,7 +100,14 @@ add_action( 'template_redirect', function(){
      if ( is_page('tenant/deal-details')) {
         include get_stylesheet_directory() . '/my-templates/tenant/deal-detail-tenant.php';
         die;
-    }
+     }
+	 
+	 if ( is_page('tenant/application-form')) {
+        include get_stylesheet_directory() . '/my-templates/tenant/application-form.php';
+        die;
+     }
+	 
+	 
 	
 	
 } );

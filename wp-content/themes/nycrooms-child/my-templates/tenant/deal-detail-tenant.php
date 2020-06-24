@@ -1,4 +1,17 @@
 <?php
+if(isset($_GET['id']) && !empty($_GET['id'])){
+  $dealid = $_GET['id'];
+} else {
+  wp_redirect(home_url());
+}
+$deal_source  =   get_post_meta($dealid,'lead_source',true);
+$deal_stage   =   get_post_meta($dealid,'deal_stage',true);
+$lead_source  =   get_post_meta($dealid,'lead_source',true);
+$name         =   get_post_meta($dealid,'name',true);
+$email        =   get_post_meta($dealid,'email',true);
+$phone        =   get_post_meta($dealid,'phone',true);
+$description  =   get_post_meta($dealid,'description',true);
+$property_id  =   get_post_meta($dealid,'property_id',true);
 get_header();
 ?>
 <!-- Wrapper -->
@@ -19,9 +32,15 @@ get_header();
 					</div>
 				</div>
 			</div>
-
+              
 			<div class="row dealdetail--stageinnersection">
+			   <?php  if($lead_source == "Property Form"){
+			   $property_id  =   get_post_meta($dealid,'property_id',true);
+
+			   ?>
+			    <?php if($property_id){ ?>
 				<div class="col-md-6">
+				
 					<div class="dealdetail-propertydetail">
 						<h2>Basic Property Details</h2>
 						<table class="manage-table responsive-table">
@@ -29,21 +48,28 @@ get_header();
 						<!-- Item #1 -->
 							<tr>
 							<td class="title-container lead-detail-propertytitlesec">
-							<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-02.jpg" alt="">
+							<?php 
+						     $galleryfiles =  get_post_meta($property_id,'gallery_files',true);
+						     if($galleryfiles){
+								$galleryfiles = explode(',',$galleryfiles);
+								$attachment_id = get_post_meta($property_id,$galleryfiles[0],true);
+							    $imgsrc = wp_get_attachment_image_src( $attachment_id,array('300', '200'));
+								echo wp_get_attachment_image( $attachment_id, array('768', '512'), "", array( "class" => "img-responsive" ) );
+						     }
+						    ?>
 							<div class="title">
-							<h4><a href="#">Serene Uptown</a></h4>
-							<span>6 Bishop Ave. Perkasie, PA </span>
-							<p>Owner: <span>Teri Dactyl</span></p>
-							<span class="table-property-price">$900 / monthly</span> <span class="active--property">Available</span>
+							<h4><a href="<?= get_post_permalink($property_id) ?>"><?php echo get_the_title($property_id); ?></a></h4>
+							<span><?= get_post_meta($property_id,'address',true); ?> </span>
+							<p>Owner: <span><?=get_post_meta($property_id,'contact_name',true) ?></span></p>
+							<span class="table-property-price">$<?= get_post_meta($property_id,'price',true); ?> / Weekly</span> <span class="active--property"><?= get_post_meta($property_id,'status',true); ?></span>
 							</div>
 							</td>
 							</tr>
 						</tbody>
 					</table>
 					</div>
-					
 				</div>
-
+                <?php } ?>
 				<div class="col-md-6">
 					<div class="leaddetail-teanentdetail dealdetail__tenantdetail">
 					<h2>Tenant Details</h2>
@@ -51,26 +77,27 @@ get_header();
 						<ul>
 							<li>
 								<p>Name: </p>
-								<span>Shubham Chhabra</span>
+								<span><?php echo $name; ?></span>
 							</li>
 							<li>
 								<p>Email:</p>
-								<span>shubhamchhabra@gmail.com</span>
+								<span><?php echo $email; ?></span>
 							</li>
 							<li>
 								<p>Phone:</p>
-								<span>+918295585505</span>
+								<span><?php echo $phone; ?></span>
 							</li>
 							<li>
 								<p>Description:</p>
-								<span>I need room with 2 beds and proper air circulation with personal space. We are total 3 persons which are actively looking room for rent.</span>
+								<span><?php echo $description; ?></span>
 							</li>
 						</ul>
 					</div>
 					</div>
 				</div>
-
-				<div class="col-md-6">
+                <?php } ?>
+				<div class="col-md-12">
+					<?php if($lead_source == "Appointment Form"){ ?>
 					<div class="dealdetal__appointmentdetail-sec">
 						<div class="leaddetail-teanentdetail dealdetail__tenantdetail">
 							<h2>Appointment Details</h2>
@@ -78,32 +105,55 @@ get_header();
 								<ul>
 									<li>
 										<p>Name: </p>
-										<span>Shubham Chhabra</span>
+										<span><?php echo $name; ?></span>
 									</li>
 									<li>
 										<p>Email:</p>
-										<span>shubhamchhabra@gmail.com</span>
+										<span><?php echo $email; ?></span>
 									</li>
 									<li>
 										<p>Phone:</p>
-										<span>+918295585505</span>
+										<span><?php echo $phone; ?></span>
 									</li>
 									<li>
 										<p>Date:</p>
-										<span>December 30, 2016</span>
+										<span>
+										<?php 
+											$strtotime = get_post_meta($dealid, 'lead_datetime', true);
+											$date =  date("F j, Y", $strtotime); 
+											echo $date;
+							            ?>
+							           </span>
 									</li>
 									<li>
 										<p>Time:</p>
-										<span>9:00 AM</span>
+										<span>
+											<?php 
+												$strtotime = get_post_meta($dealid, 'lead_datetime', true);
+												$time =  date("h:i A", $strtotime);
+												echo $time;
+											?>
+										</span>
 									</li>
 									<li>
 										<p>Description:</p>
-										<span>I need room with 2 beds and proper air circulation with personal space. We are total 3 persons which are actively looking room for rent.</span>
+										<?php 
+										 if($description){
+										?>
+										<span><?php echo $description; ?></span>
+										<?php
+										} else {
+										?>
+										<span><?php echo "N . A"; ?></span>
+										<?php 
+										}
+										?>
 									</li>
 								</ul>
 							</div>
 						</div>
 					</div>
+				<?php } ?>
 				</div>
 
 				<div class="col-md-6">
@@ -142,7 +192,13 @@ get_header();
 				<div class="col-md-12">
 					<div class="deal-detail-payment-tobedone">
 						<h3>Amount to be Paid: <span>$400</span></h3>
-						<div class="deal-detail-tenant-subapp"><a href="#" target="_blank">Submit Application Form *</a></div>
+						<div class="deal-detail-tenant-subapp">
+						<?php
+						   $application_download_link = site_url().'/tenant/application-form/?file=application_form_'.$dealid;
+						?>
+						<a href="<?= $application_download_link ?>" target="_blank">Submit Application Form *</a>
+			
+						</div>
 						<ul class="dealdetail-tenant-actionbuttons">
 							<li>
 								<button class="dealdetail-tenant-paynowb">Pay Now</button>
