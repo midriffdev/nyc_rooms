@@ -1,4 +1,19 @@
 <?php
+if(isset($_GET['id']) && !empty($_GET['id'])){
+  $dealid = $_GET['id'];
+} else {
+  wp_redirect(home_url());
+}
+$deal_source  =   get_post_meta($dealid,'lead_source',true);
+$deal_stage   =   get_post_meta($dealid,'deal_stage',true);
+$lead_source  =   get_post_meta($dealid,'lead_source',true);
+$name         =   get_post_meta($dealid,'name',true);
+$email        =   get_post_meta($dealid,'email',true);
+$phone        =   get_post_meta($dealid,'phone',true);
+$description  =   get_post_meta($dealid,'description',true);
+$property_id  =   get_post_meta($dealid,'property_id',true);
+$admin_notes  =   get_post_meta($dealid,'admin_notes',true);
+$deal_price   =   get_post_meta($dealid,'deal_price',true);
 get_header();
 ?>
 <!-- Wrapper -->
@@ -19,9 +34,15 @@ get_header();
 					</div>
 				</div>
 			</div>
-
+              
 			<div class="row dealdetail--stageinnersection">
+			   <?php  if($lead_source == "Property Form"){
+			   $property_id  =   get_post_meta($dealid,'property_id',true);
+
+			   ?>
+			    <?php if($property_id){ ?>
 				<div class="col-md-6">
+				
 					<div class="dealdetail-propertydetail">
 						<h2>Basic Property Details</h2>
 						<table class="manage-table responsive-table">
@@ -29,21 +50,28 @@ get_header();
 						<!-- Item #1 -->
 							<tr>
 							<td class="title-container lead-detail-propertytitlesec">
-							<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-02.jpg" alt="">
+							<?php 
+						     $galleryfiles =  get_post_meta($property_id,'gallery_files',true);
+						     if($galleryfiles){
+								$galleryfiles = explode(',',$galleryfiles);
+								$attachment_id = get_post_meta($property_id,$galleryfiles[0],true);
+							    $imgsrc = wp_get_attachment_image_src( $attachment_id,array('300', '200'));
+								echo wp_get_attachment_image( $attachment_id, array('768', '512'), "", array( "class" => "img-responsive" ) );
+						     }
+						    ?>
 							<div class="title">
-							<h4><a href="#">Serene Uptown</a></h4>
-							<span>6 Bishop Ave. Perkasie, PA </span>
-							<p>Owner: <span>Teri Dactyl</span></p>
-							<span class="table-property-price">$900 / monthly</span> <span class="active--property">Available</span>
+							<h4><a href="<?= get_post_permalink($property_id) ?>"><?php echo get_the_title($property_id); ?></a></h4>
+							<span><?= get_post_meta($property_id,'address',true); ?> </span>
+							<p>Owner: <span><?=get_post_meta($property_id,'contact_name',true) ?></span></p>
+							<span class="table-property-price">$<?= get_post_meta($property_id,'price',true); ?> / Weekly</span> <span class="active--property"><?= get_post_meta($property_id,'status',true); ?></span>
 							</div>
 							</td>
 							</tr>
 						</tbody>
 					</table>
 					</div>
-					
 				</div>
-
+                <?php } ?>
 				<div class="col-md-6">
 					<div class="leaddetail-teanentdetail dealdetail__tenantdetail">
 					<h2>Tenant Details</h2>
@@ -51,26 +79,27 @@ get_header();
 						<ul>
 							<li>
 								<p>Name: </p>
-								<span>Shubham Chhabra</span>
+								<span><?php echo $name; ?></span>
 							</li>
 							<li>
 								<p>Email:</p>
-								<span>shubhamchhabra@gmail.com</span>
+								<span><?php echo $email; ?></span>
 							</li>
 							<li>
 								<p>Phone:</p>
-								<span>+918295585505</span>
+								<span><?php echo $phone; ?></span>
 							</li>
 							<li>
 								<p>Description:</p>
-								<span>I need room with 2 beds and proper air circulation with personal space. We are total 3 persons which are actively looking room for rent.</span>
+								<span><?php echo $description; ?></span>
 							</li>
 						</ul>
 					</div>
 					</div>
 				</div>
-
-				<div class="col-md-6">
+                <?php } ?>
+				<div class="col-md-12">
+					<?php if($lead_source == "Appointment Form"){ ?>
 					<div class="dealdetal__appointmentdetail-sec">
 						<div class="leaddetail-teanentdetail dealdetail__tenantdetail">
 							<h2>Appointment Details</h2>
@@ -78,57 +107,108 @@ get_header();
 								<ul>
 									<li>
 										<p>Name: </p>
-										<span>Shubham Chhabra</span>
+										<span><?php echo $name; ?></span>
 									</li>
 									<li>
 										<p>Email:</p>
-										<span>shubhamchhabra@gmail.com</span>
+										<span><?php echo $email; ?></span>
 									</li>
 									<li>
 										<p>Phone:</p>
-										<span>+918295585505</span>
+										<span><?php echo $phone; ?></span>
 									</li>
 									<li>
 										<p>Date:</p>
-										<span>December 30, 2016</span>
+										<span>
+										<?php 
+											$strtotime = get_post_meta($dealid, 'lead_datetime', true);
+											$date =  date("F j, Y", $strtotime); 
+											echo $date;
+							            ?>
+							           </span>
 									</li>
 									<li>
 										<p>Time:</p>
-										<span>9:00 AM</span>
+										<span>
+											<?php 
+												$strtotime = get_post_meta($dealid, 'lead_datetime', true);
+												$time =  date("h:i A", $strtotime);
+												echo $time;
+											?>
+										</span>
 									</li>
 									<li>
 										<p>Description:</p>
-										<span>I need room with 2 beds and proper air circulation with personal space. We are total 3 persons which are actively looking room for rent.</span>
+										<?php 
+										 if($description){
+										?>
+										<span><?php echo $description; ?></span>
+										<?php
+										} else {
+										?>
+										<span><?php echo "N . A"; ?></span>
+										<?php 
+										}
+										?>
 									</li>
 								</ul>
 							</div>
 						</div>
 					</div>
+				<?php } ?>
 				</div>
 
 				<div class="col-md-6">
-					<div class="dealdetail-agent-addnotes">
-						<h3>Agent Notes:</h3>
-						<textarea class="WYSIWYG" name="summary" cols="40" rows="3" id="summary" spellcheck="true"></textarea>
+					<div class="dealdetail-allocateagent-section">
+						<h2>Agent Details</h2>
+						<ul>
+							<li>
+								<p>Name: </p>
+								<span>Ashutosh Joshi</span>
+							</li>
+							<li>
+								<p>Email:</p>
+								<span>ashujoshi@gmail.com</span>
+							</li>
+							<li>
+								<p>Phone:</p>
+								<span>+918295585505</span>
+							</li>
+
+						</ul>
+					</div>
+
+					<div class="dealdetail--agentnotes-sec">
+						<h2>Agent Notes:</h2>
+						<p>I need room with 2 beds and proper air circulation with personal space. We are total 3 persons which are actively looking room for rent. </p>
 					</div>
 				</div>
 
 				<div class="col-md-12">
+				    <?php if($admin_notes): ?>
 					<div class="deal-detail-tenant-adminnotes">
 						<h2>Admin Notes</h2>
-						<p>You can pay online as well as request for agent, If agent will come to your door step than you can pay in this project also with the help of agent. You can pay online as well as request for agent, If agent will come to your door step than you can pay in this project also with the help of agent.</p>
+						<p><?=$admin_notes ?></p>
 					</div>
+					<?php endif; ?>
 				</div>
 
 				<div class="col-md-12">
 					<div class="deal-detail-payment-tobedone">
-						<h3>Amount to be Paid: <span>$400</span></h3>
-						<ul class="dealdetail-tenant-actionbuttons dealdetail-agent-actionbuttons">
+						<?php if($deal_price): ?><h3>Amount to be Paid: <span>$<?= $deal_price ?></span></h3> <?php endif;  ?>
+						<div class="deal-detail-tenant-subapp">
+						<?php
+						   $application_download_link = site_url().'/tenant/application-form/?file=application_form_'.$dealid;
+						?>
+						<a href="<?= $application_download_link ?>" target="_blank">Submit Application Form *</a>
+			
+						</div>
+						<ul class="dealdetail-tenant-actionbuttons">
 							<li>
-								<button class="dealdetail-tenant-paynowb" data-toggle="modal" data-target="#agentlogpayment">Log Payment</button>
+								<button class="dealdetail-tenant-paynowb">Pay Now</button>
 							</li>
 							<li>
-								<button class="dealdetail-tenant-reqagentb">Send Payment Link</button>
+								<button class="dealdetail-tenant-reqagentb">Request an Agent</button>
 							</li>
 						</ul>
 					</div>
@@ -155,15 +235,14 @@ get_header();
 
 		<!----Stage 2---->
 		<div class="row deal-stage-2">
-
 			<div class="current-stage-title">
 				<h3>Stage 2</h3>
 			</div>
 
-			<div class="deal-detail__suggestedpropertysec">
-				<h3>Selected Properties</h3>
-				<ul>
-					<li>
+			<div class="dealdetail-suggestedproperties-tenant">
+				<h3>Suggested Properties</h3>
+				<div class="row">
+					<div class="col-md-4">
 						<div class="listing-item compact">
 						<a href="single-property.html" class="listing-img-container">
 							<div class="listing-badges">
@@ -182,278 +261,49 @@ get_header();
 							<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-01.jpg" alt="">
 						</a>
 						</div>
-						<span class="desellect-sellectedproperty"><i class="fa fa-times" aria-hidden="true"></i></span>
-					</li>
-					<li>
-						<div class="listing-item compact">
-						<a href="single-property.html" class="listing-img-container">
-							<div class="listing-badges">
-								<span class="featured">Featured</span>
-								<span>For Rent</span>
-							</div>
-							<div class="listing-img-content">
-								<span class="listing-compact-title">Eagle Apartments <i>$200 / monthly</i></span>
-
-								<ul class="listing-hidden-content">
-									<li>Rooms <span>3</span></li>
-									<li>Beds <span>1</span></li>
-									<li>Baths <span>1</span></li>
-								</ul>
-							</div>
-							<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-01.jpg" alt="">
-						</a>
-						</div>
-						<span class="desellect-sellectedproperty"><i class="fa fa-times" aria-hidden="true"></i></span>
-					</li>
-					<li>
-						<div class="listing-item compact">
-						<a href="single-property.html" class="listing-img-container">
-							<div class="listing-badges">
-								<span class="featured">Featured</span>
-								<span>For Rent</span>
-							</div>
-							<div class="listing-img-content">
-								<span class="listing-compact-title">Eagle Apartments <i>$200 / monthly</i></span>
-
-								<ul class="listing-hidden-content">
-									<li>Rooms <span>3</span></li>
-									<li>Beds <span>1</span></li>
-									<li>Baths <span>1</span></li>
-								</ul>
-							</div>
-							<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-01.jpg" alt="">
-						</a>
-						</div>
-						<span class="desellect-sellectedproperty"><i class="fa fa-times" aria-hidden="true"></i></span>
-					</li>
-					<li>
-						<div class="listing-item compact">
-						<a href="single-property.html" class="listing-img-container">
-							<div class="listing-badges">
-								<span class="featured">Featured</span>
-								<span>For Rent</span>
-							</div>
-							<div class="listing-img-content">
-								<span class="listing-compact-title">Eagle Apartments <i>$200 / monthly</i></span>
-
-								<ul class="listing-hidden-content">
-									<li>Rooms <span>3</span></li>
-									<li>Beds <span>1</span></li>
-									<li>Baths <span>1</span></li>
-								</ul>
-							</div>
-							<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-01.jpg" alt="">
-						</a>
-						</div>
-						<span class="desellect-sellectedproperty"><i class="fa fa-times" aria-hidden="true"></i></span>
-					</li>
-				</ul>
-			</div>
-
-			<div class="deal-stage-property-suggest">
-				<div class="deal-proprtysug-title">
-					<h2>Suggest Property</h2>
-				</div>
-				<div class="admin-advanced-searchfilter">
-					<h2>Advanced filter</h2>
-					<form>
-					<div class="row with-forms">
-						<!-- Form -->
-						<div class="main-search-box no-shadow">
-
-							<!-- Row With Forms -->
-							<div class="row with-forms">
-								<!-- Main Search Input -->
-								<div class="col-md-12">
-									<input type="text" placeholder="Enter Property Name" value=""/>
-								</div>
-							</div>
-							<!-- Row With Forms / End -->
-
-							<!-- Row With Forms -->
-							<div class="row with-forms">
-								<div class="col-md-4">
-									<select data-placeholder="Any Status" class="chosen-select-no-single" >
-										<option>Any Status</option>	
-										<option>Available</option>
-										<option>Rented</option>
-									</select>
-								</div>
-								<div class="col-md-4">
-									<select data-placeholder="Any Type" class="chosen-select-no-single" >
-										<option>Any Type</option>	
-										<option>Furnished</option>
-										<option>Unfurnished</option>
-									</select>
-								</div>
-								<div class="col-md-4">
-									<select data-placeholder="Any Status" class="chosen-select-no-single" >
-										<option>Type of Accomodation</option>	
-										<option>Apartment</option>
-										<option>Room</option>
-									</select>
-								</div>
-							</div>
-							<!-- Row With Forms / End -->	
-							
-
-							<!-- Row With Forms -->
-							<div class="row with-forms">
-
-								<div class="col-md-4">
-									<select data-placeholder="Any Status" class="chosen-select-no-single" >
-										<option>Rooms</option>	
-										<option>1</option>
-										<option>2</option>
-										<option>3</option>
-										<option>4</option>
-										<option>5</option>
-										<option>More than 5</option>
-									</select>
-								</div>
-								<div class="col-md-4">
-									<!-- Select Input -->
-									<div class="select-input disabled-first-option">
-										<input type="text" placeholder="Min Price" data-unit="USD">
-										<select>		
-											<option>Min Price</option>
-											<option>1 000</option>
-											<option>2 000</option>	
-											<option>3 000</option>	
-											<option>4 000</option>	
-											<option>5 000</option>	
-											<option>10 000</option>	
-											<option>15 000</option>	
-											<option>20 000</option>	
-											<option>30 000</option>
-											<option>40 000</option>
-											<option>50 000</option>
-											<option>60 000</option>
-											<option>70 000</option>
-											<option>80 000</option>
-											<option>90 000</option>
-											<option>100 000</option>
-											<option>110 000</option>
-											<option>120 000</option>
-											<option>130 000</option>
-											<option>140 000</option>
-											<option>150 000</option>
-										</select>
-									</div>
-									<!-- Select Input / End -->
-								</div>
-								<div class="col-md-4">
-									<!-- Select Input -->
-									<div class="select-input disabled-first-option">
-										<input type="text" placeholder="Max Price" data-unit="USD">
-										<select>		
-											<option>Max Price</option>
-											<option>1 000</option>
-											<option>2 000</option>	
-											<option>3 000</option>	
-											<option>4 000</option>	
-											<option>5 000</option>	
-											<option>10 000</option>	
-											<option>15 000</option>	
-											<option>20 000</option>	
-											<option>30 000</option>
-											<option>40 000</option>
-											<option>50 000</option>
-											<option>60 000</option>
-											<option>70 000</option>
-											<option>80 000</option>
-											<option>90 000</option>
-											<option>100 000</option>
-											<option>110 000</option>
-											<option>120 000</option>
-											<option>130 000</option>
-											<option>140 000</option>
-											<option>150 000</option>
-										</select>
-									</div>
-									<!-- Select Input / End -->
-								</div>
-
-							</div>
-							<!-- Row With Forms / End -->
-
-							<!-- Search Button -->
-							<div class="row with-forms">
-								<div class="col-md-12">
-									<button class="button fs-map-btn">Search</button>
-								</div>
-							</div>
-
-						</div>
-						<!-- Box / End -->
 					</div>
-					</form>
-				</div>
+					<div class="col-md-4">
+						<div class="listing-item compact">
+						<a href="single-property.html" class="listing-img-container">
+							<div class="listing-badges">
+								<span class="featured">Featured</span>
+								<span>For Rent</span>
+							</div>
+							<div class="listing-img-content">
+								<span class="listing-compact-title">Eagle Apartments <i>$200 / monthly</i></span>
 
-				<table class="manage-table responsive-table deal-suggestproperty-table">
-				<tbody>
-				<tr>
-					<th><i class="fa fa-check-square-o"></i> Select</th>
-					<th class="deal-suggest-proptab-prop"><i class="fa fa-file-text"></i> Property</th>
-					<th class="expire-date"><i class="fa fa-calendar"></i> Expiration Date</th>
-					<th><i class="fa fa-user"></i> Owner</th>
-					<th></th>
-				</tr>
-
-				<!-- Item #1 -->
-				<tr>
-					<td class="select_property"><input id="check-2" type="checkbox" name="check"></td>
-					<td class="title-container">
-						<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-02.jpg" alt="">
-						<div class="title">
-							<h4><a href="#">Serene Uptown</a></h4>
-							<span>6 Bishop Ave. Perkasie, PA </span>
-							<span class="table-property-price">$900 / monthly</span> <span class="active--property">Available</span>
+								<ul class="listing-hidden-content">
+									<li>Rooms <span>3</span></li>
+									<li>Beds <span>1</span></li>
+									<li>Baths <span>1</span></li>
+								</ul>
+							</div>
+							<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-01.jpg" alt="">
+						</a>
 						</div>
-					</td>
-					<td class="expire-date"></td>
-					<td>
-						<div class="owner--name"><a href="#">Teri Dactyl</a></div>
-					</td>
-					<td class="action">
-						<a href="#"><i class="fa fa-pencil"></i> Edit</a>
-						<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>
-						<a href="#" class="delete"><i class="fa fa-remove"></i> Delete</a>
-					</td>
-				</tr>
+					</div>
+					<div class="col-md-4">
+						<div class="listing-item compact">
+						<a href="single-property.html" class="listing-img-container">
+							<div class="listing-badges">
+								<span class="featured">Featured</span>
+								<span>For Rent</span>
+							</div>
+							<div class="listing-img-content">
+								<span class="listing-compact-title">Eagle Apartments <i>$200 / monthly</i></span>
 
-				<!-- Item #2 -->
-				<tr>
-					<td class="select_property"><input id="check-2" type="checkbox" name="check"></td>
-					<td class="title-container">
-						<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-05.jpg" alt="">
-						<div class="title">
-							<h4><a href="#">Oak Tree Villas</a></h4>
-							<span>71 Lower River Dr. Bronx, NY</span>
-							<span class="table-property-price">$700 / monthly</span> <span class="rented--property">Rented</span>
+								<ul class="listing-hidden-content">
+									<li>Rooms <span>3</span></li>
+									<li>Beds <span>1</span></li>
+									<li>Baths <span>1</span></li>
+								</ul>
+							</div>
+							<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-01.jpg" alt="">
+						</a>
 						</div>
-					</td>
-					<td class="expire-date">December 12, 2016</td>
-					<td>
-						<div class="owner--name"><a href="#">Teri Dactyl</a></div>
-					</td>
-					<td class="action">
-						<a href="#"><i class="fa fa-pencil"></i> Edit</a>
-						<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>
-						<a href="#" class="delete"><i class="fa fa-remove"></i> Delete</a>
-					</td>
-				</tr>
-				</tbody>
-				</table>
-
-				<div class="create-deal-btnsec deal-detail-dealbutton">
-					<button type="button" class="btn btn-primary popup__button">
-					 Select Properties
-					</button>
+					</div>
 				</div>
-
 			</div>
-			
 		</div>
 	
 	</div>
@@ -503,44 +353,6 @@ get_header();
   </div>
 </div>
 
-
-<!-- Modal for Agent Log payment -->
-<div class="modal fade popup-main--section" id="agentlogpayment" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="fillamount-popup">
-        	<h3>Fill Amount Details</h3>
- 			<ul>
- 				<li>
- 					<h5>Price <i class="tip" data-tip-content="Type overall or monthly price if property is for rent"></i></h5>
-					<div class="select-input disabled-first-option">
-						<input type="text" data-unit="USD">
-					</div>
- 				</li>
- 				<li>
- 					<h5>Date</h5>
- 					<input class="search-field" type="text" value=""/>
- 				</li>
- 				<li>
- 					<h5>Time</h5>
- 					<input class="search-field" type="text" value=""/>
- 				</li>
- 			</ul>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-secondary dealdetail-popupsub">Submit</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!--Modal for Contact Details -->
 <div class="modal fade popup-main--section" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

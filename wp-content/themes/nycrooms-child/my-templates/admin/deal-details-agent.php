@@ -1,4 +1,5 @@
 <?php
+/* Template Name: Agent link */
 get_header();
 ?>
 <!-- Wrapper -->
