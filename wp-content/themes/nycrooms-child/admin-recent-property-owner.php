@@ -159,7 +159,7 @@ get_header();
 						       echo wp_get_attachment_image( $profile_picture, array('150', '150'), "", array( "class" => "img-responsive" ) );
 						   ?>
 							<?php } else { ?>
-							  <img src="<?= get_stylesheet_directory_uri() ?>/images/agent-03.jpg" alt="">
+							  <img src="<?= get_stylesheet_directory_uri() ?>/images/male-icon.png" alt="">
 							<?php } ?>
 							<div class="title">
 							 <h4><!--a href="<?php //echo get_site_url();?>/property-owner-details"---><?php echo $user->display_name; ?><!--/a--></h4>

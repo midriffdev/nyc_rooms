@@ -76,6 +76,7 @@ add_action( 'template_redirect', function(){
         include get_stylesheet_directory() . '/my-templates/admin/all-deals.php';
         die;
     }
+	
     if ( is_page('tenant') ) {
         include get_stylesheet_directory() . '/my-templates/tenant/profile.php';
         die;
@@ -96,11 +97,22 @@ add_action( 'template_redirect', function(){
         include get_stylesheet_directory() . '/my-templates/tenant/contracts.php';
         die;
     }
-	
-     if ( is_page('tenant/deal-details')) {
+	 
+	 if ( is_page('tenant/application-form')) {
+        include get_stylesheet_directory() . '/my-templates/tenant/application-form.php';
+        die;
+     }
+	 
+	 if ( is_page('tenant/deal-details-tenant')) {
         include get_stylesheet_directory() . '/my-templates/tenant/deal-detail-tenant.php';
         die;
+     }
+	 
+	 if ( is_page('agent/deal-details-agent')) {
+        include get_stylesheet_directory() . '/my-templates/agent/deal-details-agent.php';
+        die;
     }
+	 
 	
 	
 } );
