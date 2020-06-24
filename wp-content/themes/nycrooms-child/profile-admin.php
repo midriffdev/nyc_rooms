@@ -5,7 +5,7 @@ if(!is_user_logged_in()){
 }
 $user = wp_get_current_user();
 if($user->roles[0] == "property_owner"){
-    header( 'Location:' . site_url() . '/property-owner/');
+    header( 'Location:' . site_url() . '/owner-registeration/');
 } else if($user->roles[0] == "tenant"){
    header( 'Location:' . site_url() . '/tenant/');
 }
@@ -95,7 +95,7 @@ get_header();
 								echo wp_get_attachment_image( $profile_imgid, array('150', '150'), "", array( "class" => "img-responsive" ) );
 						   } else {
 						 ?>
-						       <img src="<?= get_stylesheet_directory_uri() ?>/images/agent-01.jpg" alt="">
+						       <img src="<?= get_stylesheet_directory_uri() ?>/images/male-icon.png" alt="">
 						 <?php
 						   }
 						 ?>
