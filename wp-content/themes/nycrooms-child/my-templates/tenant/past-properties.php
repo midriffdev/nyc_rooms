@@ -33,7 +33,7 @@ get_header();
 				<!-- Item #1 -->
 				<tr>
 					<td class="title-container">
-						<img src="images/listing-02.jpg" alt="">
+						<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-02.jpg" alt="">
 						<div class="title">
 							<h4><a href="#">Serene Uptown</a></h4>
 							<span>6 Bishop Ave. Perkasie, PA </span>
