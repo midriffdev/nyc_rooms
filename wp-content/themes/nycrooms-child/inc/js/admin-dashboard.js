@@ -10,7 +10,6 @@ jQuery(document).ready(function($) {
 	}else{
 		if(value == "delete"){
 			var checkedNum = jQuery('input[class="checkbulk"]:checked').length;
-			alert
 		if(checkedNum == 0){
 			alert('Please choose one or more user to delete');
 		}else{
