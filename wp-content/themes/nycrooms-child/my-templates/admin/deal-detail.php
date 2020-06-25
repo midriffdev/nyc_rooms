@@ -91,7 +91,7 @@ $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 				<div class="deal-detail-uniformbutton">
 					<ul>
 						<li><a href="#" class="deal-send-button deal-send-email">Send as Email</a></li>
-						<li><a href="#" class="deal-send-button deal-send-text" data-toggle="modal" data-target="#fillamountdetails">Send as Text</a></li>
+						<li><a href="#" class="deal-send-button deal-send-text">Send as Text</a></li>
 						<li><a href="#" class="convert-to-contract button_disable">Convert to Contract</a></li>
 					</ul>
 				</div>
@@ -325,29 +325,7 @@ $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 			<div class="deal-detail__suggestedpropertysec">
 				<h3>Selected Properties</h3>
 				<ul class='nyc_deal_selected_property_section'>
-				<?php 
-				if($selected_property){
-				foreach($selected_property as $property_id){ 
-				$price = get_post_meta($property_id, 'price',true);	
-				?>
-					<li class="selected_property-<?php echo $property_id; ?>">
-						<div class="listing-item compact">
-							<div class="listing-badges">
-								<span class="featured">Featured</span>
-								<span>For Rent</span>
-							</div>
-							<div class="listing-img-content">
-								<span class="listing-compact-title"><?php echo get_the_title($property_id); ?> <i>$<?php echo $price; ?> / Weekly</i></span>
-
-								<ul class="listing-hidden-content">
-									<li>Rooms <span><?php echo get_post_meta($property_id,'rooms',true); ?></span></li>
-								</ul>
-							</div>
-							<img src="<?php echo wp_get_attachment_url(get_post_meta($property_id,'file_0',true)); ?>" alt="">
-						</div>
-						<span class="desellect-sellectedproperty"><i class="fa fa-times selected-property-close" data-id="<?php echo $property_id; ?>" aria-hidden="true"></i></span>
-					</li>
-				<?php } }else { echo "<li>No selected property founds!</li>"; } ?>
+				
 				</ul>
 			</div>
 
@@ -549,7 +527,9 @@ $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 						</tbody>
 						</table>
 						</div>
-					<?php } ?>
+					<?php }else{
+						echo "<h2>No property selected.</h2>";
+					} ?>
 					</div>
 					<div class="col-md-6">
 						<h3>Add Notes</h3>
@@ -723,40 +703,38 @@ $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 </div>
 
 </div>
-<script>
-	jQuery(document).ready(function(){
 
-
-	    jQuery(".desellect-sellectedproperty").click(function(){
-	    	jQuery(this).parent().addClass('selected-property-none'); 
-	    });
-	});
-</script>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 	// This is required for AJAX to work on our page
 	var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
 	var deal_id = '<?php echo $post_id; ?>';
 
-	function cvf_load_all_posts(page){
-		// Data to receive from our server
-		// the value in 'action' is the key that will be identified by the 'wp_ajax_' hook 
+	function cvf_load_all_posts(page){ 
 		var data = {
 			page: page,
 			deal_id: deal_id,
 			action: "demo-pagination-load-posts"
 		};
 
-		// Send the data
 		$.post(ajaxurl, data, function(response) {
-			// If successful Append the data into our html container
 			$(".nyc_load_property").html(response);
+		});
+	}
+	
+	function nyc_load_selcted_property(){
+		var data = {
+			deal_id: deal_id,
+			action: "nyc_load_selcted_property"
+		};
+		$.post(ajaxurl, data, function(response) {
+			$(".nyc_deal_selected_property_section").html(response);
 		});
 	}
 
 	// Load page 1 as the default
 	cvf_load_all_posts(1);
-
+    nyc_load_selcted_property();
 	// Handle the clicks
 	$('.cvf-universal-pagination li.active').live('click',function(){
 		var page = $(this).attr('p');
@@ -776,18 +754,16 @@ jQuery(document).ready(function($) {
 				propertyArray: myarray,
 				action: "nyc-deal-select-property-assign",
 			};
-
 			// Send the data
 			$.post(ajaxurl, data, function(response) {
-			    jQuery('.dealsend-popup h3').html('Property Selected Successfully');
-				jQuery('#selected_property_popup').modal('show');
-				setTimeout(function(){
-				   window.location.reload();
-				   // or window.location = window.location.href; 
-				}, 2000); 	
+				cvf_load_all_posts(1);
+				nyc_load_selcted_property();				
+				jQuery('.dealsend-popup h3').html('Property Selected Successfully');
+				jQuery('#selected_property_popup').modal('show');			
 			});			
 		}
 	});
+	
 	$('.selected-property-close').live('click',function(){
 			var property_id = jQuery(this).attr('data-id');
 			var data = {
@@ -796,9 +772,14 @@ jQuery(document).ready(function($) {
 				action: "nyc-deal-remove-property-assign",
 			};
 			$.post(ajaxurl, data, function(response) {
-				cvf_load_all_posts(1);
+				cvf_load_all_posts(1);	
+				 nyc_load_selcted_property();
 			});
 	});
+	
+	$(".desellect-sellectedproperty").live('click',function(){
+		jQuery(this).parent().addClass('selected-property-none'); 
+	});	
 	
 	$('.deal-send-email').live('click',function(e){
 			e.preventDefault();
@@ -810,6 +791,34 @@ jQuery(document).ready(function($) {
 			$.post(ajaxurl, data, function(response) {
 				jQuery('.loading').hide();
 				jQuery('.dealsend-popup h3').html('Email sent successfully');
+				jQuery('#selected_property_popup').modal('show');
+			});
+	});
+	
+	$('.deal-send-text').live('click',function(e){
+			e.preventDefault();
+			jQuery('.loading').show();
+			var data = {
+				deal_id: deal_id,
+				action: "nyc-deal-send-sms",
+			};
+			var html='';
+			$.post(ajaxurl, data, function(response) {
+				var response = JSON.parse(response);
+				if(response.tenant_status == true){
+					html += "SMS sent successfully to tenant.</br>";
+				}else{
+					html += response.tenant_error;
+				}
+				if(response.agent_allowed== true){
+					if(response.agent_status == true){
+						html += "SMS sent successfully to agent.</br>";
+					}else{
+						html += response.agent_error;
+					}
+				}
+				jQuery('.loading').hide();
+				jQuery('.dealsend-popup h3').html(html);
 				jQuery('#selected_property_popup').modal('show');
 			});
 	});
