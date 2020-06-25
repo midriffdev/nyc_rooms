@@ -406,7 +406,7 @@ get_footer();
   addRemoveLinks: true,
   init: function() { 
 			myDropzoneFiles = this; 		
-			 var property_id = $('.property_id').val(); 
+			var property_id = $('.property_id').val(); 
 			jQuery.ajax({
 			  type: 'post',
 			  dataType: 'json',
@@ -424,7 +424,8 @@ get_footer();
 				  }); 
 
 			  }
-			 });	 
+			 });
+			 
    },
    removedfile: function(file) {
      var file_name    = file.name;
