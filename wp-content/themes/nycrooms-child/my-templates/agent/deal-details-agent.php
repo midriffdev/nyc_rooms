@@ -14,6 +14,13 @@ $description  =   get_post_meta($dealid,'description',true);
 $property_id  =   get_post_meta($dealid,'property_id',true);
 $admin_notes  =   get_post_meta($dealid,'admin_notes',true);
 $deal_price   =   get_post_meta($dealid,'deal_price',true);
+$agent_saved_notes  =   get_post_meta($dealid,'agent_notes',true);
+
+$agent_notes = '';
+if(isset($_POST['save_notes'])){
+  update_post_meta($_POST['deal_id'],'agent_notes',$_POST['summary']);
+  $agent_notes = "saved successfully";
+}
 get_header();
 ?>
 <!-- Wrapper -->
@@ -161,7 +168,12 @@ get_header();
 				<div class="col-md-6">
 					<div class="dealdetail-agent-addnotes">
 						<h3>Agent Notes:</h3>
-						<textarea class="WYSIWYG" name="summary" cols="40" rows="3" id="summary" spellcheck="true"></textarea>
+						<form method="post">
+						<input type="hidden" name="deal_id" value="<?= $dealid ?>">
+						<textarea class="WYSIWYG" name="summary" cols="40" rows="3" id="summary" spellcheck="true"><?php if($agent_saved_notes){echo $agent_saved_notes;}?></textarea>
+						<input type="submit" name="save_notes" value="Save notes">
+						<?= $agent_notes ?>
+						</form>
 					</div>
 				</div>
 

@@ -14,6 +14,9 @@ $description  =   get_post_meta($dealid,'description',true);
 $property_id  =   get_post_meta($dealid,'property_id',true);
 $admin_notes  =   get_post_meta($dealid,'admin_notes',true);
 $deal_price   =   get_post_meta($dealid,'deal_price',true);
+$agent_saved_notes   =   get_post_meta($dealid,'agent_notes',true);
+$get_selected_agent   =   get_post_meta($dealid,'selectedAgent',true);
+
 get_header();
 ?>
 <!-- Wrapper -->
@@ -159,29 +162,43 @@ get_header();
 				</div>
 
 				<div class="col-md-6">
+                   <?php 
+				   if($get_selected_agent){
+				     $agent_name = get_user_meta($get_selected_agent, 'user_full_name', true);
+					 $agent_email = get_user_meta($get_selected_agent, 'user_agent_email', true);
+					 $agent_phone = get_user_meta($get_selected_agent, 'user_phone', true);
+				      
+				   ?>
 					<div class="dealdetail-allocateagent-section">
 						<h2>Agent Details</h2>
 						<ul>
 							<li>
 								<p>Name: </p>
-								<span>Ashutosh Joshi</span>
+								<span><?= $agent_name ?></span>
 							</li>
 							<li>
 								<p>Email:</p>
-								<span>ashujoshi@gmail.com</span>
+								<span><?= $agent_email ?></span>
 							</li>
 							<li>
 								<p>Phone:</p>
-								<span>+918295585505</span>
+								<span><?= $agent_phone ?></span>
 							</li>
 
 						</ul>
 					</div>
-
+					<?php 
+					if($agent_saved_notes){
+					?>
 					<div class="dealdetail--agentnotes-sec">
 						<h2>Agent Notes:</h2>
-						<p>I need room with 2 beds and proper air circulation with personal space. We are total 3 persons which are actively looking room for rent. </p>
+						<p><?= $agent_saved_notes ?></p>
 					</div>
+					<?php
+					}
+					}
+					?>
+					
 				</div>
 
 				<div class="col-md-12">
@@ -200,7 +217,11 @@ get_header();
 						<?php
 						   $application_download_link = site_url().'/tenant/application-form/?file=application_form_'.$dealid;
 						?>
-						<a href="<?= $application_download_link ?>" target="_blank">Submit Application Form *</a>
+						
+						<p>Download Sample Application Form <a href="<?= $application_download_link ?>" target="_blank">here.</a> Fill The details mentioned in form, after that upload the Application Form Below </p>
+						
+						
+						
 			
 						</div>
 						<ul class="dealdetail-tenant-actionbuttons">

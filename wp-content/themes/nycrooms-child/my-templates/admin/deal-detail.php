@@ -754,7 +754,6 @@ jQuery(document).ready(function($) {
 				propertyArray: myarray,
 				action: "nyc-deal-select-property-assign",
 			};
-
 			// Send the data
 			$.post(ajaxurl, data, function(response) {
 				cvf_load_all_posts(1);

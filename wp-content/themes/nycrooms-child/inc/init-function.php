@@ -622,7 +622,7 @@ function nyc_deal_property_assign(){
 		}
 		update_post_meta($deal_id,$meta_key,$new_data);
 	}
-	exit;
+	exit();
 }
 
 add_action( 'wp_ajax_nyc-deal-remove-property-assign', 'nyc_deal_property_remove' );
