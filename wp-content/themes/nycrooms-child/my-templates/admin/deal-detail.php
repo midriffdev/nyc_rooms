@@ -25,8 +25,6 @@ $admin_notes = get_post_meta($post_id,'admin_notes',true);
 $selected_property = get_post_meta($post_id, 'selected_property', true);
 $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 
-
-
 ?>
 <!-- Wrapper -->
 <style>
