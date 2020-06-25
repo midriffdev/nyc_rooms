@@ -585,6 +585,9 @@ function nyc_deal_property_assign(){
 		$deal_id = $_POST['deal_id'];
 		$meta_key = 'selected_property';
 		$new_data = get_post_meta($deal_id, $meta_key, true);
+		if(!is_array($new_data)){
+			$new_data = array();
+		}
 		foreach($propertyArray as $property){
 			if(!in_array($property, $new_data)){
 				$new_data[] = $property;
