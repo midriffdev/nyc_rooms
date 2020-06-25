@@ -14,8 +14,11 @@ $description  =   get_post_meta($dealid,'description',true);
 $property_id  =   get_post_meta($dealid,'property_id',true);
 $admin_notes  =   get_post_meta($dealid,'admin_notes',true);
 $deal_price   =   get_post_meta($dealid,'deal_price',true);
-$agent_saved_notes   =   get_post_meta($dealid,'agent_notes',true);
+$agent_saved_notes    =   get_post_meta($dealid,'agent_notes',true);
 $get_selected_agent   =   get_post_meta($dealid,'selectedAgent',true);
+$get_document_file   =   get_post_meta($dealid,'document_files',true);
+$get_requested_agent  =   get_post_meta($dealid,'request_an_agent',true);
+
 
 get_header();
 ?>
@@ -212,24 +215,27 @@ get_header();
 
 				<div class="col-md-12">
 					<div class="deal-detail-payment-tobedone">
-						<?php if($deal_price): ?><h3>Amount to be Paid: <span>$<?= $deal_price ?></span></h3> <?php endif;  ?>
+						
 						<div class="deal-detail-tenant-subapp">
 						<?php
 						   $application_download_link = site_url().'/tenant/application-form/?file=application_form_'.$dealid;
 						?>
 						
-						<p>Download Sample Application Form <a href="<?= $application_download_link ?>" target="_blank">here.</a> Fill The details mentioned in form, after that upload the Application Form Below </p>
+						<small>Download Sample Application Form <a href="<?= $application_download_link ?>" target="_blank">here.</a> Fill The details mentioned in form, after that upload the filled application Form Below </small>
 						
-						
-						
-			
+						<h3>Upload Filled Application Form</h3>
+		                <div class="submit-section prop_app_form">
+			               <form action="<?= site_url() ?>/tenant/deal-details-tenant/?id=<?= $dealid ?>" class="dropzone dropzone_application_form" ></form>
+						    <button class="button save_file" id="save_document" >Save File</button>
+		                </div>
 						</div>
+						<?php if($deal_price): ?><h3>Amount to be Paid: <span>$<?= $deal_price ?></span></h3> <?php endif;  ?>
 						<ul class="dealdetail-tenant-actionbuttons">
 							<li>
-								<button class="dealdetail-tenant-paynowb">Pay Now</button>
+								<button class="dealdetail-tenant-paynowb" <?php if(!$get_document_file){ echo "disabled";} ?> >Pay Now</button>
 							</li>
 							<li>
-								<button class="dealdetail-tenant-reqagentb">Request an Agent</button>
+								<button class="dealdetail-tenant-reqagentb" <?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'disabled';}  ?>>Request an Agent</button>
 							</li>
 						</ul>
 					</div>
@@ -510,15 +516,131 @@ get_header();
 
 
 </div>
+<!--Modal for Contact Details -->
+<div class="modal fade popup-main--section" id="application_form_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <div class="application-popup">
+        	<h3></h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal for Contact Details -->
+<div class="modal fade popup-main--section" id="agent_assign_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <div class="agent-assign-popup">
+        	<h3></h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade popup-main--section" id="removed_file_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <div class="removed-file-popup">
+        	<h3></h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <?php
 get_footer();
 ?>
+<style>
+.deal-detail-tenant-subapp a {
+    font-size: 17px;
+    margin: 0;
+    display: inherit;
+}
+.deal-detail-payment-tobedone h3{margin-top:15px}
+</style>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/dropzone.js"></script>
 <script>
-	$(".dropzone").dropzone({
-		dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
-	});
 
-	$(document).ready(function(){
+ 	$(".dropzone.dropzone_application_form").dropzone({
+		dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
+		addRemoveLinks: true,
+		acceptedFiles: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+		maxFiles: 1,
+		init: function() { 
+			myDropzoneFiles = this;
+			var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+	        var deal_id = '<?php echo $dealid; ?>';
+			jQuery.ajax({
+			  type: 'post',
+			  dataType: 'json',
+			  url: ajaxurl,
+			  data: {action:'nyc_get_existing_application_form_ajax',deal_id:deal_id},
+			  success: function(response){
+				  $.each(response, function(key,value) {
+                          if(value.size != false){
+						     var mockFile = { name: value.name, size: value.size };
+							  myDropzoneFiles.emit("addedfile", mockFile);
+							 // myDropzoneFiles.emit("thumbnail", mockFile, value.path);
+							  myDropzoneFiles.emit("complete", mockFile);
+						  }
+						 
+				  }); 
+
+			  }
+			 });
+			 
+        },
+        removedfile: function(file) {
+			 var file_name    = file.name;
+			 var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+	         var deal_id = '<?php echo $dealid; ?>';
+			 jQuery.ajax({
+					  type: 'post',
+					  url: ajaxurl,
+					  data: {action:'nyc_delete_existing_application_form_ajax',deal_id:deal_id,file_name:file_name},
+					  success: function(response){
+							 if(response == "success"){
+								jQuery('.removed-file-popup h3').html('Document Removed Successfully');
+								jQuery('#removed_file_popup').modal('show');
+								location.reload();
+					         }
+					  }
+			  });
+			var _ref;
+			return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0; 
+	
+        }
+   
+	});
+	
+	
+	
+
+	jQuery(document).ready(function(){
+	
 	    $('#alocateagent-select').on('change', function() {
 	        $(".allocategent-tostage").show();
 	    });
@@ -526,5 +648,69 @@ get_footer();
 	    $(".desellect-sellectedproperty").click(function(){
 	    	$(this).parent().addClass('selected-property-none'); 
 	    });
+		
+		$("#save_document").click(function(e){
+		   e.preventDefault();
+		   jQuery('.loading').show();
+		   var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+	       var deal_id = '<?php echo $dealid; ?>';
+		   jQuery(this).attr("disabled", true);
+		   var drop_doc_data = $('.dropzone.dropzone_application_form')[0].dropzone.getAcceptedFiles();
+		   var form_data = new FormData();
+           form_data.append("deal_id", deal_id);
+		   var document_files=[];
+		   for(var i = 0;i<drop_doc_data.length;i++){
+				form_data.append("doc_"+i, drop_doc_data[i]);
+				document_files.push("doc_"+i);
+		   }
+		   
+		   form_data.append( "action" , 'nyc_upload_application_form');	
+		   
+		   jQuery.ajax({
+				type : "post",
+				url : ajaxurl,
+				data: form_data,
+				processData: false,
+				contentType: false,
+				success: function(response) {
+				     if(response == "success"){
+						jQuery('.loading').hide();
+						jQuery('.application-popup h3').html('Application Saved Successfully');
+			            jQuery('#application_form_popup').modal('show');
+						location.reload();
+					}
+					
+				}
+			});	
+		
+		});
+		
+		$('.dealdetail-tenant-reqagentb').click(function(){
+		    jQuery(this).attr("disabled", true);
+		    jQuery('.loading').show();
+		    var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+	        var deal_id = '<?php echo $dealid; ?>';
+			 
+			 jQuery.ajax({
+					  type: 'post',
+					  url: ajaxurl,
+					  data: {action:'nyc_request_agent_ajax',deal_id:deal_id},
+					  success: function(response){
+							 if(response == "success"){
+								jQuery('.loading').hide();
+								jQuery('.agent-assign-popup h3').html('Agent Assigned Successfully');
+								jQuery('#agent_assign_popup').modal('show');
+								location.reload();
+					         }
+					  }
+					  
+			  }); 
+			  
+		});
+		
+		
+		
 	});
+
+	
 </script>
