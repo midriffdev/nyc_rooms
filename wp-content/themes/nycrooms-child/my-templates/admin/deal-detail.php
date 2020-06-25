@@ -24,21 +24,21 @@ $deal_price = get_post_meta($post_id,'deal_price',true);
 $admin_notes = get_post_meta($post_id,'admin_notes',true);
 $selected_property = get_post_meta($post_id, 'selected_property', true);
 $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
-
+$request_an_agent = get_post_meta($post_id, 'request_an_agent', true);
 ?>
 <!-- Wrapper -->
-<style>
-.cvf_pag_loading {padding: 20px;}
-.cvf-universal-pagination ul {margin: 0; padding: 0;}
-.cvf-universal-pagination ul li {display: inline; margin: 3px; padding: 4px 8px; background: #FFF; color: black; }
-.cvf-universal-pagination ul li.active:hover {cursor: pointer; background: #1E8CBE; color: white; }
-.cvf-universal-pagination ul li.inactive {background: #7E7E7E;}
-.cvf-universal-pagination ul li.selected {background: #1E8CBE; color: white;}
-</style>
 <div id="wrapper">
 <div class="deal-detail-container">		
 	<div class="container">
-
+        <?php 
+		if($request_an_agent == true && empty($selectedAgent)){
+		?>
+        <div class='alert_note_panel'>		
+			<h4>Tenant Requested for an agent.</h4>
+		</div>
+		<?php 
+		}
+		?>
 		<div class="row deal-detail-upperunifrm-sect">
 			<div class="col-md-3">
 				<div class="deal-detail-stagesec">
