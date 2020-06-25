@@ -781,12 +781,12 @@ jQuery(document).ready(function($) {
 
 			// Send the data
 			$.post(ajaxurl, data, function(response) {
-				jQuery('.dealsend-popup h3').html('Property Selected Successfully');
+			    jQuery('.dealsend-popup h3').html('Property Selected Successfully');
 				jQuery('#selected_property_popup').modal('show');
 				setTimeout(function(){
 				   window.location.reload();
 				   // or window.location = window.location.href; 
-				}, 2000);				
+				}, 2000); 	
 			});			
 		}
 	});
