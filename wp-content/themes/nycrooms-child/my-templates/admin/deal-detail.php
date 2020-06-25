@@ -90,8 +90,8 @@ $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 				<div class="dealdetal-currentstage-status">Current Status:	<span>Stage <?php echo $deal_stage; ?></span></div>
 				<div class="deal-detail-uniformbutton">
 					<ul>
-						<li><a href="#" class="deal-send-button deal-send-email">Send as Email</a></li>
-						<li><a href="#" class="deal-send-button deal-send-text">Send as Text</a></li>
+						<li><a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-email' : 'deal-send-email'; ?>">Send as Email</a></li>
+						<li><a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-text' : 'deal-send-text'; ?>">Send as Text</a></li>
 						<li><a href="#" class="convert-to-contract button_disable">Convert to Contract</a></li>
 					</ul>
 				</div>
@@ -99,10 +99,9 @@ $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 		</div>
 		
 		
-        <div class="row deal-stage-2 active">
-		<form action='' method="post"> 
 		<!------Stage 1---->
 		<div class="dealdetail--stageonecont">
+		<form action='' method="post"> 
 			<div class="row">
 				<div class="col-md-12">
 					<div class="current-stage-title">
@@ -312,9 +311,8 @@ $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 					<button type="submit" class="button" name="upadte_stag1">Save Details</button>
 				</div>
 			</div>
+			</form>
 		</div>
-		</form>
-        </div>
 		
 		<!----Stage 2---->
 		<div class="row deal-stage-2">
@@ -793,6 +791,12 @@ jQuery(document).ready(function($) {
 				jQuery('.dealsend-popup h3').html('Email sent successfully');
 				jQuery('#selected_property_popup').modal('show');
 			});
+	});	
+	
+	$('.no-send-email, .no-send-text').live('click',function(e){
+		e.preventDefault();
+		jQuery('.dealsend-popup h3').html('Please select price first!');
+		jQuery('#selected_property_popup').modal('show');
 	});
 	
 	$('.deal-send-text').live('click',function(e){
@@ -855,6 +859,8 @@ jQuery(document).ready(function($) {
 	
 	jQuery('#alocateagent-select').chosen().change(function() {
         var selectedAgent = $(this).children("option:selected").val();
+		$('#alocateagent-select').val(selectedAgent);
+		$('#alocateagent-select').trigger("chosen:updated");
 		jQuery('.loading').show();
 		var data = {
 			deal_id: deal_id,
