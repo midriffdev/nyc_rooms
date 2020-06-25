@@ -350,10 +350,37 @@ function prefix_url_rewrite_templates() {
 	}
 }
 
+add_action( 'wp_ajax_nyc_load_selcted_property', 'nyc_load_selcted_property' );
+add_action( 'wp_ajax_nopriv_nyc_load_selcted_property', 'nyc_load_selcted_property' ); 
+function nyc_load_selcted_property() {
+	$selected_property = get_post_meta($_POST['deal_id'], 'selected_property', true);
+	if($selected_property){
+	foreach($selected_property as $property_id){ 
+	$price = get_post_meta($property_id, 'price',true);	
+	?>
+		<li class="selected_property-<?php echo $property_id; ?>">
+			<div class="listing-item compact">
+				<div class="listing-badges">
+					<span class="featured">Featured</span>
+					<span>For Rent</span>
+				</div>
+				<div class="listing-img-content">
+					<span class="listing-compact-title"><?php echo get_the_title($property_id); ?> <i>$<?php echo $price; ?> / Weekly</i></span>
+
+					<ul class="listing-hidden-content">
+						<li>Rooms <span><?php echo get_post_meta($property_id,'rooms',true); ?></span></li>
+					</ul>
+				</div>
+				<img src="<?php echo wp_get_attachment_url(get_post_meta($property_id,'file_0',true)); ?>" alt="">
+			</div>
+			<span class="desellect-sellectedproperty"><i class="fa fa-times selected-property-close" data-id="<?php echo $property_id; ?>" aria-hidden="true"></i></span>
+		</li>
+	<?php } }else { echo "<li>No selected property founds!</li>"; } 	
+	exit;
+}
+
 add_action( 'wp_ajax_demo-pagination-load-posts', 'cvf_demo_pagination_load_posts' );
-
 add_action( 'wp_ajax_nopriv_demo-pagination-load-posts', 'cvf_demo_pagination_load_posts' ); 
-
 function cvf_demo_pagination_load_posts() {
 
     global $wpdb;
@@ -624,8 +651,8 @@ function nyc_deal_send_email(){
 		$deal_id = $_POST['deal_id'];
 		$user_email = get_post_meta($deal_id,'email',true);
 		$selectedAgent = get_post_meta($deal_id, 'selectedAgent', true);
-		$tenant_deal_link = get_site_url().'/tenant/deal-details/?id='.$deal_id;
-		$agent_deal_link = get_site_url().'/agent/deal-details/?id='.$deal_id;
+		$tenant_deal_link = get_site_url().'/tenant/deal-details-tenant/?id='.$deal_id;
+		$agent_deal_link = get_site_url().'/agent/deal-details-agent/?id='.$deal_id;
 		if($user_email){
 			$message  = __( 'Hi there,' ) . "\r\n\r\n";
 			$message .= sprintf( __( "Welcome to %s! Here's the link where you can check deal details:" ), get_option('blogname') ) . "\r\n\r\n";
@@ -647,6 +674,67 @@ function nyc_deal_send_email(){
 				$mail_send = wp_mail($user->user_email, sprintf(__('[%s] Assigned for deals'), get_option('blogname')), $message);	
 			}			
 		}
+	}
+	exit;
+}
+
+require get_stylesheet_directory().'/textmagic-rest-php-v2/vendor/autoload.php';
+use TextMagic\Models\SendMessageInputObject;
+use TextMagic\Api\TextMagicApi;
+use TextMagic\Configuration;	
+add_action( 'wp_ajax_nyc-deal-send-sms', 'nyc_deal_send_sms' );
+add_action( 'wp_ajax_nopriv_nyc-deal-send-sms', 'nyc_deal_send_sms' ); 
+function nyc_deal_send_sms(){
+	if(isset($_POST['deal_id'])){
+		$deal_id = $_POST['deal_id'];
+		$tenant_phone = get_post_meta($deal_id,'phone',true);
+		$selectedAgent = get_post_meta($deal_id, 'selectedAgent', true);
+		$tenant_deal_link = get_site_url().'/tenant/deal-details-tenant/?id='.$deal_id;
+		$agent_deal_link = get_site_url().'/agent/deal-details-agent/?id='.$deal_id;
+		$return_msg = array();
+		// Include the TextMagic PHP lib
+		// put your Username and API Key from https://my.textmagic.com/online/api/rest-api/keys page.
+		$config = Configuration::getDefaultConfiguration()
+			->setUsername('nycroomsforrent@gmail.com')
+			->setPassword('gv1HzsGhaBvV60bVUd2cgBEtJVmHA3');
+		
+		$api = new TextMagicApi(
+			new GuzzleHttp\Client(),
+			$config
+		);
+		if($tenant_phone){
+			$input = new SendMessageInputObject();
+			$msg = "Hi, Here's the link where you can check deal details: ".$tenant_deal_link;
+			$input->setText($msg);
+			$input->setPhones('+1'.$tenant_phone);	
+			try {
+				$result = $api->sendMessage($input);
+				if($result){
+					$return_msg['tenant_status']= true;
+				}
+			} catch (Exception $e) {
+				$return_msg['tenant_error'] = 'Exception when calling TextMagicApi->sendMessage: '.$e->getMessage().PHP_EOL;
+			}			
+		}
+		if($selectedAgent){
+			$agent_phone = get_user_meta($selectedAgent,'user_phone',true);
+			if($agent_phone){
+				$return_msg['agent_allowed'] = true;
+				$input = new SendMessageInputObject();
+				$msg = "You are assigned for tenant deals. Click on the link for more details. ".$agent_deal_link;
+				$input->setText($msg);
+				$input->setPhones('+1'.$agent_phone);	
+				try {
+					$result = $api->sendMessage($input);
+					if($result){
+						$return_msg['agent_status'] = true;
+					}
+				} catch (Exception $e) {
+					$return_msg['agent_error'] = 'Exception when calling TextMagicApi->sendMessage: '.$e->getMessage().PHP_EOL;
+				}					
+			}			
+		}
+		echo json_encode($return_msg);	
 	}
 	exit;
 }
