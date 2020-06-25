@@ -16,8 +16,9 @@ $admin_notes  =   get_post_meta($dealid,'admin_notes',true);
 $deal_price   =   get_post_meta($dealid,'deal_price',true);
 $agent_saved_notes    =   get_post_meta($dealid,'agent_notes',true);
 $get_selected_agent   =   get_post_meta($dealid,'selectedAgent',true);
-$get_document_file   =   get_post_meta($dealid,'document_files',true);
+$get_document_file    =   get_post_meta($dealid,'document_files',true);
 $get_requested_agent  =   get_post_meta($dealid,'request_an_agent',true);
+$selected_property    =   get_post_meta($dealid, 'selected_property', true);
 
 
 get_header();
@@ -269,66 +270,37 @@ get_header();
 			<div class="dealdetail-suggestedproperties-tenant">
 				<h3>Suggested Properties</h3>
 				<div class="row">
+				<?php
+				   if($selected_property){
+	                    foreach($selected_property as $property_ids){ 
+	                      $price = get_post_meta($property_ids, 'price',true);	
+	            ?>
+				   
 					<div class="col-md-4">
+					    <input type="radio" name="select_property_tenant" value="<?= $property_ids ?>" <?= ($property_ids == $property_id)? "checked" : "" ?> > 
 						<div class="listing-item compact">
-						<a href="single-property.html" class="listing-img-container">
-							<div class="listing-badges">
-								<span class="featured">Featured</span>
-								<span>For Rent</span>
-							</div>
-							<div class="listing-img-content">
-								<span class="listing-compact-title">Eagle Apartments <i>$200 / monthly</i></span>
+							<a href="<?= get_post_permalink($property_ids) ?>" class="listing-img-container" target="_blank">
+								<div class="listing-badges">	
+									<span class="featured">Featured</span>
+									<span>For Rent</span>
+								</div>
+								<div class="listing-img-content">
+									<span class="listing-compact-title"><?php echo get_the_title($property_ids); ?> <i>$<?php echo $price; ?> / monthly</i></span>
 
-								<ul class="listing-hidden-content">
-									<li>Rooms <span>3</span></li>
-									<li>Beds <span>1</span></li>
-									<li>Baths <span>1</span></li>
-								</ul>
-							</div>
-							<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-01.jpg" alt="">
-						</a>
+									<ul class="listing-hidden-content">
+										<li>Rooms <span><?php echo get_post_meta($property_ids,'rooms',true); ?></span></li>
+									</ul>
+								</div>
+								<img src="<?php echo wp_get_attachment_url(get_post_meta($property_ids,'file_0',true)); ?>" alt="">
+							</a>
 						</div>
+						
 					</div>
-					<div class="col-md-4">
-						<div class="listing-item compact">
-						<a href="single-property.html" class="listing-img-container">
-							<div class="listing-badges">
-								<span class="featured">Featured</span>
-								<span>For Rent</span>
-							</div>
-							<div class="listing-img-content">
-								<span class="listing-compact-title">Eagle Apartments <i>$200 / monthly</i></span>
-
-								<ul class="listing-hidden-content">
-									<li>Rooms <span>3</span></li>
-									<li>Beds <span>1</span></li>
-									<li>Baths <span>1</span></li>
-								</ul>
-							</div>
-							<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-01.jpg" alt="">
-						</a>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="listing-item compact">
-						<a href="single-property.html" class="listing-img-container">
-							<div class="listing-badges">
-								<span class="featured">Featured</span>
-								<span>For Rent</span>
-							</div>
-							<div class="listing-img-content">
-								<span class="listing-compact-title">Eagle Apartments <i>$200 / monthly</i></span>
-
-								<ul class="listing-hidden-content">
-									<li>Rooms <span>3</span></li>
-									<li>Beds <span>1</span></li>
-									<li>Baths <span>1</span></li>
-								</ul>
-							</div>
-							<img src="<?= get_stylesheet_directory_uri() ?>/images/listing-01.jpg" alt="">
-						</a>
-						</div>
-					</div>
+					<?php }
+                    ?>
+                       <div align="center"><button class="button selected_property_tnt" id="selected_property_tnt" >Select Property</button></div>				
+					<?php
+					}else { echo "<li>No selected property founds!</li>"; } ?>
 				</div>
 			</div>
 		</div>
@@ -569,6 +541,23 @@ get_header();
   </div>
 </div>
 
+<div class="modal fade popup-main--section" id="finalise_property_tenant" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <div class="finalise-property-tenant">
+        	<h3></h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <?php
 get_footer();
@@ -587,7 +576,7 @@ get_footer();
  	$(".dropzone.dropzone_application_form").dropzone({
 		dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
 		addRemoveLinks: true,
-		acceptedFiles: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+		acceptedFiles: "application/pdf,.doc,.docx",
 		maxFiles: 1,
 		init: function() { 
 			myDropzoneFiles = this;
@@ -705,6 +694,37 @@ get_footer();
 					  }
 					  
 			  }); 
+			  
+		});
+		
+		$('#selected_property_tnt').click(function(){
+		
+		    var checkproperty = $('input[name="select_property_tenant"]:checked').length;
+			
+		    if(checkproperty == 0){
+			  alert("Please Select an property");
+			} else {
+			    var property_id = $('input[name="select_property_tenant"]:checked').val();
+				jQuery('.loading').show();
+				var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+				var deal_id = '<?php echo $dealid; ?>';
+				 
+				 jQuery.ajax({
+						  type: 'post',
+						  url: ajaxurl,
+						  data: {action:'nyc_tenant_final_selected_property_ajax',deal_id:deal_id,property_id:property_id},
+						  success: function(response){
+								  if(response == "success"){
+									jQuery('.loading').hide();
+									jQuery('.finalise-property-tenant h3').html('Property Assigned Successfully');
+									jQuery('#finalise_property_tenant').modal('show');
+									location.reload();
+								 }	 
+						  }
+						  
+				  }); 
+			  
+			 }
 			  
 		});
 		

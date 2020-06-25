@@ -2323,11 +2323,21 @@ function nyc_request_agent_ajax(){
   exit; 
 }
 
+add_action( 'wp_ajax_nyc_tenant_final_selected_property_ajax', 'nyc_tenant_final_selected_property_ajax' );
+add_action( 'wp_ajax_nopriv_nyc_tenant_final_selected_property_ajax', 'nyc_tenant_final_selected_property_ajax' );
 
-
-
-
-
+function nyc_tenant_final_selected_property_ajax(){
+   if(isset($_POST['action']) && $_POST['action'] == 'nyc_tenant_final_selected_property_ajax'){
+     $deal_id    = $_POST['deal_id'];
+     $property_id    = $_POST['property_id'];	 
+	 $meta_key   = 'property_id';
+	 update_post_meta($deal_id,$meta_key,$property_id);
+	 echo "success";
+   } else {
+      echo "faliure";
+   }
+  exit; 
+}
 
 require_once( 'inc/init-function.php');
 ?>
