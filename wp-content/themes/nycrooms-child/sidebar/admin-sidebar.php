@@ -70,7 +70,7 @@
 						<li class="admin-propertieslistings">
 							<a href="<?php echo get_site_url(); ?>/admin/deals/" id="sidebar-alldeals">All Deals <span class="all-listing-no active-listing-no"><?php echo nyc_get_count_custom_post_type('deals'); ?></span></a>
 						</li>
-						<li><a href="#"><i class="sl sl-icon-action-redo"></i> Add New Deal</a></li>
+						<li><a href="<?php echo get_site_url(); ?>/admin/add-deal"><i class="sl sl-icon-action-redo"></i> Add New Deal</a></li>
 					</ul>
 					
 					<ul class="my-account-nav">

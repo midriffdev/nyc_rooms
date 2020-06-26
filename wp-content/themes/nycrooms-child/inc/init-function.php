@@ -76,6 +76,10 @@ add_action( 'template_redirect', function(){
         include get_stylesheet_directory() . '/my-templates/admin/all-deals.php';
         die;
     }
+    if ( is_page('admin/add-deal') ) {
+        include get_stylesheet_directory() . '/my-templates/admin/add-deal.php';
+        die;
+    }
 	
     if ( is_page('tenant') ) {
         include get_stylesheet_directory() . '/my-templates/tenant/profile.php';
@@ -604,6 +608,228 @@ function cvf_demo_pagination_load_posts() {
     exit();
 }
 
+add_action( 'wp_ajax_add-deal-pagination-load-posts', 'add_deal_pagination_load_posts' );
+add_action( 'wp_ajax_nopriv_add-deal-pagination-load-posts', 'add_deal_pagination_load_posts' ); 
+function add_deal_pagination_load_posts() {
+
+    global $wpdb;
+    // Set default variables
+    $msg = '';
+    if(isset($_POST['page'])){
+        // Sanitize the received page   
+        $page = sanitize_text_field($_POST['page']);
+        $cur_page = $page;
+        $page -= 1;
+        // Set the number of results to display
+        $per_page = 3;
+        $previous_btn = true;
+        $next_btn = true;
+        $first_btn = true;
+        $last_btn = true;
+        $start = $page * $per_page;
+		$meta_query = array();
+        $p_args = array(
+					'post_type'         => 'property',
+					'orderby'           => 'post_date',
+					'order'             => 'DESC',
+					'posts_per_page'    => $per_page,
+					'offset'            => $start,
+				);
+		
+		$c_args = array(
+					'post_type'         => 'property',
+					'posts_per_page'    => -1,
+				);
+		//Seacrh by title 		
+		if($_POST['search_name']){
+			$search_name = $_POST['search_name'];
+			$p_args['s'] = $search_name;
+			$c_args['s'] = $search_name;
+		}
+		
+		//Seacrh by post status 	
+		if($_POST['search_status']){
+			$p_args['post_status'] = array($_POST['search_status']);
+			$c_args['post_status'] = array($_POST['search_status']);
+		}else{
+			$p_args['post_status'] = array('available','rented');
+			$c_args['post_status'] = array('available','rented');
+		}
+
+        //Seacrh by type  
+		if($_POST['search_type']){
+			$term_args = array(
+							array(
+							'taxonomy' => 'types',
+							'field' => 'term_id',
+							'terms' => $_POST['search_type']
+							)
+						);	
+			$p_args['tax_query'] = $term_args;
+			$c_args['tax_query'] = $term_args;						
+		}
+		
+        //Seacrh by accomdation  
+		if($_POST['search_accom']){
+			$meta_query[] = array(
+						'key'          => 'accomodation',
+						'value'        => $_POST['search_accom'],
+						'compare'      => '=',
+					   );						
+		}
+		
+        //Seacrh by rooms  
+		if($_POST['search_rooms']){
+			$meta_query[] = array(
+						'key'          => 'rooms',
+						'value'        => $_POST['search_rooms'],
+						'compare'      => '=',
+					   );						
+		}
+		
+        //Seacrh by min price   
+		if($_POST['search_min_price']){
+			$meta_query[] = array(
+						'key'          => 'price',
+						'value'        => $_POST['search_min_price'],
+						'compare'      => '>=',
+						'type'          => 'NUMERIC'
+					   );						
+		}
+		
+        //Seacrh by rooms  
+		if($_POST['search_max_price']){
+			$meta_query[] = array(
+						'key'          => 'price',
+						'value'        => $_POST['search_max_price'],
+						'compare'      => '<=',
+						'type'          => 'NUMERIC'
+					   );						
+		}
+		
+		if(!empty($meta_query)){
+			$p_args['meta_query'] = $meta_query;
+			$c_args['meta_query'] = $meta_query;
+		}
+		
+		$properties = new WP_Query($p_args);
+        $count = new WP_Query($c_args);
+		$count = $count->post_count; 
+		
+		$msg .= '<table class="manage-table responsive-table deal-suggestproperty-table">
+				<tbody>
+				<tr>
+					<th><i class="fa fa-check-square-o"></i> Select</th>
+					<th class="deal-suggest-proptab-prop"><i class="fa fa-file-text"></i> Property</th>
+					<th><i class="fa fa-user"></i> Owner</th>
+				</tr>';
+        // Loop into all the posts
+        if ( $properties->have_posts() ) {
+			while ( $properties->have_posts() ) { 
+                $properties->the_post();
+				$property_id = get_the_ID();
+				$auth = get_post($property_id);
+				$authid = $auth->post_author;
+				$address = get_post_meta($property_id, 'address',true)." ";
+				$address .= get_post_meta($property_id, 'city',true)." ";
+				$address .= get_post_meta($property_id, 'state',true).", ";
+				$address .= get_post_meta($property_id, 'zip',true)." ";	
+				$price = get_post_meta($property_id, 'price',true);
+				$status = get_post_meta($property_id, 'status',true);					
+				// Set the desired output into a variable
+				$msg .='<tr>
+							<td class="select_property"><input class="check_property" type="checkbox" value="'.$property_id.'" name="check"></td>
+							<td class="title-container">
+								<img src="'.wp_get_attachment_url(get_post_meta($property_id,'file_0',true)).'" alt="">
+								<div class="title">
+									<h4><a href="#">'.get_the_title().'</a></h4>
+									<span>'.$address.'</span>
+									<span class="table-property-price">$'.$price.' / Weekly</span> <span class="active--property">'.ucfirst(get_post_status()).'</span>
+								</div>
+							</td>
+							<td>
+								<div class="owner--name">'.get_the_author_meta( 'display_name' , $authid).'</div>
+							</td>
+						</tr>';
+				}
+        }else{
+			$msg .='<tr colsapan="3"><td>No property founds!</td></tr>';
+		}
+		wp_reset_query();
+		$msg .= '</tbody></table>';
+
+        // This is where the magic happens
+        $no_of_paginations = ceil($count / $per_page);
+
+        if ($cur_page >= 7) {
+            $start_loop = $cur_page - 3;
+            if ($no_of_paginations > $cur_page + 3)
+                $end_loop = $cur_page + 3;
+            else if ($cur_page <= $no_of_paginations && $cur_page > $no_of_paginations - 6) {
+                $start_loop = $no_of_paginations - 6;
+                $end_loop = $no_of_paginations;
+            } else {
+                $end_loop = $no_of_paginations;
+            }
+        } else {
+            $start_loop = 1;
+            if ($no_of_paginations > 7)
+                $end_loop = 7;
+            else
+                $end_loop = $no_of_paginations;
+        }
+
+        // Pagination Buttons logic     
+        $pag_container .= "
+        <div class='cvf-universal-pagination'>
+            <ul>";
+
+        if ($first_btn && $cur_page > 1) {
+            $pag_container .= "<li p='1' class='active'>First</li>";
+        } else if ($first_btn) {
+            $pag_container .= "<li p='1' class='inactive'>First</li>";
+        }
+
+        if ($previous_btn && $cur_page > 1) {
+            $pre = $cur_page - 1;
+            $pag_container .= "<li p='$pre' class='active'>Previous</li>";
+        } else if ($previous_btn) {
+            $pag_container .= "<li class='inactive'>Previous</li>";
+        }
+        for ($i = $start_loop; $i <= $end_loop; $i++) {
+
+            if ($cur_page == $i)
+                $pag_container .= "<li p='$i' class = 'selected' >{$i}</li>";
+            else
+                $pag_container .= "<li p='$i' class='active'>{$i}</li>";
+        }
+
+        if ($next_btn && $cur_page < $no_of_paginations) {
+            $nex = $cur_page + 1;
+            $pag_container .= "<li p='$nex' class='active'>Next</li>";
+        } else if ($next_btn) {
+            $pag_container .= "<li class='inactive'>Next</li>";
+        }
+
+        if ($last_btn && $cur_page < $no_of_paginations) {
+            $pag_container .= "<li p='$no_of_paginations' class='active'>Last</li>";
+        } else if ($last_btn) {
+            $pag_container .= "<li p='$no_of_paginations' class='inactive'>Last</li>";
+        }
+
+        $pag_container = $pag_container . "
+            </ul>
+        </div>";
+
+        // We echo the final output
+        echo $msg. 
+        '<div class = "cvf-pagination-nav">' . $pag_container . '</div>';
+
+    }
+    // Always exit to avoid further execution
+    exit();
+}
+
 add_action( 'wp_ajax_nyc-deal-select-property-assign', 'nyc_deal_property_assign' );
 add_action( 'wp_ajax_nopriv_nyc-deal-select-property-assign', 'nyc_deal_property_assign' ); 
 function nyc_deal_property_assign(){
@@ -753,6 +979,32 @@ function nyc_deal_select_agent(){
 			echo "Agent removed successfully";
 		}
 	}
+	exit;
+}
+
+add_action( 'wp_ajax_add-new-custom-deal', 'add_new_custom_deal' );
+add_action( 'wp_ajax_add-new-custom-deal', 'add_new_custom_deal' ); 
+function add_new_custom_deal(){
+	if(isset($_POST['action']) && $_POST['action'] == 'add-new-custom-deal'){
+	$deal_id = wp_insert_post(
+			array(
+				'post_type'		=> 'deals',
+				'post_title' 	=> 'deal submission',
+				'post_content' 	=> $_POST['t_description'],
+				'post_status'   => 'publish'
+			));		
+	if($deal_id){
+		add_post_meta($deal_id, 'lead_source','Custom Deal');
+		add_post_meta($deal_id, 'property_id',$_POST['property_id']);
+		add_post_meta($deal_id, 'name',$_POST['t_name']);
+		add_post_meta($deal_id, 'email',$_POST['t_email']);
+		add_post_meta($deal_id, 'phone',$_POST['t_phone']);
+		add_post_meta($deal_id, 'description',$_POST['t_description']);
+		add_post_meta($deal_id, 'admin_notes',$_POST['admin_notes']);
+		add_post_meta($deal_id, 'deal_price',$_POST['deal_price']);
+		echo "success";
+	}
+	}	
 	exit;
 }
 
