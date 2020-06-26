@@ -18,7 +18,7 @@ $deal_price   =   get_post_meta($dealid,'deal_price',true);
 $agent_notes = '';
 if(isset($_POST['save_notes'])){
   update_post_meta($_POST['deal_id'],'agent_notes',$_POST['summary']);
-  $agent_notes = "saved successfully";
+  $agent_notes = "Notes saved successfully";
 }
 $agent_saved_notes  =  get_post_meta($dealid,'agent_notes',true);
 get_header();
@@ -172,7 +172,6 @@ get_header();
 						<input type="hidden" name="deal_id" value="<?= $dealid ?>">
 						<textarea class="WYSIWYG" name="summary" cols="40" rows="3" id="summary" spellcheck="true"><?php if($agent_saved_notes){echo $agent_saved_notes;}?></textarea>
 						<input type="submit" name="save_notes" value="Save notes">
-						<?= $agent_notes ?>
 						</form>
 					</div>
 				</div>
@@ -589,6 +588,23 @@ get_header();
   </div>
 </div>
 
+<div class="modal fade popup-main--section" id="modal_agent_notes_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <div class="dealsend-popup">
+        	<h3><?= $agent_notes ?></h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 </div>
 <script type="text/javascript">
@@ -698,4 +714,13 @@ jQuery(document).ready(function($) {
 </script>
 <?php
 get_footer();
+
+if(!empty($agent_notes)){
+   echo "<script>
+         jQuery(window).load(function(){
+             $('#modal_agent_notes_popup').modal('show');
+         });
+    </script>";
+}
+
 ?>

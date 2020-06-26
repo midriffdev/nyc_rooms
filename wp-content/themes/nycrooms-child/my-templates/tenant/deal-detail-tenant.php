@@ -233,7 +233,7 @@ get_header();
 						<?php if($deal_price): ?><h3>Amount to be Paid: <span>$<?= $deal_price ?></span></h3> <?php endif;  ?>
 						<ul class="dealdetail-tenant-actionbuttons">
 							<li>
-								<button class="dealdetail-tenant-paynowb" <?php if(!$get_document_file){ echo "disabled";} ?> >Pay Now</button>
+								<button class="dealdetail-tenant-paynowb" <?php if(!$get_document_file){ echo "disabled";} ?>  data-toggle="modal" data-target="#Square_payment_form_js">Pay Now</button>
 							</li>
 							<li>
 								<button class="dealdetail-tenant-reqagentb" <?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'disabled';}  ?>>Request an Agent</button>
@@ -548,6 +548,80 @@ get_header();
       </div>
       <div class="modal-body">
         <div class="finalise-property-tenant">
+        	<h3></h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade popup-main--section" id="Square_payment_form_js" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        	<div id="form-container">
+				  <div id="sq-ccbox">
+					<!--
+					  Be sure to replace the action attribute of the form with the path of
+					  the Transaction API charge endpoint URL you want to POST the nonce to
+					  (for example, "/process-card")
+					-->
+					<form id="nonce-form" novalidate>
+					  <fieldset>
+						<span class="label">Card Number</span>
+						<div id="sq-card-number"></div>
+
+						<div class="third">
+						  <span class="label">Expiration</span>
+						  <div id="sq-expiration-date"></div>
+						</div>
+
+						<div class="third">
+						  <span class="label">CVV</span>
+						  <div id="sq-cvv"></div>
+						</div>
+
+						<div class="third">
+						  <span class="label">Postal</span>
+						  <div id="sq-postal-code"></div>
+						</div>
+					  </fieldset>
+
+					  <button id="sq-creditcard" class="button-credit-card" onclick="requestCardNonce(event)">Create Payment</button>
+
+					  <div id="error"></div>
+
+					  <!--
+						After a nonce is generated it will be assigned to this hidden input field.
+					  -->
+					  <input type="hidden" id="amount" name="amount" value="<?= $deal_price * 100 ?>">
+					  <input type="hidden" id="deal_id_square_tenant" name="deal_id_square_tenant" value="<?= $dealid ?>">
+					  <input type="hidden" id="email_square_teanant"  name="email_square_teanant"  value="<?= $email ?>">
+					  <input type="hidden" id="card-nonce" name="nonce">
+					</form>
+				  </div> <!-- end #sq-ccbox -->
+
+           </div> <!-- end #form-container -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade popup-main--section" id="square_payment_success_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <div class="square-payment-success-popup">
         	<h3></h3>
         </div>
       </div>
