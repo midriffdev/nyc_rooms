@@ -23,16 +23,37 @@ function zakra_child_enqueue_styles() {
 	);
 	
 	wp_enqueue_style( 'color-css', get_stylesheet_directory_uri().'/css/color.css');
+	wp_enqueue_style( 'sqpaymentform-basic-css', get_stylesheet_directory_uri().'/css/sqpaymentform-basic.css');
 	//wp_enqueue_style( 'bootstrap-css', get_stylesheet_directory_uri().'/css/bootstrap.min.css');
 	wp_enqueue_script( 'property-js', get_stylesheet_directory_uri().'/scripts/property.js', array( 'jquery' ), '1.0', true );
 	wp_enqueue_script( 'dashboard-js', get_stylesheet_directory_uri().'/inc/js/admin-dashboard.js', array( 'jquery' ), '1.0', true );
 	wp_enqueue_script( 'bootstrap-js', get_stylesheet_directory_uri().'/scripts/bootstrap.min.js', array( 'jquery' ), '1.0', true );
+	wp_enqueue_script( 'square-js', 'https://js.squareupsandbox.com/v2/paymentform', array( 'jquery' ), '1.0');
+	wp_enqueue_script( 'sqpaymentform-js', get_stylesheet_directory_uri().'/scripts/sqpaymentform.js', array( 'jquery' ), '1.0');
     wp_localize_script( 'property-js', 'my_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+	wp_localize_script( 'sqpaymentform-js', 'payment_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 	
 	
 	
 }
 add_action( 'wp_enqueue_scripts', 'zakra_child_enqueue_styles' );
+
+add_action('wp_head','square_custom_js_file');
+
+function square_custom_js_file(){
+   
+   echo '<script>
+	 document.addEventListener("DOMContentLoaded", function(event) {
+    if (SqPaymentForm.isSupportedBrowser()) {
+      paymentForm.build();
+      paymentForm.recalculateSize();
+    }
+  });
+	</script>';
+	
+    
+}
+
 
 function xx__update_custom_roles() {
        add_role( 'property_owner', 'Property Owner', array( 'read' => true, 'level_0' => true ) );
@@ -2323,10 +2344,164 @@ function nyc_request_agent_ajax(){
   exit; 
 }
 
+add_action( 'wp_ajax_nyc_tenant_final_selected_property_ajax', 'nyc_tenant_final_selected_property_ajax' );
+add_action( 'wp_ajax_nopriv_nyc_tenant_final_selected_property_ajax', 'nyc_tenant_final_selected_property_ajax' );
+
+function nyc_tenant_final_selected_property_ajax(){
+   if(isset($_POST['action']) && $_POST['action'] == 'nyc_tenant_final_selected_property_ajax'){
+     $deal_id    = $_POST['deal_id'];
+     $property_id    = $_POST['property_id'];	 
+	 $meta_key   = 'property_id';
+	 update_post_meta($deal_id,$meta_key,$property_id);
+	 echo "success";
+   } else {
+      echo "faliure";
+   }
+  exit; 
+}
+
+add_action( 'wp_ajax_nyc_tenant_payment_square_ajax', 'nyc_tenant_payment_square_ajax' );
+add_action( 'wp_ajax_nopriv_nyc_tenant_payment_square_ajax', 'nyc_tenant_payment_square_ajax' );
+
+function nyc_tenant_payment_square_ajax(){
+   if(isset($_POST['action']) && $_POST['action'] == 'nyc_tenant_payment_square_ajax'){
+   
+	  $production_mode = false;
+	  if($production_mode){
+	      $urlslug = "squareup";
+	  } else {
+	      $urlslug = "squareupsandbox";
+	  }
+	  $nonce              =  $_POST['nonce'];
+	  $amount             =  (int) $_POST['amountvalue'];
+	  $payment_url        =  "https://connect.". $urlslug .".com/v2/payments";
+	  $accesstoken        =  "EAAAELlAyEc4jT3NtaKrozS8u8KOUyVpoKu3deWKA7LoZEvi8i34T_hKIhLs5MHC";
+	  $square_version     =  "2020-06-25";
+	  $content_type       =  "application/json";
+	  $method             =  "POST";
+	  $requestbody        =  array(
+	                          "idempotency_key" => md5(uniqid(uniqid())),
+							  "source_id" =>  $nonce,
+							  "amount_money" => array(
+													  "currency"=>"USD",
+													  "amount"=> $amount 
+							                    )
+						    );
+							
+	  $headers            =  array(
+								"Square-Version: ". $square_version,
+								"Authorization: Bearer ". $accesstoken,
+								"Content-Type: ". $content_type
+                            );				
+	
+      $response          =   nyc_get_tenant_payment_square_ajax_curl($payment_url,$headers,$method,json_encode($requestbody));
+	  
+	  if( isset($response->payment->status) && isset($response->payment->id)){
+	      $deal_id                   =   $_POST['deal_id'];
+		  $email_teanant             =   $_POST['email_teanant'];
+	      $payment_id                =   $response->payment->id;
+		  $payment_created_at        =   $response->payment->created_at;
+		  $paymentamount             =   intdiv($response->payment->amount_money->amount , 100);
+		  $paymentcurrency           =   $response->payment->amount_money->currency;
+		  $paymentstatus             =   $response->payment->status;
+		  $payment_source_type       =   $response->payment->source_type;
+		  $order_id                  =   $response->payment->order_id;
+		  $receipt_number            =   $response->payment->receipt_number;
+		  $receipt_url               =   $response->payment->receipt_url;
+		  
+		  $dealorderid = wp_insert_post(array (
+								'post_type'		=> 'dealsorders',
+								'post_title' 	=> '#'.$order_id,
+								'post_content' 	=> 'New Order Created',
+								'post_author' 	=> 1,
+								'post_status' 	=> 'publish',
+		                  ));
+		  
+		  if($dealorderid){
+		     add_post_meta($dealorderid, 'deal_id', $deal_id);
+			 add_post_meta($dealorderid, 'email_teanant', $email_teanant);
+			 add_post_meta($dealorderid, 'payment_id', $payment_id);
+			 add_post_meta($dealorderid, 'payment_created_at', $payment_created_at);
+			 add_post_meta($dealorderid, 'payment_amount', $paymentamount);
+			 add_post_meta($dealorderid, 'payment_currency', $paymentcurrency);
+			 add_post_meta($dealorderid, 'payment_status', $paymentstatus);
+			 add_post_meta($dealorderid, 'payment_source_type', $payment_source_type);
+			 add_post_meta($dealorderid, 'order_id', $order_id);
+			 add_post_meta($dealorderid, 'receipt_number', $receipt_number);
+			 add_post_meta($dealorderid, 'receipt_url', $receipt_url);
+			 echo "success";
+		  }
+		  
+	  } else {
+	     echo "faliure";
+	  }
+	  
+   } else {
+      echo "faliure";
+   }
+  exit; 
+}
 
 
+add_action( 'init', 'nyc_create_custom_post_deals_orders', 0 );
+
+function nyc_create_custom_post_deals_orders() {
+	$labels = array(
+		'name'                => __( 'Deals Orders' ),
+		'singular_name'       => __( 'Deals Orders'),
+		'menu_name'           => __( 'Deals Orders'),
+		'parent_item_colon'   => __( 'Parent Deals Orders'),
+		'all_items'           => __( 'All Orders'),
+		'view_item'           => __( 'View Orders'),
+		'search_items'        => __( 'Search Orders'),
+		'not_found'           => __( 'Not Found'),
+		'not_found_in_trash'  => __( 'Not found in Trash')
+	);
+	$args = array(
+		'label'               => __( 'dealsorders'),
+		'labels'              => $labels,
+		'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'revisions', 'custom-fields'),
+		'public'              => true,
+		'hierarchical'        => false,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => true,
+		'show_in_admin_bar'   => true,
+		'has_archive'         => true,
+		'can_export'          => true,
+		'exclude_from_search' => false,
+	    'yarpp_support'       => true,
+		'publicly_queryable'  => true,
+		'capability_type'     => 'page'
+	);
+	register_post_type( 'dealsorders', $args );
+}
 
 
+function nyc_get_tenant_payment_square_ajax_curl($payment_url,$headers,$method,$reqbody){   
+
+   $curl = curl_init();
+
+  curl_setopt_array($curl, array(
+						  CURLOPT_URL => $payment_url,
+						  CURLOPT_RETURNTRANSFER => true,
+						  CURLOPT_ENCODING => "",
+						  CURLOPT_MAXREDIRS => 10,
+						  CURLOPT_TIMEOUT => 0,
+						  CURLOPT_FOLLOWLOCATION => true,
+						  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+						  CURLOPT_CUSTOMREQUEST => $method,
+						  CURLOPT_POSTFIELDS =>$reqbody,
+						  CURLOPT_HTTPHEADER => $headers,
+                       )
+  );
+
+ $response = curl_exec($curl);
+
+ curl_close($curl);
+ return json_decode($response);
+
+}
 
 
 require_once( 'inc/init-function.php');
