@@ -34,7 +34,7 @@ $request_an_agent = get_post_meta($post_id, 'request_an_agent', true);
 		if($request_an_agent == true && empty($selectedAgent)){
 		?>
         <div class='alert_note_panel'>		
-			<h4>Tenant Requested for an agent.</h4>
+			<h4 class="tenant_req">Tenant Requested for an agent.</h4>
 		</div>
 		<?php 
 		}
@@ -867,6 +867,7 @@ jQuery(document).ready(function($) {
 			jQuery('.loading').hide();
 			jQuery('.dealsend-popup h3').html(response);
 			jQuery('#selected_property_popup').modal('show');				
+			jQuery('.alert_note_panel').hide();				
 		});			
 	});	
 }); 
