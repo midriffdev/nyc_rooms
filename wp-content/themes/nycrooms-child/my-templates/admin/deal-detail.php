@@ -34,7 +34,7 @@ $request_an_agent = get_post_meta($post_id, 'request_an_agent', true);
 		if($request_an_agent == true && empty($selectedAgent)){
 		?>
         <div class='alert_note_panel'>		
-			<h4>Tenant Requested for an agent.</h4>
+			<h4 class="tenant_req">Tenant Requested for an agent.</h4>
 		</div>
 		<?php 
 		}
@@ -176,7 +176,7 @@ $request_an_agent = get_post_meta($post_id, 'request_an_agent', true);
 				</div>
 				<?php } ?>
 				<div class="col-md-12">
-				<?php if($lead_source == "Appointment Form"){ ?>
+				<?php if($lead_source == "Appointment Form" || $lead_source == "Custom Deal"){ ?>
 					<div class="dealdetal__appointmentdetail-sec">
 						<div class="leaddetail-teanentdetail dealdetail__tenantdetail">
 							<h2>Appointment Details</h2>
@@ -196,11 +196,7 @@ $request_an_agent = get_post_meta($post_id, 'request_an_agent', true);
 									</li>
 									<li>
 										<p>Date:</p>
-										<span>December 30, 2016</span>
-									</li>
-									<li>
-										<p>Time:</p>
-										<span>9:00 AM</span>
+										<span><?php echo get_the_date('l F j, Y',$post_id); ?></span>
 									</li>
 									<li>
 										<p>Description:</p>
@@ -871,6 +867,7 @@ jQuery(document).ready(function($) {
 			jQuery('.loading').hide();
 			jQuery('.dealsend-popup h3').html(response);
 			jQuery('#selected_property_popup').modal('show');				
+			jQuery('.alert_note_panel').hide();				
 		});			
 	});	
 }); 

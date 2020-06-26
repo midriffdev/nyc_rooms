@@ -106,7 +106,7 @@ get_header();
 				</div>
                 <?php } ?>
 				<div class="col-md-12">
-					<?php if($lead_source == "Appointment Form"){ ?>
+					<?php if($lead_source == "Appointment Form" || $lead_source == "Custom Deal"){ ?>
 					<div class="dealdetal__appointmentdetail-sec">
 						<div class="leaddetail-teanentdetail dealdetail__tenantdetail">
 							<h2>Appointment Details</h2>
@@ -126,23 +126,7 @@ get_header();
 									</li>
 									<li>
 										<p>Date:</p>
-										<span>
-										<?php 
-											$strtotime = get_post_meta($dealid, 'lead_datetime', true);
-											$date =  date("F j, Y", $strtotime); 
-											echo $date;
-							            ?>
-							           </span>
-									</li>
-									<li>
-										<p>Time:</p>
-										<span>
-											<?php 
-												$strtotime = get_post_meta($dealid, 'lead_datetime', true);
-												$time =  date("h:i A", $strtotime);
-												echo $time;
-											?>
-										</span>
+										<span><?php echo get_the_date('l F j, Y',$dealid); ?></span>
 									</li>
 									<li>
 										<p>Description:</p>
