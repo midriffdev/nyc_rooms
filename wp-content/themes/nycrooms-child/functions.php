@@ -2429,6 +2429,7 @@ function nyc_tenant_payment_square_ajax(){
 			 add_post_meta($dealorderid, 'order_id', $order_id);
 			 add_post_meta($dealorderid, 'receipt_number', $receipt_number);
 			 add_post_meta($dealorderid, 'receipt_url', $receipt_url);
+			 add_post_meta($dealorderid, 'payment_mode', 'square_payment');
 			 echo "success";
 		  }
 		  

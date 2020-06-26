@@ -20,7 +20,17 @@ $get_document_file    =   get_post_meta($dealid,'document_files',true);
 $get_requested_agent  =   get_post_meta($dealid,'request_an_agent',true);
 $selected_property    =   get_post_meta($dealid, 'selected_property', true);
 
+$query_args = array(
+	'post_type'  => 'dealsorders',
+	'meta_query' => array(
+	    array(
+			'key'   => 'deal_id',
+			'value' => $dealid ,
+	    ),
+	)
+);
 
+$check_deal_orders = new WP_Query( $query_args );
 get_header();
 ?>
 <!-- Wrapper -->
@@ -233,7 +243,20 @@ get_header();
 						<?php if($deal_price): ?><h3>Amount to be Paid: <span>$<?= $deal_price ?></span></h3> <?php endif;  ?>
 						<ul class="dealdetail-tenant-actionbuttons">
 							<li>
-								<button class="dealdetail-tenant-paynowb" <?php if(!$get_document_file){ echo "disabled";} ?>  data-toggle="modal" data-target="#Square_payment_form_js">Pay Now</button>
+							    <?php
+								if(empty($check_deal_orders->posts)){
+								?>
+								  <button class="dealdetail-tenant-paynowb" <?php if(!$get_document_file){ echo "disabled";} ?>  data-toggle="modal" data-target="#Square_payment_form_js">Pay Now</button>
+								<?php
+								}
+								
+                                if(count($check_deal_orders->posts) == 1){
+								?>
+								<button class="dealdetail-tenant-paynowb" disabled>Payment Done</button>
+								<?php
+								}
+								?>
+								
 							</li>
 							<li>
 								<button class="dealdetail-tenant-reqagentb" <?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'disabled';}  ?>>Request an Agent</button>
