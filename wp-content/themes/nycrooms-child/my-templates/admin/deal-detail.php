@@ -24,7 +24,7 @@ $admin_notes = get_post_meta($post_id,'admin_notes',true);
 $selected_property = get_post_meta($post_id, 'selected_property', true);
 $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 $request_an_agent = get_post_meta($post_id, 'request_an_agent', true);
-
+$document_files = get_post_meta($post_id, 'document_files', true);
 $query_args = array(
 	'post_type'  => 'dealsorders',
 	'meta_query' => array(
@@ -36,7 +36,6 @@ $query_args = array(
 );
 $check_deal_orders = new WP_Query( $query_args );
 if(count($check_deal_orders->posts) == 1){
-	$check_deal_orders  = new WP_Query( $query_args );
 	$dealorderid        = $check_deal_orders->posts[0]->ID;
 	$payment_status     = get_post_meta($dealorderid,'payment_status',true);
 	$payment_amount     = get_post_meta($dealorderid,'payment_amount',true);
@@ -50,7 +49,13 @@ if(count($check_deal_orders->posts) == 1){
 } else {
    $payment_status = get_post_meta($post_id,'payment_status',true);
 }
+			'value' => $post_id ,
+	    ),
+	)
+);
 
+$check_deal_orders = new WP_Query( $query_args );
+$payment_status=$check_deal_orders->found_posts;
 ?>
 <!-- Wrapper -->
 <div id="wrapper">
@@ -274,6 +279,7 @@ if(count($check_deal_orders->posts) == 1){
 				<div class="col-md-6">
 					<div class="dealdetail-signapplicationform">
 						<a href="#" data-toggle="modal" data-target="<?php ($tenant_application) ? 'Complete' : 'Pending'; ?>"><h3>Application Form Status <span> <?php echo ($tenant_application) ? 'Complete' : 'Pending'; ?> <i class="fa fa-check" aria-hidden="true"></i></span></h3></a>
+						<h3>Application Form Status <span> <?php echo ($document_files) ? 'Uploaded <a href="'.wp_get_attachment_url($document_files).'" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i></a>' : 'Pending'; ?> </span></h3>
 					</div>
 				</div>
 
@@ -318,6 +324,24 @@ if(count($check_deal_orders->posts) == 1){
 							<li>Time: <span><?= $time ?></span></li>
 						</ul>
 						<?php } ?>
+						<h3>Payment
+						<span><?php if($payment_status>0) { echo 'Done'; }else{ echo 'Pending'; } ?> <i class="fa fa-check" aria-hidden="true"></i></span></h3>
+						<?php 
+						if ( $check_deal_orders->have_posts() ):
+							while ( $check_deal_orders->have_posts() ) :
+								$check_deal_orders->the_post();
+								$order_id = get_the_ID();
+							?>
+							<ul>
+								<li>Amount: <span>$<?php echo get_post_meta($order_id,'payment_amount',true); ?></span></li>
+								<li>Type: <span><?php echo get_post_meta($order_id,'payment_mode',true); ?></span></li>
+								<li>Status: <span><?php echo get_post_meta($order_id,'payment_status',true); ?></span></li>
+								<li>Time: <span><?php echo human_time_diff( get_the_date('U') ) . ' ago'; ?></span></li>
+							</ul>
+							<?php 
+							endwhile;
+						endif;						
+						?>
 					</div>
 				</div>
 
