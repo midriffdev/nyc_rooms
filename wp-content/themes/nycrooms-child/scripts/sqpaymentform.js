@@ -147,8 +147,8 @@ var paymentForm = new SqPaymentForm({
 					  url: payment_ajax_object.ajax_url,
 					  data: {action:'nyc_tenant_payment_square_ajax',amountvalue:amountvalue,nonce:nonce,deal_id:deal_id,email_teanant:email_teanant},
 					  success: function(response){
-							  
-							  if(response == "success"){
+							 
+							   if(response == "success"){
 								jQuery('.loading').hide();
 								jQuery('.square-payment-success-popup h3').html('Payment Successfully Done');
 								jQuery('#square_payment_success_popup').modal('show');

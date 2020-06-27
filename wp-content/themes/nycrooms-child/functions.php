@@ -2337,6 +2337,14 @@ function nyc_request_agent_ajax(){
      $deal_id    = $_POST['deal_id'];			
 	 $meta_key   = 'request_an_agent';
 	 update_post_meta($deal_id,$meta_key,1);
+	        $subject = "New Agent Request";
+	        $to = get_option('admin_email');
+			$msg  = __( 'Hello Admin,') . "\r\n\r\n";
+			$msg .= sprintf( __('<p>A New Agent has been Requested by Tenant on Deal no. %s.</p>'),$deal_id);
+			$msg .= sprintf( __('<p>Please Follow this deal link <a href="%s/admin/deals/details/%s">%s/admin/deals/details/%s</a>in by open your dashboard for more information.</p>'),get_site_url(),$deal_id,get_site_url(),$deal_id);
+			$msg .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
+			$headers = array('Content-Type: text/html; charset=UTF-8');
+		    $sent = wp_mail($to, $subject, $msg,$headers);
 	 echo "success";
    } else {
       echo "faliure";
@@ -2430,6 +2438,24 @@ function nyc_tenant_payment_square_ajax(){
 			 add_post_meta($dealorderid, 'receipt_number', $receipt_number);
 			 add_post_meta($dealorderid, 'receipt_url', $receipt_url);
 			 add_post_meta($dealorderid, 'payment_mode', 'square_payment');
+			$subject = "New payment created on deal no -".$deal_id;
+			$to = get_option('admin_email');
+			$msg  = __( 'Hello Admin,') . "\r\n\r\n";
+			$msg .= sprintf( __("<p>New Payment has been created on deal no. %s with Following Order Id : %s via Square Payment Gateway <p><p>Following are Details of Payment order.</p>"),$deal_id,$order_id);
+			$msg .= sprintf( __("<p>Deal No. : %s</p>"),$deal_id);
+			$msg .= sprintf( __("<p>Admin Deal link : <a href='%s/admin/deals/details/%s'>%s/admin/deals/details/%s</a></p>",get_site_url(),$deal_id,get_site_url(),$deal_id));
+			$msg .= sprintf( __("<p>Tenant Email : %s</p>"),$email_teanant);
+			$msg .= sprintf( __("<p>Payment ID : %s</p>"),$payment_id);
+			$msg .= sprintf( __("<p>Order Id  : %s</p>"),$order_id);
+			$msg .= sprintf( __("<p>payment created on : %s</p>"),$payment_created_at);
+			$msg .= sprintf( __("<p>Payment Amount : %s</p>"),$paymentamount);
+			$msg .= sprintf( __("<p>Payment Currency : %s</p>"),$paymentcurrency);
+			$msg .= sprintf( __("<p>Payment Status : %s</p>"),$paymentstatus);
+			$msg .= sprintf( __("<p>Payment Source Type : %s</p>"),$payment_source_type);
+			$msg .= sprintf( __("<p>Payment Mode : %s</p>"),'Square Payment');
+			$msg .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
+			$headers = array('Content-Type: text/html; charset=UTF-8');
+		    $sent = wp_mail($to, $subject, $msg,$headers);
 			 echo "success";
 		  }
 		  

@@ -14,8 +14,7 @@ $phone = get_post_meta($post_id,'phone',true);
 $description = get_post_meta($post_id,'description',true);
 $property_id = get_post_meta($post_id,'property_id',true);
 $deal_agent = get_post_meta($post_id,'deal_agent',true);
-$tenant_application = get_post_meta($post_id,'tenant_application',true);
-$payment_status = get_post_meta($post_id,'payment_status',true);
+$tenant_application = get_post_meta($post_id,'document_files',true);
 if(isset($_POST['upadte_stag1'])){
 	update_post_meta($post_id,'deal_price',$_POST['deal_price']);
 	update_post_meta($post_id,'admin_notes',$_POST['admin_notes']);
@@ -25,6 +24,33 @@ $admin_notes = get_post_meta($post_id,'admin_notes',true);
 $selected_property = get_post_meta($post_id, 'selected_property', true);
 $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 $request_an_agent = get_post_meta($post_id, 'request_an_agent', true);
+
+$query_args = array(
+	'post_type'  => 'dealsorders',
+	'meta_query' => array(
+	    array(
+			'key'   => 'deal_id',
+			'value' => $post_id,
+	    ),
+	)
+);
+$check_deal_orders = new WP_Query( $query_args );
+if(count($check_deal_orders->posts) == 1){
+	$check_deal_orders  = new WP_Query( $query_args );
+	$dealorderid        = $check_deal_orders->posts[0]->ID;
+	$payment_status     = get_post_meta($dealorderid,'payment_status',true);
+	$payment_amount     = get_post_meta($dealorderid,'payment_amount',true);
+	$payment_created_at = get_post_meta($dealorderid,'payment_created_at',true);
+	$payment_source_type = get_post_meta($dealorderid,'payment_source_type',true);
+	$payment_mode = get_post_meta($dealorderid,'payment_mode',true);
+	$strtotime          = strtotime($payment_created_at);
+	$date =  date("F j, Y", $strtotime); 
+	$time =  date("h:i A", $strtotime); 
+	
+} else {
+   $payment_status = get_post_meta($post_id,'payment_status',true);
+}
+
 ?>
 <!-- Wrapper -->
 <div id="wrapper">
@@ -39,6 +65,16 @@ $request_an_agent = get_post_meta($post_id, 'request_an_agent', true);
 		<?php 
 		}
 		?>
+		<?php 
+		if(count($check_deal_orders->posts) == 1){
+		?>
+        <div class='alert_note_panel'>		
+			<h4 class="tenant_req"> A Payment has been Done on this Deal</h4>
+		</div>
+		<?php 
+		}
+		?>
+		
 		<div class="row deal-detail-upperunifrm-sect">
 			<div class="col-md-3">
 				<div class="deal-detail-stagesec">
@@ -237,7 +273,7 @@ $request_an_agent = get_post_meta($post_id, 'request_an_agent', true);
 
 				<div class="col-md-6">
 					<div class="dealdetail-signapplicationform">
-						<a href="#" data-toggle="modal" data-target="<?php echo ($tenant_application) ? '#signapplicationform' : ''; ?>"><h3>Application Form Status <span> <?php echo ($tenant_application) ? $tenant_application : 'Pending'; ?> <i class="fa fa-check" aria-hidden="true"></i></span></h3></a>
+						<a href="#" data-toggle="modal" data-target="<?php ($tenant_application) ? 'Complete' : 'Pending'; ?>"><h3>Application Form Status <span> <?php echo ($tenant_application) ? 'Complete' : 'Pending'; ?> <i class="fa fa-check" aria-hidden="true"></i></span></h3></a>
 					</div>
 				</div>
 
@@ -271,12 +307,15 @@ $request_an_agent = get_post_meta($post_id, 'request_an_agent', true);
 				<div class="col-md-6">
 					<div class="deal-detail-paymentstatus">
 						<h3>Payment Status
-						<span><?php echo ($payment_status) ? '$payment_status' : 'Pending'; ?> <i class="fa fa-check" aria-hidden="true"></i></span></h3>
+						<span><?php echo ($payment_status) ? $payment_status : 'Pending'; ?> <i class="fa fa-check" aria-hidden="true"></i></span></h3>
 						<?php if($payment_status){ ?>
 						<ul>
-							<li>Paymet: <span>$300</span></li>
-							<li>Date: <span>December 30, 2016</span></li>
-							<li>Time: <span>9:00 AM</span></li>
+							<li>Payment: <span><?= '$'.$payment_amount ?></span></li>
+							<li>Payment Source : <span><?= ucfirst($payment_source_type) ?></span></li>
+							<li>Payment mode : <span><?= ucfirst(str_replace('_',' ',$payment_mode)) ?></span></li>
+							
+							<li>Date: <span><?= $date ?></span></li>
+							<li>Time: <span><?= $time ?></span></li>
 						</ul>
 						<?php } ?>
 					</div>
@@ -822,6 +861,7 @@ jQuery(document).ready(function($) {
 				jQuery('#selected_property_popup').modal('show');
 			});
 	});
+	
 	
 	$('.deal_search_property').live('click',function(e){
 			jQuery('.loading').show();

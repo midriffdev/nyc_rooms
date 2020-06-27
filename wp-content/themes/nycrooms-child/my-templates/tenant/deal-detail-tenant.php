@@ -1,6 +1,11 @@
 <?php
 if(isset($_GET['id']) && !empty($_GET['id'])){
   $dealid = $_GET['id'];
+  $get_post = get_post($dealid);
+   if(!$get_post){
+      exit('invalid link nothing found here');
+   }
+ 
 } else {
   wp_redirect(home_url());
 }
@@ -31,6 +36,11 @@ $query_args = array(
 );
 
 $check_deal_orders = new WP_Query( $query_args );
+
+
+
+
+
 get_header();
 ?>
 <!-- Wrapper -->
@@ -177,7 +187,7 @@ get_header();
 
 				<div class="col-md-6">
                    <?php 
-				   if($get_selected_agent){
+				   if($get_requested_agent && $get_requested_agent == 1 && $get_selected_agent ){
 				     $agent_name = get_user_meta($get_selected_agent, 'user_full_name', true);
 					 $agent_email = get_user_meta($get_selected_agent, 'user_agent_email', true);
 					 $agent_phone = get_user_meta($get_selected_agent, 'user_phone', true);
@@ -259,7 +269,11 @@ get_header();
 								
 							</li>
 							<li>
-								<button class="dealdetail-tenant-reqagentb" <?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'disabled';}  ?>>Request an Agent</button>
+							  <?php if(empty($check_deal_orders->posts)){ ?>
+								<button class="dealdetail-tenant-reqagentb" <?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'disabled';}  ?>>
+								<?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'Agent Requested';} else { echo 'Request an Agent';} ?>
+								</button>
+							  <?php } ?>
 							</li>
 						</ul>
 					</div>
@@ -283,7 +297,8 @@ get_header();
 			</div>
 
 		</div>
-
+         
+		<?php if($selected_property){ ?>
 		<!----Stage 2---->
 		<div class="row deal-stage-2">
 			<div class="current-stage-title">
@@ -292,9 +307,12 @@ get_header();
 
 			<div class="dealdetail-suggestedproperties-tenant">
 				<h3>Suggested Properties</h3>
-				<div class="row">
+				
 				<?php
 				   if($selected_property){
+				   ?>
+				     <div class="row">
+				   <?php
 	                    foreach($selected_property as $property_ids){ 
 	                      $price = get_post_meta($property_ids, 'price',true);	
 	            ?>
@@ -321,13 +339,14 @@ get_header();
 					</div>
 					<?php }
                     ?>
+					    </div>
                        <div align="center"><button class="button selected_property_tnt" id="selected_property_tnt" >Select Property</button></div>				
 					<?php
-					}else { echo "<li>No selected property founds!</li>"; } ?>
-				</div>
+					}else { echo "<div class='row'><div class='col-md-4'>No Suggested properties founds!</div></div>"; } ?>
+				
 			</div>
 		</div>
-	
+	    <?php } ?>
 	</div>
 </div>
 

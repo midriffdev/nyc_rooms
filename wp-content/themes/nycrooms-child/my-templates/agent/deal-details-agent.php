@@ -1,6 +1,11 @@
 <?php
 if(isset($_GET['id']) && !empty($_GET['id'])){
   $dealid = $_GET['id'];
+   $get_post = get_post($dealid);
+   if(!$get_post){
+      exit('invalid link nothing found here');
+   }
+   
 } else {
   wp_redirect(home_url());
 }
@@ -21,6 +26,74 @@ if(isset($_POST['save_notes'])){
   $agent_notes = "Notes saved successfully";
 }
 $agent_saved_notes  =  get_post_meta($dealid,'agent_notes',true);
+$successorder = '';
+if(isset($_POST['deal_ordersubmit'])){
+   $deal_id = $_POST['deal_id'];
+          $deal_id                   =   $_POST['deal_id'];
+		  $email_teanant             =   get_post_meta($dealid,'email',true);
+	      $payment_id                =   md5(uniqid(uniqid(uniqid())));
+		  $payment_created_at        =   $_POST['deal_order_date'] .' '.$_POST['deal_order_time'];
+		  $paymentamount             =   $_POST['deal_order_price'];
+		  $paymentcurrency           =   'USD';
+		  $paymentstatus             =   'COMPLETED';
+		  $payment_source_type       =   'CASH';
+		  $order_id                  =    md5(uniqid(uniqid()));
+          $dealorderid = wp_insert_post(array (
+								'post_type'		=> 'dealsorders',
+								'post_title' 	=> '#'.$order_id,
+								'post_content' 	=> 'New Order Created',
+								'post_author' 	=> 1,
+								'post_status' 	=> 'publish',
+		                  ));
+		  
+		  if($dealorderid){
+		     add_post_meta($dealorderid, 'deal_id', $deal_id);
+			 add_post_meta($dealorderid, 'email_teanant', $email_teanant);
+			 add_post_meta($dealorderid, 'payment_id', $payment_id);
+			 add_post_meta($dealorderid, 'payment_created_at', $payment_created_at);
+			 add_post_meta($dealorderid, 'payment_amount', $paymentamount);
+			 add_post_meta($dealorderid, 'payment_currency', $paymentcurrency);
+			 add_post_meta($dealorderid, 'payment_status', $paymentstatus);
+			 add_post_meta($dealorderid, 'payment_source_type', $payment_source_type);
+			 add_post_meta($dealorderid, 'order_id', $order_id);
+			 add_post_meta($dealorderid, 'payment_mode', 'Cash_payment');
+			$subject = "New payment created on deal no -".$deal_id;
+			$to = get_option('admin_email');
+			$msg  = __( 'Hello Admin,') . "\r\n\r\n";
+			$msg .= sprintf( __("<p>New Payment has been created on deal no. %s with Following Order Id : %s via Square Payment Gateway <p><p>Following are Details of Payment order.</p>"),$deal_id,$order_id);
+			$msg .= sprintf( __("<p>Deal No. : %s</p>"),$deal_id);
+			$msg .= "<p>Admin Deal link : <a href='".get_site_url()."/admin/deals/details/".$deal_id."'>". get_site_url() ."/admin/deals/details/".$deal_id."</a></p>";
+			$msg .= sprintf( __("<p>Tenant Email : %s</p>"),$email_teanant);
+			$msg .= sprintf( __("<p>Payment ID : %s</p>"),$payment_id);
+			$msg .= sprintf( __("<p>Order Id  : %s</p>"),$order_id);
+			$msg .= sprintf( __("<p>payment created on : %s</p>"),$payment_created_at);
+			$msg .= sprintf( __("<p>Payment Amount : %s</p>"),$paymentamount);
+			$msg .= sprintf( __("<p>Payment Currency : %s</p>"),$paymentcurrency);
+			$msg .= sprintf( __("<p>Payment Status : %s</p>"),$paymentstatus);
+			$msg .= sprintf( __("<p>Payment Source Type : %s</p>"),$payment_source_type);
+			$msg .= sprintf( __("<p>Payment Mode : %s</p>"),'Cash Payment');
+			$msg .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
+			$headers = array('Content-Type: text/html; charset=UTF-8');
+		    $sent = wp_mail($to, $subject, $msg,$headers);
+			$successorder = "Order Successfully Created";
+			
+		  }
+		  
+  
+}
+
+$query_args = array(
+	'post_type'  => 'dealsorders',
+	'meta_query' => array(
+	    array(
+			'key'   => 'deal_id',
+			'value' => $dealid ,
+	    ),
+	)
+);
+
+$check_deal_orders = new WP_Query( $query_args );
+
 get_header();
 ?>
 <!-- Wrapper -->
@@ -174,10 +247,20 @@ get_header();
 						<?php if($deal_price): ?><h3>Amount to be Paid: <span>$<?= $deal_price ?></span></h3> <?php endif;  ?>
 						<ul class="dealdetail-tenant-actionbuttons dealdetail-agent-actionbuttons">
 							<li>
+							<?php if(empty($check_deal_orders->posts)){ ?>
 								<button class="dealdetail-tenant-paynowb" data-toggle="modal" data-target="#agentlogpayment">Log Payment</button>
+							 <?php } else { ?>
+							  <button class="dealdetail-tenant-paynowb" disabled>Payment Done</button>
+							 <?php
+							 }
+							 ?>
 							</li>
 							<li>
-								<button class="dealdetail-tenant-reqagentb">Send Payment Link</button>
+							    <?php if(empty($check_deal_orders->posts)){ ?>
+								<button class="dealdetail-tenant-reqagentb" data-toggle="modal" data-target="#send_payment_link_by_agent" >Send Payment Link</button>
+								<?php 
+								}
+								?>
 							</li>
 						</ul>
 					</div>
@@ -432,6 +515,7 @@ get_header();
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+	  <form method="post">
       <div class="modal-body">
         <div class="fillamount-popup">
         	<h3>Fill Amount Details</h3>
@@ -439,24 +523,26 @@ get_header();
  				<li>
  					<h5>Price <i class="tip" data-tip-content="Type overall or monthly price if property is for rent"></i></h5>
 					<div class="select-input disabled-first-option">
-						<input type="text" data-unit="USD">
+						<input type="text" data-unit="USD" value="<?= $deal_price ?>" name="deal_order_price">
 					</div>
  				</li>
  				<li>
  					<h5>Date</h5>
- 					<input class="search-field" type="text" value=""/>
+ 					<input class="search-field" type="date"  name="deal_order_date"/>
  				</li>
  				<li>
  					<h5>Time</h5>
- 					<input class="search-field" type="text" value=""/>
+ 					<input class="search-field" type="time" name="deal_order_time"/>
+					<input type="hidden" name="deal_id" value="<?= $dealid ?>">
  				</li>
  			</ul>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-secondary dealdetail-popupsub">Submit</button>
+        <button type="submit" class="btn btn-secondary dealdetail-popupsub" name="deal_ordersubmit">Submit</button>
       </div>
+	  </form>
     </div>
   </div>
 </div>
@@ -589,6 +675,67 @@ get_header();
   </div>
 </div>
 
+<div class="modal fade popup-main--section" id="send_payment_link_by_agent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <div class="send-payment-link-by-agent">
+		<h5>Select an option for send payment link</h5>
+        	<select name="send_message_opt">
+			    <option value="">Choose an option</option>
+				<option value="send_as_email">Send As Email</option>
+				<option value="send_as_text">Send As Text</option>
+			</select>
+			
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		<button type="button" class="button send_message_tenant">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal for Contact Details -->
+<div class="modal fade popup-main--section" id="selected_property_popup_message" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <div class="dealsend-popup-message">
+        	<h3></h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade popup-main--section" id="modal_agent_order_deal_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <div class="modal-agent-order-deal-popup">
+        	<h3><?= $successorder ?></h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 </div>
 <script type="text/javascript">
@@ -694,6 +841,64 @@ jQuery(document).ready(function($) {
 				jQuery('.loading').hide();
 			}); 
 	});	
+	
+	$('.send_message_tenant').live('click',function(e){
+	   var optionval = $('select[name="send_message_opt"]').val();
+	   if(optionval == ""){
+	      alert("please choose an option to send Payment Link");
+	   } else {
+	       if(optionval == "send_as_email"){
+		        jQuery('#send_payment_link_by_agent').modal('hide');
+				jQuery('.loading').show();
+				var data = {
+					deal_id: deal_id,
+					action: "nyc-deal-send-email",
+				};
+				$.post(ajaxurl, data, function(response) {
+					jQuery('.loading').hide();
+					jQuery('.dealsend-popup-message h3').html('Email sent successfully');
+					jQuery('#selected_property_popup_message').modal('show');
+				});
+				
+		   }
+		   
+		   if(optionval == "send_as_text"){
+		        jQuery('#send_payment_link_by_agent').modal('hide');
+				jQuery('.loading').show();
+				var data = {
+					deal_id: deal_id,
+					action: "nyc-deal-send-sms",
+				};
+				var html='';
+				$.post(ajaxurl, data, function(response) {
+					var response = JSON.parse(response);
+					if(response.tenant_status == true){
+						html += "SMS sent successfully to tenant.</br>";
+					}else{
+						html += response.tenant_error;
+					}
+					if(response.agent_allowed== true){
+						if(response.agent_status == true){
+							html += "SMS sent successfully to agent.</br>";
+						}else{
+							html += response.agent_error;
+						}
+					}
+					jQuery('.loading').hide();
+					jQuery('.dealsend-popup-message h3').html(html);
+					jQuery('#selected_property_popup_message').modal('show');
+				});
+				
+		   }
+		   
+		   
+	   }
+	   
+	});
+	
+	
+	
+	
 });
 </script>
 <?php
@@ -707,4 +912,12 @@ if(!empty($agent_notes)){
     </script>";
 }
 
+
+if(!empty($successorder)){
+   echo "<script>
+         jQuery(window).load(function(){
+             $('#modal_agent_order_deal_popup').modal('show');
+         });
+    </script>";
+}
 ?>
