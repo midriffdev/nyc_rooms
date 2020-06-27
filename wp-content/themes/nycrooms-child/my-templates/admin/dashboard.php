@@ -142,10 +142,10 @@ get_header();
 
 					<ul>
 						<li class="statistic__item item--blue2">
-							<a href="#">
+							<a href="<?php echo get_site_url(); ?>/admin/deals/">
 								<div class="statistic__item_cont">
 									<div class="statistic__item_title-sec">
-										<h2 class="counter-value">50</h2>
+										<h2 class="counter-value"><?php echo nyc_get_count_custom_post_type('deals'); ?></h2>
 	                            		<span class="desc">Active Deals </span>
 									</div>
 									<div class="statistic__item_img-sec">
@@ -258,10 +258,6 @@ get_header();
 </div>
 
 <div class="margin-top-55"></div>
-
-<!-- Back To Top Button -->
-<div id="backtotop"><a href="#"></a></div>
-
 </div>
 <!-- Wrapper / End -->
 
