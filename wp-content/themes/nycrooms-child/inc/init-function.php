@@ -349,7 +349,17 @@ add_filter( 'template_redirect', 'prefix_url_rewrite_templates',1 );
  
 function prefix_url_rewrite_templates() {
 	if(get_query_var('view') == 'details' && !empty(get_query_var('view'))){
+	  add_filter('zakra_title', function (){
+		  return "Deal Details";
+	  }, 10, 2);		
 	  include get_stylesheet_directory() . '/my-templates/admin/deal-detail.php';
+	  exit;
+	}
+	if(get_query_var('view') == 'contract' && !empty(get_query_var('view'))){
+	  add_filter('zakra_title', function (){
+		  return "Contract";
+	  }, 10, 2);
+	  include get_stylesheet_directory() . '/my-templates/admin/contract.php';
 	  exit;
 	}
 }
@@ -520,7 +530,7 @@ function cvf_demo_pagination_load_posts() {
 							<td class="title-container">
 								<img src="'.wp_get_attachment_url(get_post_meta($property_id,'file_0',true)).'" alt="">
 								<div class="title">
-									<h4><a href="#">'.get_the_title().'</a></h4>
+									<h4><a href="'.get_post_permalink($property_id).'">'.get_the_title().'</a></h4>
 									<span>'.$address.'</span>
 									<span class="table-property-price">$'.$price.' / Weekly</span> <span class="active--property">'.ucfirst(get_post_status()).'</span>
 								</div>
@@ -742,7 +752,7 @@ function add_deal_pagination_load_posts() {
 							<td class="title-container">
 								<img src="'.wp_get_attachment_url(get_post_meta($property_id,'file_0',true)).'" alt="">
 								<div class="title">
-									<h4><a href="#">'.get_the_title().'</a></h4>
+									<h4><a href="'.get_post_permalink($property_id).'">'.get_the_title().'</a></h4>
 									<span>'.$address.'</span>
 									<span class="table-property-price">$'.$price.' / Weekly</span> <span class="active--property">'.ucfirst(get_post_status()).'</span>
 								</div>
