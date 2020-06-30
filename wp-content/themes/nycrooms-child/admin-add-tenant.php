@@ -58,7 +58,7 @@ get_header();
 							<div class="col-md-12">
 								<!-- Avatar -->
 								<div class="edit-profile-photo">
-									<img src="images/agent-02.jpg" alt="">
+									<img src="<?= get_stylesheet_directory_uri() ?>/images/male-icon.png" alt="">
 									<div class="change-photo-btn">
 										<div class="photoUpload">
 										    <span><i class="fa fa-upload"></i> Upload Photo</span>
