@@ -3,6 +3,7 @@
 global $wpdb;
 $user = wp_get_current_user();
 $errors = array();
+$message = '';
 if(isset($_POST['reset_pass_Sbumit'])){
 
 	 if(empty($_POST['password'])) 
@@ -23,7 +24,7 @@ if(isset($_POST['reset_pass_Sbumit'])){
 			 $new_password = $_POST['password'];
 			 $ID           = get_current_user_id();
 	         wp_set_password( $new_password, $ID );
-			 $message = "Password Updated Sucessfully.";
+			 $message = "Password Updated Sucessfully.";	
 	    }
 
 
