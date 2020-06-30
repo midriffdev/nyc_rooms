@@ -1713,6 +1713,13 @@ function DownloadAnything($file, $newfilename = '', $mimetype='', $isremotefile 
         }else{
           $formattedhpath = "filepath";
         }
+		
+		 if(preg_match("#https://#", $file)){
+          $formattedhpath = "url";
+        }else{
+          $formattedhpath = "filepath";
+        }
+		
         
         if($formattedhpath == "url"){
 
