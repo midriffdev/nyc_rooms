@@ -28,10 +28,15 @@ function zakra_child_enqueue_styles() {
 	wp_enqueue_script( 'property-js', get_stylesheet_directory_uri().'/scripts/property.js', array( 'jquery' ), '1.0', true );
 	wp_enqueue_script( 'dashboard-js', get_stylesheet_directory_uri().'/inc/js/admin-dashboard.js', array( 'jquery' ), '1.0', true );
 	wp_enqueue_script( 'bootstrap-js', get_stylesheet_directory_uri().'/scripts/bootstrap.min.js', array( 'jquery' ), '1.0', true );
-	wp_enqueue_script( 'square-js', 'https://js.squareupsandbox.com/v2/paymentform', array( 'jquery' ), '1.0');
-	wp_enqueue_script( 'sqpaymentform-js', get_stylesheet_directory_uri().'/scripts/sqpaymentform.js', array( 'jquery' ), '1.0');
+	
+	if ( is_page('tenant/deal-details-tenant')) {
+		wp_enqueue_script( 'square-js', 'https://js.squareupsandbox.com/v2/paymentform', array( 'jquery' ), '1.0');
+		wp_enqueue_script( 'sqpaymentform-js', get_stylesheet_directory_uri().'/scripts/sqpaymentform.js', array( 'jquery' ), '1.0');
+		wp_localize_script( 'sqpaymentform-js', 'payment_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+	}
+	
     wp_localize_script( 'property-js', 'my_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
-	wp_localize_script( 'sqpaymentform-js', 'payment_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+	
 	
 	
 	
@@ -41,17 +46,17 @@ add_action( 'wp_enqueue_scripts', 'zakra_child_enqueue_styles' );
 add_action('wp_head','square_custom_js_file');
 
 function square_custom_js_file(){
-   
-   echo '<script>
-	 document.addEventListener("DOMContentLoaded", function(event) {
-    if (SqPaymentForm.isSupportedBrowser()) {
-      paymentForm.build();
-      paymentForm.recalculateSize();
-    }
-  });
-	</script>';
-	
-    
+   if ( is_page('tenant/deal-details-tenant')) {
+	   echo '<script>
+		 document.addEventListener("DOMContentLoaded", function(event) {
+		if (SqPaymentForm.isSupportedBrowser()) {
+		  paymentForm.build();
+		  paymentForm.recalculateSize();
+		}
+	  });
+		</script>';
+  }
+  
 }
 
 

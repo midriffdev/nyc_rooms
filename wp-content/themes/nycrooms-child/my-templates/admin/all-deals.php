@@ -9,9 +9,6 @@ $args = array(
 'suppress_filters' => false,
 'paged' => $paged
 );
-echo get_query_var('id'); 
-echo get_query_var('iid'); 
-echo get_query_var('view'); 
 $meta_query = array();
 if(isset($_GET['deal_stage']) && !empty($_GET['deal_stage'])){
 	$meta_query[] =  array(
