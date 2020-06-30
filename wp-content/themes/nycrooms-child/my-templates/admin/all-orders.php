@@ -82,7 +82,7 @@ input.checkbulkorders{
 			<div class="dashboard-main--cont">
 
 				<div class="admin-advanced-searchfilter">
-					<h2>Deals Filter</h2>
+					<h2>Orders Filter</h2>
 					<form method="get">
 					<div class="row with-forms">
 						<!-- Form -->
@@ -151,7 +151,7 @@ input.checkbulkorders{
 					<?php 
 					}
 				}else{
-					echo "<tr><td colspan='7'>No deals found!</td></tr>";
+					echo "<tr><td colspan='7'>No Orders found!</td></tr>";
 				}
 				?>
 				</tbody>
