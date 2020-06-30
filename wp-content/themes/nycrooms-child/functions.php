@@ -1708,11 +1708,19 @@ function DownloadAnything($file, $newfilename = '', $mimetype='', $isremotefile 
          $file = RemoveUrlSpaces($file);
           
           
-        if(preg_match("#http://#", $file) or preg_match("#https://#", $file)){
+        if(preg_match("#http://#", $file)){
           $formattedhpath = "url";
         }else{
           $formattedhpath = "filepath";
         }
+		
+		 if(preg_match("#https://#", $file)){
+          $formattedhpath = "url";
+         }else{
+          $formattedhpath = "filepath";
+         }
+		
+		
 		
         if($formattedhpath == "url"){
 
