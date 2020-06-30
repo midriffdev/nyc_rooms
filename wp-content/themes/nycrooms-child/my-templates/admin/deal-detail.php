@@ -170,7 +170,7 @@ if(count($check_deal_orders->posts) == 1){
 							<td class="title-container lead-detail-propertytitlesec">
 							<img src="<?php echo wp_get_attachment_url(get_post_meta($property_id,'file_0',true)); ?>" alt="">
 							<div class="title">
-							<h4><a href="#"><?php echo get_the_title($property_id); ?></a></h4>
+							<h4><a href="<?php echo get_post_permalink($property_id); ?>"><?php echo get_the_title($property_id); ?></a></h4>
 							<span><?php echo $address; ?></span>
 							<p>Owner: <span><?php the_author_meta( 'display_name' , $authid );  ?></span></p>
 							<span class="table-property-price">$<?php echo $price; ?> / Weekly</span> <span class="active--property"><?php echo ucfirst($status); ?></span>
@@ -548,7 +548,7 @@ if(count($check_deal_orders->posts) == 1){
 							<td class="title-container lead-detail-propertytitlesec">
 							<img src="<?php echo wp_get_attachment_url(get_post_meta($property_id,'file_0',true)); ?>" alt="">
 							<div class="title">
-							<h4><a href="#"><?php echo get_the_title($property_id); ?></a></h4>
+							<h4><a href="<?php echo get_post_permalink($property_id); ?>"><?php echo get_the_title($property_id); ?></a></h4>
 							<span><?php echo $address; ?></span>
 							<p>Owner: <span><?php the_author_meta( 'display_name' , $authid );  ?></span></p>
 							<span class="table-property-price">$<?php echo $price; ?> / Weekly</span> <span class="active--property"><?php echo ucfirst($status); ?></span>
@@ -571,9 +571,9 @@ if(count($check_deal_orders->posts) == 1){
 			</div>
 
 			<div class="create-deal-btnsec deal-detail-dealbutton ">
-				<button type="button" class="btn btn-primary popup__button stage3-convertdeal-but">
+				<a href="<?php echo get_site_url(); ?>/admin/deals/contract/<?php echo $post_id; ?>"><button type="button" class="btn btn-primary popup__button stage3-convertdeal-but">
 				 Convert Deal to Contract
-				</button>
+				</button></a>
 			</div>
 		</div>
 	</div>
