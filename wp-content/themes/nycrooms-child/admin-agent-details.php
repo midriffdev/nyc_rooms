@@ -96,28 +96,6 @@ get_header();
 <!-- Wrapper -->
 <div id="wrapper">
 
-<!-- Titlebar
-================================================== -->
-<div id="titlebar">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-
-				<h2>Agent Detail</h2>
-
-				<!-- Breadcrumbs -->
-				<nav id="breadcrumbs">
-					<ul>
-						<li><a href="#">Home</a></li>
-						<li>Agent Detail</li>
-					</ul>
-				</nav>
-
-			</div>
-		</div>
-	</div>
-</div>
-
 
 <!-- Content
 ================================================== -->
