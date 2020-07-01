@@ -96,28 +96,6 @@ get_header();
 <!-- Wrapper -->
 <div id="wrapper">
 
-<!-- Titlebar
-================================================== -->
-<div id="titlebar">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-
-				<h2>Agent Detail</h2>
-
-				<!-- Breadcrumbs -->
-				<nav id="breadcrumbs">
-					<ul>
-						<li><a href="#">Home</a></li>
-						<li>Agent Detail</li>
-					</ul>
-				</nav>
-
-			</div>
-		</div>
-	</div>
-</div>
-
 
 <!-- Content
 ================================================== -->
@@ -207,7 +185,7 @@ get_header();
 														echo wp_get_attachment_image( $profile_imgid, array('300', '225'), "", array( "class" => "img-responsive" ) );
 												   } else {
 						                  ?>
-						                      <img src="<?= get_stylesheet_directory_uri() ?>/images/agent-01.jpg" alt="">
+						                      <img src="<?= get_stylesheet_directory_uri() ?>/images/male-icon.png" alt="">
 												 <?php
 												   }
 												 ?>

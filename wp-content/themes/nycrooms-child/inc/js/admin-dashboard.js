@@ -2,6 +2,11 @@ jQuery(document).ready(function($) {
     jQuery('.checkallbulk').click(function(){
 	   jQuery(".checkbulk").prop('checked', jQuery(this).prop('checked'));
 	});
+	
+	jQuery('.checkallbulkorders').click(function(){
+	   jQuery(".checkbulkorders").prop('checked', jQuery(this).prop('checked'));
+	});
+	
 	jQuery('.users_bulk_actions .user_apply_action').click(function(){  
     var myarray = new Array();  
     var value = jQuery('.users_bulk_actions select[class=select_action]').val();
@@ -156,4 +161,52 @@ jQuery(document).ready(function($) {
 			}
 		}
    });
+   
+   //bulk actions on orders
+   
+   jQuery('.deal_bulk_actions_orders .deal_apply_action_orders').click(function(){  
+    var myarray = new Array();  
+    var value = jQuery('.deal_bulk_actions_orders select[class=select_action_orders]').val();
+	if(value == -1){
+	  alert("please choose a option");
+	}else{
+			if(value == "delete"){
+				var checkedNum = jQuery('input[class="checkbulkorders"]:checked').length;
+				if(checkedNum == 0){
+					alert('Please choose one or more orders to delete');
+				}else{
+					if(checkedNum == 1){
+						var r = confirm("Are you sure to delete this order");
+					}else {
+						var r = confirm("Are you sure to delete these orders");
+					}
+					if(r == true){
+						   jQuery('input[class="checkbulkorders"]:checked').each(function(){
+								 myarray.push(jQuery(this).val());
+						   });
+						   var data = {
+								'action': 'nyc_bulk_delete_deal_orders',
+								'data':   myarray,
+								'bulkaction':'delete',
+						   };
+						// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+							jQuery.post(my_ajax_object.ajax_url, data, function(response) {						
+								if(response == "true"){
+									$('#ModalUser .modal-body p').html('Orders Deleted Successfully');
+									$('#ModalUser').modal('show');
+									setTimeout(function(){
+									   window.location.reload();
+									   // or window.location = window.location.href; 
+									}, 2000);						 
+								}
+							});   
+					}
+				 
+				}
+			}
+		}
+   });
+   
+   
+   
 });

@@ -80,11 +80,17 @@ add_action( 'template_redirect', function(){
         include get_stylesheet_directory() . '/my-templates/admin/add-deal.php';
         die;
     }
+     
+	if ( is_page('admin/dealsorders') ) {
+        include get_stylesheet_directory() . '/my-templates/admin/all-orders.php';
+        die;
+    }
 	
     if ( is_page('tenant') ) {
         include get_stylesheet_directory() . '/my-templates/tenant/profile.php';
         die;
     }
+	
     if ( is_page('tenant/active-properties') ) {
         include get_stylesheet_directory() . '/my-templates/tenant/active-properties.php';
         die;
@@ -115,7 +121,7 @@ add_action( 'template_redirect', function(){
 	 if ( is_page('agent/deal-details-agent')) {
         include get_stylesheet_directory() . '/my-templates/agent/deal-details-agent.php';
         die;
-    }
+     }
 	 
 	
 	
@@ -306,6 +312,7 @@ function nyc_get_count_custom_post_type($type){
 	return ($count) ? $count: 0;
 }
 
+
 function nyc_delete_deal_ajax(){
 	if(isset($_POST['action']) && $_POST['action'] == 'nyc_delete_deal_ajax'){
 	   $deal=wp_delete_post($_POST['deal_id']);
@@ -315,6 +322,7 @@ function nyc_delete_deal_ajax(){
 	}
 	exit;
 }
+
 add_action( 'wp_ajax_nyc_delete_deal_ajax', 'nyc_delete_deal_ajax' );
 add_action( 'wp_ajax_nopriv_nyc_delete_deal_ajax', 'nyc_delete_deal_ajax' );
 
@@ -333,15 +341,63 @@ function nyc_bulk_delete_deal(){
 add_action( 'wp_ajax_nyc_bulk_delete_deal', 'nyc_bulk_delete_deal' );
 add_action( 'wp_ajax_nopriv_nyc_bulk_delete_deal', 'nyc_bulk_delete_deal' );
 
+/*------------ Delete Deal Orders ------------*/
+
+function nyc_delete_deal_order_ajax(){
+	if(isset($_POST['action']) && $_POST['action'] == 'nyc_delete_deal_order_ajax'){
+	   $deal=wp_trash_post($_POST['deal_order_id']);
+	   if($deal){
+		   echo 'success';
+	   }
+	}
+	exit;
+}
+
+add_action( 'wp_ajax_nyc_delete_deal_order_ajax', 'nyc_delete_deal_order_ajax' );
+add_action( 'wp_ajax_nopriv_nyc_delete_deal_order_ajax', 'nyc_delete_deal_order_ajax' );
+
+
+function nyc_bulk_delete_deal_orders(){
+	if(isset($_POST['action']) && $_POST['action'] == 'nyc_bulk_delete_deal_orders'){
+		global $wpdb;
+		if($_POST['bulkaction'] == 'delete'){
+			foreach($_POST['data'] as $ids){
+			  wp_trash_post($ids);
+			}
+			echo "true";
+		}
+	}
+	exit;
+}
+
+add_action( 'wp_ajax_nyc_bulk_delete_deal_orders', 'nyc_bulk_delete_deal_orders' );
+add_action( 'wp_ajax_nopriv_nyc_bulk_delete_deal_orders', 'nyc_bulk_delete_deal_orders' );
+
 add_action('init', 'dcc_rewrite_tags');
 function dcc_rewrite_tags() {
     add_rewrite_tag('%view%', '([^&]+)');
     add_rewrite_tag('%id%', '([^&]+)');
 }
 
+add_action('init', 'dcc_rewrite_tags_new');
+function dcc_rewrite_tags_new() {
+	add_rewrite_tag('%vieworder%', '([^&]+)');
+    add_rewrite_tag('%orderid%', '([^&]+)');
+}
+
+
 add_action('init', 'dcc_rewrite_rules');
 function dcc_rewrite_rules() {
 	add_rewrite_rule('^admin/deals/([^/]+)/([^/]+)/?$','index.php?pagename=admin/deals&view=$matches[1]&id=$matches[2]','top');
+}
+
+add_action('init', 'dcc_rewrite_rules_new');
+function dcc_rewrite_rules_new() {
+	add_rewrite_rule('^admin/dealsorders/([^/]+)/([^/]+)/?$','index.php?pagename=admin/dealsorders&vieworder=$matches[1]&orderid=$matches[2]','top');
+	add_rewrite_rule('^tenant/deal-details-tenant/([^/]+)/?$','index.php?pagename=tenant/deal-details-tenant&id=$matches[1]','top');
+	add_rewrite_rule('^agent/deal-details-agent/([^/]+)/?$','index.php?pagename=agent/deal-details-agent&id=$matches[1]','top');
+	
+	
 }
 
 
@@ -355,6 +411,12 @@ function prefix_url_rewrite_templates() {
 	  include get_stylesheet_directory() . '/my-templates/admin/deal-detail.php';
 	  exit;
 	}
+	
+	if(get_query_var('vieworder') == 'orderdetails' && !empty(get_query_var('vieworder'))){
+	  include get_stylesheet_directory() . '/my-templates/admin/orders-detail.php';
+	  exit;
+	}
+	
 	if(get_query_var('view') == 'contract' && !empty(get_query_var('view'))){
 	  add_filter('zakra_title', function (){
 		  return "Contract";
@@ -409,7 +471,7 @@ function cvf_demo_pagination_load_posts() {
         // Set the number of results to display
         $per_page = 3;
         $previous_btn = true;
-        $next_btn = true;
+        $next_btn = true;	
         $first_btn = true;
         $last_btn = true;
         $start = $page * $per_page;
@@ -887,8 +949,8 @@ function nyc_deal_send_email(){
 		$deal_id = $_POST['deal_id'];
 		$user_email = get_post_meta($deal_id,'email',true);
 		$selectedAgent = get_post_meta($deal_id, 'selectedAgent', true);
-		$tenant_deal_link = get_site_url().'/tenant/deal-details-tenant/?id='.$deal_id;
-		$agent_deal_link = get_site_url().'/agent/deal-details-agent/?id='.$deal_id;
+		$tenant_deal_link = get_site_url().'/tenant/deal-details-tenant/'.base64_encode($deal_id);
+		$agent_deal_link  = get_site_url().'/agent/deal-details-agent/'.base64_encode($deal_id);
 		if($user_email){
 			$message  = __( 'Hi there,' ) . "\r\n\r\n";
 			$message .= sprintf( __( "Welcome to %s! Here's the link where you can check deal details:" ), get_option('blogname') ) . "\r\n\r\n";

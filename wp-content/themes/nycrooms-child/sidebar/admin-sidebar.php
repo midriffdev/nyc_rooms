@@ -63,15 +63,24 @@
 						<li class="admin-propertieslistings"><a href="<?= home_url();?>/recent-leads/" >Recently Added Lead<span class="active-listing-no">
 						<?= get_recent_leads()?>
 						</span></a></li>
+						<li><a href="<?= home_url() ?>/add-new-lead/"><i class="sl sl-icon-action-redo"></i>Add New Lead</a></li>
 					</ul>
 					
 					<ul class="my-account-nav">
 						<li class="sub-nav-title">Manage Deals</li>
 						<li class="admin-propertieslistings">
 							<a href="<?php echo get_site_url(); ?>/admin/deals/" id="sidebar-alldeals">All Deals <span class="all-listing-no active-listing-no"><?php echo nyc_get_count_custom_post_type('deals'); ?></span></a>
+							<a href="<?php echo get_site_url(); ?>/admin/dealsorders/" id="sidebar-alldeals">All Orders <span class="all-listing-no active-listing-no"><?= nyc_get_count_custom_post_type('dealsorders') ?></span></a>
 						</li>
 						<li><a href="<?php echo get_site_url(); ?>/admin/add-deal"><i class="sl sl-icon-action-redo"></i> Add New Deal</a></li>
 					</ul>
+					<ul class="my-account-nav">
+						<li class="sub-nav-title">Manage Payments</li>
+						<li class="admin-propertieslistings">
+							<a href="<?php echo get_site_url(); ?>/admin/dealsorders/" id="sidebar-alldeals">All Payments<span class="all-listing-no active-listing-no"><?= nyc_get_count_custom_post_type('dealsorders') ?></span></a>
+						</li>
+					</ul>
+					
 					
 					<ul class="my-account-nav">
 						<li><a href="<?php echo home_url(); ?>/change-password/"><i class="sl sl-icon-lock"></i> Change Password</a></li>
