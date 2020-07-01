@@ -6,6 +6,8 @@ if(empty($post) || ($post->post_type != 'deals')){
 	wp_redirect(get_site_url().'/admin/deals'); 
 }
 get_header();
+$tenant_deal_link = get_site_url().'/tenant/deal-details-tenant/?id='.$post_id;
+$agent_deal_link = get_site_url().'/agent/deal-details-agent/?id='.$post_id;
 $deal_stage = get_post_meta($post_id,'deal_stage',true);
 $lead_source = get_post_meta($post_id,'lead_source',true);
 $name = get_post_meta($post_id,'name',true);
@@ -13,7 +15,6 @@ $email = get_post_meta($post_id,'email',true);
 $phone = get_post_meta($post_id,'phone',true);
 $description = get_post_meta($post_id,'description',true);
 $property_id = get_post_meta($post_id,'property_id',true);
-$deal_agent = get_post_meta($post_id,'deal_agent',true);
 $tenant_application = get_post_meta($post_id,'document_files',true);
 if(isset($_POST['upadte_stag1'])){
 	update_post_meta($post_id,'deal_price',$_POST['deal_price']);
@@ -131,7 +132,10 @@ if(count($check_deal_orders->posts) == 1){
 				</div>
 			</div>
 		</div>
-		
+		<div class="row deal-detail-upperunifrm-sect">
+			<div class="col-md-3">
+			</div>
+		</div>
 		
 		<!------Stage 1---->
 		<div class="dealdetail--stageonecont">
@@ -242,22 +246,22 @@ if(count($check_deal_orders->posts) == 1){
 					</div>
 				<?php } ?>
 				</div>
-				<?php if($deal_agent){ ?>
+				<?php if($selectedAgent){ ?>
 				<div class="col-md-6">
 					<div class="dealdetail-allocateagent-section">
 						<h2>Agent Details</h2>
 						<ul>
 							<li>
 								<p>Name: </p>
-								<span><?php the_author_meta( 'display_name' , $authid ); ?></span>
+								<span><?php the_author_meta( 'display_name' , $selectedAgent ); ?></span>
 							</li>
 							<li>
 								<p>Email:</p>
-								<span><?php the_author_meta( 'user_email' , $authid ); ?></span>
+								<span><?php the_author_meta( 'user_email' , $selectedAgent ); ?></span>
 							</li>
 							<li>
 								<p>Phone:</p>
-								<span><?php the_author_meta( 'phone' , $authid ); ?></span>
+								<span><?php the_author_meta( 'user_phone' , $selectedAgent ); ?></span>
 							</li>
 
 						</ul>
