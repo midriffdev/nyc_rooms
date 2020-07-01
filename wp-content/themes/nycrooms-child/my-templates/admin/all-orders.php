@@ -82,7 +82,7 @@ input.checkbulkorders{
 			<div class="dashboard-main--cont">
 
 				<div class="admin-advanced-searchfilter">
-					<h2>Orders Filter</h2>
+					<h2>Payments Filter</h2>
 					<form method="get">
 					<div class="row with-forms">
 						<!-- Form -->
@@ -123,9 +123,11 @@ input.checkbulkorders{
 					<th><i class="fa fa-list-ol"></i> Order No . </th>
 					<th><i class="fa fa-user"></i>Deal No.</th>
 					<th><i class="fa fa-envelope"></i> Payment Amount</th>
+					<th><i class="fa fa-check-square-o" ></i>Payment Date</th>
 					<th><i class="fa fa-phone" ></i>Payment Mode</th>
 					<th><i class="fa fa-phone" ></i>Payment Source</th>
 					<th><i class="fa fa-check-square-o" ></i>Payment Status</th>
+					
 					<th></th>
 				</tr>
 
@@ -140,6 +142,8 @@ input.checkbulkorders{
 							<td class="deal_order_number"><?php echo get_post_meta($dealorders_id,'order_id',true);; ?></td>
 							<td class="deal_number"><?php echo get_post_meta($dealorders_id,'deal_id',true); ?></td>
 							<td class="deal_phone_number"><?php echo "$".get_post_meta($dealorders_id,'payment_amount',true); "/Week" ?></td>
+							<td class="deal_date_time"><?php echo "$".get_post_meta($dealorders_id,'payment_amount',true); "/Week" ?></td>
+							
 							<td class="deal_phone_number"><?php echo ucfirst(str_replace("_"," ",get_post_meta($dealorders_id,'payment_mode',true))); ?></td>
 							<td class="deal-stage-number"><?php echo get_post_meta($dealorders_id,'payment_source_type',true); ?></td>
 							<td class="deal-stage-number"><?php echo get_post_meta($dealorders_id,'payment_status',true); ?></td>

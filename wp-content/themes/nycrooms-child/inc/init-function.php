@@ -394,6 +394,10 @@ function dcc_rewrite_rules() {
 add_action('init', 'dcc_rewrite_rules_new');
 function dcc_rewrite_rules_new() {
 	add_rewrite_rule('^admin/dealsorders/([^/]+)/([^/]+)/?$','index.php?pagename=admin/dealsorders&vieworder=$matches[1]&orderid=$matches[2]','top');
+	add_rewrite_rule('^tenant/deal-details-tenant/([^/]+)/?$','index.php?pagename=tenant/deal-details-tenant&id=$matches[1]','top');
+	add_rewrite_rule('^agent/deal-details-agent/([^/]+)/?$','index.php?pagename=agent/deal-details-agent&id=$matches[1]','top');
+	
+	
 }
 
 
@@ -945,8 +949,8 @@ function nyc_deal_send_email(){
 		$deal_id = $_POST['deal_id'];
 		$user_email = get_post_meta($deal_id,'email',true);
 		$selectedAgent = get_post_meta($deal_id, 'selectedAgent', true);
-		$tenant_deal_link = get_site_url().'/tenant/deal-details-tenant/?id='.$deal_id;
-		$agent_deal_link = get_site_url().'/agent/deal-details-agent/?id='.$deal_id;
+		$tenant_deal_link = get_site_url().'/tenant/deal-details-tenant/'.base64_encode($deal_id);
+		$agent_deal_link  = get_site_url().'/agent/deal-details-agent/'.base64_encode($deal_id);
 		if($user_email){
 			$message  = __( 'Hi there,' ) . "\r\n\r\n";
 			$message .= sprintf( __( "Welcome to %s! Here's the link where you can check deal details:" ), get_option('blogname') ) . "\r\n\r\n";

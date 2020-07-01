@@ -1,6 +1,6 @@
 <?php
 nyc_property_admin_authority();
-$post_id = get_query_var( 'id' ); 
+$post_id = base64_decode(get_query_var( 'id' )); 
 $post = get_post($post_id);
 if(empty($post) || ($post->post_type != 'deals')){
 	wp_redirect(get_site_url().'/admin/deals'); 
@@ -149,40 +149,7 @@ if(count($check_deal_orders->posts) == 1){
 			    <?php  if($lead_source == "Property Form"){ ?>
 				
 				<div class="col-md-12">
-				<?php 
-				if($property_id){ 
-				$auth = get_post($property_id);
-				$authid = $auth->post_author;
-				$address = get_post_meta($property_id, 'address',true)." ";
-				$address .= get_post_meta($property_id, 'city',true)." ";
-				$address .= get_post_meta($property_id, 'state',true).", ";
-				$address .= get_post_meta($property_id, 'zip',true)." ";	
-				$price = get_post_meta($property_id, 'price',true);				
-				$status = get_post_meta($property_id, 'status',true);				
-				?>
-				<div class="col-md-6">
-					<div class="dealdetail-propertydetail">
-						<h2>Property Details</h2>
-						<table class="manage-table responsive-table">
-						<tbody>
-						<!-- Item #1 -->
-							<tr>
-							<td class="title-container lead-detail-propertytitlesec">
-							<img src="<?php echo wp_get_attachment_url(get_post_meta($property_id,'file_0',true)); ?>" alt="">
-							<div class="title">
-							<h4><a href="<?php echo get_post_permalink($property_id); ?>"><?php echo get_the_title($property_id); ?></a></h4>
-							<span><?php echo $address; ?></span>
-							<p>Owner: <span><?php the_author_meta( 'display_name' , $authid );  ?></span></p>
-							<span class="table-property-price">$<?php echo $price; ?> / Weekly</span> <span class="active--property"><?php echo ucfirst($status); ?></span>
-							</div>
-							</td>
-							</tr>
-						</tbody>
-					</table>
-					</div>			
-				</div>
-				<?php } ?>
-				<div class="col-md-6">
+				  <div class="col-md-6">
 					<div class="leaddetail-teanentdetail dealdetail__tenantdetail">
 					<h2>Tenant Details</h2>
 					<div class="lead-teanent_details">
@@ -207,6 +174,41 @@ if(count($check_deal_orders->posts) == 1){
 					</div>
 					</div>
 				</div>
+				<?php 
+				if($property_id){ 
+				$auth = get_post($property_id);
+				$authid = $auth->post_author;
+				$address = get_post_meta($property_id, 'address',true)." ";
+				$address .= get_post_meta($property_id, 'city',true)." ";
+				$address .= get_post_meta($property_id, 'state',true).", ";
+				$address .= get_post_meta($property_id, 'zip',true)." ";	
+				$price = get_post_meta($property_id, 'price',true);				
+				$status = get_post_meta($property_id, 'status',true);				
+				?>
+				<div class="col-md-6">
+					<div class="dealdetail-propertydetail">
+						<h2>Property In Reference</h2>
+						<table class="manage-table responsive-table">
+						<tbody>
+						<!-- Item #1 -->
+							<tr>
+							<td class="title-container lead-detail-propertytitlesec">
+							<img src="<?php echo wp_get_attachment_url(get_post_meta($property_id,'file_0',true)); ?>" alt="">
+							<div class="title">
+							<h4><a href="<?php echo get_post_permalink($property_id); ?>"><?php echo get_the_title($property_id); ?></a></h4>
+							
+							<span><?php echo $address; ?></span>
+							
+							<p>Owner: <span><?php the_author_meta( 'display_name' , $authid );  ?></span></p>
+							<span class="table-property-price">$<?php echo $price; ?> / Weekly</span> <span class="active--property"><?php echo ucfirst($status); ?></span>
+							</div>
+							</td>
+							</tr>
+						</tbody>
+					</table>
+					</div>			
+				</div>
+				<?php } ?>
 				</div>
 				<?php } ?>
 				<div class="col-md-12">

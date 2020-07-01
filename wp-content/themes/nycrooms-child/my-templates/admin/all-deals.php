@@ -167,9 +167,13 @@ input.checkbulk{
 							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'lead_source',true); ?></td>
 							<td class="deal-stage-number"><?php echo 'Stage '.$deal_stage; ?></td>
 							<td class="action">
-								<a href="<?php echo get_site_url(); ?>/admin/deals/details/<?php echo $deal_id; ?>"><i class="fa fa-eye"></i> View</a>
+								<a href="<?php echo get_site_url(); ?>/admin/deals/details/<?php echo base64_encode($deal_id); ?>" ><i class="fa fa-eye"></i> View</a>
 								<a href="#" class="delete delete-deal" data-id="<?php echo $deal_id; ?>"><i class="fa fa-remove"></i> Delete</a>
-								<a href="#" class="deal__link"><i class="fa fa-clone"></i> Deal Link</a>
+								<a href="<?php echo get_site_url(); ?>/admin/deals/details/<?php echo base64_encode($deal_id); ?>" class="deal__link" data-toggle="tooltip"><i class="fa fa-clone"></i> Deal Link</a>
+								<a href="<?php echo get_site_url(); ?>/tenant/deal-details-tenant/<?php echo base64_encode($deal_id); ?>" class="deal__link" data-toggle="tooltip"><i class="fa fa-clone"></i> Tenant Link</a>
+								<a href="<?php echo get_site_url(); ?>/agent/deal-details-agent/<?php echo base64_encode($deal_id); ?>" class="deal__link" data-toggle="tooltip"><i class="fa fa-clone"></i> Agent Link</a>
+								
+								
 							</td>
 						</tr>
 					<?php 
@@ -274,6 +278,20 @@ jQuery('.delete-deal').click(function (e) {
 });
 jQuery(document).ready(function($) {
 	jQuery('#sidebar-alldeals').addClass('current');
+	$('.deal__link').click(function (e) {
+			   e.preventDefault();
+			   var copyText = $(this).attr('href');
+
+			   document.addEventListener('copy', function(e) {
+				  e.clipboardData.setData('text/plain', copyText);
+				  e.preventDefault();
+			   }, true);
+
+			   document.execCommand('copy');  
+			   console.log('copied text : ', copyText);
+			   alert('copied text: ' + copyText); 
+    });
+ 
 });
 </script>
 <?php 

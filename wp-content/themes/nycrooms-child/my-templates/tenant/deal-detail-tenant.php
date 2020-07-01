@@ -1,14 +1,9 @@
 <?php
-if(isset($_GET['id']) && !empty($_GET['id'])){
-  $dealid = $_GET['id'];
-  $get_post = get_post($dealid);
-   if(!$get_post){
-      exit('invalid link nothing found here');
-   }
- 
-} else {
-  wp_redirect(home_url());
-}
+ $dealid = base64_decode(get_query_var( 'id' ));
+ $get_post = get_post($dealid);
+ if(!$get_post){
+       wp_redirect(home_url());
+ }
 $deal_source  =   get_post_meta($dealid,'lead_source',true);
 $deal_stage   =   get_post_meta($dealid,'deal_stage',true);
 $lead_source  =   get_post_meta($dealid,'lead_source',true);
@@ -67,41 +62,9 @@ get_header();
 			   $property_id  =   get_post_meta($dealid,'property_id',true);
 
 			   ?>
-			    <?php if($property_id){ ?>
-				<div class="col-md-6">
-				
-					<div class="dealdetail-propertydetail">
-						<h2>Basic Property Details</h2>
-						<table class="manage-table responsive-table">
-						<tbody>
-						<!-- Item #1 -->
-							<tr>
-							<td class="title-container lead-detail-propertytitlesec">
-							<?php 
-						     $galleryfiles =  get_post_meta($property_id,'gallery_files',true);
-						     if($galleryfiles){
-								$galleryfiles = explode(',',$galleryfiles);
-								$attachment_id = get_post_meta($property_id,$galleryfiles[0],true);
-							    $imgsrc = wp_get_attachment_image_src( $attachment_id,array('300', '200'));
-								echo wp_get_attachment_image( $attachment_id, array('768', '512'), "", array( "class" => "img-responsive" ) );
-						     }
-						    ?>
-							<div class="title">
-							<h4><a href="<?= get_post_permalink($property_id) ?>"><?php echo get_the_title($property_id); ?></a></h4>
-							<span><?= get_post_meta($property_id,'address',true); ?> </span>
-							<p>Owner: <span><?=get_post_meta($property_id,'contact_name',true) ?></span></p>
-							<span class="table-property-price">$<?= get_post_meta($property_id,'price',true); ?> / Weekly</span> <span class="active--property"><?= get_post_meta($property_id,'status',true); ?></span>
-							</div>
-							</td>
-							</tr>
-						</tbody>
-					</table>
-					</div>
-				</div>
-                <?php } ?>
-				<div class="col-md-6">
+			   <div class="col-md-6">
 					<div class="leaddetail-teanentdetail dealdetail__tenantdetail">
-					<h2>Tenant Details</h2>
+					<h2>Your Details</h2>
 					<div class="lead-teanent_details">
 						<ul>
 							<li>
@@ -124,6 +87,42 @@ get_header();
 					</div>
 					</div>
 				</div>
+			    <?php if($property_id){ ?>
+				<div class="col-md-6">
+				
+					<div class="dealdetail-propertydetail">
+						<h2>Property In Reference</h2>
+						<table class="manage-table responsive-table">
+						<tbody>
+						<!-- Item #1 -->
+							<tr>
+							<td class="title-container lead-detail-propertytitlesec">
+							<?php 
+						     $galleryfiles =  get_post_meta($property_id,'gallery_files',true);
+						     if($galleryfiles){
+								$galleryfiles = explode(',',$galleryfiles);
+								$attachment_id = get_post_meta($property_id,$galleryfiles[0],true);
+							    $imgsrc = wp_get_attachment_image_src( $attachment_id,array('300', '200'));
+								echo wp_get_attachment_image( $attachment_id, array('768', '512'), "", array( "class" => "img-responsive" ) );
+						     }
+						    ?>
+							<div class="title">
+							<h4><a href="<?= get_post_permalink($property_id) ?>"><?php echo get_the_title($property_id); ?></a></h4>
+							<?php if(count($check_deal_orders->posts) == 1){ ?>
+							<span><?= get_post_meta($property_id,'address',true); ?> </span>
+							
+							
+							<p>Owner: <span><?=get_post_meta($property_id,'contact_name',true) ?></span></p>
+							<?php } ?>
+							<span class="table-property-price">$<?= get_post_meta($property_id,'price',true); ?> / Weekly</span> <span class="active--property"><?= get_post_meta($property_id,'status',true); ?></span>
+							</div>
+							</td>
+							</tr>
+						</tbody>
+					</table>
+					</div>
+				</div>
+                <?php } ?>
                 <?php } ?>
 				<div class="col-md-12">
 					<?php if($lead_source == "Appointment Form"){ ?>
@@ -225,14 +224,7 @@ get_header();
 					
 				</div>
 
-				<div class="col-md-12">
-				    <?php if($admin_notes): ?>
-					<div class="deal-detail-tenant-adminnotes">
-						<h2>Admin Notes</h2>
-						<p><?=$admin_notes ?></p>
-					</div>
-					<?php endif; ?>
-				</div>
+				
 
 				<div class="col-md-12">
 					<div class="deal-detail-payment-tobedone">
@@ -271,14 +263,23 @@ get_header();
 							<li>
 							  <?php if(empty($check_deal_orders->posts)){ ?>
 								<button class="dealdetail-tenant-reqagentb" <?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'disabled';}  ?>>
-								<?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'Agent Requested';} else { echo 'Request an Agent';} ?>
+								<?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'Agent Allotted';} else { echo 'Request an Agent';} ?>
 								</button>
 							  <?php } ?>
 							</li>
 						</ul>
 					</div>
 				</div>
-
+				
+				<div class="col-md-12">
+				    <?php if($admin_notes): ?>
+					<div class="deal-detail-tenant-adminnotes">
+						<h2>Admin Notes</h2>
+						<p><?=$admin_notes ?></p>
+					</div>
+					<?php endif; ?>
+				</div>
+				
 				<div class="col-md-12">
 					<div class="dealdetail-instruction section">
 						<h3>Instructions</h3>
