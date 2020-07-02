@@ -289,6 +289,7 @@ get_header();
 							if(!$prop_image){
 							   $prop_image = wp_get_attachment_url(get_post_meta($post_id, 'file_1',true));
 							}
+							$document_files = explode(',',get_post_meta($post_id, 'document_files',true));
 				?>
 					
 				<tr>
@@ -299,6 +300,17 @@ get_header();
 							<h4><a href="<?= get_post_permalink( get_the_ID()) ?>"><?php echo get_the_title($post_id); ?></a></h4>
 							<span><?php echo $address;?> </span>
 							<span class="table-property-price"><?php echo $price . '$ / Week' ;?></span> <span class="active--property"><?php echo $status ;?></span>
+							<?php 
+							if($document_files){
+								echo "</br></br>";
+								echo "<span>Document Files </span>";
+								foreach($document_files as $file){
+										$attc_id = get_post_meta($post_id,$file,true);
+										echo wp_get_attachment_link($attc_id);
+										echo "</br>";
+								}
+							} 	
+							?>							
 						</div>
 					</td>
 					<td>
