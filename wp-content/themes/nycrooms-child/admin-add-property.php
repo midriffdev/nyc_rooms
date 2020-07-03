@@ -321,6 +321,7 @@ get_header();
 						<input id="check-10" type="checkbox" name="check" value="AC">
 						<label for="check-10">AC</label>
 					</div>
+					
 					<!-- Checkboxes / End -->
 				</div>
 

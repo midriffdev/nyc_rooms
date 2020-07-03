@@ -1,6 +1,7 @@
 <?php
 nyc_property_admin_authority();
 get_header();
+global $wpdb;
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $args = array(
 'post_type'=> 'dealsorders',
@@ -10,28 +11,103 @@ $args = array(
 'paged' => $paged
 );
 
-$meta_query = array();
-if(isset($_GET['search_order'])){
-if(isset($_GET['deal_no']) && !empty($_GET['deal_no'])){
-	$meta_query[] =  array(
-            'key'          => 'deal_id',
-            'value'        => $_GET['deal_no'],
-            'compare'      => '=',
-    );	
+$date_query = array();
+if(isset($_GET['search_payments_date'])){
+	if(isset($_GET['search_by_date']) && !empty($_GET['search_by_date'])){
+		 $date = explode('-',$_GET['search_by_date']);
+		 $year =  (int)$date[0];
+		 $month = (int)$date[1];
+		 $day   = (int) $date[2];
+		 $date_query[] =  array(
+								'after' =>  array(
+												 'year'  => $year,
+												 'month' => $month,
+												 'day'   => $day,
+										   )
+							   
+						   );
+					 
+						  
+	}
+
+	 if(isset($_GET['search_to_date']) && !empty($_GET['search_to_date'])){
+		 $dateto = explode('-',$_GET['search_to_date']);
+		 $yearto =  (int) $dateto[0];
+		 $monthto = (int) $dateto[1];
+		 $dayto   = (int) $dateto[2];
+		 $date_query[0]['before']  =    array(
+												 'year'  => $yearto,
+												 'month' => $monthto,
+												 'day'   => $dayto,
+										   );
+								
+										  
+	 }
+
+     $date_query[0]['inclusive'] = true;
+
 }
-if(isset($_GET['order_no']) && !empty($_GET['order_no'])){
-	$meta_query[] =  array(
-            'key'          => 'order_id',
-            'value'        => $_GET['order_no'],
-            'compare'      => '=',
-    );	
-}
-if(!empty($meta_query)){
-   $args['meta_query'] = $meta_query;
+
+if(isset($_GET['search_payments_month'])){
+if(isset($_GET['search_by_month']) && !empty($_GET['search_by_month'])){
+	 $month = (int) $_GET['search_by_month'];
+	 $date_query[] =  array(
+								'month' => $month		
+					  );
+				      
+                 
+      				  
 }
 }
 
+if(isset($_GET['search_payments_year'])){
+if(isset($_GET['search_by_year']) && !empty($_GET['search_by_year'])){
+	 $year = (int) $_GET['search_by_year'];
+	 $date_query[] =  array(
+								'year' => $year		
+					  );
+				      
+                 
+      				  
+}
+}
+
+if(isset($_GET['search_payments_week'])){
+
+	if(isset($_GET['search_by_week']) && !empty($_GET['search_by_week'])){
+		 $weekcheck =  $_GET['search_by_week'];
+		 if($weekcheck == "current week"){
+		   $date_query[] =  array(
+									'year' => date( 'Y' ),
+									'week' => date( 'W' )							
+						    );
+		 } 
+		 
+		 if($weekcheck == "previous week"){
+		   $date_query[] =  array(
+									'year' => date( 'Y' ),
+									'week' => date('W',strtotime('-1 weeks'))						
+						    );
+							
+		 } 
+		 
+		 
+		 
+	}
+	
+	
+	
+}
+
+
+
+if(!empty($date_query)){
+   $args['date_query'] = $date_query;
+}
+
 $dealsorders = new WP_Query( $args );
+$years_query = "SELECT DISTINCT YEAR(post_date) FROM `nyc_posts` WHERE post_status = 'publish' AND `post_type` = 'dealsorders' ORDER BY post_date DESC";
+$paymentsyears = $wpdb->get_col($years_query);
 ?>
 <style>
 .pagination-next-prev ul li.prev a {
@@ -83,7 +159,7 @@ input.checkbulkorders{
 
 				<div class="admin-advanced-searchfilter">
 					<h2>Payments Filter</h2>
-					<form method="get">
+					
 					<div class="row with-forms">
 						<!-- Form -->
 						<div class="main-search-box no-shadow">
@@ -91,26 +167,68 @@ input.checkbulkorders{
 							<!-- Row With Forms -->
 							<div class="row with-forms">
 								<!-- Main Search Input -->
-								<div class="col-md-6">
-									<input type="text" placeholder="Enter Order No." name="order_no" value=""/>
-								</div>
-								<div class="col-md-6">
-									<input type="text" placeholder="Enter Deal Number" name="deal_no" value=""/>
-								</div>
 								
+								    <div class="col-md-12">
+									<form method="get" name="search_by_date">
+									   <h4>Filter By Date:</h4>
+									  <div style="display:flex">
+									   <div class="fltr_dtes">
+										   <h6>From Date:</h6>
+										   <input type="date" placeholder="date from.." name="search_by_date" required/>
+									   </div>
+									   <div class="fltr_dtes">
+										   <h6>To Date:</h6>
+										   <input type="date" placeholder="date To" name="search_to_date"  />
+									   </div>
+									   
+									   <button type="submit" name="search_payments_date" value="Search" class="button fltr_dte">filter</button>
+									  </div>
+									</form>
+									</div>
+									<div class="col-md-4">
+									  <h4>Filter By Weekly:</h4>
+									   <select name="weekly_payments">
+									        <option value="">Select Option</option>
+											<option value="current week">Current Week</option>
+											<option value="previous week">Previous Week</option>
+                                       </select>
+								    </div>
+						            <div class="col-md-4">
+									  <h4>Filter By Month:</h4>
+									   <select name="monthly_payments">
+									        <option value="">Select Month</option>
+											<option value="1">January</option>
+											<option value="2">February</option>
+											<option value="3">March</option>
+											<option value="4">April</option>
+											<option value="5">May</option>
+											<option value="6">June</option>
+											<option value="7">July</option>
+											<option value="8">August</option>
+											<option value="9">September</option>
+											<option value="10">October</option>
+											<option value="11">November</option>
+											<option value="12">December</option>
+										</select>
+								    </div>
+									<div class="col-md-4">
+									  <h4>Filter By Year:</h4>
+									   <select name="yearly_payments">
+									       <option value="">Select Year</option>
+									       <?php foreach($paymentsyears as $yearlypayments ){ ?>
+											<option value="<?= $yearlypayments ?>"><?= $yearlypayments ?></option>
+										   <?php } ?>
+									   </select>
+								    </div>
+									<div class="col-md-12" >
+									<h4>Reset Filters:</h4>
+									<button type="button" class="button reset_filter" >Reset Filters</button>
+									</div>
 							</div>
-
-							<!-- Search Button -->
-							<div class="row with-forms">
-								<div class="col-md-12">
-									<button class="button fs-map-btn" type="submit" name="search_order">Search</button>
-								</div>
-							</div>
-
 						</div>
 						<!-- Box / End -->
 					</div>
-					</form>
+					
 				</div>
                  <div class="col-md-12">
 					 <p class="showing-results"><?php echo $dealsorders->found_posts; ?> Results Found On Page <?php echo $paged ;?> of <?php echo $dealsorders->max_num_pages;?> </p>
@@ -120,7 +238,7 @@ input.checkbulkorders{
 				<tbody>
 				<tr>
 					<th><input type="checkbox" class="checkallbulkorders"></th>
-					<th><i class="fa fa-list-ol"></i> Order No . </th>
+					<th><i class="fa fa-list-ol"></i> Order No .</th>
 					<th><i class="fa fa-user"></i>Deal No.</th>
 					<th><i class="fa fa-envelope"></i> Payment Amount</th>
 					<th><i class="fa fa-check-square-o" ></i>Payment Date</th>
@@ -142,8 +260,7 @@ input.checkbulkorders{
 							<td class="deal_order_number"><?php echo get_post_meta($dealorders_id,'order_id',true);; ?></td>
 							<td class="deal_number"><?php echo get_post_meta($dealorders_id,'deal_id',true); ?></td>
 							<td class="deal_phone_number"><?php echo "$".get_post_meta($dealorders_id,'payment_amount',true); "/Week" ?></td>
-							<td class="deal_date_time"><?php echo "$".get_post_meta($dealorders_id,'payment_amount',true); "/Week" ?></td>
-							
+							<td class="deal_date_time"><?php echo date("d-m-Y",strtotime(get_post_meta($dealorders_id,'payment_created_at',true))); ?></td>
 							<td class="deal_phone_number"><?php echo ucfirst(str_replace("_"," ",get_post_meta($dealorders_id,'payment_mode',true))); ?></td>
 							<td class="deal-stage-number"><?php echo get_post_meta($dealorders_id,'payment_source_type',true); ?></td>
 							<td class="deal-stage-number"><?php echo get_post_meta($dealorders_id,'payment_status',true); ?></td>
@@ -231,6 +348,19 @@ input.checkbulkorders{
 </div>
 <div class="margin-top-55"></div>
 </div>
+<style>
+button.button.fltr_dte {
+    padding: 0px 10%;
+    height: 50px;
+    margin-top: 4%;
+}
+
+.fltr_dtes{
+   width: 35%;
+   margin-right: 5%;
+}
+
+</style>
 <script>
 
 jQuery('.delete-deal-order').click(function (e) {
@@ -264,8 +394,43 @@ jQuery('.delete-deal-order').click(function (e) {
 
 
 jQuery(document).ready(function($) {
+    var site_url = "<?= site_url(); ?>";
 	jQuery('#sidebar-alldeals').addClass('current');
+	$('select[name="monthly_payments"]').change(function(){
+	     var monthval = $(this).val();
+		  if(monthval != ''){
+			  var url  = site_url + "/admin/dealsorders/?search_by_month="+ monthval +"&&search_payments_month=Monthly Payments";
+			  window.location.href = url;
+		  }
+	});
+	
+	$('select[name="yearly_payments"]').change(function(){
+	     var yearval = $(this).val();
+		 if(monthval != ''){
+			  var url  = site_url + "/admin/dealsorders/?search_by_year="+ yearval +"&&search_payments_year=Yearly Payments";
+			  window.location.href = url;
+		 }
+	});
+	
+	$('select[name="weekly_payments"]').change(function(){
+	     var weakval = $(this).val();
+		 if(weakval != ''){
+		   var url  = site_url + "/admin/dealsorders/?search_by_week="+ weakval +"&&search_payments_week=Weekly Payments";
+		   window.location.href = url;
+		 }
+	});
+	
+	
+	
+	
+	
+	$('.button.reset_filter').click(function(){
+		  var url  = site_url + "/admin/dealsorders/";
+		  window.location.href = url;
+	});
+	
 });
+
 </script>
 <?php 
 get_footer();
