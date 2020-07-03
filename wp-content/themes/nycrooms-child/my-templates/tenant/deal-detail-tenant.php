@@ -31,11 +31,6 @@ $query_args = array(
 );
 
 $check_deal_orders = new WP_Query( $query_args );
-
-
-
-
-
 get_header();
 ?>
 <!-- Wrapper -->
@@ -223,53 +218,257 @@ get_header();
 					?>
 					
 				</div>
+				
+				<!------------- Start Aplication form  and Payment multstep form --------------------->
+				<div class="col-md-12 progress-set-padding" id="multi-step-form">
+							<div class="progress">
+								<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+							  </div>
+							  <div class="alert alert-success hide"></div>
+							  
+							  <fieldset class="steps">
+							       
+									 <div class="submit-section">
+										<h4> Step 1: Add Personnel Details</h4>
+											<div class="form">
+													<h5>Name(s)</h5>
+													<input class="name" type="text" placeholder="Enter Name..">
+													<span class="name-err"></span>
+											</div>
 
+												<!-- Row -->
+												<div class="row with-forms">
+
+													<div class="col-md-4">
+														<h5>Contact Phone Number</h5>
+														<input class="contact_no" type="text" placeholder="Enter Phone">
+														<span class="contact_no-err"></span>
+													</div>
+
+													<div class="col-md-4">
+														<h5>Secondary Phone Number</h5>
+														<input class="secondary_contact_no" type="text" placeholder="Enter Secandary Phone">
+														<span class="secondary_contact_no-err"></span>
+													</div>
+													<div class="col-md-4">
+														<h5>Emergency Contact</h5>
+														<input class="emergency_contact_no" type="text" placeholder="Enter Emergency Contact">
+														<span class="emergency_contact_no-err"></span>
+													</div>
+												</div>
+												<!-- Row / End -->
+
+												<!-- Row -->
+												<div class="row with-forms">
+													<div class="col-md-6">
+														<h5>Email Address </h5>
+														<input class="email_address" type="text" placeholder="Enter Email..">
+														<span class="email_address-err"></span>
+													</div>
+
+													<div class="col-md-6">
+														<h5>Employer/School</h5>
+														<input class="employer_school" type="text" placeholder="Enter Employer/School.." >
+														<span class="employer_school-err"></span>
+													</div>
+												</div>
+												<div class="form">
+													<h5>Address</h5>
+													<textarea class="address" cols="40" rows="3" id="address_text" spellcheck="true" placeholder="Enter Address.." ></textarea>
+													<span class="address-err"></span>
+												</div>
+												<div class="row with-forms">
+													<div class="col-md-6">
+														<h5>Manager’s Name</h5>
+														<input class="manager_name" type="text" placeholder="Enter Manager’s Name..">
+														<span class="manager_name-err"></span>
+													</div>
+
+													<div class="col-md-6">
+														<h5>EManager’s Contact</h5>
+														<input class="manager_contact" type="text" placeholder="Enter EManager’s Contact">
+														<span class="manager_contact-err"></span>
+													</div>
+												</div>
+												<div class="row with-forms">
+													<div class="col-md-6">
+														<h5>Monthly Income</h5>
+														<input class="month_income" type="text" placeholder="Enter Monthly Income..">
+														<span class="month_income-err"></span>
+													</div>
+
+													<div class="col-md-6">
+														<h5>Weekly Rent Budget </h5>
+														<input class="week_rent_budget" type="text" placeholder="Enter Weekly Rent Budget">
+														<span class="week_rent_budget-err"></span>
+													</div>
+												</div>
+												<div class="row with-forms">
+													<div class="col-md-6">
+														<h5>How many people will be living in the room?</h5>
+														<select class="chosen-select-no-single people_living_count">
+															<option label="blank"></option>		
+															<option value="1">1</option>
+															<option value="2">2</option>
+															<option value="3">3</option>
+															<option value="not sure">Not sure </option>
+					                                    </select>
+														<span class="people_living_count-err"></span>
+													</div>
+
+													<div class="col-md-6">
+														<h5>How long are you looking to stay in the room?</h5>
+														<select class="chosen-select-no-single Periods_of_living">
+															<option label="blank"></option>		
+															<option value="1 Month">1 Month</option>
+															<option value="2 Month">2 Month</option>
+															<option value="6 Month">6 Month</option>
+															<option value="1 Year">1 year</option>
+															<option value="Other">Other</option>
+															
+					                                    </select>
+														<span class="Periods_of_living-err"></span>
+													</div>
+												</div>
+												<div class="form">
+													<h5>Where did you see our advertisement?</h5>
+													<div class="advertisement_row in-row margin-bottom-20">
+																	        
+																			<input id="Google" type="radio" class="adversitement_check" name="adversitement_check" value="Google">
+																			<label for="Google">Google</label>
+																			
+																			<input id="El Diario" type="radio" class="adversitement_check" name="adversitement_check" value="El Diario">
+																			<label for="El Diario">El Diario</label>
+																			
+																			
+																			<input id="Facebook" type="radio" class="adversitement_check" name="adversitement_check" value="Facebook">
+																			<label for="Facebook">Facebook</label>
+																			
+																			
+																			<input id="Amsterdam Newspaper" type="radio" class="adversitement_check" name="adversitement_check" value="Amsterdam Newspaper">
+                                                                            <label for="Amsterdam Newspaper">Amsterdam Newspaper</label>
+																			
+																			
+																			<input id="Craigslist" type="radio" class="adversitement_check" name="adversitement_check" value="Craigslist">
+																			<label for="Craigslist">Craigslist</label>
+																			
+																			
+                                                                            <input id="Metro Newspaper" type="radio" class="adversitement_check" name="adversitement_check" value="Metro Newspaper">
+																			<label for="Metro Newspaper">Metro Newspaper </label>
+																			
+                                                                            
+																			<input id="Referral" type="radio" class="adversitement_check" name="adversitement_check" value="Referral">
+																			<label for="Referral">Referral</label>
+																			
+																			
+																			<input id="Other" type="radio" class="adversitement_check" name="adversitement_check" value="Other">
+																			<label for="Other">Other</label>
+																			
+													</div>
+													<span class="adversitement_check-err"></span>
+												</div>
+												<div class="form">
+													<h5><b>Policy</b></h5>
+
+													<div class="checkboxes in-row margin-bottom-20">
+																	
+																			<input id="check-9" type="checkbox" class="privacy_policy" value=1>
+																			<label for="check-9"><b>NYC ROOMS 4 RENT INC.</b> is a licensed apartment sharing agency whom for a non-refundable service fee refers you to a primary tenant or landlord for viewings of available rooms. Please be on time and wear proper attire when meeting with the primary tenant or landlord. We are not responsible for any negotiations agreed between you and the landlord or primary tenant. We will assist you until you find the first room that accommodates your needs. If you wish to transfer room we will assist you <b>ONE</b> time at no extra cost within the 30 days guaranteed service policy, except you’ve been evicted for illicit behavior or have a pending balance with the landlord. Our services expire 30 days after you have found a room. <b>Our service fee is non-refundable under no circumstances.</b></label>
+																			<span class="privacy_policy-err"></span>
+													</div>
+													
+												</div>
+                                      
+									</div>
+								    <input type="button" class="button submit_application_form" value="Submit Application" id="submit_application_form"/>
+									<input type="button" name="next" class="nextbutton btn btn-info" value="Next" />
+								  
+							  </fieldset>
+							  <fieldset class="steps">
+								<div class="form">
+											<h5>Where did you see our advertisement?</h5>
+											<!--div class="checkboxes in-row margin-bottom-20">
+															
+																	<input id="check-2" type="checkbox" name="check">
+																	<label for="check-2">Google</label>
+
+																	<input id="check-3" type="checkbox" name="check">
+																	<label for="check-3">El Diario</label>
+
+																	<input id="check-4" type="checkbox" name="check">
+																	<label for="check-4">Facebook</label>
+
+																	<input id="check-5" type="checkbox" name="check">
+																	<label for="check-5">Amsterdam Newspaper</label>	
+
+																	<input id="check-6" type="checkbox" name="check">
+																	<label for="check-6">Craigslist</label>
+
+																	<input id="check-7" type="checkbox" name="check">
+																	<label for="check-7">Metro Newspaper </label>
+
+																	<input id="check-8" type="checkbox" name="check">
+																	<label for="check-8">Referral</label>
+																	<input id="check-8" type="checkbox" name="check">
+																	<label for="check-8">Other</label>
+																</div-->
+								</div>
+								<input type="button" name="previous" class="previousbutton btn btn-default" value="Previous" />
+							  </fieldset>
+							 
+				</div>
+				
+				<!------------- End Aplication form  and Payment multstep form --------------------->
 				
 
-				<div class="col-md-12">
+				<!-------------- start commented section --------------------------- >
+
+				<!--div class="col-md-12">
 					<div class="deal-detail-payment-tobedone">
 						
 						<div class="deal-detail-tenant-subapp">
 						<?php
-						   $application_download_link = site_url().'/tenant/application-form/?file=application_form_'.$dealid;
+						  // $application_download_link = site_url().'/tenant/application-form/?file=application_form_'.$dealid;
 						?>
 						
-						<small>Download Sample Application Form <a href="<?= $application_download_link ?>" target="_blank">here.</a> Fill The details mentioned in form, after that upload the filled application Form Below </small>
+						<small>Download Sample Application Form <a href="<?php //$application_download_link ?>" target="_blank">here.</a> Fill The details mentioned in form, after that upload the filled application Form Below </small>
 						
 						<h3>Upload Filled Application Form</h3>
 		                <div class="submit-section prop_app_form">
-			               <form action="<?= site_url() ?>/tenant/deal-details-tenant/?id=<?= $dealid ?>" class="dropzone dropzone_application_form" ></form>
+			               <form action="<?php //site_url() ?>/tenant/deal-details-tenant/?id=<?php //$dealid ?>" class="dropzone dropzone_application_form" ></form>
 						    <button class="button save_file" id="save_document" >Save File</button>
 		                </div>
 						</div>
-						<?php if($deal_price): ?><h3>Amount to be Paid: <span>$<?= $deal_price ?></span></h3> <?php endif;  ?>
+						<?php //if($deal_price): ?><h3>Amount to be Paid: <span>$<?php //$deal_price ?></span></h3> <?php //endif;  ?>
 						<ul class="dealdetail-tenant-actionbuttons">
 							<li>
 							    <?php
-								if(empty($check_deal_orders->posts)){
+								//if(empty($check_deal_orders->posts)){
 								?>
-								  <button class="dealdetail-tenant-paynowb" <?php if(!$get_document_file){ echo "disabled";} ?>  data-toggle="modal" data-target="#Square_payment_form_js">Pay Now</button>
+								  <button class="dealdetail-tenant-paynowb" <?php //if(!$get_document_file){ echo "disabled";} ?>  data-toggle="modal" data-target="#Square_payment_form_js">Pay Now</button>
 								<?php
-								}
+								//}
 								
-                                if(count($check_deal_orders->posts) == 1){
+                               // if(count($check_deal_orders->posts) == 1){
 								?>
 								<button class="dealdetail-tenant-paynowb" disabled>Payment Done</button>
 								<?php
-								}
+								//}
 								?>
 								
 							</li>
 							<li>
-							  <?php if(empty($check_deal_orders->posts)){ ?>
-								<button class="dealdetail-tenant-reqagentb" <?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'disabled';}  ?>>
-								<?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'Agent Allotted';} else { echo 'Request an Agent';} ?>
+							  <?php //if(empty($check_deal_orders->posts)){ ?>
+								<button class="dealdetail-tenant-reqagentb" <?php //if($get_requested_agent && $get_requested_agent == 1 ){ echo 'disabled';}  ?>>
+								<?php //if($get_requested_agent && $get_requested_agent == 1 ){ echo 'Agent Allotted';} else { echo 'Request an Agent';} ?>
 								</button>
-							  <?php } ?>
+							  <?php //} ?>
 							</li>
 						</ul>
 					</div>
-				</div>
+				</div-->
+				
+				<!----------- end commented section ----------------->
 				
 				<div class="col-md-12">
 				    <?php if($admin_notes): ?>
@@ -686,6 +885,80 @@ get_footer();
     display: inherit;
 }
 .deal-detail-payment-tobedone h3{margin-top:15px}
+ fieldset.steps:not(:first-of-type) {
+    display: none;
+ }
+ 
+ 
+ progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}
+ @-o-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}
+ @keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}
+ 
+.progress {
+    height: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+	margin-top: 5%;
+}
+
+ .progress-bar {
+    float: left;
+    width: 0%;
+    height: 100%;
+    font-size: 12px;
+    line-height: 20px;
+    color: #fff;
+    text-align: center;
+    background-color: #337ab7;
+    -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+    -webkit-transition: width .6s ease;
+    -o-transition: width .6s ease;
+    transition: width .6s ease;
+}
+
+.progress-bar.active, .progress.active .progress-bar {
+    -webkit-animation: progress-bar-stripes 2s linear infinite;
+    -o-animation: progress-bar-stripes 2s linear infinite;
+    animation: progress-bar-stripes 2s linear infinite;
+}
+.progress-bar-striped, .progress-striped .progress-bar {
+    background-image: -webkit-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+    background-image: -o-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+    background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+    -webkit-background-size: 40px 40px;
+    background-size: 40px 40px;
+}
+
+input.nextbutton {
+    width: 11%;
+    padding: 0%;
+}
+input.previousbutton {
+    width: 11%;
+    padding: 0%;
+}
+
+input.submit_application_form {
+    width: 17%;
+    padding: 0%;
+}
+
+.advertisement_row input[type="radio"] {
+    width: auto !important;
+    margin: 0px 4px 0px 0px !important;
+}
+
+.advertisement_row label {
+    display: inline-block !important;
+    margin: 0px 8px 0px 0px !important;
+}
+
+  
 </style>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/dropzone.js"></script>
 <script>
@@ -845,7 +1118,233 @@ get_footer();
 			  
 		});
 		
+		var current = 1,current_step,next_step,steps;
+               steps = $("fieldset.steps").length;
+               $(".nextbutton").click(function(){
+						current_step = $(this).parent();
+						next_step = $(this).parent().next();
+						next_step.show();
+						current_step.hide();
+						setProgressBarTenant(++current);
+              });
+			  $(".previousbutton").click(function(){
+				current_step = $(this).parent();
+				next_step = $(this).parent().prev();
+				next_step.show();
+				current_step.hide();
+				setProgressBarTenant(--current);
+			  });
+              setProgressBarTenant(current);
+  // Change progress bar action
+		function setProgressBarTenant(curStep){
+				var percent = parseFloat(100 / steps) * curStep;
+				percent = percent.toFixed();
+				$(".progress-bar")
+				  .css("width",percent+"%")
+				  .html(percent+"%");   
+			  }
+			  
+	 $('#submit_application_form').click(function(e){
+	    e.preventDefault();
+		//jQuery(".preview").attr("disabled", true);
+		var regEx = new RegExp("^[0-9-+]+$");
+		var regExEmail = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
+		jQuery('.error').remove();
+		var is_error  = false;
+		var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+		var deal_id = '<?php echo $dealid; ?>';
+		var name = jQuery('.name').val();
+		var contact_no = jQuery('.contact_no').val();
+		var secondary_contact_no = jQuery('.secondary_contact_no').val();
+		var emergency_contact_no = jQuery('.emergency_contact_no').val();
+		var email_address = jQuery('.email_address').val();
+		var employer_school = jQuery('.employer_school').val();
+		var address = jQuery('.address').val();
+		var manager_name = jQuery('.manager_name').val();
+		var manager_contact = jQuery('.manager_contact').val();
+		var month_income = jQuery('.month_income').val();
+		var week_rent_budget = jQuery('.week_rent_budget').val();
+		var people_living_count = jQuery('.people_living_count').val();
+		var Periods_of_living = jQuery('.Periods_of_living').val();
+		var adversitement_check = jQuery(".adversitement_check:checked").val();
+		var privacy_policy  =  jQuery('.privacy_policy:checked').val(); 
 		
+		
+        if(name == ''){
+			jQuery('.name-err').html('<span class="error">Please enter name</span>');
+			jQuery( ".name" ).focus();
+			is_error = true;		
+		}
+		if(contact_no == ''){
+			jQuery('.contact_no-err').html('<span class="error">Please enter contact no.</span>');
+			jQuery( ".contact_no" ).focus();
+			is_error = true;			
+		} else if(!regEx.test(contact_no)){
+			jQuery('.contact_no-err').html('<span class="error">Contact Phone must be in digits</span>');
+			jQuery( ".contact_no" ).focus();
+			is_error = true;			
+		} else if(contact_no.length != 12){
+		     jQuery('.contact_no-err').html('<span class="error">Contact Phone must be 10 digits long with +1 as country code.</span>');
+			 jQuery( ".contact_no" ).focus();
+			  is_error = true;	
+		}
+		
+		if(secondary_contact_no == ''){
+			jQuery('.secondary_contact_no-err').html('<span class="error">Please enter secandary contact</span>');
+			jQuery( ".secondary_contact_no" ).focus();
+			is_error = true;		
+		} else if(!regEx.test(secondary_contact_no)){
+			jQuery('.secondary_contact_no-err').html('<span class="error">Contact Phone must be in digits</span>');
+			jQuery( ".secondary_contact_no" ).focus();
+			is_error = true;			
+		} else if(secondary_contact_no.length != 12){
+		     jQuery('.secondary_contact_no-err').html('<span class="error">Contact Phone must be 10 digits long with +1 as country code.</span>');
+			 jQuery( ".secondary_contact_no" ).focus();
+			  is_error = true;	
+		}
+		
+		if(emergency_contact_no == ''){
+			jQuery('.emergency_contact_no-err').html('<span class="error">Please enter emergency contact</span>');
+			jQuery( ".emergency_contact_no" ).focus();
+			is_error = true;		
+		} else if(!regEx.test(emergency_contact_no)){
+			jQuery('.emergency_contact_no-err').html('<span class="error">Contact Phone must be in digits</span>');
+			jQuery( ".emergency_contact_no" ).focus();
+			is_error = true;			
+		} else if(emergency_contact_no.length != 12){
+		     jQuery('.emergency_contact_no-err').html('<span class="error">Contact Phone must be 10 digits long with +1 as country code.</span>');
+			 jQuery( ".emergency_contact_no" ).focus();
+			  is_error = true;	
+		}
+		
+		if(email_address == ''){
+			jQuery('.email_address-err').html('<span class="error">Please enter email address</span>');
+			jQuery( ".email_address" ).focus();
+			is_error = true;		
+		} else if(!regExEmail.test(email_address)){
+			jQuery('.email_address-err').html('<span class="error">Please enter valid email address</span>');
+			jQuery( ".email_address" ).focus();
+			is_error = true;			
+		}
+		if(employer_school == ''){
+			jQuery('.employer_school-err').html('<span class="error">Please enter employer/school</span>');
+			jQuery( ".employer_school" ).focus();
+			is_error = true;		
+		}
+		if(address == ''){
+			jQuery('.address-err').html('<span class="error">Please enter address</span>');
+			jQuery( ".address" ).focus();
+			is_error = true;		
+		}
+		if(manager_name == ''){
+			jQuery('.manager_name-err').html("<span class='error'>Please enter manager's Name</span>");
+			jQuery( ".manager_name" ).focus();
+			is_error = true;		
+		}
+		if(manager_contact == ''){
+			jQuery('.manager_contact-err').html('<span class="error">Please enter manager contact</span>');
+			jQuery( ".manager_contact" ).focus();
+			is_error = true;		
+		} else if(!regEx.test(manager_contact)){
+			jQuery('.manager_contact-err').html('<span class="error">Contact Phone must be in digits</span>');
+			jQuery( ".manager_contact" ).focus();
+			is_error = true;			
+		} else if(manager_contact.length != 12){
+		     jQuery('.manager_contact-err').html('<span class="error">Contact Phone must be 10 digits long with +1 as country code.</span>');
+			 jQuery( ".manager_contact" ).focus();
+			  is_error = true;	
+		}
+		
+		
+		if(month_income == ''){
+			jQuery('.month_income-err').html('<span class="error">Please enter monthly income</span>');
+			jQuery( ".month_income" ).focus();
+			is_error = true;		
+		} else if(!regEx.test(month_income)){
+			jQuery('.month_income-err').html('<span class="error">Monthly Income must be in digits</span>');
+			jQuery( ".month_income" ).focus();
+			is_error = true;			
+		}
+		if(week_rent_budget == ''){
+			jQuery('.week_rent_budget-err').html('<span class="error">Please enter week rent budget</span>');
+			jQuery( ".week_rent_budget" ).focus();
+			is_error = true;		
+		} else if(!regEx.test(week_rent_budget)){
+			jQuery('.week_rent_budget-err').html('<span class="error">Monthly Income must be in digits</span>');
+			jQuery( ".week_rent_budget" ).focus();
+			is_error = true;			
+		}
+		
+		if(people_living_count == ''){
+			jQuery('.people_living_count-err').html('<span class="error">Please enter people living in</span>');
+			jQuery( ".people_living_count" ).focus();
+			is_error = true;		
+		}
+		if( Periods_of_living == ''){
+			jQuery('.Periods_of_living-err').html('<span class="error">Please enter duration of stay</span>');
+			jQuery( ".Periods_of_living" ).focus();
+			is_error = true;		
+		}
+		if(typeof adversitement_check == 'undefined'){
+			jQuery('.adversitement_check-err').html('<span class="error">Please choose any advertisement option above</span>');
+			jQuery( ".adversitement_check" ).focus();
+			is_error = true;		
+		}
+		if(typeof privacy_policy == 'undefined'){
+			jQuery('.privacy_policy-err').html('<span class="error">Please check privacy policy before Submission</span>');
+			jQuery( ".privacy_policy" ).focus();
+			is_error = true;		
+		}
+		if(is_error == false){
+		
+		   var form_data = new FormData();
+           form_data.append("deal_id", deal_id);		   
+		   form_data.append("name", name);
+		   form_data.append("contact_no", contact_no);
+		   form_data.append("secondary_contact_no", secondary_contact_no);
+		   form_data.append("emergency_contact_no", emergency_contact_no);
+		   form_data.append("email_address", email_address);
+		   form_data.append("employer_school", employer_school);
+		   form_data.append("address", address);
+		   form_data.append("manager_name", manager_name);
+		   form_data.append("manager_contact", manager_contact);
+		   form_data.append("month_income", month_income);
+		   form_data.append("week_rent_budget", week_rent_budget);
+		   form_data.append("people_living_count", people_living_count);
+		   form_data.append("Periods_of_living", Periods_of_living);
+		   form_data.append("adversitement_check", adversitement_check);
+		   form_data.append("privacy_policy", privacy_policy);
+		   form_data.append( "action", 'nyc_application_form_pdf_ajax');  
+		   
+		   jQuery.ajax({
+				type : "post",
+				url : ajaxurl,
+				data: form_data,
+				processData: false,
+				contentType: false,
+				success: function(response) {
+				   console.log(response);
+				   
+				    /* if(response == "success"){
+						window.location.href = window.location.href + "?action=success";
+					} else {
+						window.location.href = window.location.href + "?action=false";
+					} */
+				}
+			});
+			
+			
+			
+		   
+		}
+		
+		
+		
+	
+		
+	 
+	 });
+  
 		
 	});
 

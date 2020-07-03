@@ -2543,6 +2543,546 @@ function nyc_get_tenant_payment_square_ajax_curl($payment_url,$headers,$method,$
 
 }
 
+function nyc_application_form_pdf_ajax(){
+    if(isset($_POST['action']) && $_POST['action'] == 'nyc_application_form_pdf_ajax'){
+	   $tenant_application_data = array();
+	   $deal_id = $_POST['deal_id'];
+	   foreach($_POST as $key => $tenant_data){
+	       if($key != 'action'){
+		     $tenant_application_data[$key] = $tenant_data;
+		   }
+	   }
+         update_post_meta($deal_id,'tenant_application_data',$tenant_application_data);
+	     $get_application_tenant = get_post_meta($deal_id,'tenant_application_data',true);
+		 
+		 /*  echo "<pre>";
+		  print_r($get_application_tenant);
+		  echo "</pre>"; */
+		  
+		  $html = '<html>
+<head>
+    <meta http-equiv="Content-Type" content="charset=utf-8" />
+    <style type="text/css">
+        @page {
+            margin: 0;
+        }
+        * { padding: 0; margin: 0; }
+        @font-face {
+            font-family: "varelaround";           
+            src: local("VarelaRound-Regular"), url("fonts/VarelaRound-Regular.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+        body{
+            font-family: "varelaround";
+            color: #333;
+            background-color: #fff;
+            height:100%;
+        }
+        body b, table th{
+            font-weight: normal;
+            font-family: "varelaround";
+        }
+        table td, table th{
+            vertical-align: top;
+        }
+        span{
+            font-family: "varelaround";
+            color: #333;
+            font-size:14px;
+        }
+        h2,p{
+          font-family: "varelaround";
+          color: #333;  
+        }
+    </style>
+</head>
+<body>
+<table style="width:100%;padding:20px;">
+   <tr>
+      <td colspan="2">
+         <table style="width:100%;">
+            <tbody>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="width:50%;">
+                                 <img src="https://nycrooms.midriffdevelopers.live/wp-content/uploads/2020/06/logo.png" style="width:150px;">
+                              </td>
+                              <td style="width:50%;padding: 0 0px 0 10%;text-align: right;">
+                                 <h2 style="text-align: right;margin-top: 0;margin-bottom: 0;">NYC Room 4 Rent</h2>
+                                 <p>606 WEST 145TH STREET NY NY 10031<br>212-368-2685<br>WWW.NYCROOMS4RENT.COM</p>
+                     </table>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+         <table style="width:100%;margin-top: 20px;margin-bottom:20px;">
+            <tr>
+               <td style="text-align: center;">
+                  <p style="font-weight: 500;font-size:22px;margin: 0 0 5px;">Application Form</p>
+               </td>
+            </tr>
+         </table>
+         <table style="width:100%;">
+            <tbody>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style=" bottom;width:10%">
+                                 <span>Name(s)</span>
+                              </td>
+                              <td style="width:90%">
+                                 <p style="font-size:14px;margin:0;border-bottom: 1px solid #333;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="width:20%;">
+                                 <span>Contact Phone Number</span>
+                              </td>
+                              <td style="width:70%">
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="width:25%;vertical-align:bottom;">
+                                 <span>Secondary Phone Number</span>
+                              </td>
+                              <td style="width:75%;">
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="width:19%;">
+                                 <span>Emergency Contact</span>
+                              </td>
+                              <td style="width:81%;">
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="width:14%;vertical-align:bottom;">
+                                 <span>Email Address</span>
+                              </td>
+                              <td style="width:86%;">
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="width:17%;">
+                                 <span>Employer/School</span>
+                              </td>
+                              <td style="width:83%;">
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="width:9%;">
+                                 <span>Address</span>
+                              </td>
+                              <td style="width:91%;">
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="
+                                 width: 17%;
+                                 ">
+                                 <span>Manager’s Name</span>
+                              </td>
+                              <td style="
+                                 width: 83%;
+                                 ">
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="
+                                 width: 18%;
+                                 ">
+                                 <span>Manager’s Contact</span>
+                              </td>
+                              <td style="
+                                 width: 78%;
+                                 ">
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="
+                                 width: 16%;
+                                 ">
+                                 <span>Monthly Income</span>
+                              </td>
+                              <td style="width:84%;"
+                                 ">
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="
+                                 width: 20%;
+                                 ">
+                                 <span>Weekly Rent Budget </span>
+                              </td>
+                              <td style="
+                                 width: 80%;
+                                 ">
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="
+                                 width: 40%;
+                                 ">
+                                 <span>How many people will be living in the room?  </span>
+                              </td>
+                              <td style="
+                                 width: 60%;
+                                 ">
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="
+                                 width: 45%;
+                                 ">
+                                 <span>How long are you looking to stay in the room?  </span>
+                              </td>
+                              <td style="
+                                 width: 55%;
+                                 ">
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td>
+                                 <span>Where did you see our advertisement?
+                                 </span>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td colspan="2">
+                                 <table style="width:100%;">
+                                    <tbody>
+                                       <tr>
+                                          <td style="width:33%;">
+                                             <p style="display:inline-block;font-size:14px;margin:0;">
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">Google
+                                             </p>
+                                          </td>
+                                          <td style="width:33%;">
+                                             <p style="display:inline-block;font-size:14px;margin:0;">
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">El Diario 
+                                             </p>
+                                          </td>
+                                          <td style="width:33%;">
+                                             <p style="display:inline-block;font-size:14px;margin:0;">
+                                                <input style="margin-top:6px;"type="checkbox" id="advertisement">AM NY Newspaper 
+                                             </p>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td style="width:33%;">
+                                             <p style="display:inline-block;font-size:14px;margin:0;">
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">Facebook
+                                             </p>
+                                          </td>
+                                          <td style="width:33%;">
+                                             <p style="display:inline-block;font-size:14px;margin:0;">
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">Amsterdam Newspaper 
+                                             </p>
+                                          </td>
+                                          <td style="width:33%;">
+                                             <p style="display:inline-block;font-size:14px;margin:0;">
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">Other
+                                             </p>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td>
+                                             <p style="display:inline-block;font-size:14px;margin:0;">
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">
+                                                Craigslist 
+                                             </p>
+                                          </td>
+                                          <td>
+                                             <p style="display:inline-block;font-size:14px;margin:0;">
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">Metro Newspaper 
+                                             </p>
+                                          </td>
+                                          <td>
+                                             <p style="display:inline-block;font-size:14px;margin:0;">
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">Referral
+                                             </p>
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="
+                                 padding-bottom:5px;">
+                                 <span><b>Policy</b>
+                                 </span>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td style="vertical-align:top;"><input style="margin-top:6px;" type="checkbox">
+                                 <span style="font-size:12px;margin-left:-10px;margin:0;line-height:14px;">
+                                 <b>NYC ROOMS 4 RENT INC.</b> is a licensed apartment sharing agency whom for a non-refundable service fee refers you to a primary tenant or landlord for viewings of available rooms. Please be on time and wear proper attire when meeting with the primary tenant or landlord. We are not responsible for any negotiations agreed between you and the landlord or primary tenant. We will assist you until you find the first room that accommodates your needs. If you wish to transfer room we will assist you <b>ONE</b> time at no extra cost within the 30 days guaranteed service policy, except you’ve been evicted for illicit behavior or have a pending balance with the landlord. Our services expire 30 days after you have found a room.<b>Our service fee is non-refundable under no circumstances.</b>
+                                 </span>
+                              </td>
+                              <td>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2" style="padding-top:25px;">
+                     <table style="width:100%;">
+                        <tbody>
+                           <tr>
+                              <td style="width:50%;padding-right:50px;">
+                                 <table style=" width: 100%;">
+                                    <tr>
+                                       <td colspan="2">
+                                          <table style="width:100%;">
+                                             <tr>
+                                                <td style="width:16%;">
+                                                   <span>Name:</span>
+                                                </td>
+                                                <td style="width:84%;">
+                                                   <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;margin:0;">jkkjhkjhk</p>
+                                                </td>
+                                             </tr>
+                                          </table>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td colspan="2">
+                                          <table style="width:100%;">
+                                             <tr>
+                                                <td style="width:22%;"><span>Signature:</span></td>
+                                                <td style="width:78%;">
+                                                   <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;margin:0;">jkkjhkjhk</p>
+                                                </td>
+                                             </tr>
+                                          </table>
+                                       </td>
+                                    </tr>
+                                 </table>
+                              </td>
+                              <td style="width:50%;padding-left:50px;">
+                                 <table style=" width: 100%;">
+                                    <tr>
+                                       <td colspan="2">
+                                          <table style="width:100%;">
+                                             <tr>
+                                                <td style="width:11%;"><span>Date:</span></td>
+                                                <td style="width:89%;">
+                                                   <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;margin:0;">jkkjhkjhk</p>
+                                                </td>
+                                             </tr>
+                                          </table>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td colspan="2">
+                                          <table style="width:100%;">
+                                             <tr>
+                                                <td style="width:17%;"><span>Location:</span></td>
+                                                <td style="width:83%;">
+                                                   <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;margin:0;">jkkjhkjhk</p>
+                                                </td>
+                                             </tr>
+                                          </table>
+                                       </td>
+                                    </tr>
+                                 </table>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+   </tr>
+   </td>
+</table>
+
+</body>
+</html>';
+
+require_once get_stylesheet_directory(). '/dompdf/autoload.inc.php';
+
+use Dompdf\Dompdf;
+
+// instantiate and use the dompdf class
+ $dompdf = new Dompdf();
+echo "<pre>";
+print_r($dompdf);
+echo "</pre>";
+/* $dompdf->loadHtml($html, 'UTF-8');
+
+// (Optional) Setup the paper size and orientation
+$dompdf->setPaper('A4');
+
+$dompdf->set_option('defaultMediaType', 'all');
+$dompdf->set_option('isFontSubsettingEnabled', true);
+// Render the HTML as PDF
+$dompdf->render();
+
+$file_to_save = get_stylesheet_directory().'/documents/file.pdf';
+//save the pdf file on the server
+file_put_contents($file_to_save, $dompdf->output()); 
+//print the pdf file to the screen for saving
+header('Content-type: application/pdf');
+header('Content-Disposition: inline; filename="file.pdf"');
+header('Content-Transfer-Encoding: binary');
+header('Content-Length: ' . filesize($file_to_save));
+header('Accept-Ranges: bytes');
+readfile($file_to_save); */
+
+//echo true;
+
+}
+ exit;
+}
+
+add_action( 'wp_ajax_nyc_application_form_pdf_ajax', 'nyc_application_form_pdf_ajax' );
+add_action( 'wp_ajax_nopriv_nyc_application_form_pdf_ajax', 'nyc_application_form_pdf_ajax' );
+
+
+
 
 require_once( 'inc/init-function.php');
 ?>
