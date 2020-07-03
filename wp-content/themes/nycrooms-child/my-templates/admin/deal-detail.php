@@ -6,6 +6,8 @@ if(empty($post) || ($post->post_type != 'deals')){
 	wp_redirect(get_site_url().'/admin/deals'); 
 }
 get_header();
+$tenant_deal_link = get_site_url().'/tenant/deal-details-tenant/?id='.base64_encode($post_id);
+$agent_deal_link = get_site_url().'/agent/deal-details-agent/?id='.base64_encode($post_id);
 $deal_stage = get_post_meta($post_id,'deal_stage',true);
 $lead_source = get_post_meta($post_id,'lead_source',true);
 $name = get_post_meta($post_id,'name',true);
@@ -13,7 +15,6 @@ $email = get_post_meta($post_id,'email',true);
 $phone = get_post_meta($post_id,'phone',true);
 $description = get_post_meta($post_id,'description',true);
 $property_id = get_post_meta($post_id,'property_id',true);
-$deal_agent = get_post_meta($post_id,'deal_agent',true);
 $tenant_application = get_post_meta($post_id,'document_files',true);
 if(isset($_POST['upadte_stag1'])){
 	update_post_meta($post_id,'deal_price',$_POST['deal_price']);
@@ -24,7 +25,6 @@ $admin_notes = get_post_meta($post_id,'admin_notes',true);
 $selected_property = get_post_meta($post_id, 'selected_property', true);
 $selectedAgent = get_post_meta($post_id, 'selectedAgent', true);
 $request_an_agent = get_post_meta($post_id, 'request_an_agent', true);
-$document_files = get_post_meta($post_id, 'document_files', true);
 $query_args = array(
 	'post_type'  => 'dealsorders',
 	'meta_query' => array(
@@ -131,7 +131,24 @@ if(count($check_deal_orders->posts) == 1){
 				</div>
 			</div>
 		</div>
-		
+		<div class="row">
+			<div class="col-md-12">
+				<div class="copy_link_sec">
+				Tenant Deal Link : <a id="tenant"><?php echo $tenant_deal_link; ?></a>
+					<div class="tooltip">
+						<span onclick="copyToClipboard('#tenant')" onmouseout="outFunc('#tenant')"><i class="fa fa-files-o coppy-iconn"></i></span>
+						<span class="tooltiptext" id="myTooltip#tenant">Copy to clipboard</span>
+					</div>	
+				</div>
+				<div class="copy_link_sec">
+				Agent Deal Link : <a id="agent"><?php echo $agent_deal_link; ?></a>
+					<div class="tooltip">
+						<span onclick="copyToClipboard('#agent')" onmouseout="outFunc('#agent')"><i class="fa fa-files-o coppy-iconn"></i></span>
+						<span class="tooltiptext" id="myTooltip#agent">Copy to clipboard</span>
+					</div>	
+				</div>
+			</div>
+		</div>
 		
 		<!------Stage 1---->
 		<div class="dealdetail--stageonecont">
@@ -244,22 +261,22 @@ if(count($check_deal_orders->posts) == 1){
 					</div>
 				<?php } ?>
 				</div>
-				<?php if($deal_agent){ ?>
+				<?php if($selectedAgent){ ?>
 				<div class="col-md-6">
 					<div class="dealdetail-allocateagent-section">
 						<h2>Agent Details</h2>
 						<ul>
 							<li>
 								<p>Name: </p>
-								<span><?php the_author_meta( 'display_name' , $authid ); ?></span>
+								<span><?php the_author_meta( 'display_name' , $selectedAgent ); ?></span>
 							</li>
 							<li>
 								<p>Email:</p>
-								<span><?php the_author_meta( 'user_email' , $authid ); ?></span>
+								<span><?php the_author_meta( 'user_email' , $selectedAgent ); ?></span>
 							</li>
 							<li>
 								<p>Phone:</p>
-								<span><?php the_author_meta( 'phone' , $authid ); ?></span>
+								<span><?php the_author_meta( 'user_phone' , $selectedAgent ); ?></span>
 							</li>
 
 						</ul>
@@ -267,13 +284,13 @@ if(count($check_deal_orders->posts) == 1){
 				</div>
 				<div class="dealdetail--agentnotes-sec col-md-6">
 					<h2>Agent Notes:</h2>
-					<p><?php echo get_post_meta($post_id,'deal_agent_notes',true);  ?></p>
+					<p><?php echo get_post_meta($post_id,'agent_notes',true);  ?></p>
 				</div>
 				<?php } ?>
 
 				<div class="col-md-6">
 					<div class="dealdetail-signapplicationform">
-						<a href="#" data-toggle="modal" data-target="<?php ($tenant_application) ? 'Complete' : 'Pending'; ?>"><h3>Application Form Status <span> <?php echo ($tenant_application) ? 'Complete' : 'Pending'; ?> <i class="fa fa-check" aria-hidden="true"></i></span></h3></a>
+						<h3>Application Form Status <span> <?php echo ($tenant_application) ? 'Complete <a href="'.wp_get_attachment_url($tenant_application).'" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i></a>' : 'Pending'; ?> </span></h3>
 					</div>
 				</div>
 
@@ -573,7 +590,7 @@ if(count($check_deal_orders->posts) == 1){
 			</div>
 
 			<div class="create-deal-btnsec deal-detail-dealbutton ">
-				<a href="<?php echo get_site_url(); ?>/admin/deals/contract/<?php echo $post_id; ?>"><button type="button" class="btn btn-primary popup__button stage3-convertdeal-but">
+				<a href="<?php echo get_site_url(); ?>/admin/deals/contract/<?php echo base64_encode($post_id); ?>"><button type="button" class="btn btn-primary popup__button stage3-convertdeal-but">
 				 Convert Deal to Contract
 				</button></a>
 			</div>
@@ -738,6 +755,19 @@ if(count($check_deal_orders->posts) == 1){
 </div>
 
 <script type="text/javascript">
+function copyToClipboard(element) {
+	var $temp = jQuery("<input>");
+	jQuery("body").append($temp);
+	$temp.val(jQuery(element).text()).select();
+	document.execCommand("copy");
+	$temp.remove();
+	var tooltip = document.getElementById("myTooltip"+element);
+	tooltip.innerHTML = "Copied: ";
+}
+function outFunc(element) {
+	var tooltip = document.getElementById("myTooltip"+element);
+	tooltip.innerHTML = "Copy to clipboard";
+}	
 jQuery(document).ready(function($) {
 	// This is required for AJAX to work on our page
 	var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';

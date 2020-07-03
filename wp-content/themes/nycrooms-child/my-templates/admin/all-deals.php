@@ -10,12 +10,17 @@ $args = array(
 'paged' => $paged
 );
 $meta_query = array();
-if(isset($_GET['deal_stage']) && !empty($_GET['deal_stage'])){
-	$meta_query[] =  array(
-            'key'          => 'deal_stage',
-            'value'        => $_GET['deal_stage'],
-            'compare'      => '=',
-    );	
+
+if(isset($_GET['date_range']) && !empty($_GET['date_range'])){
+	$date = explode('-',$_GET['date_range']);
+	$start_date =  date('Y-m-d',strtotime($date['0']));
+	$end_date = date('Y-m-d',strtotime($date['1']));
+	$date_query = array(
+	'after' => $start_date,
+	'before' => $end_date,
+	'inclusive' => true,
+	);	
+
 }
 if(isset($_GET['deal_name']) && !empty($_GET['deal_name'])){
 	$meta_query[] =  array(
@@ -37,6 +42,9 @@ if(isset($_GET['deal_no']) && !empty($_GET['deal_no'])){
 if(!empty($meta_query)){
    $args['meta_query'] = $meta_query;
 } 
+if(isset($date_query) && !empty($date_query)){
+	$args['date_query'] = $date_query;
+}
 $deals = new WP_Query( $args );
 ?>
 <style>
@@ -112,12 +120,7 @@ input.checkbulk{
 									<input type="text" placeholder="Enter Email" name="deal_email" value=""/>
 								</div>
 								<div class="col-md-6">
-									<select data-placeholder="Any Status" name="deal_stage" class="chosen-select-no-single" >
-										<option value="">Select Stage</option>	
-										<option value="1">Stage 1</option>
-										<option value="2">Stage 2</option>
-										<option value="3">Stage 3</option>
-									</select>
+									<input type="text" id="date-picker-from" placeholder="Date Range" name="date_range" readonly="readonly">								
 								</div>
 							</div>
 							<!-- Row With Forms / End -->	
@@ -147,7 +150,7 @@ input.checkbulk{
 					<th><i class="fa fa-envelope"></i> Email</th>
 					<th><i class="fa fa-phone" ></i> Phone</th>
 					<th><i class="fa fa-check-square-o" ></i> Source</th>
-					<th class="expire-date"><i class="fa fa-bars" aria-hidden="true"></i> Stage</th>
+					<th><i class="fa fa-check-square-o" ></i> Date</th>
 					<th></th>
 				</tr>
 
@@ -165,7 +168,7 @@ input.checkbulk{
 							<td class="deal-email-address"><?php echo get_post_meta($deal_id,'email',true); ?></td>
 							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'phone',true); ?></td>
 							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'lead_source',true); ?></td>
-							<td class="deal-stage-number"><?php echo 'Stage '.$deal_stage; ?></td>
+							<td class="deal-phone-number"><?php echo get_the_date( 'Y-m-d' ); ?></td>
 							<td class="action">
 								<a href="<?php echo get_site_url(); ?>/admin/deals/details/<?php echo base64_encode($deal_id); ?>" ><i class="fa fa-eye"></i> View</a>
 								<a href="#" class="delete delete-deal" data-id="<?php echo $deal_id; ?>"><i class="fa fa-remove"></i> Delete</a>
@@ -291,7 +294,27 @@ jQuery(document).ready(function($) {
 			   console.log('copied text : ', copyText);
 			   alert('copied text: ' + copyText); 
     });
- 
+
+	jQuery('#date-picker-from').daterangepicker({
+		autoUpdateInput: false,
+			locale: {
+			cancelLabel: 'Clear'
+		}		
+	});
+	
+
+	jQuery('#date-picker-from').on('show.daterangepicker', function(ev, picker) {
+		jQuery('.daterangepicker').addClass('calendar-visible');
+		jQuery('.daterangepicker').removeClass('calendar-hidden');
+	});
+	jQuery('#date-picker-from').on('apply.daterangepicker', function(ev, picker) {
+		  $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+	  });
+
+	 jQuery('#date-picker-from').on('cancel.daterangepicker', function(ev, picker) {
+		  $(this).val('');
+	  });
+
 });
 </script>
 <?php 

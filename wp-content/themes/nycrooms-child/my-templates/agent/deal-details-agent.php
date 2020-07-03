@@ -460,8 +460,6 @@ get_header();
 
 <div class="margin-top-55"></div>
 
-<!-- Back To Top Button -->
-<div id="backtotop"><a href="#"></a></div>
 
 <!-- Modal for Amount details -->
 <div class="modal fade popup-main--section" id="fillamountdetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
