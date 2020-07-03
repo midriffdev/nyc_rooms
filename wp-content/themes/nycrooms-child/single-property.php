@@ -681,8 +681,8 @@ get_footer();
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/maps.js"></script>
 
 <!-- Date Range Picker - docs: http://www.daterangepicker.com/ -->
-<script src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/moment.min.js"></script>
-<script src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/daterangepicker.js"></script>
+<script type="text/javascript"  src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/moment.min.js"></script>
+<script type="text/javascript"  src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/daterangepicker.js"></script>
 <script>
 // Calendar Init
 jQuery(function() {
