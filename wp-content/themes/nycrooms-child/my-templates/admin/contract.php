@@ -1,22 +1,46 @@
 <?php
-require_once get_stylesheet_directory().'/dompdf/autoload.inc.php';
-use Dompdf\Dompdf;
-use Dompdf\Options;
-if(isset($_GET['create-contract'])){
-	$invoice_html = '';
-	$options = new Options();
-	$options->set('isRemoteEnabled', TRUE);	
-	$file_name = uniqid().'.pdf';		
-	$pdf  = new Dompdf($options);
-	$pdf->load_html($invoice_html);
-	$pdf->set_paper('A4', 'landscape');
-	$pdf->render();
-	ob_end_clean();
-	$pdf->stream($file_name);
-	$pdf->output();	
+if(isset($_POST['create_contract'])){
+	$contract_data = array();
+	$contract_data['contact_no'] = $_POST['contact_no'];
+	$contract_data['contact_file_no'] = $_POST['contact_file_no'];
+	$contract_data['contact_date'] = $_POST['contact_date'];
+	$contract_data['agreement_between'] = $_POST['agreement_between'];
+	$contract_data['and_customer'] = $_POST['and_customer'];
+	$contract_data['customer_date_available'] = $_POST['customer_date_available'];
+	$contract_data['customer_rental_range'] = $_POST['customer_rental_range'];
+	$contract_data['customer_geo_location'] = $_POST['customer_geo_location'];
+	$contract_data['accomodation'] = $_POST['accomodation'];
+	$contract_data['customer_elevator'] = $_POST['customer_elevator'];
+	$contract_data['customer_other_requirement'] = $_POST['customer_other_requirement'];
+	$contract_data['vender_address'] = $_POST['vender_address'];
+	$contract_data['vender_name_of_owner'] = $_POST['vender_name_of_owner'];
+	$contract_data['vender_geo_location'] = $_POST['vender_geo_location'];
+	$contract_data['vender_phone_owner'] = $_POST['vender_phone_owner'];
+	$contract_data['vender_utility'] = $_POST['vender_utility'];
+	$contract_data['vender_floor_location'] = $_POST['vender_floor_location'];
+	$contract_data['vender_elevator'] = $_POST['vender_elevator'];
+	$contract_data['vender_date'] = $_POST['vender_date'];
+	$contract_data['non_refundable_free_paid'] = $_POST['non_refundable_free_paid'];
+	$contract_data['contact_start_date'] = $_POST['contact_start_date'];
+	$contract_data['approximate_duration'] = $_POST['approximate_duration'];
+	$contract_data['agent_name'] = $_POST['agent_name'];
+	$contract_data['customer_name'] = $_POST['customer_name'];
+	$contract_data['agent_signature'] = $_POST['agent_signature'];
+	$contract_data['customer_signature'] = $_POST['customer_signature'];
+	$contract_data['agent_date'] = $_POST['agent_date'];
+	$contract_data['customer_date'] = $_POST['customer_date'];
+	$contract_data['additional_notes'] = $_POST['additional_notes'];
+	$contract_data['agent_name_two'] = $_POST['agent_name_two'];
+	$contract_data['customer_name_two'] = $_POST['customer_name_two'];
+	$contract_data['agent_signature_two'] = $_POST['agent_signature_two'];
+	$contract_data['customer_signature_two'] = $_POST['customer_signature_two'];
+	$contract_data['agent_date_two'] = $_POST['agent_date_two'];
+	$contract_data['customer_date_two'] = $_POST['customer_date_two'];
+	update_post_meta(base64_decode(get_query_var( 'id' )),'contract_data',$contract_data);
 }
 nyc_property_admin_authority();
 $post_id = base64_decode(get_query_var( 'id' )); 
+$contract_data = get_post_meta($post_id,'contract_data',true);
 $post = get_post($post_id);
 if(empty($post) || ($post->post_type != 'deals')){
 	wp_redirect(get_site_url().'/admin/deals'); 
@@ -63,6 +87,163 @@ if(count($check_deal_orders->posts) == 1){
    $payment_status = get_post_meta($post_id,'payment_status',true);
 }
 ?>
+<style>
+.agent-space {
+    width: 78%;
+}
+.top-right-heading.date-space {
+    width: 80%;
+}
+.agent-sign-space {
+    width: 73%;
+}
+.date-last-space {
+    width: 90%;
+}
+.customer-space {
+    width: 75%;
+}
+.customer-sign-space {
+    width: 70%;
+}
+.address-space {
+    width: 75%;
+}
+.set-space {
+    margin-top: 20px;
+}
+.set-space textarea {
+    margin-bottom: 50px;
+}
+.image_wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+.logo_pannel img {
+	width:100%;
+}
+.top_heading h3 {
+    margin: 0;
+}
+.header_top_content_pannel {
+    border: 1px solid #000;
+    padding: 20px;
+    margin-top: 20px;
+}
+.header_top_content {
+    display: flex;
+    justify-content: space-between;
+}
+.header_top_content .top-right-heading {
+    display: inline-block;
+}
+.form-input {
+    width: 100% !important;
+    border: none !important;
+    background-color: #fff !important;
+    border-bottom: 1px solid #000 !important;
+    border-radius: unset !important;
+    margin-bottom: 0 !important;
+    color: #333;
+    height: 20px !important;
+    font-size: 15px;
+    padding: 0 2px !important;
+}
+.top-right-heading span {
+    font-size: 17px;
+}
+.agreement-pannel {
+    clear: both;
+    margin-top: 20px;
+}
+.agreement-pannel .agreement-pannel-content {
+    float: left;
+}
+.agreement-pannel .agreement-pannel-content.first {
+    width:15%;
+    margin-bottom:10px;
+}
+.agreement-pannel .agreement-pannel-content.second {
+    width:85%;
+}
+.agreement-pannel-content span {
+    font-size: 16px;
+}
+.form-content {
+    clear: both;
+    padding-top: 20px;
+}
+p.sub-heading {
+    font-size: 16px;
+    font-weight: 600;
+}
+sub-heading2{
+    font-size: 14px;
+}
+.form-content-pannel {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-content-inner-pannel {
+    width: 100%;
+}
+
+.form-content-inner-pannel:first-child {
+    padding-right: 15px;
+}
+.form-content-inner-pannel:last-child {
+    padding-left: 15px;
+}
+.form-content-inner-pannel.form-pannel-1 .pannel2 {
+    width: 75%;
+}
+.form-content-pannel select {
+    border: unset !important;
+    background-color: #fff !important;
+    border-bottom: 1px solid #000 !important;
+    border-radius: unset !important;
+    padding: 0 20px !important;
+    height: 20px !important;
+}
+.form-content-pannel .radio-inline span {
+    width: 60px;
+}
+.form-content-pannel .radio-inline {
+    display: flex;
+    padding-left: 0;
+    margin-left: 30px;
+}
+.form-content-pannel .radio-inline span input {
+    width: 15px !important;
+    height: 15px !important;
+}
+.agreement-pannel-content.second-1 {
+    width: 85%;
+}
+.chk-inline span {
+    width: unset !important;
+    font-size: 14px !important;
+    padding-right: 10px;
+}
+.form-content textarea {
+    background-color: #fff !important;
+}
+.create_contract {
+    margin: 25px;
+    text-align: center;
+}
+
+input:required:focus {
+  border: 1px solid red;
+  outline: none;
+}
+
+textarea:required:focus {
+ border: 1px solid red;
+ outline: none;
+}
+</style>
 <!-- Wrapper -->
 <div id="wrapper">
 
@@ -273,746 +454,393 @@ if(count($check_deal_orders->posts) == 1){
 			</div>
 
 		</div>
-		
-<div class="row contract-detail-formsection">
-   <div class="col-md-12">
-      <h3>Form Details</h3>
-      <div class="pdf-wrapper" style="padding: 50px 50px;">
-         <table style="width:100%;">
-            <tbody>
-               <tr>
-                  <td colspan="2">
-                     <table style="width:100%;">
-                        <tbody>
-                           <tr>
-                              <td colspan="2">
-                                 <table style="width:100%;">
-                                    <tbody>
-                                       <tr>
-                                          <td style="width:40%;">
-                                             <img src="https://nycrooms.midriffdevelopers.live/wp-content/uploads/2020/06/logo.png" style="width:250px;">
-                                          </td>
-                                          <td style="width:60%;padding: 0 0px 0 10%;">
-                                             <h2 style="text-align: right;margin-top: 0;margin-bottom: 0;">Apartment Sharing Contract</h2>
-                                             <table style="width:100%;margin-top:10px;border:1px solid #000;">
-                                                <tbody>
-                                                   <tr>
-                                                      <td style="padding:20px;">
-                                                         <table style="width:100%;">
-                                                            <tbody>
-                                                               <tr>
-                                                                  <td style="width:22%;">
-                                                                     <h4 style="margin:0;">Contract #</h4>
-                                                                  </td>
-                                                                  <td style="width:78%;"><input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                                                                  </td>
-                                                               </tr>
-                                                            </tbody>
-                                                         </table>
-                                                         <table style="width:100%;">
-                                                            <tbody>
-                                                               <tr>
-                                                                  <td style="width:17%;">
-                                                                     <h4 style="margin:0;">File No.</h4>
-                                                                  </td>
-                                                                  <td style="width:83%;"><input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                                                                  </td>
-                                                               </tr>
-                                                            </tbody>
-                                                         </table>
-                                                         <table style="width:100%;">
-                                                            <tbody>
-                                                               <tr>
-                                                                  <td style="width:10%;">
-                                                                     <h4 style="margin:0;">Date</h4>
-                                                                  </td>
-                                                                  <td style="width:90%;"><input type="date" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                                                                  </td>
-                                                               </tr>
-                                                            </tbody>
-                                                         </table>
-                                                      </td>
-                                                   </tr>
-                                                </tbody>
-                                             </table>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                     <table style="width:100%;margin-top:35px;">
-                        <tbody>
-                           <tr>
-                              <td style="padding: 0 0 11px 0;width:19%;"><span style="font-size: 18px;">Agreement between:</span></td>
-                              <td style="padding: 0 0 11px 0;width:81%;padding:0;">
-                                 <p style="background-color: #fff !important;border-radius: unset;border-bottom: 1px solid #000;color: #333;font-weight: 600;margin: 0px;font-size: 18px;text-transform: uppercase;">nyc rooms for rent inc. (606 west 145<sup>th</sup> street ny ny 10031)</p>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td colspan="2">
-                                 <table style="width:100%;">
-                                    <tbody>
-                                       <tr>
-                                          <td style="width:15%;padding: 0 0 11px 0;"><span style="font-size: 18px;">And (customer)</span></td>
-                                          <td style="width:85%;padding: 0 0 11px 0;">
-                                             <p style="border-bottom: 1px solid #000;color: #333;font-weight: 600;margin: 0px;font-size: 18px;text-transform: uppercase;">nyc rooms for rent inc. (606 west 145<sup>th</sup> street ny ny 10031)</p>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                     <table style="width:100%;margin-top:35px;">
-                        <tbody>
-                           <tr>
-                              <td style="padding: 0 0 10px 0;width:100%;">
-                                 <p style="color: #333;margin: 0px;font-size:20px;font-weight: 600;text-transform: capitalize;">(1)Customer Seeks Information Regarding Shared Living Accomodations With The Following:</p>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td colspan="2">
-                                 <table style="width:100%;">
-                                    <tbody>
-                                       <tr>
-                                          <td style="width:50%padding-left: 10px;">
-                                             <table style="width:100%;">
-                                                <tbody>
-                                                   <tr>
-                                                      <td colspan="2">
-                                                         <table style="width:100%;">
-                                                            <tbody>
-                                                               <tr>
-                                                                  <td colspan="2">
-                                                                     <table style="width:100%;">
-                                                                        <tbody>
-                                                                           <tr>
-                                                                              <td style="width:28%;padding:0;"><span style="font-size: 18px;">Date Available:</span></td>
-                                                                              <td style="width:72%;padding: 0;"><input type="date" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                                           </tr>
-                                                                        </tbody>
-                                                                     </table>
-                                                                  </td>
-                                                               </tr>
-                                                            </tbody>
-                                                         </table>
-                                                      </td>
-                                                   </tr>
-                                                   <tr>
-                                                      <td colspan="2">
-                                                         <table style="width:100%;">
-                                                            <tbody>
-                                                               <tr>
-                                                                  <td style="width:42%;padding: 0;"><span style="font-size: 18px;">Geographical Location:</span></td>
-                                                                  <td style="width:56%;padding: 0;"><input type="text" name="" style="border: none;background-color: #fff !important;border-radius: unset;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                               </tr>
-                                                            </tbody>
-                                                         </table>
-                                                      </td>
-                                                   </tr>
-                                                   <tr>
-                                                      <td colspan="2">
-                                                         <table style="width:100%;margin-top: 15px;">
-                                                            <tbody>
-                                                               <tr>
-                                                                  <td style="width:48%;padding: 0;"><span style="font-size: 18px;">Elevator Service required:</span></td>
-                                                                  <td style="width:52%;padding: 0;">
-                                                                     <table style="width:100%;">
-                                                                        <tbody>
-                                                                           <tr>
-                                                                              <td>
-                                                                                 <p style="color: #333;margin: 0px;font-size: 17px;width: 100%;display: inline-flex;"><input style="height: 15px;width: 15px;margin-right: 5px;" type="radio" name="elevateor_service" value="yes">Yes
-                                                                                 </p>
-                                                                              </td>
-                                                                              <td>
-                                                                                 <p style="color: #333;margin: 0px;font-size: 17px;width: 100%;display: inline-flex;"><input style="height: 15px;width: 15px;margin-right: 5px; " type="radio" name="elevateor_service" value="no">No</p>
-                                                                              </td>
-                                                                           </tr>
-                                                                        </tbody>
-                                                                     </table>
-                                                                  </td>
-                                                               </tr>
-                                                            </tbody>
-                                                         </table>
-                                                      </td>
-                                                   </tr>
-                                                </tbody>
-                                             </table>
-                                          </td>
-                                          <td style="width:50%;padding-left: 10px;vertical-align: top;">
-                                             <table style="width:100%;">
-                                                <tbody>
-                                                   <tr>
-                                                      <td colspan="2">
-                                                         <table style="width:100%;">
-                                                            <tbody>
-                                                               <tr>
-                                                                  <td colspan="2">
-                                                                     <table style="width:100%;">
-                                                                        <tbody>
-                                                                           <tr>
-                                                                              <td style="width:60%;padding: 0;"><span style="font-size: 18px;">Monthly/ Weekly rental Range $: </span>
-                                                                              </td>
-                                                                              <td style="width:40%;padding: 0;"><input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;background-color: #fff !important;border-radius: unset;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                                                                              </td>
-                                                                           </tr>
-                                                                        </tbody>
-                                                                     </table>
-                                                                  </td>
-                                                               </tr>
-                                                               <tr>
-                                                                  <td colspan="2" style="padding-top: 15px;">
-                                                                     <table style="width:100%;">
-                                                                        <tbody>
-                                                                           <tr>
-                                                                              <td style="width:42%;padding: 0;"><span style="font-size: 18px;">Type of Accomodation:</span>
-                                                                              </td>
-                                                                              <td style="width:58%;padding: 0;">
-                                                                                 <table style="width:100%;">
-                                                                                    <tbody>
-                                                                                       <tr>
-                                                                                          <td>
-                                                                                             <p style="color: #333;margin: 0px;font-size: 17px;width: 100%;display: inline-flex;">
-                                                                                                <input style="height: 15px;width: 15px;margin-right: 5px; " type="radio" name="" value="">Apartment
-                                                                                             </p>
-                                                                                          </td>
-                                                                                          <td>
-                                                                                             <p style="color: #333;margin: 0px;font-size: 17px;width: 100%;display: inline-flex;"><input style="margin-right: 5px;height: 15px;width: 15px; " type="radio" name="" value="">Room</p>
-                                                                                          </td>
-                                                                                       </tr>
-                                                                                    </tbody>
-                                                                                 </table>
-                                                                              </td>
-                                                                           </tr>
-                                                                        </tbody>
-                                                                     </table>
-                                                                  </td>
-                                                               </tr>
-                                                            </tbody>
-                                                         </table>
-                                                      </td>
-                                                   </tr>
-                                                </tbody>
-                                             </table>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td colspan="2">
-                                             <table style="width:100%;">
-                                                <tbody>
-                                                   <tr>
-                                                      <td colspan="2">
-                                                         <table style="width:100%;">
-                                                            <tbody>
-                                                               <tr>
-                                                                  <td style="width:20%;padding: 0;"><span style="font-size: 18px;">Other Requirements:</span></td>
-                                                                  <td style="width:86%;padding: 0;"><input type="text" name="" style="background-color:#fff !important;border-radius:unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                               </tr>
-                                                            </tbody>
-                                                         </table>
-                                                      </td>
-                                                   </tr>
-                                                </tbody>
-                                             </table>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                     <table style="width:100%;margin-top:35px;">
-                        <tbody>
-                           <tr>
-                              <td style="padding: 0 0 10px 0;width:100%;">
-                                 <p style="color: #333;margin: 0px;font-size:20px;font-weight: 600;text-transform: capitalize;">(2) Vender represent that the following listings Meet customers specification as set forth in Paragraph(1):</p>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td colspan="2">
-                                 <table style="width:100%;">
-                                    <tr>
-                                       <td style="width:50%padding-left: 10px;">
-                                          <table style="width:100%;">
-                                             <tbody>
-                                                <tr>
-                                                   <td colspan="2">
-                                                      <table style="width:100%;">
-                                                         <tbody>
-                                                            <tr>
-                                                               <td colspan="2">
-                                                                  <table style="width:100%;">
-                                                                     <tr>
-                                                                        <td style="width:6%;padding: 0;"><span style="font-size: 18px;">Address:</span></td>
-                                                                        <td style="width:94%;padding: 0;"><input type="text" name="" style="border-radius:unset;background-color:#fff !important;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                                     </tr>
-                                                                  </table>
-                                                               </td>
-                                                            </tr>
-                                                         </tbody>
-                                                      </table>
-                                                   </td>
-                                                </tr>
-                                                <tr>
-                                                   <td colspan="2">
-                                                      <table style="width:100%;">
-                                                         <tr>
-                                                            <td style="width:35%;padding: 0;"><span style="font-size: 18px;">Phone # of Owner:</span></td>
-                                                            <td style="width:65%;padding: 0;"><input type="text" name="" style="border-radius:unset;background-color:#fff !important;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                         </tr>
-                                                      </table>
-                                                   </td>
-                                                </tr>
-                                                <tr>
-                                                   <td colspan="2">
-                                                      <table style="margin-top: 15px;width:100%;">
-                                                         <tr>
-                                                            <td style="width:22%;padding: 0;"><span style="font-size: 18px;">Utility Included:</span></td>
-                                                            <td style="width:52%;padding: 0;">
-                                                               <table style="width:100%;">
-                                                                  <tbody>
-                                                                     <tr>
-                                                                        <td>
-                                                                           <p style="color: #333;margin: 0px;font-size: 17px;width: 100%;display: inline-flex;"><input style="height: 15px;width: 15px;margin-right: 5px;" type="radio" name="elevateor_service" value="yes">Yes
-                                                                           </p>
-                                                                        </td>
-                                                                        <td>
-                                                                           <p style="color: #333;margin: 0px;font-size: 17px;width: 100%;display: inline-flex;"><input style="height: 15px;width: 15px;margin-right: 5px; " type="radio" name="elevateor_service" value="no">No</p>
-                                                                        </td>
-                                                                     </tr>
-                                                                  </tbody>
-                                                               </table>
-                                                            </td>
-                                                         </tr>
-                                                      </table>
-                                                   </td>
-                                                </tr>
-                                                <tr>
-                                                   <td colspan="2">
-                                                      <table style="margin-top: 15px;width:100%;">
-                                                         <tr>
-                                                            <td style="width:48%;padding: 0;"><span style="font-size: 18px;">Elevator Service required:</span></td>
-                                                            <td style="width:52%;padding: 0;">
-                                                               <table style="width:100%;">
-                                                                  <tr>
-                                                                     <td>
-                                                                        <p style="color: #333;margin: 0px;font-size: 17px;width: 100%;display: inline-flex;"><input style="height: 15px;width: 15px;margin-right: 5px;" type="radio" name="elevateor_service" value="yes">Yes
-                                                                        </p>
-                                                                     </td>
-                                                                     <td>
-                                                                        <p style="color: #333;margin: 0px;font-size: 17px;width: 100%;display: inline-flex;"><input style="height: 15px;width: 15px;margin-right: 5px; " type="radio" name="elevateor_service" value="no">No</p>
-                                                                     </td>
-                                                                  </tr>
-                                                               </table>
-                                                         </tr>
-                                                      </table>
-                                                   </td>
-                                                </tr>
-                                             </tbody>
-                                          </table>
-                                       </td>
-                                       <td style="width:50%;padding-left: 10px;">
-                                          <table style="width:100%;">
-                                             <tbody>
-                                                <tr>
-                                                   <td colspan="2">
-                                                      <table style="width:100%;">
-                                                         <tbody>
-                                                            <tr>
-                                                               <td style="width:64%;padding: 0;"><span style="font-size: 18px;">Name of Owner or Primary Tenant:</span>
-                                                               </td>
-                                                               <td style="width:36%;padding: 0;"><input type="text" name="" style="border-radius:unset;background-color:#fff !important;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                                                               </td>
-                                                            </tr>
-                                                            <tr>
-                                                               <td colspan="2">
-                                                                  <table style="width:100%;">
-                                                                     <tr>
-                                                                        <td style="width:45%;padding: 0;"><span style="font-size: 18px;">Monthly/Weekly Rent: $</span>
-                                                                        </td>
-                                                                        <td style="width:55%;padding: 0;"><input type="text" name="" style="border-radius:unset;background-color:#fff !important;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                                                                        </td>
-                                                                     </tr>
-                                                                  </table>
-                                                               </td>
-                                                            </tr>
-                                                            <tr>
-                                                               <td colspan="2">
-                                                                  <table style="width:100%;">
-                                                                     <tr>
-                                                                        <td style="width:28%;padding: 0;"><span style="font-size: 18px;">Floor Location:</span>
-                                                                        </td>
-                                                                        <td style="width:62%;padding: 0;"><input type="text" name="" style="border-radius:unset;background-color:#fff !important;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                                                                        </td>
-                                                                     </tr>
-                                                                  </table>
-                                                               </td>
-                                                            </tr>
-                                                            <tr>
-                                                               <td colspan="2">
-                                                                  <table style="width:100%;">
-                                                                     <tr>
-                                                                        <td style="width:9%;padding: 0;"><span style="font-size: 18px;">Date:</span>
-                                                                        </td>
-                                                                        <td style="width:91%;padding: 0;"><input type="date" name="" style="border-radius:unset;background-color:#fff !important;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                                                                        </td>
-                                                                     </tr>
-                                                                  </table>
-                                                               </td>
-                                                            </tr>
-                                                         </tbody>
-                                                      </table>
-                                                   </td>
-                                                </tr>
-                                             </tbody>
-                                          </table>
-                                       </td>
-                                    </tr>
-                                 </table>
-                           </tr>
-                        </tbody>
-                     </table>
-                     <table style="width:60%;margin-top:35px;">
-                        <tbody>
-                           <tr>
-                              <td colspan="2">
-                                 <table style="width:100%;">
-                                    <tbody>
-                                       <tr>
-                                          <td style="width:56%;padding:0;"><span style="font-size: 20px;font-weight: 600;text-transform: capitalize;">(3) Non-refundable Fee Paid:<span style="color: #333;padding-left:3px;margin: 0px;font-size: 18px;">$<span ></span></span></span></td>
-                                          <td style="width:42%;padding:0;"><input type="text" name="" style="border: none;
-                                             background-color: #fff !important;
-                                             border-radius: unset;
-                                             border-bottom: 1px solid #000;
-                                             color: #333;
-                                             margin: 0px;
-                                             font-size: 17px;
-                                             width: 100%;"></td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                     <table style="width:100%;margin-top:35px;">
-                        <tbody>
-                           <tr>
-                              <td style="padding: 0 0 10px 0;width:100%;">
-                                 <p style="color: #333;margin: 0px;font-size:20px;font-weight: 600;text-transform: capitalize;">(4) Contract Terms:</p>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td colspan="2" style="padding-right:10px;">
-                                 <table style="width: 100%;">
-                                    <tbody>
-                                       <tr>
-                                          <td colspan="2" style="width:50%;">
-                                             <table style="width:100%;">
-                                                <tbody>
-                                                   <tr>
-                                                      <td style="width:37%;padding: 0;"><span style="font-size: 18px;">Contract start Date:</span></td>
-                                                      <td style="width:63%;padding: 0;"><input type="date" name="" style="background-color:#fff !important;border-radius:unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                   </tr>
-                                             </table>
-                                          </td>
-                                          <td colspan="2" style="width:50%;padding-left:20px;">
-                                             <table style="width: 100%;">
-                                                <tbody>
-                                                   <tr>
-                                                      <td colspan="2">
-                                                         <table style="width:100%;">
-                                                            <tbody>
-                                                               <tr>
-                                                                  <td style="width:44%;padding: 0;"><span style="font-size: 18px;">Approximate Duration:</span></td>
-                                                                  <td style="width:56%;padding: 0;">
-                                                                     <table style="width:100%;">
-                                                                        <tbody>
-                                                                           <tr>
-                                                                              <td>
-                                                                                 <p style="color: #333;margin: 0px;font-size: 17px;width: 100%;display: inline-flex;"><input style="height: 15px;width: 15px;margin-right: 5px;" type="radio" name="elevateor_service" value="yes">1 Month
-                                                                                 </p>
-                                                                              </td>
-                                                                              <td>
-                                                                                 <p style="color: #333;margin: 0px;font-size: 17px;width: 100%;display: inline-flex;"><input style="height: 15px;width: 15px;margin-right: 5px; " type="radio" name="elevateor_service" value="no">2 Month</p>
-                                                                              </td>
-                                                                           </tr>
-                                                                        </tbody>
-                                                                     </table>
-                                                                  </td>
-                                                               </tr>
-                                                            </tbody>
-                                                         </table>
-                                                      </td>
-                                                   </tr>
-                                                </tbody>
-                                             </table>
-                                          </td>
-                                    </tbody>
-                                 </table>
-                                 <table style="width:100%;margin-top:35px;">
-                                    <tbody>
-                                       <tr>
-                                          <td style="padding: 0 0 11px 0;width:100%;padding:0;">
-                                             <p style="color: #333;margin: 0px;font-size:20px;font-weight: 600;text-transform: capitalize;">(5) The vendor agrees to be personally responsible And liable for carrying out the terms of this agreement.</p>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                     <!-- Wrapper / End -->
-                  </td>
-               </tr>
-            </tbody>
-         </table>
-         </td></tr></tbody></table>
-         <table style="width:100%;margin-top:35px;">
-            <tbody>
-               <tr>
-                  <td style="padding: 0 0 10px 0;width:100%;">
-                     <p style="color: #333;margin: 0px;font-size:20px;font-weight: 600;text-transform: capitalize;">(6) Any Complaints about this apartment sharing, AGENT SHOULD BE MADE TO:</p>
-                  </td>
-               </tr>
-               <tr>
-                  <td>
-                     <p style="margin:0;font-size:18px;color: #333;">New York State, Department of state office of the New York State, 123 William Street 19th FL Department of State New York, NY 10038 .</p>
-                     <p style="margin:0;font-size:18px;color: #333;"> <b>Telephone:</b> (212) - 417-5747</p>
-                  </td>
-               </tr>
-            </tbody>
-         </table>
-         <table style="width:100%;margin-top:35px;">
-            <tbody>
-               <tr>
-                  <td style="padding: 0 0 10px 0;width:100%;">
-                     <p style="color: #333;margin: 0px;font-size:20px;font-weight: 600;text-transform: capitalize;">(7) This document has been filled out and signed by:</p>
-                  </td>
-               </tr>
-               <tr>
-                  <td colspan="2">
-                     <table style="width: 100%;">
-                        <tbody>
-                           <tr>
-                              <td style="width:50%;padding-right:10px;">
-                                 <table style="width:100%;">
-                                    <tbody>
-                                       <tr>
-                                          <td style="width:25%;padding: 0;"><span style="font-size: 18px;">Agent Name:</span></td>
-                                          <td style="width:75%;padding: 0;"><input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                       </tr>
-                                       <tr>
-                                          <td colspan="2">
-                                             <table style="width:100%;">
-                                                <tbody>
-                                                   <tr>
-                                                      <td style="width:31%;padding: 0;"><span style="font-size: 18px;">Agent Signature:</span></td>
-                                                      <td style="width:69%;padding: 0;"><input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                   </tr>
-                                                </tbody>
-                                             </table>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td colspan="2">
-                                             <table style="width:100%;">
-                                                <tbody>
-                                                   <tr>
-                                                      <td style="width:9%;padding: 0;"><span style="font-size: 18px;">Date:</span></td>
-                                                      <td style="width:91%;padding: 0;"><input type="date" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                   </tr>
-                                                </tbody>
-                                             </table>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </td>
-                              <td style="width:50%;padding-left:10px;">
-                                 <table style="width: 100%;">
-                                    <tbody>
-                                       <tr>
-                                          <td colspan="2">
-                                             <table style="width:100%;">
-                                                <tbody>
-                                                   <tr>
-                                                      <td style="width:32%;padding: 0;"><span style="font-size: 18px;">Customer Name:</span></td>
-                                                      <td style="width:68%;padding: 0;"><input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                   </tr>
-                                                   <tr>
-                                                      <td colspan="2">
-                                                         <table style="width:100%;">
-                                                            <tbody>
-                                                               <tr>
-                                                                  <td style="width:38%;padding: 0;"><span style="font-size: 18px;">Customer Signature:</span></td>
-                                                                  <td style="width:62%;padding: 0;"><input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                               </tr>
-                                                               <tr>
-                                                                  <td colspan="2">
-                                                                     <table style="width:100%;">
-                                                                        <tbody>
-                                                                           <tr>
-                                                                              <td style="width:9%;padding: 0;"><span style="font-size: 18px;">Date:</span></td>
-                                                                              <td style="width:91%;padding: 0;"><input type="date" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                                           </tr>
-                                                                        </tbody>
-                                                                     </table>
-                                                                  </td>
-                                                               </tr>
-                                                            </tbody>
-                                                         </table>
-                                                      </td>
-                                                   </tr>
-                                                </tbody>
-                                             </table>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                  </td>
-               </tr>
-            </tbody>
-         </table>
-         </td>
-         </tr>
-         </tbody>
-         </table>
-         <div clas="page-break-after"></div>
-         <table style="width:100%;margin-top:35px;">
-            <tbody>
-               <tr>
-                  <td style="padding: 0 0 10px 0;width:100%;">
-                     <p style="color: #333;margin: 0px;font-size:20px;font-weight: 600;text-transform: capitalize;text-align: center;"> Additional Notes:</p>
-                  </td>
-               </tr>
-               <tr>
-                  <td>
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                     <input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;">
-                  </td>
-               </tr>
-               <tr>
-                  <td colspan="2" style="padding-top:70px;">
-                     <table style="width: 100%;">
-                        <tbody>
-                           <tr>
-                              <td style="width:50%;padding-right:10px;">
-                                 <table style="width:100%;">
-                                    <tbody>
-                                       <tr>
-                                          <td style="width:26%;padding: 0;"><span style="font-size: 18px;">Agent Name:</span></td>
-                                          <td style="width:74%;padding: 0;"><input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                       </tr>
-                                       <tr>
-                                          <td colspan="2">
-                                             <table style="width:100%;">
-                                                <tbody>
-                                                   <tr>
-                                                      <td style="width:32%;padding: 0;"><span style="font-size: 18px;">Agent Signature:</span></td>
-                                                      <td style="width:68%;padding: 0;"><input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                   </tr>
-                                                </tbody>
-                                             </table>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td colspan="2">
-                                             <table style="width:100%;">
-                                                <tbody>
-                                                   <tr>
-                                                      <td style="width:9%;padding: 0;"><span style="font-size: 18px;">Date:</span></td>
-                                                      <td style="width:92%;padding: 0;"><input type="date" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                   </tr>
-                                                </tbody>
-                                             </table>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </td>
-                              <td style="width:50%;padding-left:10px;">
-                                 <table style="width: 100%;">
-                                    <tbody>
-                                       <tr>
-                                          <td colspan="2">
-                                             <table style="width:100%;">
-                                                <tbody>
-                                                   <tr>
-                                                      <td style="width:32%;padding: 0;"><span style="font-size: 18px;">Customer Name:</span></td>
-                                                      <td style="width:68%;padding: 0;"><input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                   </tr>
-                                                   <tr>
-                                                      <td colspan="2">
-                                                         <table style="width:100%;">
-                                                            <tbody>
-                                                               <tr>
-                                                                  <td style="width:38%;padding: 0;"><span style="font-size: 18px;">Customer Signature:</span></td>
-                                                                  <td style="width:52%;padding: 0;"><input type="text" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                               </tr>
-                                                               <tr>
-                                                                  <td colspan="2">
-                                                                     <table style="width:100%;">
-                                                                        <tbody>
-                                                                           <tr>
-                                                                              <td style="width:9%;padding: 0;"><span style="font-size: 18px;">Date:</span></td>
-                                                                              <td style="width:91%;padding: 0;"><input type="date" name="" style="background-color: #fff !important;border-radius: unset;border: none;border-bottom: 1px solid #000;color: #333;margin: 0px;font-size: 17px;width: 100%;"></td>
-                                                                           </tr>
-                                                                        </tbody>
-                                                                     </table>
-                                                                  </td>
-                                                               </tr>
-                                                            </tbody>
-                                                         </table>
-                                                      </td>
-                                                   </tr>
-                                                </tbody>
-                                             </table>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                  </td>
-               </tr>
-            </tbody>
-         </table>
-      </div>
-   </div>		
-<div class="contract-form-row">
-	<div class="row">
-		<a href="<?php echo get_site_url(); ?>/admin/deals/contract/Njgx?create-contract"><button class="contract-form-submit">Send Contract</button></a>
-	</div>
-</div>
+        <form action="" id="contract_form" method="post">
+		<div class="row contract-detail-formsection">
+						<div class="image_wrapper">
+							<div class="logo_pannel">
+								<?php echo get_custom_logo(); ?>
+							</div>
+							<div class="top_heading">
+								<h3>Apartment Sharing Contract</h3>
+								<div class="header_top_content_pannel">
+									<div class="header_top_content">
+										<div class="top-right-heading"><span>Contact #</span></div>
+										<div class="top-right-heading"><input type="text" class="form-input" id="contact_no" value="<?php if(!empty($contract_data)) { echo $contract_data['contact_no']; }  ?>" name="contact_no" required></div>
+									</div>
+									<div class="header_top_content">
+										<div class="top-right-heading"><span>File No.</span></div>
+										<div class="top-right-heading"><input type="text" class="form-input" id="contact_file_no" name="contact_file_no" value="<?php if(!empty($contract_data)) { echo $contract_data['contact_file_no']; }  ?>" required></div>
+									</div>
+									<div class="header_top_content">
+										<div class="top-right-heading"><span>Date</span></div>
+										<div class="top-right-heading date-space"><input type="date" class="form-input" id="contact_date" name="contact_date" value="<?php if(!empty($contract_data)) { echo $contract_data['contact_date']; }  ?>" required></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-main">
+							<div class="agreement-pannel">
+							<div class="agreement-pannel-content first">
+								<span>Agreement between:</span>
+							</div>
+							<div class="agreement-pannel-content second">
+								<span><input type="text" class="form-input" name="agreement_between" value="<?php if(!empty($contract_data)) { echo $contract_data['agreement_between']; }  ?>" required></span></div>
+							</div>
+							<div class="agreement-pannel">
+							<div class="agreement-pannel-content first">
+								<span>And (customer):</span>
+							</div>
+							<div class="agreement-pannel-content second">
+								<span><input type="text" class="form-input" name="and_customer" value="<?php if(!empty($contract_data)) { echo $contract_data['and_customer']; }  ?>" required></span></div>
+							</div>
+						</div>
+						<div class="form-content">
+							<p class="sub-heading">(1)Customer seeks information regarding shared living accomodations with the following:</p>
+							<div class="form-content-pannel">
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<span>Date Available:</span>
+										</div>
+										<div class="agreement-pannel-content pannel2">
+										<span><input type="date" class="form-input" name="customer_date_available" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_date_available']; }  ?>" required></span></div>
+									</div>
+								</div>
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+							<div class="agreement-pannel-content pannel1">
+								<span>Monthly/ Weekly rental Range $:</span>
+							</div>
+							<div class="agreement-pannel-content pannel2">
+								<span><input type="text" class="form-input" name="customer_rental_range" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_rental_range']; }  ?>" required></span></div>
+							</div>
+								</div>
+							</div>
+							<div class="form-content-pannel">
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<span>Geographical Location:</span>
+										</div>
+										<div class="agreement-pannel-content pannel2 location-space">
+										<span><input type="text" class="form-input" name="customer_geo_location" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_geo_location']; }  ?>" required></span></div>
+									</div>
+								</div>
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+							<div class="agreement-pannel-content pannel1">
+								<span>Type of Accomodation:</span>
+							</div>
+							<div class="agreement-pannel-content pannel2">
+								<span><select name="accomodation"><option <?php if(!empty($contract_data)) { if($contract_data['accomodation'] == "Appartment" ){ echo "selected"; } } ?> value="Appartment">Appartment</option><option  <?php if(!empty($contract_data)) { if($contract_data['accomodation'] == "Room" ){ echo "selected"; } } ?> value="Room">Room</option></select></span></div>
+							</div>
+								</div>
+							</div>
+							<div class="form-content-pannel">
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<span>Elevator Service required:</span>
+										</div>
+										<div class="agreement-pannel-content pannel2">
+											<div class="radio-inline">
+										<span><input type="radio" class="form-input" value="Yes" name="customer_elevator" <?php if(!empty($contract_data)) { if($contract_data['customer_elevator'] == "Yes" ){ echo "checked"; } } ?> required>Yes</span>
+										<span><input type="radio" class="form-input" value="No" name="customer_elevator"  <?php if(!empty($contract_data)) { if($contract_data['customer_elevator'] == "No" ){ echo "checked"; } } ?> required>No</span></div>
+									</div>
+									</div>
+								</div>
+						</div>
+						<div class="form-main">
+							<div class="agreement-pannel">
+							<div class="agreement-pannel-content first-1">
+								<span>Other Requirements:</span>
+							</div>
+							<div class="agreement-pannel-content second-1">
+								<span><input type="text" class="form-input" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_other_requirement']; }  ?>" name="customer_other_requirement" required></span></div>
+							</div>
+						</div>
+						<div class="form-content form-content2">
+							<p class="sub-heading">
+(2) Vender represent that the following listings meet customers specification as set forth in Paragraph(1):</p>
+							<div class="form-content-pannel">
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<span>Address:</span>
+										</div>
+										<div class="agreement-pannel-content pannel2 address-space">
+										<span><input type="text" class="form-input" name="vender_address" value="<?php if(!empty($contract_data)) { echo $contract_data['vender_address']; }  ?>" required></span></div>
+									</div>
+								</div>
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+							<div class="agreement-pannel-content pannel1">
+								<span>Name of Owner or Primary Tenant:</span>
+							</div>
+							<div class="agreement-pannel-content pannel2">
+								<span><input type="text" class="form-input" name="vender_name_of_owner" value="<?php if(!empty($contract_data)) { echo $contract_data['vender_name_of_owner']; }  ?>" required></span></div>
+							</div>
+								</div>
+							</div>
+							<div class="form-content-pannel">
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<span>Geographical Location:</span>
+										</div>
+										<div class="agreement-pannel-content pannel2">
+										<span><input type="text" class="form-input" name="vender_geo_location" value="<?php if(!empty($contract_data)) { echo $contract_data['vender_geo_location']; }  ?>" required></span></div>
+									</div>
+								</div>
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+							<div class="agreement-pannel-content pannel1">
+								<span>Phone # of Owner:</span>
+							</div>
+							<div class="agreement-pannel-content pannel2">
+								<span><input type="text" class="form-input" name="vender_phone_owner" value="<?php if(!empty($contract_data)) { echo $contract_data['vender_phone_owner']; }  ?>" required></span></div>
+							</div>
+								</div>
+							</div>
+							<div class="form-content-pannel">
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<span>Utility required:</span>
+										</div>
+										<div class="agreement-pannel-content pannel2">
+											<div class="radio-inline">
+										<span><input type="radio" class="form-input" name="vender_utility" value="Yes" <?php if(!empty($contract_data)) { if($contract_data['vender_utility'] == "Yes" ){ echo "checked"; } } ?> required>Yes</span>
+										<span><input type="radio" class="form-input" name="vender_utility" value="No" <?php if(!empty($contract_data)) { if($contract_data['vender_utility'] == "No" ){ echo "checked"; } } ?> required>No</span></div>
+									</div>
+									</div>
+								</div>
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+							<div class="agreement-pannel-content pannel1">
+								<span>Floor Location:</span>
+							</div>
+							<div class="agreement-pannel-content pannel2">
+								<span><input type="text" class="form-input" name="vender_floor_location" value="<?php if(!empty($contract_data)) { echo $contract_data['vender_floor_location']; }  ?>" required></span></div>
+							</div>
+								</div>
+							</div>
+							<div class="form-content-pannel">
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<span>Elevator Service required:</span>
+										</div>
+										<div class="agreement-pannel-content pannel2">
+											<div class="radio-inline">
+										<span><input type="radio" class="form-input" name="vender_elevator" value="Yes" <?php if(!empty($contract_data)) { if($contract_data['vender_elevator'] == "Yes" ){ echo "checked"; } } ?> required>Yes</span>
+										<span><input type="radio" class="form-input" name="vender_elevator" value="No" <?php if(!empty($contract_data)) { if($contract_data['vender_elevator'] == "No" ){ echo "checked"; } } ?> required>No</span></div>
+									</div>
+									</div>
+								</div>
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+							<div class="agreement-pannel-content pannel1">
+								<span>Date:</span>
+							</div>
+							<div class="agreement-pannel-content pannel2">
+								<span><input type="date" class="form-input" name="vender_date" value="<?php if(!empty($contract_data)) { echo $contract_data['vender_date']; }  ?>" required></span></div>
+							</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-content form-content2">
+							<div class="form-content-pannel">
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<p class="sub-heading">(3)Non-Refundable Fee Paid:$</p>
+										</div>
+										<div class="agreement-pannel-content pannel2">
+										<span><input type="text" class="form-input" name="non_refundable_free_paid" value="<?php if(!empty($contract_data)) { echo $contract_data['non_refundable_free_paid']; }  ?>" required></span></div>
+									</div>
+								</div>
+						</div>
+						<div class="form-content form-content2">
+							<p class="sub-heading">(3)Contract Terms:</p>
+						
+							
+							<div class="form-content-pannel">
 
-</div>
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+							<div class="agreement-pannel-content pannel1">
+								<span>Contract start Date:</span>
+							</div>
+							<div class="agreement-pannel-content pannel2">
+								<span><input type="date" class="form-input" name="contact_start_date" value="<?php if(!empty($contract_data)) { echo $contract_data['contact_start_date']; }  ?>" required></span></div>
+							</div>
+								</div>
+								<div class="form-content-inner-pannel">
+
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<span>Approximate Duration:</span>
+										</div>
+										<div class="agreement-pannel-content pannel2">
+											<div class="radio-inline chk-inline">
+										<span><input type="radio" class="form-input" name="approximate_duration" value="1 Month" required>1 Month</span>
+										<span><input type="radio" class="form-input" name="approximate_duration" value="2 Months" required>2 Months</span>
+										<span><input type="radio" class="form-input" name="approximate_duration" value="3 Months" required>3 Months</span>
+										<span><input type="radio" class="form-input" name="approximate_duration" value="1 Year" required>1 Year</span></div>
+									</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-content form-content2">
+							<p class="sub-heading">(5) The Vendor Agrees To Be Personally Responsible And Liable For Carrying Out The Terms Of This Agreement.</p>
+						
+						</div>
+						<div class="form-content form-content2">
+							<p class="sub-heading">(6) Any Complaints About This Apartment Sharing, AGENT SHOULD BE MADE TO:</p>
+							<p class="sub-heading2">New York State, Department of state office of the New York State, 123 William Street 19th FL Department of State New York, NY 10038 .<br><b>Telephone:</b> (212) - 417-5747</p>
+						
+						</div>
+						<div class="form-content">
+							<p class="sub-heading">
+(7) This Document Has Been Filled Out And Signed By:</p>
+							<div class="form-content-pannel">
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<span>Agent Name:</span>
+										</div>
+										<div class="agreement-pannel-content pannel2 agent-space">
+										<span><input type="text" class="form-input" name="agent_name" required></span></div>
+									</div>
+								</div>
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+							<div class="agreement-pannel-content pannel1">
+								<span>
+Customer Name:</span>
+							</div>
+							<div class="agreement-pannel-content pannel2 customer-space">
+								<span><input type="text" class="form-input" name="customer_name" required></span></div>
+							</div>
+								</div>
+							</div>
+							<div class="form-content-pannel">
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<span>
+Agent Signature:</span>
+										</div>
+										<div class="agreement-pannel-content pannel2 agent-sign-space">
+										<span><input type="text" class="form-input" name="agent_signature" required></span></div>
+									</div>
+								</div>
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+							<div class="agreement-pannel-content pannel1">
+								<span>
+Customer Signature:</span>
+							</div>
+							<div class="agreement-pannel-content pannel2 customer-sign-space">
+								<input type="text" class="form-input" name="customer_signature" required></span></div></div>
+							</div>
+								</div>
+							<div class="form-content-pannel">
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<span>
+Date:</span>
+										</div>
+										<div class="agreement-pannel-content pannel2 date-last-space">
+										<span><input type="date" class="form-input" name="agent_date" required></span></div>
+									</div>
+								</div>
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+							<div class="agreement-pannel-content pannel1">
+								<span>
+Date:</span>
+							</div>
+							<div class="agreement-pannel-content pannel2 date-last-space">
+								<input type="date" class="form-input" name="customer_date" required></span></div></div>
+							</div>
+								</div>
+							</div>
+								<div class="form-content set-space">
+							<p class="sub-heading text-center">Additional Notes</p>
+							<textarea cols="20" rows="10" name="additional_notes"></textarea>
+							<div class="form-content-pannel">
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<span>Agent Name:</span>
+										</div>
+										<div class="agreement-pannel-content pannel2 agent-space">
+										<span><input type="text" class="form-input" name="agent_name_two"></span></div>
+									</div>
+								</div>
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+							<div class="agreement-pannel-content pannel1">
+								<span>
+Customer Name:</span>
+							</div>
+							<div class="agreement-pannel-content pannel2 customer-space">
+								<span><input type="text" class="form-input" name="customer_name_two" ></span></div>
+							</div>
+								</div>
+							</div>
+							<div class="form-content-pannel">
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<span>
+Agent Signature:</span>
+										</div>
+										<div class="agreement-pannel-content pannel2 agent-sign-space">
+										<span><input type="text" class="form-input" name="agent_signature_two"></span></div>
+									</div>
+								</div>
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+							<div class="agreement-pannel-content pannel1">
+								<span>
+Customer Signature:</span>
+							</div>
+							<div class="agreement-pannel-content pannel2 customer-sign-space">
+								<input type="text" class="form-input" name="customer_signature_two"></div></div>
+							</div>
+								</div>
+							<div class="form-content-pannel">
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+										<div class="agreement-pannel-content pannel1">
+											<span>
+Date:</span>
+										</div>
+										<div class="agreement-pannel-content pannel2 date-last-space">
+										<span><input type="date" class="form-input" name="agent_date_two"></span></div>
+									</div>
+								</div>
+								<div class="form-content-inner-pannel">
+									<div class="agreement-pannel">
+							<div class="agreement-pannel-content pannel1">
+								<span>
+Date:</span>
+							</div>
+							<div class="agreement-pannel-content pannel2 date-last-space">
+								<input type="date" class="form-input" name="customer_date_two"></div></div>
+							</div>
+								</div>
+							</div>
+						<div class="contract-form-row create_contract">
+							<div class="row">
+								<button type="submit" class="contract-form-submit" name="create_contract" id="create_contract_btn">Create Contract</button>
+							</div>
+						</div>
+						</div>		
+    </form>
 </div>
 </div>
 <div class="margin-top-55"></div>
@@ -1024,7 +852,34 @@ if(count($check_deal_orders->posts) == 1){
 		dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
 	});
 </script>
-
+<script type="text/javascript">
+function lockForm(objForm) {
+  var elArr = objForm.elements;
+  for(var i=0; i<elArr.length; i++) { 
+    switch (elArr[i].type) {
+      case 'radio': elArr[i].disabled = true; break;
+      case 'checkbox': elArr[i].disabled = true; break;
+      case 'select-one': elArr[i].disabled = true; break;
+      case 'select-multiple': elArr[i].disabled = true; break;
+      case 'text': elArr[i].readOnly = true; break;
+      case 'textarea': elArr[i].readOnly = true; break;
+      case 'button': elArr[i].disabled = true; break;
+      case 'submit': elArr[i].disabled = true; break;
+      case 'reset': elArr[i].disabled = true; break;
+      default: elArr[i].disabled = true; break;
+    }
+  }
+}
+jQuery(document).ready(function($) {
+	<?php 
+		if(!empty($contract_data)){
+			?>
+			//lockForm(contract_form);
+			<?php 
+		}
+	?>
+});
+</script>
 <?php
 get_footer();
 ?>
