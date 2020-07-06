@@ -137,6 +137,9 @@ var paymentForm = new SqPaymentForm({
 	  var amountvalue             = document.getElementById('amount').value;
 	  var deal_id                 =  document.getElementById('deal_id_square_tenant').value;
 	  var email_teanant           =  document.getElementById('email_square_teanant').value;
+	  var name_teanant           =  document.getElementById('name_square_teanant').value;
+	  var phone_teanant           =  document.getElementById('phone_square_teanant').value;
+	  
 	  
 	  jQuery('#Square_payment_form_js').modal('hide');
       jQuery('.loading').show();
@@ -145,9 +148,8 @@ var paymentForm = new SqPaymentForm({
 		
 					  type: 'post',
 					  url: payment_ajax_object.ajax_url,
-					  data: {action:'nyc_tenant_payment_square_ajax',amountvalue:amountvalue,nonce:nonce,deal_id:deal_id,email_teanant:email_teanant},
+					  data: {action:'nyc_tenant_payment_square_ajax',amountvalue:amountvalue,nonce:nonce,deal_id:deal_id,email_teanant:email_teanant,name_teanant:name_teanant,phone_teanant:phone_teanant},
 					  success: function(response){
-							 
 							   if(response == "success"){
 								jQuery('.loading').hide();
 								jQuery('.square-payment-success-popup h3').html('Payment Successfully Done');
@@ -164,6 +166,7 @@ var paymentForm = new SqPaymentForm({
 										 window.location.reload();
 									}, 2000);   								 
 							 }
+							 
 					  }
 					  
 		 }); 

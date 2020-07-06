@@ -6,8 +6,8 @@ if(empty($post) || ($post->post_type != 'deals')){
 	wp_redirect(get_site_url().'/admin/deals'); 
 }
 get_header();
-$tenant_deal_link = get_site_url().'/tenant/deal-details-tenant/?id='.base64_encode($post_id);
-$agent_deal_link = get_site_url().'/agent/deal-details-agent/?id='.base64_encode($post_id);
+$tenant_deal_link = get_site_url().'/tenant/deal-details-tenant/'.base64_encode($post_id);
+$agent_deal_link = get_site_url().'/agent/deal-details-agent/'.base64_encode($post_id);
 $deal_stage = get_post_meta($post_id,'deal_stage',true);
 $lead_source = get_post_meta($post_id,'lead_source',true);
 $name = get_post_meta($post_id,'name',true);
@@ -15,7 +15,9 @@ $email = get_post_meta($post_id,'email',true);
 $phone = get_post_meta($post_id,'phone',true);
 $description = get_post_meta($post_id,'description',true);
 $property_id = get_post_meta($post_id,'property_id',true);
-$tenant_application = get_post_meta($post_id,'document_files',true);
+$property_finalization = get_post_meta($post_id,'property_finalization',true);
+$tenant_application_check = get_post_meta($post_id,'application_submission',true);
+$tenant_application = get_post_meta($post_id,'application_doc',true);
 if(isset($_POST['upadte_stag1'])){
 	update_post_meta($post_id,'deal_price',$_POST['deal_price']);
 	update_post_meta($post_id,'admin_notes',$_POST['admin_notes']);
@@ -63,6 +65,7 @@ if(count($check_deal_orders->posts) == 1){
 		<?php 
 		}
 		?>
+		
 		<?php 
 		if(count($check_deal_orders->posts) == 1){
 		?>
@@ -72,6 +75,18 @@ if(count($check_deal_orders->posts) == 1){
 		<?php 
 		}
 		?>
+		
+		<?php 
+		if($property_finalization){
+		?>
+        <div class='alert_note_panel'>		
+			<h4 class="tenant_req">A Property has been Finalized on this deal.</h4>
+		</div>
+		<?php 
+		}
+		?>
+		
+		
 		
 		<div class="row deal-detail-upperunifrm-sect">
 			<div class="col-md-3">
@@ -290,7 +305,7 @@ if(count($check_deal_orders->posts) == 1){
 
 				<div class="col-md-6">
 					<div class="dealdetail-signapplicationform">
-						<h3>Application Form Status <span> <?php echo ($tenant_application) ? 'Complete <a href="'.wp_get_attachment_url($tenant_application).'" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i></a>' : 'Pending'; ?> </span></h3>
+						<h3>Application Form Status <span> <?= ($tenant_application_check == 1) ? 'Complete <a href="'.wp_get_attachment_url($tenant_application).'" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i></a>' : 'Pending'; ?> </span></h3>
 					</div>
 				</div>
 

@@ -298,9 +298,8 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 					'role'  => 'tenant'
 				);
 				$user_id = wp_insert_user( $userdata );
-				
 				update_user_meta( $user_id, 'facebook', $fb_user->link );
-				
+				wp_new_user_notification($user_id, null, 'both');
 				
 				
 				
@@ -371,7 +370,7 @@ if (isset($_GET['code'])) {
 					'role'  => 'tenant'
 				);
 				$user_id = wp_insert_user( $userdata );
-				
+				wp_new_user_notification($user_id, null, 'both');
 				
  
 			} else {

@@ -16,9 +16,11 @@ $admin_notes  =   get_post_meta($dealid,'admin_notes',true);
 $deal_price   =   get_post_meta($dealid,'deal_price',true);
 $agent_saved_notes    =   get_post_meta($dealid,'agent_notes',true);
 $get_selected_agent   =   get_post_meta($dealid,'selectedAgent',true);
-$get_document_file    =   get_post_meta($dealid,'document_files',true);
+$get_document_file    =   get_post_meta($dealid,'application_doc',true);
+$get_invoice_doc      =   get_post_meta($dealid,'payment_invoice_doc',true);
 $get_requested_agent  =   get_post_meta($dealid,'request_an_agent',true);
 $selected_property    =   get_post_meta($dealid, 'selected_property', true);
+$application_submission  =   get_post_meta($dealid,'application_submission', 1);
 
 $query_args = array(
 	'post_type'  => 'dealsorders',
@@ -220,16 +222,16 @@ get_header();
 				</div>
 				
 				<!------------- Start Aplication form  and Payment multstep form --------------------->
-				<div class="col-md-12 progress-set-padding" id="multi-step-form">
+				<div class="col-md-12">	 
 							<div class="progress">
 								<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
 							  </div>
 							  <div class="alert alert-success hide"></div>
 							  
 							  <fieldset class="steps">
-							       
+							      <h3>Step 1 : Application Submission</h3>
 									 <div class="submit-section">
-										<h4> Step 1: Add Personnel Details</h4>
+										<h4>Add Personnel Details</h4>
 											<div class="form">
 													<h5>Name(s)</h5>
 													<input class="name" type="text" placeholder="Enter Name..">
@@ -381,92 +383,126 @@ get_header();
                                       
 									</div>
 								    <input type="button" class="button submit_application_form" value="Submit Application" id="submit_application_form"/>
-									<input type="button" name="next" class="nextbutton btn btn-info" value="Next" />
+									<input type="button" name="next" class="nextbutton btn btn-info" value="Next" /> <span class="applction_frm_resp"><span>
 								  
 							  </fieldset>
 							  <fieldset class="steps">
-								<div class="form">
-											<h5>Where did you see our advertisement?</h5>
-											<!--div class="checkboxes in-row margin-bottom-20">
+								
+											<h3>Step 2: Payments & Request An Agent</h3>
+											
+											<div class="col-md-12">
+											
+												<div class="deal-detail-payment-tobedone mre_wdth">
+												   <?php if(empty($check_deal_orders->posts)){ ?>
+												    <div class="consent_terms">
+												    <p>Below is the consent terms  which the tenant has to accept with the date and stamp:</p>
+													<p><input type="checkbox" name="check_consents_terms" value="1">By clicking this box you are agreeing to the following:
+													<span class="check_consents_terms_err"></span>
+													</p>
+													
+													<p>1.	You are paying a service fee to NYC Rooms For Rent Inc. to provide listings of available rooms.</p>
+													<p>2.	NYC Rooms for Rent will arrange, conduct, coordinate, handles or cause meetings between you and the current occupant of a legally occupied property, including apartment housing, who wishes to share that housing with you or more individuals as a private dwelling.</p>
+													<p>3.	NYC Rooms For Rent Inc. will do the aforementioned for an unlimited amount of time until you are placed in a room of your likings.</p>
+													<p>4.	NYC Rooms for Rent Inc. is not responsible if landlord rejects you for not meeting the landlord qualifications, however NYC Rooms for Rent Inc. will continue to provide you listings.</p>
+													<p>5.	After you move into one of our listings NYC Rooms For Rent Inc. is not responsible for furnishing further listings.</p> 
+													<p>6.	The service fee paid to NYC Rooms For Rent is non-refundable.</p>
+													</div>
+                                                     <?php } ?>
+													 
+													<?php
+													if(empty($check_deal_orders->posts)){ if($deal_price){ ?><h3>Amount to be Paid: <span>$<?= $deal_price ?></span></h3> <?php } }  
+													if(count($check_deal_orders->posts) == 1){ if($deal_price){ ?><h3>Amount Paid: <span>$<?= $deal_price ?></span></h3> <?php } }  ?>
+													
+													<ul class="dealdetail-tenant-actionbuttons">
+														<li>
+															<?php
+															if(empty($check_deal_orders->posts)){
+															?>
+															  <button class="dealdetail-tenant-paynowb sqre_py_now" <?php if(!$get_document_file){ echo "disabled";} ?>>Pay Now</button>
+															<?php
+															}	
 															
-																	<input id="check-2" type="checkbox" name="check">
-																	<label for="check-2">Google</label>
-
-																	<input id="check-3" type="checkbox" name="check">
-																	<label for="check-3">El Diario</label>
-
-																	<input id="check-4" type="checkbox" name="check">
-																	<label for="check-4">Facebook</label>
-
-																	<input id="check-5" type="checkbox" name="check">
-																	<label for="check-5">Amsterdam Newspaper</label>	
-
-																	<input id="check-6" type="checkbox" name="check">
-																	<label for="check-6">Craigslist</label>
-
-																	<input id="check-7" type="checkbox" name="check">
-																	<label for="check-7">Metro Newspaper </label>
-
-																	<input id="check-8" type="checkbox" name="check">
-																	<label for="check-8">Referral</label>
-																	<input id="check-8" type="checkbox" name="check">
-																	<label for="check-8">Other</label>
-																</div-->
-								</div>
+															if(count($check_deal_orders->posts) == 1){
+															?>
+															<button class="dealdetail-tenant-paynowb" disabled>Payment Done</button>
+															<?php
+															}
+															?>
+															
+														</li>
+														<li>
+														  <?php if(empty($check_deal_orders->posts)){ ?>
+															<button class="dealdetail-tenant-reqagentb" <?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'disabled';}  ?>>
+															<?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'Agent Allotted';} else { echo 'Request an Agent';} ?>
+															</button>
+														  <?php } ?>
+														  
+														</li>
+													</ul>
+												</div>
+				                            </div>
 								<input type="button" name="previous" class="previousbutton btn btn-default" value="Previous" />
 							  </fieldset>
-							 
-				</div>
+						</div>
+			
+				 
+				
+				
 				
 				<!------------- End Aplication form  and Payment multstep form --------------------->
 				
 
-				<!-------------- start commented section --------------------------- >
+				<!-------------- start commented section --------------------------->
 
-				<!--div class="col-md-12">
+				<div class="col-md-12">
 					<div class="deal-detail-payment-tobedone">
-						
-						<div class="deal-detail-tenant-subapp">
-						<?php
-						  // $application_download_link = site_url().'/tenant/application-form/?file=application_form_'.$dealid;
+					     <?php
+						if(count($check_deal_orders->posts) == 1){
 						?>
-						
-						<small>Download Sample Application Form <a href="<?php //$application_download_link ?>" target="_blank">here.</a> Fill The details mentioned in form, after that upload the filled application Form Below </small>
-						
-						<h3>Upload Filled Application Form</h3>
-		                <div class="submit-section prop_app_form">
-			               <form action="<?php //site_url() ?>/tenant/deal-details-tenant/?id=<?php //$dealid ?>" class="dropzone dropzone_application_form" ></form>
-						    <button class="button save_file" id="save_document" >Save File</button>
-		                </div>
-						</div>
-						<?php //if($deal_price): ?><h3>Amount to be Paid: <span>$<?php //$deal_price ?></span></h3> <?php //endif;  ?>
+						 <?php if($deal_price): ?><h3>Amount Paid: <span>$<?= $deal_price ?></span></h3> <?php endif;  ?>
+						<?php
+						}
+						?>
 						<ul class="dealdetail-tenant-actionbuttons">
 							<li>
 							    <?php
-								//if(empty($check_deal_orders->posts)){
-								?>
-								  <button class="dealdetail-tenant-paynowb" <?php //if(!$get_document_file){ echo "disabled";} ?>  data-toggle="modal" data-target="#Square_payment_form_js">Pay Now</button>
-								<?php
-								//}
-								
-                               // if(count($check_deal_orders->posts) == 1){
+                                if(count($check_deal_orders->posts) == 1){
 								?>
 								<button class="dealdetail-tenant-paynowb" disabled>Payment Done</button>
 								<?php
-								//}
+								}
 								?>
 								
 							</li>
 							<li>
-							  <?php //if(empty($check_deal_orders->posts)){ ?>
-								<button class="dealdetail-tenant-reqagentb" <?php //if($get_requested_agent && $get_requested_agent == 1 ){ echo 'disabled';}  ?>>
-								<?php //if($get_requested_agent && $get_requested_agent == 1 ){ echo 'Agent Allotted';} else { echo 'Request an Agent';} ?>
-								</button>
-							  <?php //} ?>
+							  <?php 
+							       if(empty($check_deal_orders->posts)){
+                      				if($get_requested_agent && $get_requested_agent == 1 ){			
+								?>
+										<button class="dealdetail-tenant-reqagentb">
+									   Agent Allotted
+										</button>
+							  <?php
+							       }
+							  }
+							  ?>
 							</li>
 						</ul>
+						<?php
+						if($get_document_file) {
+						?>
+						<a class="button application_pdf" href="<?= wp_get_attachment_url($get_document_file) ?>" download >Download Application As Pdf </a> 
+						<?php 
+						}
+						if($get_invoice_doc){
+						?>
+						 <a class="button payment_pdf" href="<?= wp_get_attachment_url($get_invoice_doc) ?>" download >Download Invoice As Pdf </a> 
+						<?php
+						}
+						?>
+						
 					</div>
-				</div-->
+				</div>
 				
 				<!----------- end commented section ----------------->
 				
@@ -813,6 +849,8 @@ get_header();
 					  the Transaction API charge endpoint URL you want to POST the nonce to
 					  (for example, "/process-card")
 					-->
+					
+					
 					<form id="nonce-form" novalidate>
 					  <fieldset>
 						<span class="label">Card Number</span>
@@ -834,7 +872,7 @@ get_header();
 						</div>
 					  </fieldset>
 
-					  <button id="sq-creditcard" class="button-credit-card" onclick="requestCardNonce(event)">Create Payment</button>
+					  <button id="sq-creditcard" class="button-credit-card" onclick="requestCardNonce(event)">Pay Now</button>
 
 					  <div id="error"></div>
 
@@ -844,6 +882,8 @@ get_header();
 					  <input type="hidden" id="amount" name="amount" value="<?= $deal_price * 100 ?>">
 					  <input type="hidden" id="deal_id_square_tenant" name="deal_id_square_tenant" value="<?= $dealid ?>">
 					  <input type="hidden" id="email_square_teanant"  name="email_square_teanant"  value="<?= $email ?>">
+					  <input type="hidden" id="name_square_teanant"   name="name_square_teanant"  value="<?= $name ?>">
+					  <input type="hidden" id="phone_square_teanant"  name="phone_square_teanant"  value="<?= $phone ?>">
 					  <input type="hidden" id="card-nonce" name="nonce">
 					</form>
 				  </div> <!-- end #sq-ccbox -->
@@ -944,7 +984,7 @@ input.previousbutton {
 }
 
 input.submit_application_form {
-    width: 17%;
+    width: 20%;
     padding: 0%;
 }
 
@@ -957,13 +997,51 @@ input.submit_application_form {
     display: inline-block !important;
     margin: 0px 8px 0px 0px !important;
 }
+.applction_frm_resp{
+  color:green;
+  font-size:16px;
+}
 
-  
+.deal-detail-payment-tobedone.mre_wdth{
+  width: 66%;
+}
+.consent_terms p {
+    font-size: 11px;
+    text-align: justify;
+    margin: 0px !important;
+    line-height: 24px;
+}
+
+.consent_terms p:first-child {
+    font-size: 13px;
+    padding-bottom: 1%;
+}
+
+input[name=check_consents_terms] {
+    width: auto;
+    margin: 0px 8px 0px 0px;
+}
+
+span.check_consents_terms_err {
+    text-align: justify;
+    width: 100%;
+    float: left;
+    color: red;
+    font-size: 10px;
+    position: relative;
+    top: -18px;
+    margin-left: 0px;
+}
+
+a.button.application_pdf {
+    margin-top: 4%;
+}
+
 </style>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/dropzone.js"></script>
 <script>
 
- 	$(".dropzone.dropzone_application_form").dropzone({
+ 	/* $(".dropzone.dropzone_application_form").dropzone({
 		dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
 		addRemoveLinks: true,
 		acceptedFiles: "application/pdf,.doc,.docx",
@@ -1013,7 +1091,7 @@ input.submit_application_form {
 	
         }
    
-	});
+	}); */
 	
 	
 	
@@ -1028,7 +1106,7 @@ input.submit_application_form {
 	    	$(this).parent().addClass('selected-property-none'); 
 	    });
 		
-		$("#save_document").click(function(e){
+		/* $("#save_document").click(function(e){
 		   e.preventDefault();
 		   jQuery('.loading').show();
 		   var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
@@ -1062,7 +1140,7 @@ input.submit_application_form {
 				}
 			});	
 		
-		});
+		}); */
 		
 		$('.dealdetail-tenant-reqagentb').click(function(){
 		    jQuery(this).attr("disabled", true);
@@ -1143,10 +1221,21 @@ input.submit_application_form {
 				  .css("width",percent+"%")
 				  .html(percent+"%");   
 			  }
-			  
+	 <?php if(!$application_submission) { ?>	  
+	   jQuery('#submit_application_form').next('.nextbutton').prop("disabled", true);
+	   jQuery('#submit_application_form').next('.nextbutton').css("background","#ccd1e3");
+	<?php } else {
+	?>
+	  jQuery('#submit_application_form').prop("disabled", true);
+	  jQuery('#submit_application_form').val("Application Submitted");
+	  jQuery('#submit_application_form').css("background","#ccd1e3");
+	  
+	 <?php   
+	 }
+	 ?>
+	 
 	 $('#submit_application_form').click(function(e){
 	    e.preventDefault();
-		//jQuery(".preview").attr("disabled", true);
 		var regEx = new RegExp("^[0-9-+]+$");
 		var regExEmail = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
 		jQuery('.error').remove();
@@ -1296,7 +1385,7 @@ input.submit_application_form {
 			is_error = true;		
 		}
 		if(is_error == false){
-		
+		   jQuery('.loading').show();
 		   var form_data = new FormData();
            form_data.append("deal_id", deal_id);		   
 		   form_data.append("name", name);
@@ -1323,13 +1412,16 @@ input.submit_application_form {
 				processData: false,
 				contentType: false,
 				success: function(response) {
-				   console.log(response);
-				   
-				    /* if(response == "success"){
-						window.location.href = window.location.href + "?action=success";
-					} else {
-						window.location.href = window.location.href + "?action=false";
-					} */
+				     if(response == "success"){
+					    jQuery('.loading').hide();
+						$('.applction_frm_resp').html('Application Submitted Successfully');
+						jQuery('#submit_application_form').next('.nextbutton').prop("disabled", false);
+						jQuery('#submit_application_form').next('.nextbutton').css("background-color", "#274abb");
+						jQuery('#submit_application_form').prop("disabled", true);
+						 jQuery('#submit_application_form').css("background","#ccd1e3");
+						jQuery('#submit_application_form').val("Application Submitted");
+						
+					 }
 				}
 			});
 			
@@ -1344,9 +1436,27 @@ input.submit_application_form {
 		
 	 
 	 });
-  
+	 
+	 
+	 
+     $(".dealdetail-tenant-paynowb.sqre_py_now").click(function(){
+	    var consent_aggrement = $("input[name=check_consents_terms]:checked").val();
+		if(typeof consent_aggrement == 'undefined'){
+		    $('.check_consents_terms_err').html('Please check the consent agreement to continue further');
+			$("input[name=check_consents_terms]").focus();
+		} else {
+		     $('#Square_payment_form_js').modal('show');
+		}
+		 
+		 
+	 });
+	 
+	  $("input[name=check_consents_terms]").click(function(){
+	   if($(this).prop('checked') == true){
+	      $('.check_consents_terms_err').html('');
+	   }
+	 });
+	  
 		
 	});
-
-	
 </script>

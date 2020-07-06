@@ -238,12 +238,13 @@ input.checkbulkorders{
 				<tbody>
 				<tr>
 					<th><input type="checkbox" class="checkallbulkorders"></th>
-					<th><i class="fa fa-list-ol"></i> Order No .</th>
+					<th><i class="fa fa-list-ol"></i> Invoice No .</th>
 					<th><i class="fa fa-user"></i>Deal No.</th>
 					<th><i class="fa fa-envelope"></i> Payment Amount</th>
+					<th><i class="fa fa-envelope"></i> Payment By</th>
+					<th><i class="fa fa-envelope"></i> Agent Involved</th>
 					<th><i class="fa fa-check-square-o" ></i>Payment Date</th>
-					<th><i class="fa fa-phone" ></i>Payment Mode</th>
-					<th><i class="fa fa-phone" ></i>Payment Source</th>
+					<th><i class="fa fa-phone" ></i>Collection Method</th>
 					<th><i class="fa fa-check-square-o" ></i>Payment Status</th>
 					
 					<th></th>
@@ -257,12 +258,30 @@ input.checkbulkorders{
 					?>
 						<tr class="deal__stage-one deal-order-id-<?php echo $dealorders_id; ?>">
 							<td><input type="checkbox" class="checkbulkorders" value="<?php echo $dealorders_id; ?>" ></td>
-							<td class="deal_order_number"><?php echo get_post_meta($dealorders_id,'order_id',true);; ?></td>
+							<td class="deal_invoice_number"><?php echo get_post_meta($dealorders_id,'invoice_id',true);; ?></td>
 							<td class="deal_number"><?php echo get_post_meta($dealorders_id,'deal_id',true); ?></td>
-							<td class="deal_phone_number"><?php echo "$".get_post_meta($dealorders_id,'payment_amount',true); "/Week" ?></td>
+							<td class="deal_payment_amount"><?php echo "$".get_post_meta($dealorders_id,'payment_amount',true)."/week"; ?></td>
+							<td class="deal_payment_by"><?php  echo get_post_meta($dealorders_id,'name_teanant',true); ?></td>
+							<td class="deal_agent_involved"><?php   
+							$checkagent = get_post_meta($dealorders_id,'agent_involved',true); 
+							if($checkagent){
+							   echo get_post_meta($dealorders_id,'agent_name',true);
+							} else {
+							   echo "N . A";
+							}
+							
+							?></td>
+							
 							<td class="deal_date_time"><?php echo date("d-m-Y",strtotime(get_post_meta($dealorders_id,'payment_created_at',true))); ?></td>
-							<td class="deal_phone_number"><?php echo ucfirst(str_replace("_"," ",get_post_meta($dealorders_id,'payment_mode',true))); ?></td>
-							<td class="deal-stage-number"><?php echo get_post_meta($dealorders_id,'payment_source_type',true); ?></td>
+							<td class="deal_phone_number"><?php 
+							$payment_mode =  get_post_meta($dealorders_id,'payment_mode',true); 
+							if($payment_mode == 'square_payment'){
+							    echo "Online";
+							} else {
+							   echo "Offline";
+							}
+							
+							?></td>
 							<td class="deal-stage-number"><?php echo get_post_meta($dealorders_id,'payment_status',true); ?></td>
 							<td class="action">
 								<a href="<?php echo get_site_url(); ?>/admin/dealsorders/orderdetails/<?php echo $dealorders_id; ?>"><i class="fa fa-eye"></i> View</a>

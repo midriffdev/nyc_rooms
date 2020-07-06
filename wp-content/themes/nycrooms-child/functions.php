@@ -2371,15 +2371,44 @@ add_action( 'wp_ajax_nopriv_nyc_tenant_final_selected_property_ajax', 'nyc_tenan
 function nyc_tenant_final_selected_property_ajax(){
    if(isset($_POST['action']) && $_POST['action'] == 'nyc_tenant_final_selected_property_ajax'){
      $deal_id    = $_POST['deal_id'];
+	 $name         =   get_post_meta($deal_id,'name',true);
+     $email        =   get_post_meta($deal_id,'email',true);
+     $phone        =   get_post_meta($deal_id,'phone',true);
      $property_id    = $_POST['property_id'];	 
 	 $meta_key   = 'property_id';
 	 update_post_meta($deal_id,$meta_key,$property_id);
+	 update_post_meta($deal_id,'property_finalization',1);
+	 $subject = "New Property Finalization Request on Deal No-".$deal_id;
+	  /*----------- admin mail -------------*/
+	 $to = get_option('admin_email');
+	 $msg  = __( 'Hello Admin,') . "\r\n\r\n";
+	 $msg .= sprintf( __('<p>A New Property has been finalized  by Tenant With name: %s,email: %s,phone: %s on deal no: %s.</p>'),$name,$email,$phone,$deal_id);
+	 $msg .= sprintf( __('<p>Please Follow this deal link <a href="%s/admin/deals/details/%s">%s/admin/deals/details/%s</a>in by open your dashboard for more information.</p>'),get_site_url(),$deal_id,get_site_url(),$deal_id);
+	 $msg .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
+	 $headers = array('Content-Type: text/html; charset=UTF-8');
+	 $sent = wp_mail($to, $subject, $msg,$headers);
+	 
+	 /*----------- tenant mail -------------*/
+	 
+	 $subject1 = "Property Finaliztion On Deal No-".$deal_id;
+	 $to1 = $email;
+	 $msg1  = sprintf(__( 'Hello %s'),$name);
+	 $msg1 .= sprintf( __('<p>We Have Recieved Your Request on deal no: %s.</p><p>One of our representative will be in touch with you and Process your request as soon as Possible</p>'),$deal_id);
+	 $msg1 .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
+	 $headers1 = array('Content-Type: text/html; charset=UTF-8');
+	 $sent = wp_mail($to1, $subject1, $msg1,$headers1);
 	 echo "success";
    } else {
       echo "faliure";
    }
   exit; 
 }
+
+require get_stylesheet_directory(). '/dompdf/vendor/autoload.php';
+use Dompdf\Dompdf;
+
+define('IMGPATH','images/cropped-logo.jpg');
+
 
 add_action( 'wp_ajax_nyc_tenant_payment_square_ajax', 'nyc_tenant_payment_square_ajax' );
 add_action( 'wp_ajax_nopriv_nyc_tenant_payment_square_ajax', 'nyc_tenant_payment_square_ajax' );
@@ -2418,8 +2447,13 @@ function nyc_tenant_payment_square_ajax(){
       $response          =   nyc_get_tenant_payment_square_ajax_curl($payment_url,$headers,$method,json_encode($requestbody));
 	  
 	  if( isset($response->payment->status) && isset($response->payment->id)){
+	      $invoice_id                =  uniqid();
 	      $deal_id                   =   $_POST['deal_id'];
+		  $get_selected_agent        =   get_post_meta($deal_id,'selectedAgent',true);
+		  $get_requested_agent       =   get_post_meta($deal_id,'request_an_agent',true);
 		  $email_teanant             =   $_POST['email_teanant'];
+		  $name_teanant              =   $_POST['name_teanant'];
+		  $phone_teanant             =   $_POST['phone_teanant'];
 	      $payment_id                =   $response->payment->id;
 		  $payment_created_at        =   $response->payment->created_at;
 		  $paymentamount             =   intdiv($response->payment->amount_money->amount , 100);
@@ -2432,43 +2466,315 @@ function nyc_tenant_payment_square_ajax(){
 		  
 		  $dealorderid = wp_insert_post(array (
 								'post_type'		=> 'dealsorders',
-								'post_title' 	=> '#'.$order_id,
+								'post_title' 	=> '#'.$invoice_id,
 								'post_content' 	=> 'New Order Created',
 								'post_author' 	=> 1,
 								'post_status' 	=> 'publish',
 		                  ));
 		  
 		  if($dealorderid){
-		     add_post_meta($dealorderid, 'deal_id', $deal_id);
-			 add_post_meta($dealorderid, 'email_teanant', $email_teanant);
-			 add_post_meta($dealorderid, 'payment_id', $payment_id);
-			 add_post_meta($dealorderid, 'payment_created_at', $payment_created_at);
-			 add_post_meta($dealorderid, 'payment_amount', $paymentamount);
-			 add_post_meta($dealorderid, 'payment_currency', $paymentcurrency);
-			 add_post_meta($dealorderid, 'payment_status', $paymentstatus);
-			 add_post_meta($dealorderid, 'payment_source_type', $payment_source_type);
-			 add_post_meta($dealorderid, 'order_id', $order_id);
-			 add_post_meta($dealorderid, 'receipt_number', $receipt_number);
-			 add_post_meta($dealorderid, 'receipt_url', $receipt_url);
-			 add_post_meta($dealorderid, 'payment_mode', 'square_payment');
+		     
+		     if($get_requested_agent && $get_requested_agent == 1 && $get_selected_agent ){
+			    $agent_name = get_user_meta($get_selected_agent, 'user_full_name', true);
+			    $agent_email = get_user_meta($get_selected_agent, 'user_agent_email', true);
+			    $agent_phone = get_user_meta($get_selected_agent, 'user_phone', true);
+				update_post_meta($dealorderid, 'agent_involved', $get_selected_agent);
+			    update_post_meta($dealorderid, 'agent_name', $agent_name);
+				update_post_meta($dealorderid, 'agent_email', $agent_email);
+				update_post_meta($dealorderid, 'agent_phone', $agent_phone); 
+			 }
+			 update_post_meta($dealorderid, 'invoice_id', $invoice_id);
+		     update_post_meta($dealorderid, 'deal_id', $deal_id);
+			 update_post_meta($dealorderid, 'email_teanant', $email_teanant);
+			 update_post_meta($dealorderid, 'name_teanant', $name_teanant);
+			 update_post_meta($dealorderid, 'phone_teanant', $phone_teanant);
+			 update_post_meta($dealorderid, 'payment_id', $payment_id);
+			 update_post_meta($dealorderid, 'payment_created_at', $payment_created_at);
+			 update_post_meta($dealorderid, 'payment_amount', $paymentamount);
+			 update_post_meta($dealorderid, 'payment_currency', $paymentcurrency);
+			 update_post_meta($dealorderid, 'payment_status', $paymentstatus);
+			 update_post_meta($dealorderid, 'payment_source_type', $payment_source_type);
+			 update_post_meta($dealorderid, 'order_id', $order_id);
+			 update_post_meta($dealorderid, 'receipt_number', $receipt_number);
+			 update_post_meta($dealorderid, 'receipt_url', $receipt_url);
+			 update_post_meta($dealorderid, 'payment_mode', 'square_payment');
+			 /*----------------Start creating invoice ---------------------------- */
+														  $html = '<html>
+										<head>
+											<meta http-equiv="Content-Type" content="charset=utf-8" />
+											<style type="text/css">
+												@page {
+													margin: 0;
+												}
+												* { padding: 0; margin: 0; }
+												@font-face {
+													font-family: "varelaround";           
+													src: local("VarelaRound-Regular"), url("fonts/VarelaRound-Regular.ttf") format("truetype");
+													font-weight: normal;
+													font-style: normal;
+												}
+												body{
+													font-family: "varelaround";
+													color: #333;
+													background-color: #fff;
+													height:100%;
+												}
+												body b, table th{
+													font-weight: normal;
+													font-family: "varelaround";
+												}
+												table td, table th{
+													vertical-align: top;
+												}
+												span{
+													font-family: "varelaround";
+													color: #333;
+													font-size:14px;
+												}
+												h2,p{
+												  font-family: "varelaround";
+												  color: #333;  
+												}
+											</style>
+										</head>
+										<body>
+										<table style="width:100%;padding:20px;">
+										   <tr>
+											  <td colspan="2">
+												 <table style="width:100%;">
+													<tbody>
+													   <tr>
+														  <td colspan="2" style="padding-bottom:10px;">
+															 <table style="width:100%;">
+																<tbody>
+																   <tr>
+																	  <td style="width:50%;">
+																		 <img src="https://nycrooms.midriffdevelopers.live/wp-content/uploads/2020/06/logo.png" style="width:150px;">
+																	  </td>
+																	  <td style="width:50%;padding: 0 0px 0 10%;text-align: right;">
+																		 <h2 style="text-align: right;margin-top: 0;margin-bottom: 0;">NYC Room 4 Rent</h2>
+																		 <p>606 WEST 145TH STREET NY NY 10031<br>212-368-2685<br>WWW.NYCROOMS4RENT.COM
+																		 </p>
+																	  </td>
+																   </tr>
+																   </tbody>
+															 </table>
+														  </td>
+													   </tr>
+													   <tr>
+														  <td colspan="2" style="border-top:1px solid #000;padding-top:10px;">
+																<table style="width:100%;border-collapse: collapse;">
+																   <tbody>
+																	  <tr>
+																		 <td>
+																			<h2 style="margin: 0;font-weight:normal;font-size: 1.4em;">INVOICE TO:</h2>
+																			<p style="font-size: 1em;font-weight: normal;margin: 0;">'.$name_teanant.'</p>
+																			<p style="font-size: 1em;font-weight: normal;margin: 0;">Phone No: '.$phone_teanant.'</p>
+																			<p font-size: 1em;font-weight: normal;margin: 0;">'.$email_teanant.'</p>
+																		 </td>
+																		 <td style="text-align: right;">
+																		 <h2 style="margin: 0;font-weight:normal;font-size: 1.4em;">INVOICE DETAIlS:</h2>
+																		 <p style="font-size: 1em;font-weight: normal;margin: 0;">Invoice No. '.$invoice_id.'</p>
+																		 <p style="font-size: 1em;font-weight: normal;margin: 0;">Date: '.date("F j, Y").'</p>
+																		 <p style="font-size: 1em;font-weight: normal;margin: 0;">Deal Number : '.$deal_id.'</p>
+																		 </td>
+																	  </tr>
+																  </tbody>
+																</table>
+														  </td>
+													   </tr>
+													   <tr>
+														  <td colspan="2" style="padding-top:50px;padding-right:5px;">
+															 <table style="width:100%;border-collapse:collapse;">
+																<tbody>
+																   <tr>
+																	  <td colspan="2">
+																		 <table style="width:100%;border-collapse:collapse;">
+																			<tr style="background-color:#a3b687;">
+																			   <td style="90%;padding:0 2px;">
+																			   <p style="text-align:left;color:#fff;margin:0;">Description</p>
+																			   </td>
+																			   <td style="10%;padding:0 2px;">
+																			   <p style="text-align:right;color:#fff;margin:0;">Amount</p>
+																			   </td>
+																			</tr>
+																		 </table>
+																	  </td>
+																   </tr>
+																   <tr>
+																	   <td style="width:90%;padding:0 2px;">
+																		 <table style="width:100%;">
+																			<tr>
+																			   <td><p style="font-size: 14px;font-weight: normal;margin: 0;">Payment Amount:</p></td>
+																			</tr>
+																			
+																		 </table>
+																	  </td>
+																	  <td  style="width:10%;padding:0 2px;">
+																		 <table style="width:100%;">
+																			<tr>
+																			   <td><p style="font-size: 14px;text-align:right;font-weight: normal;margin: 0;">$'.$paymentamount.'</p></td>
+																			</tr>
+																			
+																		 </table>
+																	  </td>
+																   </tr>
+																   <tr>
+																   <td colspan="2" style="border-top:1px solid #000;padding-right:5px;">
+																   <table style="width:100%;">
+																   <tr>
+																   <td style="width:70%;"></td>
+																   <td style="width:20%;">
+																   <p style="font-size: 14px;font-weight: normal;margin: 0;">Subtotal</p>
+																   <p style="font-size: 14px;font-weight: normal;margin: 0;">Discount($0)</p>
+																   <p style="font-size: 14px;font-weight: normal;margin: 0;">GST($0)</p>
+																   </td>
+																   <td style="width:5%;">
+																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$'.$paymentamount.'</p>
+																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$0.00</p>
+																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$0.00</p></td>
+																   </tr>
+																   </table>
+																   </td>
+																   </tr>
+																	 <tr>
+																   <td colspan="2" style="border-top:1px solid #000;padding-right:5px;">
+																   <table style="width:100%;">
+																   <tr>
+																   <td style="width:70%;"></td>
+																   <td style="width:20%;">
+																   <p style="font-size: 14px;font-weight: normal;margin: 0;"><b>Total</b></p>
+																   <p style="font-size: 14px;font-weight: normal;margin: 0;"><b>Balance Due</b></p>
+																   </td>
+																   <td style="width:5%;">
+																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$'.$paymentamount.'</p>
+																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$0.00</p>
+																   </tr>
+																   </table>
+																   </td>
+																   </tr>
+																</tbody>
+															 </table>
+														  </td>
+													   </tr>
+													   <tr>
+													   <td colspan="2" style="">
+													   <table style="width:100%;border-top:1px solid #000;margin-top:50px;">
+													   <tr><td>
+										<p style="font-size: 16px;font-weight: 500;margin: 20px 0 15px 0 ;">Consent terms & Agreements:</p>
+										<ul style="padding-left:10px;"><li style="font-size: 14px;font-weight: normal;margin: 0;">You are paying a service fee to NYC Rooms For Rent Inc. to provide listings of available rooms. </li>
+										<li style="font-size: 14px;font-weight: normal;margin: 0;">NYC Rooms for Rent will arrange, conduct, coordinate, handles or cause meetings between you and the current occupant of a legally occupied property, including apartment housing, who wishes to share that housing with you or more individuals as a private dwelling.</li>
+										<li style="font-size: 14px;font-weight: normal;margin: 0;">NYC Rooms For Rent Inc. will do the aforementioned for an unlimited amount of time until you are placed in a room of your likings.</li>
+										<li style="font-size: 14px;font-weight: normal;margin: 0;">NYC Rooms for Rent Inc. is not responsible if landlord rejects you for not meeting the landlord qualifications, however NYC Rooms for Rent Inc. will continue to provide you listings. </li>
+										<li style="font-size: 14px;font-weight: normal;margin: 0;">After you move into one of our listings NYC Rooms For Rent Inc. is not responsible for furnishing further listings.</li>
+										<li style="font-size: 14px;font-weight: normal;margin: 0;">The service fee paid to NYC Rooms For Rent is non-refundable.</li></ul>
+													   </td></tr>
+													   </table>
+													   </td>
+													   </tr>
+													</tbody>
+												 </table>
+											  </td>
+										   </tr>
+										</table>
+										</div>
+										</body>
+										</html>';
+										
+										// instantiate and use the dompdf class
+										$dompdf = new Dompdf();
+										$dompdf->loadHtml($html, 'UTF-8');
+                                        $dompdf->set_option('isRemoteEnabled', TRUE);
+										// (Optional) Setup the paper size and orientation
+										$dompdf->setPaper('A4');
+
+										$dompdf->set_option('defaultMediaType', 'all');
+										$dompdf->set_option('isFontSubsettingEnabled', true);
+
+										// Render the HTML as PDF
+										$dompdf->render();
+										$uploaddir = wp_upload_dir();
+										$uploadfile = $uploaddir['path'].'/invoice_'.$invoice_id.'_'.$deal_id.'.pdf';
+										//save the pdf file on the server
+										file_put_contents($uploadfile, $dompdf->output()); 
+										$wp_filetype = wp_check_filetype(basename($uploadfile), null);
+										$attachment = array(
+															'post_mime_type' => $wp_filetype['type'],
+															'post_title' => preg_replace('/\.[^.]+$/', '', basename($uploadfile)),
+															'post_status' => 'inherit',
+														);
+										$attach_id = wp_insert_attachment($attachment, $uploadfile); // adding the image to th media
+										require_once(ABSPATH . 'wp-admin/includes/image.php');
+										$attach_data = wp_generate_attachment_metadata($attach_id, $uploadfile); 
+										$update = wp_update_attachment_metadata($attach_id, $attach_data); // Updated the image details
+										update_post_meta($deal_id,'payment_invoice_doc', $attach_id);
+                                        update_post_meta($dealorderid, 'payment_invoice', $attach_id);
+										
+										
+			 /*----------------End creating invoice ---------------------------- */
+			    
+		    /*----------- start sending mail to admin -----------------------*/
+			$attachment_id = get_post_meta($deal_id,'payment_invoice_doc',true);
+			$invoice_attchment = '<a href="'. wp_get_attachment_url($attachment_id) . '" download >'.wp_get_attachment_url($attachment_id).'</a>';
 			$subject = "New payment created on deal no -".$deal_id;
 			$to = get_option('admin_email');
 			$msg  = __( 'Hello Admin,') . "\r\n\r\n";
-			$msg .= sprintf( __("<p>New Payment has been created on deal no. %s with Following Order Id : %s via Square Payment Gateway <p><p>Following are Details of Payment order.</p>"),$deal_id,$order_id);
+			$msg .= sprintf( __("<p>New Payment has been done on Deal no. : %s with Following Invoice No. : %s via Square Payment Gateway <p><p>Following are Details of Payment.</p>"),$deal_id,$invoice_id);
+			$msg .= sprintf( __("<p>Invoice No. : %s</p>"),$invoice_id);
 			$msg .= sprintf( __("<p>Deal No. : %s</p>"),$deal_id);
+			$msg .= sprintf( __("<p> Invoice Attachment Url : %s</p>"),$invoice_attchment);
 			$msg .= sprintf( __("<p>Admin Deal link : <a href='%s/admin/deals/details/%s'>%s/admin/deals/details/%s</a></p>",get_site_url(),$deal_id,get_site_url(),$deal_id));
+			$msg .= sprintf( __("<p>Payment By Tenant: %s</p>"),$name_teanant);
 			$msg .= sprintf( __("<p>Tenant Email : %s</p>"),$email_teanant);
+			$msg .= sprintf( __("<p>Tenant Phone : %s</p>"),$phone_teanant);
 			$msg .= sprintf( __("<p>Payment ID : %s</p>"),$payment_id);
+			if($get_requested_agent && $get_requested_agent == 1 && $get_selected_agent ){
+			
+			   $msg .= sprintf( __("<p>Agent Involved : %s</p>"),$agent_name);
+			   $msg .= sprintf( __("<p>Agent Email : %s</p>"),$agent_email);
+			   $msg .= sprintf( __("<p>Agent Phone : %s</p>"),$agent_phone);
+			   
+			}
 			$msg .= sprintf( __("<p>Order Id  : %s</p>"),$order_id);
-			$msg .= sprintf( __("<p>payment created on : %s</p>"),$payment_created_at);
+			$msg .= sprintf( __("<p>Payment Date : %s</p>"),date("F j, Y",strtotime($payment_created_at)));
 			$msg .= sprintf( __("<p>Payment Amount : %s</p>"),$paymentamount);
 			$msg .= sprintf( __("<p>Payment Currency : %s</p>"),$paymentcurrency);
 			$msg .= sprintf( __("<p>Payment Status : %s</p>"),$paymentstatus);
 			$msg .= sprintf( __("<p>Payment Source Type : %s</p>"),$payment_source_type);
 			$msg .= sprintf( __("<p>Payment Mode : %s</p>"),'Square Payment');
+		    $msg .= sprintf( __("<p>Collection Method : %s</p>"),'Online');
 			$msg .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
 			$headers = array('Content-Type: text/html; charset=UTF-8');
 		    $sent = wp_mail($to, $subject, $msg,$headers);
+			
+			/* ----------- End Sending mail to admin  ---------------- */
+			
+			/* ----------- Start Sending mail to Tenant  ---------------- */
+			
+			$subject1 = "Payment Done On Deal No. -".$deal_id;
+			$to1 = $email_teanant;
+			$msg1  = sprintf( __('Hello %s',$name_teanant));
+			$msg1 .= sprintf( __("<p>Your Payment has been done on Deal no. : %s with Following Invoice No. : %s via Square Payment Gateway.<p><p>Following are Details of Payment.</p>"),$deal_id,$invoice_id);
+			$msg1 .= sprintf( __("<p>Invoice No. : %s</p>"),$invoice_id);
+			$msg1 .= sprintf( __("<p>Invoice No. : %s</p>"),$invoice_id);
+			$msg1 .= sprintf( __("<p>Deal No. : %s</p>"),$deal_id);
+			$msg1 .= sprintf( __("<p> Invoice Attachment Url : %s</p>"),$invoice_attchment);
+			$msg1 .= sprintf( __("<p>Payment ID : %s</p>"),$payment_id);
+			$msg1 .= sprintf( __("<p>Order Id  : %s</p>"),$order_id);
+			$msg1 .= sprintf( __("<p>Payment Date : %s</p>"),date("F j, Y",strtotime($payment_created_at)));
+			$msg1 .= sprintf( __("<p>Payment Amount : %s</p>"),$paymentamount);
+			$msg1 .= sprintf( __("<p>Payment Currency : %s</p>"),$paymentcurrency);
+			$msg1 .= sprintf( __("<p>Payment Status : %s</p>"),$paymentstatus);
+			$msg1 .= sprintf( __("<p>Payment Source Type : %s</p>"),$payment_source_type);
+			$msg1 .= sprintf( __("<p>Payment Mode : %s</p>"),'Square Payment');
+		    $msg1 .= sprintf( __("<p>Collection Method : %s</p>"),'Online');
+			$msg1 .= sprintf( __("<p>Download  Payment invoice By clicking on button Below:</p><p>%s</p>"),$invoice_attchment);
+			$msg1 .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
+			$headers1 = array('Content-Type: text/html; charset=UTF-8');
+		    $sent1 = wp_mail($to1, $subject1, $msg1,$headers1);
+			
+			/* ----------- End Sending mail to Tenant  ---------------- */
+			
 			 echo "success";
 		  }
 		  
@@ -2554,11 +2860,36 @@ function nyc_application_form_pdf_ajax(){
 	   }
          update_post_meta($deal_id,'tenant_application_data',$tenant_application_data);
 	     $get_application_tenant = get_post_meta($deal_id,'tenant_application_data',true);
+		 $imageurl = get_stylesheet_directory_uri() . '/images/cropped-logo.jpg';
+		 $checkedgoogle = '';
+		 $checkedElDiario = '';
+		 $checkedFacebook = '';
+		 $checkedAmsterdamNewspaper = '';
+		 $checkedCraigslist = '';
+		 $checkedMetroNewspaper = '';
+		 $checkedReferral = '';
+		 $checkedOther = '';
 		 
-		 /*  echo "<pre>";
-		  print_r($get_application_tenant);
-		  echo "</pre>"; */
-		  
+		 if($get_application_tenant['adversitement_check'] == 'Google'){
+		    $checkedgoogle = 'checked';
+		 } else if($get_application_tenant['adversitement_check'] == 'El Diario'){
+		    $checkedElDiario = 'checked';
+		 } else if($get_application_tenant['adversitement_check'] == 'Facebook'){
+		     $checkedFacebook = 'checked';
+		 } else if($get_application_tenant['adversitement_check'] == 'Amsterdam Newspaper'){
+		     $checkedAmsterdamNewspaper = 'checked';
+		 } else if($get_application_tenant['adversitement_check'] == 'Craigslist'){
+		     $checkedCraigslist = 'checked';
+		 } else if($get_application_tenant['adversitement_check'] == 'Metro Newspaper'){
+		     $checkedMetroNewspaper = 'checked';
+		 } else if($get_application_tenant['adversitement_check'] == 'Referral'){
+		     $checkedReferral = 'checked';
+		 } else if($get_application_tenant['adversitement_check'] == 'Other'){
+		     $checkedOther = 'checked';
+		 }
+		 
+		 
+		 
 		  $html = '<html>
 <head>
     <meta http-equiv="Content-Type" content="charset=utf-8" />
@@ -2637,7 +2968,7 @@ function nyc_application_form_pdf_ajax(){
                                  <span>Name(s)</span>
                               </td>
                               <td style="width:90%">
-                                 <p style="font-size:14px;margin:0;border-bottom: 1px solid #333;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                                 <p style="font-size:14px;margin:0;border-bottom: 1px solid #333;">'.$get_application_tenant['name'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -2653,7 +2984,7 @@ function nyc_application_form_pdf_ajax(){
                                  <span>Contact Phone Number</span>
                               </td>
                               <td style="width:70%">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['contact_no'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -2669,7 +3000,7 @@ function nyc_application_form_pdf_ajax(){
                                  <span>Secondary Phone Number</span>
                               </td>
                               <td style="width:75%;">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['secondary_contact_no'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -2685,7 +3016,7 @@ function nyc_application_form_pdf_ajax(){
                                  <span>Emergency Contact</span>
                               </td>
                               <td style="width:81%;">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['emergency_contact_no'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -2701,7 +3032,7 @@ function nyc_application_form_pdf_ajax(){
                                  <span>Email Address</span>
                               </td>
                               <td style="width:86%;">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['email_address'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -2717,7 +3048,7 @@ function nyc_application_form_pdf_ajax(){
                                  <span>Employer/School</span>
                               </td>
                               <td style="width:83%;">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['employer_school'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -2733,7 +3064,7 @@ function nyc_application_form_pdf_ajax(){
                                  <span>Address</span>
                               </td>
                               <td style="width:91%;">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['address'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -2753,7 +3084,7 @@ function nyc_application_form_pdf_ajax(){
                               <td style="
                                  width: 83%;
                                  ">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['manager_name'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -2773,7 +3104,7 @@ function nyc_application_form_pdf_ajax(){
                               <td style="
                                  width: 78%;
                                  ">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['manager_contact'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -2792,7 +3123,7 @@ function nyc_application_form_pdf_ajax(){
                               </td>
                               <td style="width:84%;"
                                  ">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['month_income'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -2812,7 +3143,7 @@ function nyc_application_form_pdf_ajax(){
                               <td style="
                                  width: 80%;
                                  ">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['week_rent_budget'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -2832,7 +3163,7 @@ function nyc_application_form_pdf_ajax(){
                               <td style="
                                  width: 60%;
                                  ">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['people_living_count'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -2852,7 +3183,7 @@ function nyc_application_form_pdf_ajax(){
                               <td style="
                                  width: 55%;
                                  ">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">kukuhku uyhouyoiuy uiyiuyiu iuygiuyiu</p>
+                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['Periods_of_living'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -2884,52 +3215,47 @@ function nyc_application_form_pdf_ajax(){
                                        <tr>
                                           <td style="width:33%;">
                                              <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">Google
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedgoogle.'>Google
                                              </p>
                                           </td>
                                           <td style="width:33%;">
                                              <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">El Diario 
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedElDiario.'>El Diario 
                                              </p>
                                           </td>
-                                          <td style="width:33%;">
+										  <td style="width:33%;">
                                              <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;"type="checkbox" id="advertisement">AM NY Newspaper 
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedFacebook.'>Facebook
                                              </p>
                                           </td>
                                        </tr>
                                        <tr>
                                           <td style="width:33%;">
                                              <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">Facebook
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedAmsterdamNewspaper.'>Amsterdam Newspaper 
                                              </p>
                                           </td>
-                                          <td style="width:33%;">
+										  <td style="width:33%;">
                                              <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">Amsterdam Newspaper 
-                                             </p>
-                                          </td>
-                                          <td style="width:33%;">
-                                             <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">Other
-                                             </p>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedCraigslist.'>
                                                 Craigslist 
                                              </p>
                                           </td>
-                                          <td>
+										   <td style="width:33%;">
                                              <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">Metro Newspaper 
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedMetroNewspaper.'>Metro Newspaper 
                                              </p>
                                           </td>
-                                          <td>
+                                       </tr>
+                                       <tr>
+                                          <td style="width:33%;">
                                              <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement">Referral
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedReferral.'>Referral
+                                             </p>
+                                          </td>
+										  <td style="width:33%;">
+                                             <p style="display:inline-block;font-size:14px;margin:0;">
+                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedOther.'>Other
                                              </p>
                                           </td>
                                        </tr>
@@ -2953,7 +3279,7 @@ function nyc_application_form_pdf_ajax(){
                               </td>
                            </tr>
                            <tr>
-                              <td style="vertical-align:top;"><input style="margin-top:6px;" type="checkbox">
+                              <td style="vertical-align:top;"><input style="margin-top:6px;" type="checkbox" checked>
                                  <span style="font-size:12px;margin-left:-10px;margin:0;line-height:14px;">
                                  <b>NYC ROOMS 4 RENT INC.</b> is a licensed apartment sharing agency whom for a non-refundable service fee refers you to a primary tenant or landlord for viewings of available rooms. Please be on time and wear proper attire when meeting with the primary tenant or landlord. We are not responsible for any negotiations agreed between you and the landlord or primary tenant. We will assist you until you find the first room that accommodates your needs. If you wish to transfer room we will assist you <b>ONE</b> time at no extra cost within the 30 days guaranteed service policy, except you’ve been evicted for illicit behavior or have a pending balance with the landlord. Our services expire 30 days after you have found a room.<b>Our service fee is non-refundable under no circumstances.</b>
                                  </span>
@@ -2980,7 +3306,7 @@ function nyc_application_form_pdf_ajax(){
                                                    <span>Name:</span>
                                                 </td>
                                                 <td style="width:84%;">
-                                                   <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;margin:0;">jkkjhkjhk</p>
+                                                   <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;margin:0;">'.$get_application_tenant['name'].'</p>
                                                 </td>
                                              </tr>
                                           </table>
@@ -2992,7 +3318,7 @@ function nyc_application_form_pdf_ajax(){
                                              <tr>
                                                 <td style="width:22%;"><span>Signature:</span></td>
                                                 <td style="width:78%;">
-                                                   <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;margin:0;">jkkjhkjhk</p>
+                                                   <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;margin:0;">'.$get_application_tenant['name'].'</p>
                                                 </td>
                                              </tr>
                                           </table>
@@ -3008,7 +3334,7 @@ function nyc_application_form_pdf_ajax(){
                                              <tr>
                                                 <td style="width:11%;"><span>Date:</span></td>
                                                 <td style="width:89%;">
-                                                   <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;margin:0;">jkkjhkjhk</p>
+                                                   <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;margin:0;">'.date("d-m-Y H:i:s").'</p>
                                                 </td>
                                              </tr>
                                           </table>
@@ -3020,7 +3346,7 @@ function nyc_application_form_pdf_ajax(){
                                              <tr>
                                                 <td style="width:17%;"><span>Location:</span></td>
                                                 <td style="width:83%;">
-                                                   <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;margin:0;">jkkjhkjhk</p>
+                                                   <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;margin:0;">---------</p>
                                                 </td>
                                              </tr>
                                           </table>
@@ -3041,38 +3367,35 @@ function nyc_application_form_pdf_ajax(){
 
 </body>
 </html>';
-
-require_once get_stylesheet_directory(). '/dompdf/autoload.inc.php';
-
-use Dompdf\Dompdf;
-
 // instantiate and use the dompdf class
- $dompdf = new Dompdf();
-echo "<pre>";
-print_r($dompdf);
-echo "</pre>";
-/* $dompdf->loadHtml($html, 'UTF-8');
-
+$dompdf = new Dompdf();
+$dompdf->loadHtml($html, 'UTF-8');
+$dompdf->set_option('isRemoteEnabled', TRUE);
 // (Optional) Setup the paper size and orientation
 $dompdf->setPaper('A4');
-
 $dompdf->set_option('defaultMediaType', 'all');
 $dompdf->set_option('isFontSubsettingEnabled', true);
 // Render the HTML as PDF
+
 $dompdf->render();
-
-$file_to_save = get_stylesheet_directory().'/documents/file.pdf';
+$uploaddir = wp_upload_dir();
+$uploadfile = $uploaddir['path'].'/file_'.$deal_id.'.pdf';
 //save the pdf file on the server
-file_put_contents($file_to_save, $dompdf->output()); 
-//print the pdf file to the screen for saving
-header('Content-type: application/pdf');
-header('Content-Disposition: inline; filename="file.pdf"');
-header('Content-Transfer-Encoding: binary');
-header('Content-Length: ' . filesize($file_to_save));
-header('Accept-Ranges: bytes');
-readfile($file_to_save); */
+file_put_contents($uploadfile, $dompdf->output()); 
+$wp_filetype = wp_check_filetype(basename($uploadfile), null);
+$attachment = array(
+					'post_mime_type' => $wp_filetype['type'],
+					'post_title' => preg_replace('/\.[^.]+$/', '', basename($uploadfile)),
+					'post_status' => 'inherit',
+				);
+$attach_id = wp_insert_attachment($attachment, $uploadfile); // adding the image to th media
+require_once(ABSPATH . 'wp-admin/includes/image.php');
+$attach_data = wp_generate_attachment_metadata($attach_id, $uploadfile); 
+$update = wp_update_attachment_metadata($attach_id, $attach_data); // Updated the image details
+update_post_meta($deal_id,'application_doc', $attach_id);
+update_post_meta($deal_id,'application_submission', 1);
 
-//echo true;
+echo "success";
 
 }
  exit;
