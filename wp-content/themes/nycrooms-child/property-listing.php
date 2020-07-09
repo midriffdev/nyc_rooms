@@ -220,7 +220,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 $args = array(
          'post_type'        => 'property',
-		 'post_status'       => 'available',
+		 'post_status'       => array('available','rented'),
          'posts_per_page'   => 6,
          //'no_found_rows'    => true,
          'suppress_filters' => false,
@@ -250,16 +250,30 @@ if(isset($_GET['furnish-unfurnish-type']) && !empty($_GET['furnish-unfurnish-typ
 
 if(!empty($argarray)){
    
-   
+  $argarray[] =  array(
+            'key'          => 'property_activation',
+            'value'        => 1,
+            'compare'      => '=',
+        );
    
    $args['meta_query'] = $argarray;
    
    
 }
 
+if(empty($_GET)){
+   $argarray[] =  array(
+            'key'          => 'property_activation',
+            'value'        => 1,
+            'compare'      => '=',
+        );
+   
+   $args['meta_query'] = $argarray;
+}
+
+
 
 $properties = new WP_Query( $args );
- 
 
 get_header();
 ?>

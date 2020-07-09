@@ -175,7 +175,16 @@ input.checkbulk{
 					</td>
 					<td class="teanent--username"><?php echo $tenants->data->user_email; ?></td>
 					<td><div class="teanent-phone-no"><?php echo get_user_meta($user_id,'user_phone',true); ?></div></td>
-					<td><div class="teanent-status"><?php echo get_user_meta($user_id,'user_status',true); ?></div></td>					
+					<td><div class="teanent-status"><?php
+                         $checkstatus = get_user_meta($user_id,'user_status',true);
+						 if(!$checkstatus){
+						    echo "inactive";
+						 } else {
+						   echo $checkstatus;
+						 }
+					
+					
+					?></div></td>					
 					<td class="action">
 						<a href="<?= site_url()?>/admin/edit-profile/?uid=<?php echo $user_id; ?>"><i class="fa fa-pencil"></i> Edit</a>
 						<a href="#" class="delete delete-tenant" data-id="<?php echo $user_id; ?>"><i class="fa fa-remove"></i> Delete</a>

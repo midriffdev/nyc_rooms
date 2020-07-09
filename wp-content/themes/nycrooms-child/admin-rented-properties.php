@@ -314,7 +314,22 @@ get_header();
 						<div class="owner--name"><a href="#"><?php echo $contact_name ; ?></a></div>
 					</td>
 					<td class="action">
-					    <a href="<?= site_url().'/single-property/?property_id='.$post_id  ?> "><i class="fa fa-eye"></i> View</a>
+					    <?php
+						   $checkpropactivation = get_post_meta($post_id,'property_activation',true);
+						 ?>
+						  <a href="<?= site_url().'/single-property/?property_id='.$post_id  ?> "><i class="fa fa-eye"></i> View</a>
+						<?php
+						if(!$checkpropactivation){
+						?>
+						<a style="cursor:pointer;" class="actvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-key"></i> Activate</a>
+						<?php
+						} else {
+						?>
+						<a style="cursor:pointer;" class="deactvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-eye-slash"></i> Deactivate</a>
+						<?php
+						}
+						?>
+						
 						<a href= "<?php echo site_url();?>/edit-property-admin/?pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
 						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 					</td>
@@ -371,6 +386,8 @@ get_header();
                   <div class="bulk_actions_properties">
 						<select class="select_action_properties">
 						 <option value="-1">Bulk Actions</option>
+						 <option value="activate">Activate</option>
+						 <option value="deactivate">Deactivate</option>
 						 <option value="delete">Delete</option>
 						</select>
                     <input type="button" value="Apply" class="apply_action_properties">

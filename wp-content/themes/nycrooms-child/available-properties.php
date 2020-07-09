@@ -93,7 +93,7 @@ if(isset($_GET['Property_name']) && !empty($_GET['Property_name'])){
 }
 
 
- if(isset($_GET['furnish_unfurnish_type']) && !empty($_GET['furnish_unfurnish_type'])){
+if(isset($_GET['furnish_unfurnish_type']) && !empty($_GET['furnish_unfurnish_type'])){
 
    
 			  $args['tax_query'] = array(
@@ -314,7 +314,21 @@ get_header();
 						<div class="owner--name"><a href="#"><?php echo $contact_name ; ?></a></div>
 					</td>
 					<td class="action">
+					     <?php
+						   $checkpropactivation = get_post_meta($post_id,'property_activation',true);
+						 ?>
 					    <a href="<?= get_post_permalink( get_the_ID()) ?>"><i class="fa fa-eye"></i> View</a>
+						<?php
+						if(!$checkpropactivation){
+						?>
+						<a style="cursor:pointer;" class="actvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-key"></i> Activate</a>
+						<?php
+						} else {
+						?>
+						<a style="cursor:pointer;" class="deactvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-eye-slash"></i> Deactivate</a>
+						<?php
+						}
+						?>
 						<a href= "<?php echo get_site_url();?>/edit-property-admin/?pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
 						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 					</td>
@@ -371,6 +385,8 @@ get_header();
                   <div class="bulk_actions_properties">
 						<select class="select_action_properties">
 						 <option value="-1">Bulk Actions</option>
+						 <option value="activate">Activate</option>
+						 <option value="deactivate">Deactivate</option>
 						 <option value="delete">Delete</option>
 						</select>
                     <input type="button" value="Apply" class="apply_action_properties">
@@ -408,6 +424,48 @@ get_header();
       
     </div>
   </div>
+  
+ <!-- Modal Activate Property -->
+  <div class="modal fade" id="Modalactivate" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Properties Activated Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- Modal Dectivate Property -->
+  <div class="modal fade" id="Modaldeactivate" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Properties Deactivated Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  
 
 <style>
 .pagination-next-prev ul li.prev a {

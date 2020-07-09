@@ -266,11 +266,16 @@ function nyc_my_post_redirect_filter($location) {
 
 function nyc_add_property_ajax(){
 	if(isset($_POST['action']) && $_POST['action'] == 'nyc_add_property_ajax'){
+	     if(isset($_POST['selected_property_owner']) && !empty($_POST['selected_property_owner'])){
+	        $checkid = $_POST['selected_property_owner'];
+		 } else {
+		    $checkid = get_current_user_id();
+		 }
 		$property_id = wp_insert_post(array (
 			'post_type'		=> 'property',
 			'post_title' 	=> $_POST['title'],
 			'post_content' 	=> $_POST['desc'],
-			'post_author' 	=> get_current_user_id(),
+			'post_author' 	=> $checkid,
 			'post_status' 	=> 'draft',
 		));
 		if ($property_id) {
@@ -302,12 +307,31 @@ function nyc_add_property_ajax(){
 				  nyc_property_gallery_image_upload($key,$property_id);
 			  }
 			}
+			
 			$subject = "New Property Listed - ".$_POST['title'];
 			$to = get_option('admin_email');
 			$msg  = __( 'Hello Admin,') . "\r\n\r\n";
 			$msg .= sprintf( __( 'A new property listed by %s title is "%s".'), $_POST['contact_name'], $_POST['title'] ) . "\r\n\r\n";
 			$msg .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
 		    $sent = wp_mail($to, $subject, $msg);
+			
+			if(isset($_POST['selected_property_owner']) && !empty($_POST['selected_property_owner'])){
+			     $p_id = $_POST['selected_property_owner'];
+				 $get_user    =  get_user_by( 'ID', $p_id );
+				 $user_email =    $get_user->user_email;
+				 
+				 $subject1 = "New Property Listed - ".$_POST['title'];
+			     $to1 = $user_email;
+			     $msg1  = __( 'Hello Admin,') . "\r\n\r\n";
+			     $msg1 .= sprintf( __( 'A new property listed by %s title is "%s".'), $_POST['contact_name'], $_POST['title'] ) . "\r\n\r\n";
+			     $msg1 .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
+		         $sent1 = wp_mail($to1, $subject1, $msg1);
+			    
+			}
+			
+			
+			
+			
 			echo 'success';
 		}else{
 		    echo 'false';
@@ -1270,6 +1294,8 @@ function adding_multiple_deals(){
 	wp_die();
 }
 
+/*--------- Delete Property --------------*/
+
 add_action( 'wp_ajax_nopriv_delete_multiple_properties', 'delete_multiple_properties' );
 add_action( 'wp_ajax_delete_multiple_properties', 'delete_multiple_properties' );
 function delete_multiple_properties() {
@@ -1281,9 +1307,31 @@ function delete_multiple_properties() {
 	wp_die();
 }
 
+/*--------- Activate Property --------------*/
 
+add_action( 'wp_ajax_nopriv_activate_multiple_properties', 'activate_multiple_properties' );
+add_action( 'wp_ajax_activate_multiple_properties', 'activate_multiple_properties' );
+function activate_multiple_properties() {
+	global $wpdb;
+	foreach($_POST['data'] as $ids){
+	  add_post_meta($ids,'property_activation',1);
+	}
+	echo "true";
+	wp_die();
+}
 
+/*--------- Deactivate Property --------------*/
 
+add_action( 'wp_ajax_nopriv_deactivate_multiple_properties', 'deactivate_multiple_properties' );
+add_action( 'wp_ajax_deactivate_multiple_properties', 'deactivate_multiple_properties' );
+function deactivate_multiple_properties() {
+	global $wpdb;
+	foreach($_POST['data'] as $ids){
+	   delete_post_meta($ids,'property_activation',1);
+	}
+	echo "true";
+	wp_die();
+}
 
 
 add_action( 'wp_ajax_nopriv_active_multiple_agents', 'active_multiple_agents' );
@@ -1312,17 +1360,37 @@ function inactive_multiple_agents() {
 add_action( 'wp_ajax_nopriv_approve_multiple_properties', 'approve_multiple_properties' );
 add_action( 'wp_ajax_approve_multiple_properties', 'approve_multiple_properties' );
 function approve_multiple_properties() {
+
 	global $wpdb;
 	foreach($_POST['data'] as $ids){
+	
 	$status = get_post_meta( $ids, 'status',true);
 	   wp_update_post(array(
 			'ID'    =>  $ids,
 			'post_status'   =>  $status
 	   ));
+	   
+	 
+	 /*---------- Email After Approval of Property -------------*/
+	 $name                =  get_post_meta( $ids, 'contact_name',true);
+	 $email               =  get_post_meta( $ids, 'contact_email',true);
+	 $property_link       =  '<a href="'. get_post_permalink($ids) .'">'. get_the_title( $ids ) .'</a>';
+			   
+	 $subject = "Property Approval From NYC Rooms";
+	 $to = $email;
+	 $msg  = sprintf(__( 'Hello %s'),$name);
+	 $msg .= sprintf( __("<p>Congratulation!! Your Property %s Has Been Approved. Now it is live on NYC ROOMS and comes in User's Search.</p>"),$property_link);
+	 $msg .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
+	 $headers = array('Content-Type: text/html; charset=UTF-8');
+	 $sent = wp_mail($to,$subject,$msg,$headers);
+	 
 	}
 	echo "true";
 	wp_die();
+	
 }
+
+
 
 add_action( 'wp_ajax_nopriv_unapprove_multiple_properties', 'unapprove_multiple_properties' );
 add_action( 'wp_ajax_unapprove_multiple_properties', 'unapprove_multiple_properties' );
@@ -1642,6 +1710,8 @@ function nyc_get_properties_by_property_owner($id){
 	));
 	return $properties;
 }
+
+
 
 add_filter( 'posts_where', 'nyc_get_properties_by_title', 10, 2 );
 function nyc_get_properties_by_title( $where, $wp_query )
@@ -2576,7 +2646,6 @@ function nyc_tenant_payment_square_ajax(){
 																		 <h2 style="margin: 0;font-weight:normal;font-size: 1.4em;">INVOICE DETAIlS:</h2>
 																		 <p style="font-size: 1em;font-weight: normal;margin: 0;">Invoice No. '.$invoice_id.'</p>
 																		 <p style="font-size: 1em;font-weight: normal;margin: 0;">Date: '.date("F j, Y").'</p>
-																		 <p style="font-size: 1em;font-weight: normal;margin: 0;">Deal Number : '.$deal_id.'</p>
 																		 </td>
 																	  </tr>
 																  </tbody>
@@ -2592,10 +2661,10 @@ function nyc_tenant_payment_square_ajax(){
 																		 <table style="width:100%;border-collapse:collapse;">
 																			<tr style="background-color:#a3b687;">
 																			   <td style="90%;padding:0 2px;">
-																			   <p style="text-align:left;color:#fff;margin:0;">Description</p>
+																			   <p style="text-align:left;color:#fff;margin:0px 0px 4px 0px;">Description</p>
 																			   </td>
 																			   <td style="10%;padding:0 2px;">
-																			   <p style="text-align:right;color:#fff;margin:0;">Amount</p>
+																			   <p style="text-align:right;color:#fff;margin:0px 0px 4px 0px;">Amount</p>
 																			   </td>
 																			</tr>
 																		 </table>
@@ -2605,53 +2674,69 @@ function nyc_tenant_payment_square_ajax(){
 																	   <td style="width:90%;padding:0 2px;">
 																		 <table style="width:100%;">
 																			<tr>
-																			   <td><p style="font-size: 14px;font-weight: normal;margin: 0;">Payment Amount:</p></td>
+																			   <td><p style="font-size: 14px;font-weight: normal;margin: 0;">Deal #'.$deal_id.':</p></td>
 																			</tr>
-																			
 																		 </table>
-																	  </td>
-																	  <td  style="width:10%;padding:0 2px;">
+																	   </td>
+																	   <td  style="width:10%;padding:0 2px;">
 																		 <table style="width:100%;">
 																			<tr>
 																			   <td><p style="font-size: 14px;text-align:right;font-weight: normal;margin: 0;">$'.$paymentamount.'</p></td>
 																			</tr>
+																		 </table>
+																	   </td>
+																   </tr>
+																   <tr>
+																   <td style="width:90%;padding:0 2px;">
+																		 <table style="width:100%;">
+																			<tr>
+																			   <td><p style="font-size: 14px;font-weight: normal;margin: 0;">Transaction ID : '.$payment_id .'</p></td>
+																			</tr>
 																			
 																		 </table>
-																	  </td>
-																   </tr>
-																   <tr>
-																   <td colspan="2" style="border-top:1px solid #000;padding-right:5px;">
-																   <table style="width:100%;">
-																   <tr>
-																   <td style="width:70%;"></td>
-																   <td style="width:20%;">
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">Subtotal</p>
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">Discount($0)</p>
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">GST($0)</p>
-																   </td>
-																   <td style="width:5%;">
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$'.$paymentamount.'</p>
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$0.00</p>
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$0.00</p></td>
-																   </tr>
-																   </table>
-																   </td>
-																   </tr>
-																	 <tr>
-																   <td colspan="2" style="border-top:1px solid #000;padding-right:5px;">
-																   <table style="width:100%;">
-																   <tr>
-																   <td style="width:70%;"></td>
-																   <td style="width:20%;">
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;"><b>Total</b></p>
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;"><b>Balance Due</b></p>
-																   </td>
-																   <td style="width:5%;">
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$'.$paymentamount.'</p>
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$0.00</p>
-																   </tr>
-																   </table>
-																   </td>
+																	   </td>
+																	   <td  style="width:10%;padding:0 2px;">
+																		 <table style="width:100%;">
+																			<tr>
+																			    <td><p style="font-size: 14px;text-align:right;font-weight: normal;margin: 0;"></p></td>
+																			   
+																			</tr>
+																			
+																		 </table>
+																	   </td>
+																	</tr>
+																	<tr>
+																		   <td style="width:90%;padding:0 2px;">
+																			 <table style="width:100%;">
+																				<tr>
+																				   <td><p style="font-size: 14px;font-weight: normal;margin: 0;">Payment Mode : Online</p></td>
+																				</tr>
+																				
+																			 </table>
+																		   </td>
+																		   <td  style="width:10%;padding:0 2px;">
+																			 <table style="width:100%;">
+																				<tr>
+																					<td><p style="font-size: 14px;text-align:right;font-weight: normal;margin: 0;"></p></td>
+																				   
+																				</tr>
+																				
+																			 </table>
+																		   </td>
+																	</tr>
+																    <tr>
+																	   <td colspan="2" style="padding-right:5px;padding-top:5px">
+																	   <table style="width:100%;border-top:1px solid #000">
+																	   <tr>
+																	   <td style="width:70%;"></td>
+																	   <td style="width:20%;;">
+																	     <p style="font-size: 14px;font-weight: normal;margin: 0;"><b>Total:</b></p>
+																	   </td>
+																	   <td style="width:10%;">
+																	   <p style="font-size: 14px;font-weight: normal;margin: 0;text-align:right">$'.$paymentamount.'</p>
+																	   </tr>
+																	   </table>
+																	   </td>
 																   </tr>
 																</tbody>
 															 </table>
@@ -2659,9 +2744,9 @@ function nyc_tenant_payment_square_ajax(){
 													   </tr>
 													   <tr>
 													   <td colspan="2" style="">
-													   <table style="width:100%;border-top:1px solid #000;margin-top:50px;">
+													   <table style="width:100%;margin-top:50px;">
 													   <tr><td>
-										<p style="font-size: 16px;font-weight: 500;margin: 20px 0 15px 0 ;">Consent terms & Agreements:</p>
+										<p style="font-size: 16px;font-weight: 500;margin: 20px 0 15px 0 ;"><span style="font-weight:bold">Payments Terms:</span></p>
 										<ul style="padding-left:10px;"><li style="font-size: 14px;font-weight: normal;margin: 0;">You are paying a service fee to NYC Rooms For Rent Inc. to provide listings of available rooms. </li>
 										<li style="font-size: 14px;font-weight: normal;margin: 0;">NYC Rooms for Rent will arrange, conduct, coordinate, handles or cause meetings between you and the current occupant of a legally occupied property, including apartment housing, who wishes to share that housing with you or more individuals as a private dwelling.</li>
 										<li style="font-size: 14px;font-weight: normal;margin: 0;">NYC Rooms For Rent Inc. will do the aforementioned for an unlimited amount of time until you are placed in a room of your likings.</li>
@@ -3405,7 +3490,124 @@ add_action( 'wp_ajax_nyc_application_form_pdf_ajax', 'nyc_application_form_pdf_a
 add_action( 'wp_ajax_nopriv_nyc_application_form_pdf_ajax', 'nyc_application_form_pdf_ajax' );
 
 
+function nyc_export_payments_as_CSV() {
+	 ob_start();
+	 $csv = '';
+	 $headers = array(
+		'S NO',
+		'Invoice No.',
+		'Order No .',
+		'Payment No.',
+		'Deal No.',
+		'Payment Amount',
+		'Payment By',
+		'Payment Status',
+		'Payment Source',
+		'Payment Date',
+		'Agent Involved',
+		'Collection Method'
+	); 
+	$args = array(
+                    'post_type'=> 'dealsorders',
+                    'post_status' => 'publish',
+                    'numberposts'   => -1
+            );
+	 $dealsorders = new WP_Query( $args );
+	 $deal_order_posts = $dealsorders->posts;
+	 $handle = fopen('php://output', 'w'); 
+	 fputcsv($handle, $headers, ',', '"');
 
+	foreach($deal_order_posts as $key=>$results1)
+	{
+	     
+		 $post_order_id = $results1->ID;
+		 
+		 $invoice_id          =  get_post_meta($post_order_id,'invoice_id',true);
+		 $checkorderno        =  get_post_meta($post_order_id,'order_id',true);
+		 $checkpaymentno      =  get_post_meta($post_order_id,'payment_id',true);
+		 $deal_id             =  get_post_meta($post_order_id,'deal_id',true);
+		 $payment_amount      =  get_post_meta($post_order_id,'payment_amount',true);
+		 $payment_by          =  get_post_meta($post_order_id,'email_teanant',true);
+		 $payment_status      =  get_post_meta($post_order_id,'payment_status',true);
+		 $payment_source_type =  get_post_meta($post_order_id,'payment_source_type',true);
+		 $payment_created_at  =  date("F j, Y h:i A",strtotime(get_post_meta($post_order_id,'payment_created_at',true)));
+		 $checkagent          =  get_post_meta($post_order_id,'agent_involved',true); 
+		 $payment_mode        =  get_post_meta($post_order_id,'payment_mode',true); 
+		 if($payment_mode == 'square_payment'){
+			$collection_method = "Online";
+		} else {
+			$collection_method =  "Offline";
+		}
+		if($checkorderno){
+		    $checkorderno = $checkorderno;
+		} else {
+		    $checkorderno = 'N.A';
+		}
+		
+		if($checkpaymentno){
+		    $checkpaymentno = $checkpaymentno;
+		} else {
+		    $checkpaymentno = 'N.A';
+		}
+		
+		if($checkagent){
+		    $checkagent = $checkagent;
+		} else {
+		    $checkagent = 'N.A';
+		}
+		
+		 $row = array(
+			$key+1,
+			$invoice_id,
+			$checkorderno,
+			$checkpaymentno ,
+			$deal_id,
+			$payment_amount,
+			$payment_by,
+			$payment_status,
+			$payment_source_type,
+			$payment_created_at,
+			$checkagent,
+			$collection_method
+		);
+
+		fputcsv($handle, $row, ',', '"');
+		
+	}
+
+
+	$now = gmdate('D, d M Y H:i:s') . ' GMT';
+
+	header('Content-Type: text/csv');
+	header('Expires: ' . $now);
+
+	header('Content-Disposition: attachment; filename="payments.csv"');
+	header('Pragma: no-cache'); 
+
+	echo $csv; 
+	exit();
+}
+
+function nyc_get_count_order_post_type(){
+     
+	 $args = array(
+                    'post_type'=> 'dealsorders',
+                    'post_status' => 'publish',
+                    'numberposts'   => -1
+            );
+	 $dealsorders = new WP_Query( $args );
+	 $deal_order_posts = $dealsorders->posts;
+	  $payment_amount = 0;
+	 foreach($deal_order_posts as $deal_orders) {
+	     
+		 $post_order_id   = $deal_orders->ID;
+		 $payment_amount  +=  (int) get_post_meta($post_order_id,'payment_amount',true);
+		 
+	 }
+	    echo '$'.$payment_amount;
+	 
+   
+}
 
 require_once( 'inc/init-function.php');
 ?>

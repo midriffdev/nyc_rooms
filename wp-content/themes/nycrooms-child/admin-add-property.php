@@ -195,6 +195,22 @@ get_header();
 					</select>
 					<span id="people_living_count-err"></span>
 				</div>
+				<div class="col-md-4">	
+					<h5>Select Property Owner</h5>
+					  <?php 
+						  $property_owners = get_users( [ 'role__in' => [ 'property_owner'] ] );
+						?>
+					<select class="chosen-select-no-single" id="selected_property_owner" >
+						<option label="blank"></option>
+						<?php
+						 foreach($property_owners as $propertyowners){
+						    echo '<option value="'. $propertyowners->data->ID . '">'. $propertyowners->data->display_name .'</option>';
+						 }
+						?>
+                         						
+					</select>
+					<span id="people_living_count-err"></span>
+				</div>
 			</div>
 
 		</div>

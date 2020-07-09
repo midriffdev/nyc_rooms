@@ -31,6 +31,7 @@ jQuery(document).ready(function($) {
 		var contact_email = jQuery('#contact_email').val();
 		var contact_phone = jQuery('#contact_phone').val();
 		var people_living_count = jQuery('#people_living_count').val();
+		var selected_property_owner  = jQuery('#selected_property_owner').val();
 		if(title == ''){
 			jQuery('#title-err').html('<span class="error">Please enter title</span>');
 			is_error = true;		
@@ -144,6 +145,8 @@ jQuery(document).ready(function($) {
 			form_data.append("contact_email", contact_email);
 			form_data.append("contact_phone", contact_phone);
 			form_data.append("people_living_count", people_living_count);
+			form_data.append("selected_property_owner", selected_property_owner);
+			
 			
 			var gallery_files=[];
 			for(var i = 0;i<file_data.length;i++){
@@ -165,8 +168,9 @@ jQuery(document).ready(function($) {
 				processData: false,
 				contentType: false,
 				success: function(response) {
-				   console.log(response);
+				      
 				    if(response == "success"){
+					   jQuery('.loading').hide();
 						window.location.href = window.location.href + "?action=success";
 					} else {
 						window.location.href = window.location.href + "?action=false";
@@ -175,6 +179,7 @@ jQuery(document).ready(function($) {
 			})		
 		}
 		jQuery(".preview").attr("disabled", false);
+		
 	});
 	
 	
@@ -187,6 +192,7 @@ jQuery(document).ready(function($) {
 		// escape here if the confirm is false;
 		if (!confirm('Are you sure?')) return false;
 		var property_id=jQuery(this).attr('data-id');
+		jQuery('.loading').show();
 		var form_data = new FormData();	
 		form_data.append("property_id", property_id);
 		form_data.append( "action", 'nyc_delete_property_ajax');   
@@ -198,6 +204,7 @@ jQuery(document).ready(function($) {
 			contentType: false,
 			success: function(response) {
 				if(response == "success"){
+				  jQuery('.loading').hide();
 				var delete_tr= ".property-id-"+property_id;
 				jQuery(delete_tr).fadeOut("slow");	
 				}
@@ -230,7 +237,7 @@ jQuery(document).ready(function($) {
                        jQuery('input[class="checkagent"]:checked').each(function(){
 			                 myarray.push(jQuery(this).val());
 			           });
-					   
+					   jQuery('.loading').show();
 					   var data = {
 							'action': 'delete_multiple_agents',
 							'data':   myarray
@@ -239,6 +246,7 @@ jQuery(document).ready(function($) {
 						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 						        
 								  if(response == "true"){
+								    jQuery('.loading').hide();
 									$('#Modaldelete').modal('show');
 									setTimeout(function(){
 									   window.location.reload();
@@ -258,7 +266,7 @@ jQuery(document).ready(function($) {
 		         alert('Please choose one or more agent to be active');
 		     } else {
 		       
-				
+				       jQuery('.loading').show();
                        jQuery('input[class="checkagent"]:checked').each(function(){
 			                 myarray.push(jQuery(this).val());
 			           });
@@ -271,6 +279,7 @@ jQuery(document).ready(function($) {
 						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 						          
 								  if(response == "true"){
+								     jQuery('.loading').hide();
 								    $('#Modalactive').modal('show');
 									setTimeout(function(){
 									   window.location.reload();
@@ -293,7 +302,7 @@ jQuery(document).ready(function($) {
 		         alert('Please choose one or more agent to inactive');
 		     } else {
 		       
-				
+				         jQuery('.loading').show();
                        jQuery('input[class="checkagent"]:checked').each(function(){
 			                 myarray.push(jQuery(this).val());
 			           });
@@ -306,7 +315,9 @@ jQuery(document).ready(function($) {
 						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 						          
 								  if(response == "true"){
+								       jQuery('.loading').hide();
 									 $('#Modalinactive').modal('show');
+									 
 									setTimeout(function(){
 									   window.location.reload();
 									   // or window.location = window.location.href; 
@@ -345,10 +356,12 @@ jQuery(document).ready(function($) {
 													'action': 'delete_multiple_agents',
 													'data':   mydeletearray
 											   };
+											   jQuery('.loading').show();
 											// We can also pass the url value separately from ajaxurl for front end AJAX implementations
 												jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 														
 														  if(response == "true"){
+														    jQuery('.loading').hide();
 															$('#Modaldelete').modal('show'); 
 															setTimeout(function(){
 															   window.location.reload();
@@ -393,7 +406,7 @@ jQuery(document).ready(function($) {
                        jQuery('input[class="checkleads"]:checked').each(function(){
 			                 myarrayleads.push(jQuery(this).val());
 			           });
-					   
+					   jQuery('.loading').show();
 					   var data = {
 							'action': 'delete_multiple_leads',
 							'data':   myarrayleads
@@ -402,6 +415,7 @@ jQuery(document).ready(function($) {
 						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 						
 								  if(response == "true"){
+								    jQuery('.loading').hide();
 									$('#Modaldelete').modal('show');
 									setTimeout(function(){
 									   window.location.reload();
@@ -420,6 +434,7 @@ jQuery(document).ready(function($) {
 				if(checkedNum == 0){
 					alert('Please choose one or more lead to convert into deal');
 				} else {
+				          jQuery('.loading').show();
 				          jQuery('input[class="checkleads"]:checked').each(function(){
 								 myarrayleads.push(jQuery(this).val());
 						   });
@@ -435,6 +450,7 @@ jQuery(document).ready(function($) {
 							jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 					            
 									  if(response == "true"){
+									     jQuery('.loading').hide();
 										$('#ModalDeals').modal('show');
 										setTimeout(function(){
 										   window.location.reload();
@@ -470,7 +486,7 @@ jQuery(document).ready(function($) {
 		       
 	                        var r = confirm("Are you sure to delete this lead");
 					            if(r == true) {
-											   
+											   jQuery('.loading').show();
 											   myarrayleads.push(id);
 											   
 											   
@@ -482,6 +498,7 @@ jQuery(document).ready(function($) {
 												jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 														
 														  if(response == "true"){
+														    jQuery('.loading').hide();
 															$('#Modaldelete').modal('show'); 
 															setTimeout(function(){
 															   window.location.reload();
@@ -506,7 +523,8 @@ jQuery(document).ready(function($) {
 				if(checkedNum == 0){
 					alert('Please select this lead to convert to deal');
 				} else {
-				        $(this).css('pointer-events','none');
+				           jQuery('.loading').show();
+				           $(this).css('pointer-events','none');
 						
 				           myarrayleads.push(id);
 						   var data = {
@@ -520,6 +538,7 @@ jQuery(document).ready(function($) {
 							jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 					            
 									  if(response == "true"){
+									    jQuery('.loading').hide();
 										$('#ModalDeals').modal('show');
 										setTimeout(function(){
 										   window.location.reload();
@@ -555,6 +574,7 @@ jQuery(document).ready(function($) {
 					var r = confirm("Are you sure to delete these properties");
 				  }
 					if(r == true) {
+					       jQuery('.loading').show();
 						   jQuery('input[class="checkproperties"]:checked').each(function(){
 								 myarrayproperties.push(jQuery(this).val());
 						   });
@@ -569,6 +589,7 @@ jQuery(document).ready(function($) {
 									  
 									
 									  if(response == "true"){
+									    jQuery('.loading').hide();
 										$('#Modaldelete').modal('show');
 										setTimeout(function(){
 										   window.location.reload();
@@ -583,13 +604,79 @@ jQuery(document).ready(function($) {
 				 
 				 }
 			 
-			 } else if(value == 'approve'){
+			 } else if(value == 'activate'){
+		       var checkedNum = jQuery('input[class="checkproperties"]:checked').length;
+				 if(checkedNum == 0){
+					 alert('Please choose one or more properties to activate');
+				 } else {
+				   
+						   jQuery('.loading').show();
+						   jQuery('input[class="checkproperties"]:checked').each(function(){
+								 myarrayproperties.push(jQuery(this).val());
+						   });
+						   
+						   var data = {
+										'action': 'activate_multiple_properties',
+										'data':   myarrayproperties
+						   };
+		// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+							jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+									 
+									   if(response == "true"){
+										 jQuery('.loading').hide();
+										 $('#Modalactivate').modal('show');
+										setTimeout(function(){
+										   window.location.reload();
+										   // or window.location = window.location.href; 
+										}, 2000);
+									 
+									   }
+									 
+							  });
+			
+				 
+				   }
+			 //jQuery('.agent_selected').each()
+		     } else if(value == 'deactivate') {
+		       var checkedNum = jQuery('input[class="checkproperties"]:checked').length;
+		     if(checkedNum == 0){
+		         alert('Please choose one or more properties to deactivate');
+		     } else {
+		       
+				       jQuery('.loading').show();
+                       jQuery('input[class="checkproperties"]:checked').each(function(){
+			                 myarrayproperties.push(jQuery(this).val());
+			           });
+					   
+					   var data = {
+									'action': 'deactivate_multiple_properties',
+									'data':   myarrayproperties
+	                   };
+	// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+						         
+								   if(response == "true"){
+								     jQuery('.loading').hide();
+									 $('#Modaldeactivate').modal('show');
+									setTimeout(function(){
+									   window.location.reload();
+									   // or window.location = window.location.href; 
+								    }, 2000);
+								 
+								   }
+								 
+						  });
+		
+		     
+		       }
+			 //jQuery('.agent_selected').each()
+		     } else if(value == 'approve'){
 		       var checkedNum = jQuery('input[class="checkproperties"]:checked').length;
 		     if(checkedNum == 0){
 		         alert('Please choose one or more properties to approve');
 		     } else {
 		       
-				
+				       jQuery('.loading').show();
                        jQuery('input[class="checkproperties"]:checked').each(function(){
 			                 myarrayproperties.push(jQuery(this).val());
 			           });
@@ -602,6 +689,7 @@ jQuery(document).ready(function($) {
 						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 						         
 								   if(response == "true"){
+								     jQuery('.loading').hide();
 									 $('#ModalApproveProp').modal('show');
 									setTimeout(function(){
 									   window.location.reload();
@@ -621,7 +709,7 @@ jQuery(document).ready(function($) {
 		         alert('Please choose one or more properties to approve');
 		     } else {
 		       
-				
+				       jQuery('.loading').show();
                        jQuery('input[class="checkproperties"]:checked').each(function(){
 			                 myarrayproperties.push(jQuery(this).val());
 			           });
@@ -634,6 +722,7 @@ jQuery(document).ready(function($) {
 						jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 						            console.log(response);
 								    if(response == "true"){
+									 jQuery('.loading').hide();
 									 $('#ModalUnApproveProp').modal('show');
 									setTimeout(function(){
 									   window.location.reload();
@@ -656,7 +745,7 @@ jQuery(document).ready(function($) {
 	   jQuery(".checkproperties").prop('checked', jQuery(this).prop('checked'));
 	});
 	
-	 jQuery('.all_properties_table .delete_admin_property').click(function(){
+	jQuery('.all_properties_table .delete_admin_property').click(function(){
 	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
 				   
 	              var myarrayprop = new Array();
@@ -668,11 +757,10 @@ jQuery(document).ready(function($) {
 		       
 	                        var r = confirm("Are you sure to delete this Property");
 					            if(r == true) {
-											   
-											   myarrayprop.push(id);
-											   
-											   
-											 var data = {
+											  jQuery('.loading').show(); 
+											  myarrayprop.push(id);
+											  
+											  var data = {
 													'action': 'delete_multiple_properties',
 													'data':   myarrayprop
 											   };
@@ -680,6 +768,7 @@ jQuery(document).ready(function($) {
 												jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 														
 														  if(response == "true"){
+														    jQuery('.loading').hide();
 															$('#Modaldelete').modal('show'); 
 															setTimeout(function(){
 															   window.location.reload();
@@ -696,6 +785,84 @@ jQuery(document).ready(function($) {
 	   
 	});  
 	
+	/* ------------- Activate Property ----------------------- */
+	
+	jQuery('.all_properties_table .actvate_prperty').click(function(){
+	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
+				   
+	              var myarrayprop = new Array();
+	              var id = jQuery(this).data('id');
+				  
+				  if(checkedNum == 0){
+		               alert('Please select this property to activate');
+		          } else {
+		                      jQuery('.loading').show(); 
+							  myarrayprop.push(id);
+							  
+                              var data = {
+									'action': 'activate_multiple_properties',
+									'data':   myarrayprop
+							   };
+							// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+								jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+										
+										  if(response == "true"){
+											jQuery('.loading').hide();
+											$('#Modalactivate').modal('show'); 
+											setTimeout(function(){
+											   window.location.reload();
+											   // or window.location = window.location.href; 
+											 }, 2000);
+										 
+										 }
+								}); 
+	            }
+	   
+	    
+	   
+	});  
+	
+	
+	/* ------------- Deactivate Property ----------------------- */
+	
+	jQuery('.all_properties_table .deactvate_prperty').click(function(){
+	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
+				   
+	              var myarrayprop = new Array();
+	              var id = jQuery(this).data('id');
+				  
+				  if(checkedNum == 0){
+		               alert('Please select this property to deactivate');
+		          } else {
+		                      jQuery('.loading').show(); 
+							  myarrayprop.push(id);
+							  
+                              var data = {
+									'action': 'deactivate_multiple_properties',
+									'data':   myarrayprop
+							   };
+							// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+								jQuery.post(my_ajax_object.ajax_url, data, function(response) {
+										
+										  if(response == "true"){
+											jQuery('.loading').hide();
+											$('#Modaldeactivate').modal('show'); 
+											setTimeout(function(){
+											   window.location.reload();
+											   // or window.location = window.location.href; 
+											 }, 2000);
+										 
+										 }
+								}); 
+	            }
+	   
+	    
+	   
+	});  
+	
+	
+	
+	
 	jQuery('.approve_property').click(function(){
 	
 	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
@@ -705,9 +872,9 @@ jQuery(document).ready(function($) {
 				  if(checkedNum == 0){
 		               alert('Please select this property to approve');
 		          } else {
-		       
-								        myapprovearray.push(id);
-											 var data = {
+		                                       jQuery('.loading').show();
+								               myapprovearray.push(id);
+											   var data = {
 													'action': 'approve_multiple_properties',
 													'data':   myapprovearray
 											   };
@@ -715,6 +882,7 @@ jQuery(document).ready(function($) {
 												jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 														
 														  if(response == "true"){
+														    jQuery('.loading').hide();
 															$('#ModalApproveProp').modal('show'); 
 															setTimeout(function(){
 															   window.location.reload();
@@ -739,8 +907,8 @@ jQuery(document).ready(function($) {
 				  if(checkedNum == 0){
 		               alert('Please select this property to unApprove');
 		          } else {
-		       
-								        myunapprovearray.push(id);
+		                                     jQuery('.loading').show();
+								             myunapprovearray.push(id);
 											 var data = {
 													'action': 'unapprove_multiple_properties',
 													'data':   myunapprovearray
@@ -749,6 +917,7 @@ jQuery(document).ready(function($) {
 												jQuery.post(my_ajax_object.ajax_url, data, function(response) {
 														
 														  if(response == "true"){
+														    jQuery('.loading').hide();
 															$('#ModalUnApproveProp').modal('show'); 
 															setTimeout(function(){
 															   window.location.reload();
