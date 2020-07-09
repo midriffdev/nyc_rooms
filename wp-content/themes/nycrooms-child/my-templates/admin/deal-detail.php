@@ -209,6 +209,7 @@ if(count($check_deal_orders->posts) == 1){
 				<?php 
 				if($property_id){ 
 				$auth = get_post($property_id);
+				if($auth){
 				$authid = $auth->post_author;
 				$address = get_post_meta($property_id, 'address',true)." ";
 				$address .= get_post_meta($property_id, 'city',true)." ";
@@ -240,7 +241,7 @@ if(count($check_deal_orders->posts) == 1){
 					</table>
 					</div>			
 				</div>
-				<?php } ?>
+				<?php } } ?>
 				</div>
 				<?php } ?>
 				<div class="col-md-12">
@@ -565,6 +566,7 @@ if(count($check_deal_orders->posts) == 1){
 					<?php 
 					if($property_id){ 
 						$auth = get_post($property_id);
+						if($auth){
 						$authid = $auth->post_author;
 						$address = get_post_meta($property_id, 'address',true)." ";
 						$address .= get_post_meta($property_id, 'city',true)." ";
@@ -592,7 +594,7 @@ if(count($check_deal_orders->posts) == 1){
 						</tbody>
 						</table>
 						</div>
-					<?php }else{
+						<?php }}else{
 						echo "<h2>No property selected.</h2>";
 					} ?>
 					</div>
