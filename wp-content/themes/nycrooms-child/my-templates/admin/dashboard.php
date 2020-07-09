@@ -22,29 +22,6 @@ get_header();
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
 
-				<div class="recent-activity">
-	                <div class="act-title">
-	                    <h5>Recent Activities</h5>
-	                </div>
-	                <ul class="act-wrap">
-					<?php foreach( $result as $post ){
-					   $post_id = $post['ID'];
-	                   $title = $post['post_title'];
-					   $date = $post['post_date'];
-					   $Human_time =  human_time_diff(strtotime($date) , current_time ('timestamp', 1));
-?>
-	                    <li class="alert br-o fade show" data-id="<?php echo $post_id ; ?>">
-	                        A new property <span class="review-stat"><?php echo $title;?></span> has been added!
-							
-	                        <button type="button" class="close recently_properties_close" data-id="<?php echo $post_id ; ?>" data-dismiss="alert" aria-label="Close">
-	                            <span aria-hidden="true"><i class="sl sl-icon-close"></i></span>
-	                        </button>
-	                        <p><?php echo $Human_time ; ?> ago </p>
-	                    </li>
-					<?php } ?>
-	                </ul>
-	            </div>
-
 	            <div class="dashboard-stats-section">
 				<div class="dashboard-stat-sectioncont">
 					<ul>
@@ -199,72 +176,7 @@ get_header();
 				</div>
 			</div>
 
-			<div class="dadhboard-featuredproperties_section">
-				<div class="row">
-					<div class="col-md-12"><h2>Featured Properties</h2></div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<table class="manage-table responsive-table">
-						<tbody>
-						<!-- Item #1 -->
-						<tr>
-						<td class="title-container">
-						<img src="images/listing-02.jpg" alt="">
-						<div class="title">
-						<h4><a href="#">Serene Uptown</a></h4>
-						<span>6 Bishop Ave. Perkasie, PA </span>
-						<span class="table-property-price">$900 / Weekly</span> <span class="active--property">Available</span>
-						</div>
-						</td>
-						</tr>
-						<!-- Item #2 -->
-						<tr>
-						<td class="title-container">
-						<img src="images/listing-05.jpg" alt="">
-						<div class="title">
-						<h4><a href="#">Oak Tree Villas</a></h4>
-						<span>71 Lower River Dr. Bronx, NY</span>
-						<span class="table-property-price">$700 / Weekly</span> <span class="active--property">Available</span>
-						</div>
-						</td>
-						</tr>
 
-						</tbody>
-						</table>
-					</div>
-					<div class="col-md-6">
-						<table class="manage-table responsive-table">
-						<tbody>
-						<!-- Item #3 -->
-						<tr>
-						<td class="title-container">
-						<img src="images/listing-04.jpg" alt="">
-						<div class="title">
-						<h4><a href="#">Selway Apartments</a></h4>
-						<span>33 William St. Northbrook, IL </span>
-						<span class="table-property-price">$200 / Weekly</span> <span class="active--property">Available</span>
-						</div>
-						</td>
-						</tr>
-
-						<!-- Item #4 -->
-						<tr>
-						<td class="title-container">
-						<img src="images/listing-06.jpg" alt="">
-						<div class="title">
-						<h4><a href="#">Old Town Manchester</a></h4>
-						<span> 7843 Durham Avenue, MD  </span>
-						<span class="table-property-price">$500 / Weekly</span> <span class="active--property">Available</span>
-						</div>
-						</td>
-						</tr>
-
-						</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
 
 			</div>
 		</div>

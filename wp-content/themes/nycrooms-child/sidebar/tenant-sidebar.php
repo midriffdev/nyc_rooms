@@ -11,7 +11,7 @@ $current_user = wp_get_current_user();
 			
 			<ul class="my-account-nav">
 				<li class="sub-nav-title">Manage Listings</li>
-				<li><a href="<?php echo home_url(); ?>/tenant/hired-property/" id="sidebar-hiredproperty"><i class="sl sl-icon-docs"></i> Hired Properties </a></li>
+				<li><a href="<?php echo home_url(); ?>/tenant/hired-property/" id="sidebar-hiredproperty"><i class="sl sl-icon-docs"></i> Hired Properties <span class="all-listing-no active-listing-no"><?php echo count_tenant_hired_property(); ?></span></a></li>
 				<li><a href="<?php echo home_url(); ?>/tenant/bookmarked-properties/" id="sidebar-bookmark"><i class="sl sl-icon-star"></i> Bookmarked Properties <span class="all-listing-no active-listing-no"><?php echo count(get_user_meta($current_user->ID,'nyc_bookmark',true)); ?></span></a></li>
 			</ul>
 
