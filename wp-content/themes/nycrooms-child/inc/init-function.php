@@ -273,7 +273,7 @@ function nyc_tenant_check_authentication(){
 	}
 	$user = wp_get_current_user();
 	if($user->roles[0] == "property_owner"){
-		header( 'Location:' . site_url() . '/my-profile/');
+		header( 'Location:' . site_url() . '/property-owner/');
 	} else if($user->roles[0] == "administrator"){
 	   header( 'Location:' . site_url() . '/admin/');
 	}

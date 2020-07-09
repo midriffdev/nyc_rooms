@@ -322,13 +322,7 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 					'role'  => 'tenant'
 				);
 				$user_id = wp_insert_user( $userdata );
-				update_user_meta( $user_id, 'facebook', $fb_user->link );
 				wp_new_user_notification($user_id, null, 'both');
-				
-				
-				
-				
- 
 			} else {
 				// user exists, so we need just get his ID
 				$user = get_user_by( 'email', $fb_user->email );
@@ -419,7 +413,6 @@ if (isset($_GET['code'])) {
 } else {
   $google_uri = $client->createAuthUrl();
 }
-
 //Check whether the user is already logged in  
 get_header();
 ?>
