@@ -271,6 +271,7 @@ function nyc_add_property_ajax(){
 		 } else {
 		    $checkid = get_current_user_id();
 		 }
+		 
 		$property_id = wp_insert_post(array (
 			'post_type'		=> 'property',
 			'post_title' 	=> $_POST['title'],
@@ -315,11 +316,12 @@ function nyc_add_property_ajax(){
 			$msg .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
 		    $sent = wp_mail($to, $subject, $msg);
 			
+			/* ------------ Sent mail to  tenant --------*/
 			if(isset($_POST['selected_property_owner']) && !empty($_POST['selected_property_owner'])){
 			     $p_id = $_POST['selected_property_owner'];
 				 $get_user    =  get_user_by( 'ID', $p_id );
 				 $user_email =    $get_user->user_email;
-				 
+				// $user_name  = 
 				 $subject1 = "New Property Listed - ".$_POST['title'];
 			     $to1 = $user_email;
 			     $msg1  = __( 'Hello Admin,') . "\r\n\r\n";
@@ -328,9 +330,6 @@ function nyc_add_property_ajax(){
 		         $sent1 = wp_mail($to1, $subject1, $msg1);
 			    
 			}
-			
-			
-			
 			
 			echo 'success';
 		}else{

@@ -168,13 +168,12 @@ jQuery(document).ready(function($) {
 				processData: false,
 				contentType: false,
 				success: function(response) {
-				      
-				    if(response == "success"){
-					   jQuery('.loading').hide();
-						window.location.href = window.location.href + "?action=success";
-					} else {
-						window.location.href = window.location.href + "?action=false";
-					}
+				       if(response == "success"){
+					      jQuery('.loading').hide();
+						  window.location.href = window.location.href + "?action=success";
+					   } else {
+						  window.location.href = window.location.href + "?action=false";
+					   } 
 				}
 			})		
 		}
