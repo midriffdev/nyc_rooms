@@ -1,7 +1,13 @@
 <?php
 nyc_property_admin_authority();
-get_header();
+global $wp;
 global $wpdb;
+if(isset($_GET['download-csv']) && $_GET['download-csv'] == 'true'){
+	ob_end_clean();   
+	nyc_export_payments_as_CSV();	
+}
+
+$current_url = home_url( add_query_arg( array(), $wp->request ) );
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $args = array(
 'post_type'=> 'dealsorders',
@@ -108,6 +114,7 @@ if(!empty($date_query)){
 $dealsorders = new WP_Query( $args );
 $years_query = "SELECT DISTINCT YEAR(post_date) FROM `nyc_posts` WHERE post_status = 'publish' AND `post_type` = 'dealsorders' ORDER BY post_date DESC";
 $paymentsyears = $wpdb->get_col($years_query);
+get_header();
 ?>
 <style>
 .pagination-next-prev ul li.prev a {
@@ -230,10 +237,12 @@ input.checkbulkorders{
 					</div>
 					
 				</div>
-                 <div class="col-md-12">
+                 <div class="col-md-10">
 					 <p class="showing-results"><?php echo $dealsorders->found_posts; ?> Results Found On Page <?php echo $paged ;?> of <?php echo $dealsorders->max_num_pages;?> </p>
 				 </div>
-				 
+				 <div class="col-md-2 mx-auto">
+					 <p class="showing-results"><?php if($dealsorders->found_posts > 0){ echo '<a href="'.$current_url.'/?download-csv=true">Download CSV</a>'; } ?></p>
+				</div>
 				<table class="manage-table responsive-table deal--table">
 				<tbody>
 				<tr>

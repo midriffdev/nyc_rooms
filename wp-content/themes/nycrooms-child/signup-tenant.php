@@ -108,7 +108,17 @@ if(is_user_logged_in()){
 							
 							
 							
+							/*----------- Email to Tenant After Lead Submission --------*/
+			 
+							$subject1 = "Lead Submission Enquiry Recieved On NYCROOMS";
+							$to1 = $_REQUEST['email'];
+							$msg1  = '<h4>Hello '.$_REQUEST['guest_name_reg'].',</h4>';
+							$msg1 .= '<p>Thank you For Lead Submission on NYC Rooms. We Have Recevied Your Enquiry Request for lead submission On Property : <a href="'.get_post_permalink($_REQUEST['guest_search_pid']).'">'.get_the_title($_REQUEST['guest_search_pid']).'</a> One of our Represntative will be in touch with you as soon as possible.</p>';
+							$msg1 .=  '<p>Thanks!<p>';
+							$headers1 = array('Content-Type: text/html; charset=UTF-8');
+							$mail1 = wp_mail($to1, $subject1, $msg1,$headers1);
 							
+							/*---------- Email to Admin After Lead Submission --------*/
 							
 							$subject = "New Lead Submission";
 							$to = get_option('admin_email');
@@ -122,6 +132,7 @@ if(is_user_logged_in()){
 							$msg .=  '<p>Thanks!<p>';
 							$headers = array('Content-Type: text/html; charset=UTF-8');
 							$mail = wp_mail($to, $subject, $msg,$headers);
+							
 							if($mail){
 							
 								$success_msg = "We have recieved your request for property. We will contact you soon";
@@ -219,6 +230,18 @@ if(isset($_POST['guest_checkout'])){
 			add_post_meta($lead_id, 'lead_created_user_id', null);
 			
 			
+			/*----------- Email to Tenant After Lead Submission --------*/
+			 
+			$subject1 = "Lead Submission Enquiry Recieved On NYCROOMS";
+			$to1 = $_POST['guest_email'];
+			$msg1  = '<h4>Hello '.$_POST['guest_name'].',</h4>';
+			$msg1 .= '<p>Thank you For Lead Submission on NYC Rooms. We Have Recevied Your Enquiry Request for lead submission On Property : <a href="'.get_post_permalink($_POST['Property_search_id']).'">'.get_the_title($_POST['Property_search_id']).'</a> One of our Represntative will be in touch with you as soon as possible.</p>';
+			$msg1 .=  '<p>Thanks!<p>';
+			$headers1 = array('Content-Type: text/html; charset=UTF-8');
+		    $mail1 = wp_mail($to1, $subject1, $msg1,$headers1);
+			
+			
+			/*-------- Email Lead submission to Admin----------*/
 			
 			$subject = "New Lead Submission";
 			$to = get_option('admin_email');
@@ -232,6 +255,7 @@ if(isset($_POST['guest_checkout'])){
 			$msg .=  '<p>Thanks!<p>';
 			$headers = array('Content-Type: text/html; charset=UTF-8');
 		    $mail = wp_mail($to, $subject, $msg,$headers);
+			
 			if($mail){
 			
 			    $success_msg = "We have recieved your request for property. We will contact you soon";

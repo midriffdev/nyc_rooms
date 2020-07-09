@@ -146,7 +146,6 @@ if(isset($_POST['deal_ordersubmit'])){
 																		 <h2 style="margin: 0;font-weight:normal;font-size: 1.4em;">INVOICE DETAIlS:</h2>
 																		 <p style="font-size: 1em;font-weight: normal;margin: 0;">Invoice No. '.$invoice_id.'</p>
 																		 <p style="font-size: 1em;font-weight: normal;margin: 0;">Date: '.date("F j, Y").'</p>
-																		 <p style="font-size: 1em;font-weight: normal;margin: 0;">Deal Number : '.$deal_id.'</p>
 																		 </td>
 																	  </tr>
 																  </tbody>
@@ -162,10 +161,10 @@ if(isset($_POST['deal_ordersubmit'])){
 																		 <table style="width:100%;border-collapse:collapse;">
 																			<tr style="background-color:#a3b687;">
 																			   <td style="90%;padding:0 2px;">
-																			   <p style="text-align:left;color:#fff;margin:0;">Description</p>
+																			   <p style="text-align:left;color:#fff;margin:0px 0px 4px 0px;">Description</p>
 																			   </td>
 																			   <td style="10%;padding:0 2px;">
-																			   <p style="text-align:right;color:#fff;margin:0;">Amount</p>
+																			   <p style="text-align:right;color:#fff;margin:0px 0px 4px 0px;">Amount</p>
 																			   </td>
 																			</tr>
 																		 </table>
@@ -175,63 +174,80 @@ if(isset($_POST['deal_ordersubmit'])){
 																	   <td style="width:90%;padding:0 2px;">
 																		 <table style="width:100%;">
 																			<tr>
-																			   <td><p style="font-size: 14px;font-weight: normal;margin: 0;">Payment Amount:</p></td>
+																			   <td><p style="font-size: 14px;font-weight: normal;margin: 0;">Deal #'.$deal_id.':</p></td>
 																			</tr>
-																			
 																		 </table>
-																	  </td>
-																	  <td  style="width:10%;padding:0 2px;">
+																	   </td>
+																	   <td  style="width:10%;padding:0 2px;">
 																		 <table style="width:100%;">
 																			<tr>
 																			   <td><p style="font-size: 14px;text-align:right;font-weight: normal;margin: 0;">$'.$paymentamount.'</p></td>
 																			</tr>
+																		 </table>
+																	   </td>
+																   </tr>
+																   <tr>
+																   <td style="width:90%;padding:0 2px;">
+																		 <table style="width:100%;">
+																			<tr>
+																			   <td><p style="font-size: 14px;font-weight: normal;margin: 0;">Transaction ID : N.A</p></td>
+																			</tr>
 																			
 																		 </table>
-																	  </td>
-																   </tr>
+																	   </td>
+																	   <td  style="width:10%;padding:0 2px;">
+																		 <table style="width:100%;">
+																			<tr>
+																			    <td><p style="font-size: 14px;text-align:right;font-weight: normal;margin: 0;"></p></td>
+																			   
+																			</tr>
+																			
+																		 </table>
+																	   </td>
+																	</tr>
+																	<tr>
+																		   <td style="width:90%;padding:0 2px;">
+																			 <table style="width:100%;">
+																				<tr>
+																				   <td><p style="font-size: 14px;font-weight: normal;margin: 0;">Payment Mode : Cash</p></td>
+																				</tr>
+																				
+																			 </table>
+																		   </td>
+																		   <td  style="width:10%;padding:0 2px;">
+																			 <table style="width:100%;">
+																				<tr>
+																					<td><p style="font-size: 14px;text-align:right;font-weight: normal;margin: 0;"></p></td>
+																				   
+																				</tr>
+																				
+																			 </table>
+																		   </td>
+																	</tr>
 																   <tr>
-																   <td colspan="2" style="border-top:1px solid #000;padding-right:5px;">
-																   <table style="width:100%;">
-																   <tr>
-																   <td style="width:70%;"></td>
-																   <td style="width:20%;">
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">Subtotal</p>
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">Discount($0)</p>
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">GST($0)</p>
-																   </td>
-																   <td style="width:5%;">
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$'.$paymentamount.'</p>
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$0.00</p>
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$0.00</p></td>
+																	   <td colspan="2" style="padding-right:5px;padding-top:5px">
+																	   <table style="width:100%;border-top:1px solid #000;">
+																	   <tr>
+																	   <td style="width:70%;"></td>
+																	   <td style="width:20%;">
+																	   <p style="font-size: 14px;font-weight: normal;margin: 0;"><b>Total:</b></p>
+																	   </td>
+																	   <td style="width:10%;">
+																	   <p style="font-size: 14px;font-weight: normal;margin: 0;text-align:right">$'.$paymentamount.'</p>
+																	   </tr>
+																	   </table>
+																	   </td>
 																   </tr>
-																   </table>
-																   </td>
-																   </tr>
-																	 <tr>
-																   <td colspan="2" style="border-top:1px solid #000;padding-right:5px;">
-																   <table style="width:100%;">
-																   <tr>
-																   <td style="width:70%;"></td>
-																   <td style="width:20%;">
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;"><b>Total</b></p>
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;"><b>Balance Due</b></p>
-																   </td>
-																   <td style="width:5%;">
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$'.$paymentamount.'</p>
-																   <p style="font-size: 14px;font-weight: normal;margin: 0;">$0.00</p>
-																   </tr>
-																   </table>
-																   </td>
-																   </tr>
+																   
 																</tbody>
 															 </table>
 														  </td>
 													   </tr>
 													   <tr>
 													   <td colspan="2" style="">
-													   <table style="width:100%;border-top:1px solid #000;margin-top:50px;">
+													   <table style="width:100%;margin-top:50px;">
 													   <tr><td>
-										<p style="font-size: 16px;font-weight: 500;margin: 20px 0 15px 0 ;">Consent terms & Agreements:</p>
+										<p style="font-size: 16px;font-weight: 500;margin: 20px 0 15px 0 ;"><span style="font-weight:bold">Payments Terms:</span></p>
 										<ul style="padding-left:10px;"><li style="font-size: 14px;font-weight: normal;margin: 0;">You are paying a service fee to NYC Rooms For Rent Inc. to provide listings of available rooms. </li>
 										<li style="font-size: 14px;font-weight: normal;margin: 0;">NYC Rooms for Rent will arrange, conduct, coordinate, handles or cause meetings between you and the current occupant of a legally occupied property, including apartment housing, who wishes to share that housing with you or more individuals as a private dwelling.</li>
 										<li style="font-size: 14px;font-weight: normal;margin: 0;">NYC Rooms For Rent Inc. will do the aforementioned for an unlimited amount of time until you are placed in a room of your likings.</li>

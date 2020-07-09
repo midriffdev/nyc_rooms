@@ -181,6 +181,21 @@ get_header();
 							</a>
 						</li>
 					</ul>
+					<ul>
+					  <li class="statistic__item item--blue2">
+							<a href="<?php echo get_site_url(); ?>/admin/deals/">
+								<div class="statistic__item_cont">
+									<div class="statistic__item_title-sec">
+										<h2 class="counter-value"><?php echo nyc_get_count_order_post_type(); ?></h2>
+	                            		<span class="desc">Total Earning</span>
+									</div>
+									<div class="statistic__item_img-sec">
+										<img src="<?php echo get_stylesheet_directory_uri();?>/images/property-stats.png" alt="...">
+									</div>
+								</div>
+							</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 

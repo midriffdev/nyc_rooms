@@ -31,7 +31,17 @@ $success_msg = '';
 			
 			
 			
-			
+			/*----------- Email to Tenant After Lead Submission --------*/
+			 
+			$subject1 = "Lead Submission Enquiry Recieved On NYCROOMS";
+			$to1 = $_POST['guest_email'];
+			$msg1  = '<h4>Hello '.$_POST['guest_name'].',</h4>';
+			$msg1 .= '<p>Thank you For Lead Submission on NYC Rooms. We Have Recevied Your Enquiry Request for lead submission On Property : <a href="'.get_post_permalink($_POST['Property_search_id']).'">'.get_the_title($_POST['Property_search_id']).'</a> One of our Represntative will be in touch with you as soon as possible.</p>';
+			$msg1 .=  '<p>Thanks!<p>';
+			$headers1 = array('Content-Type: text/html; charset=UTF-8');
+			$mail1 = wp_mail($to1, $subject1, $msg1,$headers1);
+							
+			/*---------- Email to Admin After Lead Submission --------*/
 			
 			$subject = "New Lead Submission";
 			$to = get_option('admin_email');
@@ -52,6 +62,8 @@ $success_msg = '';
 				
 			   
 			}
+			
+			
 		
 		}
 		
@@ -84,8 +96,22 @@ if(isset($_POST['book_appointment'])){
 			add_post_meta($lead_id, 'lead_created_from', 'Appointment_user' );
 			add_post_meta($lead_id, 'lead_created_user_id', $user_id);
 			
+			
 			$strtotime =  strtotime($_POST['date'] . ' '.$_POST['time']);
 			$datetime =  date("F j, Y h:i:s A", $strtotime);
+			
+			/*----------- Email to Tenant After Lead Submission --------*/
+			
+			$subject1 = "Appointment Lead Submission Enquiry Recieved On NYCROOMS";
+			$to1 = $_POST['user_email'];
+			$msg1  = '<h4>Hello '.$_POST['user_name'].',</h4>';
+			$msg1 .= '<p>Thank you For Lead Submission on NYC Rooms. We Have Recevied Your Appointment Enquiry Request for lead submission. One of our Represntative will be in touch with you as soon as possible.</p>';
+			$msg1 .=  '<p>Thanks!<p>';
+			$headers1 = array('Content-Type: text/html; charset=UTF-8');
+			$mail1 = wp_mail($to1, $subject1, $msg1,$headers1);
+			
+	       /*---------- Email to Admin After Lead Submission --------*/
+			
 			$subject = "New Lead Submission";
 			$to = get_option('admin_email');
 			$msg  = __( '<h4>Hello Admin,</h4>') . "\r\n\r\n";

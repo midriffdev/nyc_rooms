@@ -237,6 +237,7 @@ function nyc_export_as_CSV($ids='') {
 	echo $csv; 
 	exit();
 }
+
 function nyc_wp_new_user_notification( $user_id, $plaintext_pass = '' ) {
 	$user = new WP_User($user_id);
 
