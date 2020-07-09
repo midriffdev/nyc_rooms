@@ -178,19 +178,11 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 					'role'  => 'property_owner'
 				);
 				$user_id = wp_insert_user( $userdata );
-				
-				update_user_meta( $user_id, 'facebook', $fb_user->link );
-				wp_new_user_notification($user_id, null, 'both');
-				
-				
-				
-				
- 
+				wp_new_user_notification($user_id, null, 'both');	
 			} else {
 				// user exists, so we need just get his ID
 				$user = get_user_by( 'email', $fb_user->email );
 				$user_id = $user->ID;
-				
 			}
 			
 			if( $user_id ) {
