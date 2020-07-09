@@ -38,7 +38,6 @@ $html = '<html>
           font-family: "varelaround";
           color: #333;  
         }
-		.page_break { page-break-before: always; }
     </style>
 </head>
 <body>
@@ -616,7 +615,7 @@ $html = '<html>
    </tr>
 </table>
 
-<div class="page_break"></div>
+<div class="page-break-before"></div>
 <table style="width:100%;">
 <tr>
                   <td colspan="2" style="padding-bottom:10px;">
@@ -627,7 +626,7 @@ $html = '<html>
                 <table style="width:100%;">
                     <tbody>
                       <tr>
-                        <td style="width:45%;padding-top:10px;">
+                        <td style="width:45%;padding-top:20px;">
                           <img src="https://nycrooms.midriffdevelopers.live/wp-content/uploads/2020/06/logo.png" style="width:150px;">
                         </td>
                         <td style="width:55%;padding: 20px 0px 0 10%;">
@@ -818,7 +817,7 @@ require_once 'dompdf/vendor/autoload.php';
 use Dompdf\Dompdf;
 
 // instantiate and use the dompdf class
-$dompdf = new Dompdf(array('enable_remote' => true));
+$dompdf = new Dompdf();
 $dompdf->loadHtml($html, 'UTF-8');
 
 // (Optional) Setup the paper size and orientation

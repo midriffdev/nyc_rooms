@@ -155,10 +155,10 @@ get_header();
 							</a>
 						</li>
 						<li class="statistic__item item--black">
-							<a href="#">
+							<a href="<?php echo get_site_url(); ?>/admin/all-contracts/">
 								<div class="statistic__item_cont">
 									<div class="statistic__item_title-sec">
-										<h2 class="counter-value">3000</h2>
+										<h2 class="counter-value"><?php echo nyc_get_count_custom_post_type('contracts'); ?></h2>
 	                            		<span class="desc">Total Contracts</span>
 									</div>
 									<div class="statistic__item_img-sec">

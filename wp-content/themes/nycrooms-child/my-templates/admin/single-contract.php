@@ -1,10 +1,11 @@
 <?php
 use Dompdf\Dompdf;
-$post_id = base64_decode(get_query_var( 'id' )); 
-$post = get_post($post_id);
-if(empty($post) || ($post->post_type != 'deals')){
-	wp_redirect(get_site_url().'/admin/deals'); 
+$contract_id = base64_decode(get_query_var('id')); 
+$post = get_post($contract_id);
+if(empty($post) || ($post->post_type != 'contracts')){
+	wp_redirect(get_site_url().'/admin/all-contracts'); 
 }
+$post_id = get_post_meta($contract_id,'deal_id',true); 
 nyc_property_admin_authority();
 get_header();
 $property_id = get_post_meta($post_id,'property_id',true);
@@ -1004,7 +1005,6 @@ if(isset($_POST['create_contract']) && $contract_created == false){
 			update_post_meta($contract_id,'contract_pdf',$attach_id);
 			update_post_meta($contract_id,'deal_id',$post_id);
 			update_post_meta($contract_id,'tenant_email',$email);
-			update_post_meta($contract_id,'property_id',$property_id);
 			update_post_meta($contract_id,'property_owner_email',get_the_author_meta( 'user_email' , $authid));
 			update_post_meta($post_id,'contract_id',$contract_id);		
 			update_post_meta($post_id,'deal_created', 1);		
@@ -1825,11 +1825,6 @@ Date:</span>
 							</div>
 								</div>
 							</div>
-						<div class="contract-form-row create_contract">
-							<div class="row">
-								<button type="submit" class="contract-form-submit" name="create_contract" id="create_contract_btn">Create Contract</button>
-							</div>
-						</div>
 						</div>		
     </form>
 </div>
