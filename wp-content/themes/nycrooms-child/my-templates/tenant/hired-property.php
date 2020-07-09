@@ -5,7 +5,7 @@ $current_user = wp_get_current_user();
 $args = array(
 	'post_type'=> 'contracts',
 	'post_status' => array('publish'),
-	'posts_per_page'   => -1,
+	'posts_per_page'   => 6,
 );
 $meta_query = array();
 $meta_query[] =  array(
@@ -27,13 +27,14 @@ if($contracts->have_posts()){
 }
 
 $properties = '';
+global $paged;
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 if($property_ids){
 	//Getting Property 
-	$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 	$args_prop = array(
 		'post_type'=> 'property',
 		'post_status' => array('draft', 'available', 'rented','Pending Review','publish'),
-		'posts_per_page'   => -1,
+		'posts_per_page'   => 6,
 		'suppress_filters' => false,
 		'paged' => $paged,
 		'post__in' => $property_ids,
@@ -162,6 +163,7 @@ input.checkbulk{
 
 						<!-- Pagination -->
 						<div class="clearfix"></div>
+						<?php if(!empty($properties)){ ?>
 						<div class="pagination-container margin-top-10 margin-bottom-45">
 							<nav class="pagination">
 							<ul>
@@ -185,7 +187,7 @@ input.checkbulk{
 								</ul>
 							</nav>
 						</div>
-
+						<?php } ?>
 					</div>
 				</div>
 				<!-- Pagination Container / End -->

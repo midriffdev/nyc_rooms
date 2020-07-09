@@ -2,11 +2,12 @@
 nyc_tenant_check_authentication();
 get_header();
 $current_user = wp_get_current_user();
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+global $paged;
+$paged = (get_query_var('id')) ? get_query_var('id') : 1;
 $args = array(
 'post_type'=> 'contracts',
 'post_status' => array('publish'),
-'posts_per_page'   => -1,
+'posts_per_page'   => 6,
 'suppress_filters' => false,
 'paged' => $paged
 );
@@ -185,7 +186,7 @@ input.checkbulk{
 									echo paginate_links( array(
 										'base' 		=> get_pagenum_link(1) . '%_%',
 										'format' 	=> 'page/%#%/',
-										'current' 	=> max( 1, get_query_var( 'paged' ) ),
+										'current' 	=> max( 1, get_query_var( 'id' ) ),
 										'total'  	=> $contracts->max_num_pages,
 										'prev_next'	=> false,
 										'type' 		=> 'list',											

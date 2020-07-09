@@ -1209,4 +1209,32 @@ function contract_created_notification_property_owner($email,$property_name='',$
 		wp_mail($email, sprintf(__('[%s] Contract Created Successfully'), get_option('blogname')), $message,$headers,$attachments);
 	}
 }
+
+function count_tenant_hired_property(){
+	$current_user = wp_get_current_user();
+	$args = array(
+		'post_type'=> 'contracts',
+		'post_status' => array('publish'),
+		'posts_per_page'   => -1,
+	);
+	$meta_query = array();
+	$meta_query[] =  array(
+			'key'          => 'tenant_email',
+			'value'        => $current_user->user_email,
+			'compare'      => '=',
+	);	
+	if(!empty($meta_query)){
+	   $args['meta_query'] = $meta_query;
+	} 
+	$contracts = new WP_Query( $args );
+	$property_ids = array();
+	if($contracts->have_posts()){
+		while ( $contracts->have_posts() ) {
+			$contracts->the_post();
+			$contract_id = get_the_ID();
+			$property_ids[] = get_post_meta($contract_id, 'property_id',true);
+		}
+	}	
+	return ($property_ids) ? count($property_ids): 0;
+}
 ?>

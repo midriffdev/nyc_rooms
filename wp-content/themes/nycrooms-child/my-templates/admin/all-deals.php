@@ -1,8 +1,8 @@
 <?php
 nyc_property_admin_authority();
 get_header();
+global $paged;
 $paged = (get_query_var('id')) ? get_query_var('id') : 1;
-set_query_var('page', $paged);
 $args = array(
 'post_type'=> 'deals',
 'post_status' => array('publish'),
@@ -211,7 +211,7 @@ input.checkbulk{
 									echo paginate_links( array(
 										'base' 		=> get_pagenum_link(1) . '%_%',
 										'format' 	=> 'page/%#%/',
-										'current' 	=> max( 1, get_query_var( 'paged' ) ),
+										'current' 	=> max( 1, get_query_var( 'id' ) ),
 										'total'  	=> $deals->max_num_pages,
 										'prev_next'	=> false,
 										'type' 		=> 'list',											
