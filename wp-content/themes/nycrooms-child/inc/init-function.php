@@ -85,6 +85,11 @@ add_action( 'template_redirect', function(){
         include get_stylesheet_directory() . '/my-templates/admin/all-orders.php';
         die;
     }
+     
+	if ( is_page('admin/all-contracts') ) {
+        include get_stylesheet_directory() . '/my-templates/admin/all-contracts.php';
+        die;
+    }
 	
     if ( is_page('tenant') ) {
         include get_stylesheet_directory() . '/my-templates/tenant/profile.php';
@@ -118,12 +123,25 @@ add_action( 'template_redirect', function(){
         die;
      }
 	 
+	 if ( is_page('tenant/all-contracts')) {
+        include get_stylesheet_directory() . '/my-templates/tenant/all-contracts.php';
+        die;
+     }
+	 
+	 if ( is_page('tenant/hired-property')) {
+        include get_stylesheet_directory() . '/my-templates/tenant/hired-property.php';
+        die;
+     }
+	 	 
 	 if ( is_page('agent/deal-details-agent')) {
         include get_stylesheet_directory() . '/my-templates/agent/deal-details-agent.php';
         die;
      }
-	 
-	
+	  
+	 if ( is_page('property-owner/all-contracts')) {
+        include get_stylesheet_directory() . '/my-templates/property-owner/all-contracts.php';
+        die;
+     }
 	
 } );
 
@@ -313,6 +331,26 @@ function nyc_get_count_custom_post_type($type){
 	return ($count) ? $count: 0;
 }
 
+function nyc_get_count_post_type_meta($type,$key,$value){
+	$args = array(
+	'post_type'=> $type,
+	'post_status' => array('publish'),
+	'posts_per_page'   => -1,
+	'suppress_filters' => false,
+	'meta_query'	=> array(
+		array(
+            'key'          => $key,
+            'value'        => $value,
+            'compare'      => '=',
+		)
+    ),
+	);
+
+	$deals = new WP_Query( $args );
+	$count = $deals->found_posts;
+	return ($count) ? $count: 0;
+}
+
 
 function nyc_delete_deal_ajax(){
 	if(isset($_POST['action']) && $_POST['action'] == 'nyc_delete_deal_ajax'){
@@ -326,6 +364,26 @@ function nyc_delete_deal_ajax(){
 
 add_action( 'wp_ajax_nyc_delete_deal_ajax', 'nyc_delete_deal_ajax' );
 add_action( 'wp_ajax_nopriv_nyc_delete_deal_ajax', 'nyc_delete_deal_ajax' );
+
+function nyc_delete_single_contract(){
+	if(isset($_POST['action']) && $_POST['action'] == 'nyc_delete_single_contract'){
+	    $ids = $_POST['deal_id'];
+		$contract_pdf_id = get_post_meta($ids,'contract_pdf', true); 
+		$deal_id = get_post_meta($ids,'deal_id', true); 
+		update_post_meta($deal_id,'deal_created', 0);		
+		if($contract_pdf_id){
+			wp_delete_attachment($contract_pdf_id, true);
+		}
+		$contract= wp_delete_post($ids);	   	   
+		if($contract){
+			echo 'success';
+		}
+	}
+	exit;
+}
+
+add_action( 'wp_ajax_nyc_delete_single_contract', 'nyc_delete_single_contract' );
+add_action( 'wp_ajax_nopriv_nyc_delete_single_contract', 'nyc_delete_single_contract' );
 
 function nyc_bulk_delete_deal(){
 	if(isset($_POST['action']) && $_POST['action'] == 'nyc_bulk_delete_deal'){
@@ -341,6 +399,27 @@ function nyc_bulk_delete_deal(){
 }
 add_action( 'wp_ajax_nyc_bulk_delete_deal', 'nyc_bulk_delete_deal' );
 add_action( 'wp_ajax_nopriv_nyc_bulk_delete_deal', 'nyc_bulk_delete_deal' );
+
+function nyc_bulk_delete_contract(){
+	if(isset($_POST['action']) && $_POST['action'] == 'nyc_bulk_delete_contract'){
+		global $wpdb;
+		if($_POST['bulkaction'] == 'delete'){
+			foreach($_POST['data'] as $ids){
+			    $contract_pdf_id = get_post_meta($ids,'contract_pdf', true); 
+			    $deal_id = get_post_meta($ids,'deal_id', true); 
+				update_post_meta($deal_id,'deal_created', 0);		
+				if($contract_pdf_id){
+					wp_delete_attachment($contract_pdf_id, true);
+				}
+				wp_delete_post($ids);
+			}
+			echo "true";
+		}
+	}
+	exit;
+}
+add_action( 'wp_ajax_nyc_bulk_delete_contract', 'nyc_bulk_delete_contract' );
+add_action( 'wp_ajax_nopriv_nyc_bulk_delete_contract', 'nyc_bulk_delete_contract' );
 
 /*------------ Delete Deal Orders ------------*/
 
@@ -390,6 +469,9 @@ function dcc_rewrite_tags_new() {
 add_action('init', 'dcc_rewrite_rules');
 function dcc_rewrite_rules() {
 	add_rewrite_rule('^admin/deals/([^/]+)/([^/]+)/?$','index.php?pagename=admin/deals&view=$matches[1]&id=$matches[2]','top');
+	add_rewrite_rule('^admin/all-contracts/([^/]+)/([^/]+)/?$','index.php?pagename=admin/all-contracts&view=$matches[1]&id=$matches[2]','top');
+	add_rewrite_rule('^property-owner/all-contracts/([^/]+)/([^/]+)/?$','index.php?pagename=property-owner/all-contracts&view=$matches[1]&id=$matches[2]','top');
+	add_rewrite_rule('^tenant/all-contracts/([^/]+)/([^/]+)/?$','index.php?pagename=tenant/all-contracts&view=$matches[1]&id=$matches[2]','top');
 }
 
 add_action('init', 'dcc_rewrite_rules_new');
@@ -405,12 +487,34 @@ function dcc_rewrite_rules_new() {
 add_filter( 'template_redirect', 'prefix_url_rewrite_templates',1 );
  
 function prefix_url_rewrite_templates() {
-	if(get_query_var('view') == 'details' && !empty(get_query_var('view'))){
-	  add_filter('zakra_title', function (){
-		  return "Deal Details";
-	  }, 10, 2);		
-	  include get_stylesheet_directory() . '/my-templates/admin/deal-detail.php';
-	  exit;
+	if ( is_page('admin/deals') ) {
+		if(get_query_var('view') == 'details' && !empty(get_query_var('view'))){
+		  add_filter('zakra_title', function (){
+			  return "Deal Details";
+		  }, 10, 2);		
+		  include get_stylesheet_directory() . '/my-templates/admin/deal-detail.php';
+		  exit;
+		}
+	}
+	if ( is_page('admin/all-contracts') ) {
+		if(get_query_var('view') == 'view' && !empty(get_query_var('id'))){
+		  include get_stylesheet_directory() . '/my-templates/admin/single-contract.php';
+		   exit;
+		}		
+	}
+	
+	if ( is_page('property-owner/all-contracts') ) {
+		if(get_query_var('view') == 'view' && !empty(get_query_var('id'))){
+		  include get_stylesheet_directory() . '/my-templates/property-owner/single-contract.php';
+		   exit;
+		}		
+	}
+	
+	if ( is_page('tenant/all-contracts') ) {
+		if(get_query_var('view') == 'view' && !empty(get_query_var('id'))){
+		  include get_stylesheet_directory() . '/my-templates/tenant/single-contract.php';
+		   exit;
+		}		
 	}
 	
 	if(get_query_var('vieworder') == 'orderdetails' && !empty(get_query_var('vieworder'))){
@@ -1081,4 +1185,29 @@ function add_new_custom_deal(){
 	exit;
 }
 
+function contract_created_notification_tenant($email,$property_name='',$attchment_id){
+	if($email){
+		$attachments =wp_get_attachment_url($attchment_id);
+		$headers = '';		
+		$message  = __( 'Hi there,' ) . "\r\n\r\n";
+		$message .= sprintf( __( "Welcome to %s!" ), get_option('blogname') ) . "\r\n\r\n";
+		$message .= sprintf( __('Your contract created successfully for property %s'), $property_name ) . "\r\n\r\n";
+		$message .= sprintf( __('If you have any problems, please contact me at %s.'), get_option('admin_email') ) . "\r\n\r\n";
+		$message .= __( 'Thanks!' );
+		wp_mail($email, sprintf(__('[%s] Contract Created Successfully'), get_option('blogname')), $message,$headers,$attachments);
+	}
+}
+
+function contract_created_notification_property_owner($email,$property_name='',$tenant_name='',$attchment_id){
+	if($email){
+		$attachments = wp_get_attachment_url($attchment_id);
+		$headers = '';
+		$message  = __( 'Hi there,' ) . "\r\n\r\n";
+		$message .= sprintf( __( "Welcome to %s!" ), get_option('blogname') ) . "\r\n\r\n";
+		$message .= sprintf( __('Congratulation! Your property %s is now rented. Contract created for %s '), $property_name, $tenant_name ) . "\r\n\r\n";
+		$message .= sprintf( __('If you have any problems, please contact me at %s.'), get_option('admin_email') ) . "\r\n\r\n";
+		$message .= __( 'Thanks!' );
+		wp_mail($email, sprintf(__('[%s] Contract Created Successfully'), get_option('blogname')), $message,$headers,$attachments);
+	}
+}
 ?>

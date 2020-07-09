@@ -596,10 +596,10 @@ if(count($check_deal_orders->posts) == 1){
 						echo "<h2>No property selected.</h2>";
 					} ?>
 					</div>
-					<div class="col-md-6">
+					<!--<div class="col-md-6">
 						<h3>Add Notes</h3>
 						<textarea class="WYSIWYG" name="summary" cols="40" rows="3" id="summary" spellcheck="true"></textarea>
-					</div>
+					</div> -->
 				</div>
 				</div>
 			</div>

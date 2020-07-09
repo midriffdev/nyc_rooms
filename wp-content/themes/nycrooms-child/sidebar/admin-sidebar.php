@@ -79,6 +79,12 @@
 							<a href="<?php echo get_site_url(); ?>/admin/dealsorders/" id="sidebar-alldeals">All Payments<span class="all-listing-no active-listing-no"><?= nyc_get_count_custom_post_type('dealsorders') ?></span></a>
 						</li>
 					</ul>
+					<ul class="my-account-nav">
+						<li class="sub-nav-title">Manage Contracts</li>
+						<li class="admin-propertieslistings">
+							<a href="<?php echo get_site_url(); ?>/admin/all-contracts/" id="sidebar-allcontracts">All Contracts<span class="all-listing-no active-listing-no"><?= nyc_get_count_custom_post_type('contracts') ?></span></a>
+						</li>
+					</ul>
 					
 					
 					<ul class="my-account-nav">

@@ -1,10 +1,9 @@
 <?php
 nyc_property_admin_authority();
 get_header();
-$paged = (get_query_var('id')) ? get_query_var('id') : 1;
-set_query_var('page', $paged);
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $args = array(
-'post_type'=> 'deals',
+'post_type'=> 'contracts',
 'post_status' => array('publish'),
 'posts_per_page'   => 6,
 'suppress_filters' => false,
@@ -23,22 +22,16 @@ if(isset($_GET['date_range']) && !empty($_GET['date_range'])){
 	);	
 
 }
-if(isset($_GET['deal_name']) && !empty($_GET['deal_name'])){
-	$meta_query[] =  array(
-            'key'          => 'name',
-            'value'        => $_GET['deal_name'],
-            'compare'      => 'REGEXP',
-    );	
-}
-if(isset($_GET['deal_email']) && !empty($_GET['deal_email'])){
-	$meta_query[] =  array(
-            'key'          => 'email',
-            'value'        => $_GET['deal_email'],
-            'compare'      => 'REGEXP',
-    );	
-}
 if(isset($_GET['deal_no']) && !empty($_GET['deal_no'])){
-	$args['post__in'] =  array($_GET['deal_no']);
+	$meta_query[] =  array(
+            'key'          => 'deal_id',
+            'value'        => $_GET['deal_no'],
+            'compare'      => 'REGEXP',
+    );	
+}
+
+if(isset($_GET['contract_no']) && !empty($_GET['contract_no'])){
+	$args['post__in'] =  array($_GET['contract_no']);
 }
 if(!empty($meta_query)){
    $args['meta_query'] = $meta_query;
@@ -46,7 +39,7 @@ if(!empty($meta_query)){
 if(isset($date_query) && !empty($date_query)){
 	$args['date_query'] = $date_query;
 }
-$deals = new WP_Query( $args );
+$contracts = new WP_Query( $args );
 ?>
 <style>
 .pagination-next-prev ul li.prev a {
@@ -68,13 +61,13 @@ $deals = new WP_Query( $args );
     display: inline-block;
     border-radius: 3px;
 }
-.deal_bulk_actions {
+.contract_bulk_actions {
     display: flex;
 }
 select.select_action {
     width: 30%;
 }
-input.deal_apply_action {
+input.contract_apply_action {
     width: 30%;
     margin-left: 5%;
     padding: 0;
@@ -97,7 +90,7 @@ input.checkbulk{
 			<div class="dashboard-main--cont">
 
 				<div class="admin-advanced-searchfilter">
-					<h2>Deals Filter</h2>
+					<h2>Contract Filter</h2>
 					<form>
 					<div class="row with-forms">
 						<!-- Form -->
@@ -107,25 +100,18 @@ input.checkbulk{
 							<div class="row with-forms">
 								<!-- Main Search Input -->
 								<div class="col-md-6">
-									<input type="text" placeholder="Enter Deal Number" name="deal_no" value=""/>
-								</div>
-								<div class="col-md-6">
-									<input type="text" placeholder="Enter Name" name="deal_name" value=""/>
-								</div>
-							</div>
-							<!-- Row With Forms / End -->
-
-							<!-- Row With Forms -->
-							<div class="row with-forms">
-								<div class="col-md-6">
-									<input type="text" placeholder="Enter Email" name="deal_email" value=""/>
+									<input type="text" placeholder="Contract Number" name="contract_no" value=""/>
 								</div>
 								<div class="col-md-6">
 									<input type="text" id="date-picker-from" placeholder="Date Range" name="date_range" readonly="readonly">								
 								</div>
+							</div>	
+							<!-- Row With Forms -->
+							<div class="row with-forms">
+								<div class="col-md-6">
+									<input type="text" placeholder="Deal No" name="deal_no" value=""/>
+								</div>
 							</div>
-							<!-- Row With Forms / End -->	
-
 							<!-- Search Button -->
 							<div class="row with-forms">
 								<div class="col-md-12">
@@ -139,63 +125,63 @@ input.checkbulk{
 					</form>
 				</div>
                  <div class="col-md-12">
-					 <p class="showing-results"><?php echo $deals->found_posts; ?> Results Found On Page <?php echo $paged ;?> of <?php echo $deals->max_num_pages;?> </p>
+					 <p class="showing-results"><?php echo $contracts->found_posts; ?> Results Found On Page <?php echo $paged ;?> of <?php echo $contracts->max_num_pages;?> </p>
 				 </div>
 				 
 				<table class="manage-table responsive-table deal--table">
 				<tbody>
 				<tr>
 					<th><input type="checkbox" class="checkallbulk"></th>
-					<th><i class="fa fa-list-ol"></i> Deal No</th>
-					<th><i class="fa fa-user"></i>Name</th>
-					<th><i class="fa fa-envelope"></i> Email</th>
-					<th><i class="fa fa-phone" ></i> Phone</th>
-					<th><i class="fa fa-check-square-o" ></i> Source</th>
-					<th><i class="fa fa-check-square-o" ></i> Date</th>
+					<th><i class="fa fa-list-ol"></i> Contract ID</th>
+					<th><i class="fa fa-list-ol"></i> Deal ID</th>
+					<th><i class="fa fa-list-ol"></i> Tenant Name</th>
+					<th><i class="fa fa-list-ol"></i> Tenant Email</th>
+					<th><i class="fa fa-list-ol"></i> Owner Email</th>
+					<th><i class="fa fa-list-ol"></i> Contract PDF</th>
 					<th></th>
 				</tr>
 
 				<?php 
-				if($deals->have_posts()){
-					while ( $deals->have_posts() ) {
-						$deals->the_post();
-						$deal_id = get_the_ID();
-						$deal_stage =  get_post_meta($deal_id,'deal_stage',true); 
+				if($contracts->have_posts()){
+					while ( $contracts->have_posts() ) {
+						$contracts->the_post();
+						$contract_id = get_the_ID();
+						$contract_data = get_post_meta($contract_id,'contract_data', true); 
+						$contract_pdf_id = get_post_meta($contract_id,'contract_pdf', true); 
+						$deal_id = get_post_meta($contract_id,'deal_id', true);
+						$property_id = get_post_meta($deal_id,'property_id',true);
+						$auth = get_post($property_id);
+						$authid = $auth->post_author;						
 					?>
-						<tr class="deal__stage-one deal-id-<?php echo $deal_id; ?>">
-							<td><input type="checkbox" class="checkbulk" value="<?php echo $deal_id; ?>" ></td>
+						<tr class="deal__stage-one contract-id-<?php echo $contract_id; ?>">
+							<td><input type="checkbox" class="checkbulk" value="<?php echo $contract_id; ?>" ></td>
+							<td class="deal_number"><?php echo $contract_id; ?></td>
 							<td class="deal_number"><?php echo $deal_id; ?></td>
-							<td class="deal-member-name"><?php echo get_post_meta($deal_id,'name',true); ?></td>
-							<td class="deal-email-address"><?php echo get_post_meta($deal_id,'email',true); ?></td>
-							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'phone',true); ?></td>
-							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'lead_source',true); ?></td>
-							<td class="deal-phone-number"><?php echo get_the_date( 'Y-m-d' ); ?></td>
+							<td class="deal_number"><?php echo get_post_meta($deal_id,'name', true); ?></td>
+							<td class="deal_number"><?php echo get_post_meta($deal_id,'email', true); ?></td>
+							<td class="deal_number"><?php echo the_author_meta( 'user_email' , $authid ); ?></td>
+							<td class="deal_number"><?php echo  '<a href="'.wp_get_attachment_url($contract_pdf_id).'" download>'.pathinfo(basename ( get_attached_file( $contract_pdf_id ) ),PATHINFO_FILENAME).'</a>'; ?></td>
 							<td class="action">
-								<a href="<?php echo get_site_url(); ?>/admin/deals/details/<?php echo base64_encode($deal_id); ?>" ><i class="fa fa-eye"></i> View</a>
-								<a href="#" class="delete delete-deal" data-id="<?php echo $deal_id; ?>"><i class="fa fa-remove"></i> Delete</a>
-								<a href="<?php echo get_site_url(); ?>/admin/deals/details/<?php echo base64_encode($deal_id); ?>" class="deal__link" data-toggle="tooltip"><i class="fa fa-clone"></i> Deal Link</a>
-								<a href="<?php echo get_site_url(); ?>/tenant/deal-details-tenant/<?php echo base64_encode($deal_id); ?>" class="deal__link" data-toggle="tooltip"><i class="fa fa-clone"></i> Tenant Link</a>
-								<a href="<?php echo get_site_url(); ?>/agent/deal-details-agent/<?php echo base64_encode($deal_id); ?>" class="deal__link" data-toggle="tooltip"><i class="fa fa-clone"></i> Agent Link</a>
-								
-								
+								<a href="<?php echo get_site_url(); ?>/admin/all-contracts/view/<?php echo base64_encode($contract_id); ?>" ><i class="fa fa-eye"></i> View</a>
+								<a href="#" class="delete delete-contract" data-id="<?php echo $contract_id; ?>"><i class="fa fa-remove"></i> Delete</a>					
 							</td>
 						</tr>
 					<?php 
 					}
 				}else{
-					echo "<tr><td colspan='7'>No deals found!</td></tr>";
+					echo "<tr><td colspan='7'>No Contracts Found!</td></tr>";
 				}
 				?>
 				</tbody>
 				</table>
 				<div>
 			        <label>Select bulk action</label>
-                  <div class="deal_bulk_actions">
+                  <div class="contract_bulk_actions">
 						<select class="select_action">
 						 <option value="-1">Bulk Actions</option>
 						 <option value="delete">Delete</option>
 						</select>
-                    <input type="button" value="Apply" class="deal_apply_action">
+                    <input type="button" value="Apply" class="contract_apply_action">
                  </div>
                 </div>
 				<!-- Pagination Container -->
@@ -212,7 +198,7 @@ input.checkbulk{
 										'base' 		=> get_pagenum_link(1) . '%_%',
 										'format' 	=> 'page/%#%/',
 										'current' 	=> max( 1, get_query_var( 'paged' ) ),
-										'total'  	=> $deals->max_num_pages,
+										'total'  	=> $contracts->max_num_pages,
 										'prev_next'	=> false,
 										'type' 		=> 'list',											
 										) );
@@ -222,8 +208,8 @@ input.checkbulk{
 
 							<nav class="pagination-next-prev">
 								<ul>
-									<li><?php previous_posts_link( 'Previous',$deals->max_num_pages ); ?></li>
-									<li><?php next_posts_link( 'Next', $deals->max_num_pages);  ?></li>
+									<li><?php previous_posts_link( 'Previous',$contracts->max_num_pages ); ?></li>
+									<li><?php next_posts_link( 'Next', $contracts->max_num_pages);  ?></li>
 								</ul>
 							</nav>
 						</div>
@@ -258,14 +244,14 @@ input.checkbulk{
 <div class="margin-top-55"></div>
 </div>
 <script>
-jQuery('.delete-deal').click(function (e) {
+jQuery('.delete-contract').click(function (e) {
 	e.preventDefault();
 	// escape here if the confirm is false;
 	if (!confirm('Are you sure?')) return false;
 	var deal_id=jQuery(this).attr('data-id');
 	var form_data = new FormData();	
 	form_data.append("deal_id", deal_id);
-	form_data.append( "action", 'nyc_delete_deal_ajax');   
+	form_data.append( "action", 'nyc_delete_single_contract');   
 	jQuery.ajax({
 		type : "post",
 		url : my_ajax_object.ajax_url,
@@ -274,28 +260,14 @@ jQuery('.delete-deal').click(function (e) {
 		contentType: false,
 		success: function(response) {
 			if(response == "success"){
-			var delete_tr= ".deal-id-"+deal_id;
+			var delete_tr= ".contract-id-"+deal_id;
 			jQuery(delete_tr).fadeOut();	
 			}
 		}
 	});
 });
 jQuery(document).ready(function($) {
-	jQuery('#sidebar-alldeals').addClass('current');
-	$('.deal__link').click(function (e) {
-			   e.preventDefault();
-			   var copyText = $(this).attr('href');
-
-			   document.addEventListener('copy', function(e) {
-				  e.clipboardData.setData('text/plain', copyText);
-				  e.preventDefault();
-			   }, true);
-
-			   document.execCommand('copy');  
-			   console.log('copied text : ', copyText);
-			   alert('copied text: ' + copyText); 
-    });
-
+	jQuery('#sidebar-allcontracts').addClass('current');
 	jQuery('#date-picker-from').daterangepicker({
 		autoUpdateInput: false,
 			locale: {
