@@ -4874,6 +4874,7 @@ section.fullwidth.border-bottom { border-bottom: 1px solid #e4e4e4;}
 	padding-bottom: 20px;
 	margin-bottom: 20px;
 	border-bottom: 1px solid #e6e6e6;
+	margin:0;
 }
 
 .my-account-nav-container .my-account-nav:last-child {
@@ -11411,7 +11412,9 @@ input#date-picker:hover {
 th.expire-date {
     width: 11% !important;
 }
-
+.tg-container {
+    max-width: 1240px;
+}
 /***amit css 10-07-2020 end**/
 
 
@@ -12224,6 +12227,7 @@ body .daterangepicker .drp-buttons button.cancelBtn {
 
 	.my-account label input[type="checkbox"] {
 		height: auto;
+		margin-top:-5px;
 	}
 
 	.my-account input {
@@ -12835,7 +12839,7 @@ table.contracts--table td:first-child {padding-left: 40px !important;}
     border-radius: 4px;
     padding: 15px 45px;
 }
-.dashbaord__wrapper .container {width: 1170px;padding:0;}
+.dashbaord__wrapper .container {width: 1240px;}
 .item--red {background: #f91942;}
 .item--blue{background: #274abb;}
 .item--green{background: #a1b789;}
@@ -13833,7 +13837,6 @@ input[type=submit] {padding: 1px 21px;}.btn-default {color: #333;background-colo
 
 /*****amit(08/06/2020)start******/
 /*****header(start)******/
-.tg-page-header {background-color: #f8f8f8;position: relative;padding: 70px 0 !important;margin-bottom: 65px;}
 /*****header(end)******/
 table.all_agents_table th:first-child{width:10% !important;}
 table.all_leads_table th:first-child{width:10% !important;}
@@ -13847,12 +13850,12 @@ input.checkagent {height: 18px;margin: 0 13px !important;}
 input.checkallleads {height: 18px;}
 input.checkleads {height: 18px;margin: 0 13px !important;}
 
-input.checkallproperties {height: 18px;}
+input.checkallproperties {height: 18px;margin: 0}
 input.checkproperties {height: 18px;margin: 0 13px !important;}
 
 
 table.manage-table .title-container{padding: 50px 20px;}
-table.manage-table th {padding: 20px 0 !important;text-align: center;}
+table.manage-table th {padding: 20px 0 !important;}
 
 /******property-search CSS Start********/
 .page-id-72 .site-content {margin-top:0px;margin-bottom: 0px;}
@@ -13999,7 +14002,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 .cvf-universal-pagination ul {margin: 0; padding: 0;}
 .cvf-universal-pagination ul li {display: inline; margin: 3px; padding: 4px 8px; background: #FFF; color: black; }
 .cvf-universal-pagination ul li.active:hover {cursor: pointer; background: #1E8CBE; color: white; }
-.cvf-universal-pagination ul li.inactive {background: #7E7E7E;}
+/*.cvf-universal-pagination ul li.inactive {background: #7E7E7E;}*/
 .cvf-universal-pagination ul li.selected {background: #1E8CBE; color: white;}
 
 .alert_note_panel {
@@ -14052,6 +14055,15 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 .copy_link_sec {
     padding: 5px 0px;
 }
+/***amit css 10-07-2020 start**/
+th.expire-date {
+    width: 11% !important;
+}
+table th, table td{border:none;}
+td.no_property_found {
+    text-align: center;
+}
+/***amit css 10-07-2020 end**/
 /* End Absolute Center Spinner */
 /*****End Ashutosh(16-06-2020)******/
 
@@ -14544,7 +14556,7 @@ input.checkproperties {height: 18px;margin: 0 13px !important;}
 
 
 table.manage-table .title-container{padding: 50px 20px;}
-table.manage-table th {padding: 20px 0 !important;text-align: center;}
+
 
 /******property-search CSS Start********/
 .page-id-72 .site-content {margin-top:0px;margin-bottom: 0px;}
@@ -14745,4 +14757,3 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
     padding: 5px 0px;
 }
 /* End Absolute Center Spinner */
-
