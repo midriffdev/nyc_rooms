@@ -1016,6 +1016,7 @@ input.previousbutton {
 input.submit_application_form {
     width: 20%;
     padding: 0%;
+	margin: 0px 15px 0px 0px;
 }
 
 input#submit_application_form {
