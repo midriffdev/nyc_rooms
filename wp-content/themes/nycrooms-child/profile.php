@@ -9,9 +9,17 @@ if($user->roles[0] == "tenant"){
 } else if($user->roles[0] == "administrator"){
    header( 'Location:' . site_url(). '/admin/');
 }
+$message = '';
 if(isset($_POST['user_submit'])){
-   
-      $userdata = array(
+	 
+	 $phonenold = $_POST['user_phone'];
+	 if(strpos($phonenold,'+1') === false){
+	    $phoneno = '+1'.$phonenold;
+	 } else {
+	    $phoneno = $phonenold;
+	 }
+      
+   $userdata = array(
                     'ID' => get_current_user_id(),
 					'user_nicename'  => $_POST['user_name'],
 					'display_name'   => $_POST['user_name'],
@@ -26,7 +34,7 @@ if(isset($_POST['user_submit'])){
 	}
 	 
    update_user_meta(get_current_user_id(),'user_name', $_POST['user_name']); 
-   update_user_meta(get_current_user_id(),'user_phone', $_POST['user_phone']);
+   update_user_meta(get_current_user_id(),'user_phone', $phoneno);
    update_user_meta(get_current_user_id(),'about', $_POST['about']);
    update_user_meta(get_current_user_id(),'user_twitter', $_POST['user_twitter']);
    update_user_meta(get_current_user_id(),'user_facebook', $_POST['user_facebook']);
@@ -34,7 +42,7 @@ if(isset($_POST['user_submit'])){
    update_user_meta(get_current_user_id(),'user_linkedin', $_POST['user_linkedin']); 
    
    
-   $message =  "User Updated Successfully";
+   $message =  "User Updated Successfully"; 
 }
 get_header();
 ?>
@@ -64,7 +72,7 @@ get_header();
 					<input value="<?php if(!empty($user->data->display_name)){echo $user->data->display_name;} ?>" type="text" name="user_name">
 
 					<label>Phone</label>
-					<input value="<?php echo get_user_meta(get_current_user_id(),'user_phone',true); ?>" type="text" name="user_phone" pattern="[0-9]{10}" maxlength=10>
+			         <input value="<?php echo get_user_meta(get_current_user_id(),'user_phone',true); ?>" type="text" name="user_phone" pattern="{+}[0-9]{10}" maxlength=12 placeholder= "Enter Phone With +1..">
 
 					<label>Email</label>
 					<input value="<?php if(!empty($user->data->user_email)){echo $user->data->user_email;} ?>" type="email" name="user_email">
@@ -110,7 +118,7 @@ get_header();
 						<div class="change-photo-btn">
 							<div class="photoUpload">
 							    <span><i class="fa fa-upload"></i> Upload Photo</span>
-							    <input type="file" class="upload" name="profilepicture" size="25" />
+							    <input type="file" class="upload" id="imgupload" name="profilepicture" size="25" />
 							</div>
 						</div>
 					</div>
@@ -151,6 +159,29 @@ get_header();
   </div>
   
 	</div><!-- #primary -->
+<script>
+jQuery(document).ready(function(){
+ jQuery(document).on('change', '.upload', function(){
+  var name = document.getElementById("imgupload").files[0].name;
+  var form_data = new FormData();
+  var ext = name.split('.').pop().toLowerCase();
+  var error = false;
+  if(jQuery.inArray(ext, ['gif','png','jpg','jpeg']) == -1) 
+  {
+   alert("Invalid Image File");
+   error = true;
+  }
+  var oFReader = new FileReader();
+	oFReader.onload = (function(imgupload){ //trigger function on successful read
+	return function(e) {
+		var img = jQuery('.edit-profile-photo img').attr('srcset', e.target.result); //create image element 
+	};
+	})(imgupload);
+  oFReader.readAsDataURL(document.getElementById("imgupload").files[0]);
+  });
+  jQuery('#sidebar-profile').addClass('current');
+});
+</script>
 <?php
 get_footer();
 

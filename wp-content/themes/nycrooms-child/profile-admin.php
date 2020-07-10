@@ -10,7 +10,13 @@ if($user->roles[0] == "property_owner"){
    header( 'Location:' . site_url() . '/tenant/');
 }
 if(isset($_POST['user_submit'])){
-  
+   
+        $phonenold = $_POST['user_phone'];
+		 if(strpos($phonenold,'+1') === false){
+			$phoneno = '+1'.$phonenold;
+		 } else {
+			$phoneno = $phonenold;
+		 }
 	 
       $userdata = array( 
 	            'ID' => get_current_user_id(),
@@ -27,7 +33,7 @@ if(isset($_POST['user_submit'])){
 	}
 	 
    update_user_meta(get_current_user_id(),'user_name', $_POST['user_name']); 
-   update_user_meta(get_current_user_id(),'user_phone', $_POST['user_phone']);
+   update_user_meta(get_current_user_id(),'user_phone', $phoneno);
    update_user_meta(get_current_user_id(),'about', $_POST['about']);
    update_user_meta(get_current_user_id(),'user_twitter', $_POST['user_twitter']);
    update_user_meta(get_current_user_id(),'user_facebook', $_POST['user_facebook']);
@@ -59,7 +65,7 @@ get_header();
 						<input value="<?php if(!empty($user->data->display_name)){echo $user->data->display_name;} ?>" type="text" name="user_name">
 
 						<label>Phone</label>
-						<input value="<?php echo get_user_meta(get_current_user_id(),'user_phone',true); ?>" type="text" name="user_phone" pattern="[0-9]{10}" maxlength=10>
+						<input value="<?php echo get_user_meta(get_current_user_id(),'user_phone',true); ?>" type="text" name="user_phone" pattern="[0-9]{10}" maxlength=12 placeholder= "Enter Phone With +1..">
 
 						<label>Email</label>
 						<input value="<?php if(!empty($user->data->user_email)){echo $user->data->user_email;} ?>" type="email" name="user_email" readonly>

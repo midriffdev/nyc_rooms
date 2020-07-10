@@ -4,6 +4,13 @@ $getuser = wp_get_current_user();
 $user_id = $getuser->ID;
 nyc_tenant_check_authentication();
 if(isset($_POST['update_user'])){
+      $phonenold = $_POST['phone'];
+		 if(strpos($phonenold,'+1') === false){
+			$phoneno = '+1'.$phonenold;
+		 } else {
+			$phoneno = $phonenold;
+		 }
+		 
     $userdata = array( 
 	            'ID' => $user_id,
 	            'user_nicename'		=>  $_POST['first_name'].' ' .$_POST['last_name'],
@@ -17,7 +24,7 @@ if(isset($_POST['update_user'])){
 	update_user_meta($user_id, 'last_name', $_POST['last_name'] );
 	update_user_meta($user_id, 'user_full_name', $_POST['first_name'] .' '.$_POST['last_name']);
 	update_user_meta($user_id, 'user_email', $_POST['email']);
-	update_user_meta($user_id, 'user_phone', $_POST['phone'] );
+	update_user_meta($user_id, 'user_phone', $phoneno );
 	update_user_meta($user_id, 'user_personal_address', $_POST['address']);
 	update_user_meta($user_id, 'user_about',$_POST['about']);
 	update_user_meta($user_id, 'user_twitter', $_POST['twitter'] );
@@ -68,7 +75,7 @@ get_header();
 							<div class="row">
 								<div class="col-md-12">
 									<label>Phone</label>
-									<input value="<?php echo get_user_meta($user_id,'user_phone',true); ?>" type="text" name="phone" placeholder="Phone" required>
+									<input value="<?php echo get_user_meta($user_id,'user_phone',true); ?>" type="text" name="phone" placeholder="Phone" pattern="[0-9]{10}" maxlength=12 placeholder= "Enter Phone With +1.." required>
 								</div>
 							</div>
 							<div class="row">

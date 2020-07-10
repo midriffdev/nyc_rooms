@@ -5,7 +5,12 @@ $usererror = '';
 $usersuccess = '';
 if(isset($_POST['add_agent'])){
 
-	  
+	  $phonenold = $_POST['phone'];
+		 if(strpos($phonenold,'+1') === false){
+			$phoneno = '+1'.$phonenold;
+		 } else {
+			$phoneno = $phonenold;
+		 }
  
        if( $_POST['email'] != $getuser->user_email  ) {
 	     
@@ -36,7 +41,7 @@ if(isset($_POST['add_agent'])){
 						   }
 								update_user_meta($getuser->ID, 'user_full_name', $_POST['first_name'] .' '.$_POST['last_name']);
 								update_user_meta($getuser->ID, 'user_agent_email', $_POST['email']);
-								update_user_meta($getuser->ID, 'user_phone', $_POST['phone'] );
+								update_user_meta($getuser->ID, 'user_phone', $phoneno );
 								update_user_meta($getuser->ID, 'user_personal_address', $_POST['address']);
 								update_user_meta($getuser->ID, 'user_agent_about',$_POST['about']);
 								update_user_meta($getuser->ID, 'user_agent_twitter', $_POST['twitter'] );
@@ -77,7 +82,7 @@ if(isset($_POST['add_agent'])){
 			                    update_user_meta($getuser->ID, 'last_name', $_POST['last_name'] );
 								update_user_meta($getuser->ID, 'user_full_name', $_POST['first_name'] .' '.$_POST['last_name']);
 								update_user_meta($getuser->ID, 'user_agent_email', $_POST['email']);
-								update_user_meta($getuser->ID, 'user_phone', $_POST['phone'] );
+								update_user_meta($getuser->ID, 'user_phone', $phoneno );
 								update_user_meta($getuser->ID, 'user_personal_address', $_POST['address']);
 								update_user_meta($getuser->ID, 'user_agent_about',$_POST['about']);
 								update_user_meta($getuser->ID, 'user_agent_twitter', $_POST['twitter'] );
@@ -101,7 +106,7 @@ get_header();
 ================================================== -->
 <div class="admin-teanent-detailpage">
 	<div class="container">
-
+      
 	<div class="admin-agent-account-details">
 		<div class="row">
 			<div class="col-md-12">
