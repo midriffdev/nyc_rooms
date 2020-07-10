@@ -5,7 +5,7 @@ $current_user = wp_get_current_user();
 $args = array(
 	'post_type'=> 'contracts',
 	'post_status' => array('publish'),
-	'posts_per_page'   => 6,
+	'posts_per_page'   => -1,
 );
 $meta_query = array();
 $meta_query[] =  array(

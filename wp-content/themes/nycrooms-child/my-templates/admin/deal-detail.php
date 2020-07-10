@@ -51,6 +51,10 @@ if(count($check_deal_orders->posts) == 1){
 } else {
    $payment_status = get_post_meta($post_id,'payment_status',true);
 }
+$convert_deal = '';
+if(empty($deal_price) || empty($property_id)){
+	$convert_deal = "noallowed_contract";
+}	
 ?>
 <!-- Wrapper -->
 <div id="wrapper">
@@ -607,7 +611,7 @@ if(count($check_deal_orders->posts) == 1){
 			</div>
 
 			<div class="create-deal-btnsec deal-detail-dealbutton ">
-				<a href="<?php echo get_site_url(); ?>/admin/deals/contract/<?php echo base64_encode($post_id); ?>"><button type="button" class="btn btn-primary popup__button stage3-convertdeal-but">
+				<a href="<?php echo get_site_url(); ?>/admin/deals/contract/<?php echo base64_encode($post_id); ?>" class="<?php echo $convert_deal; ?>"><button type="button" class="btn btn-primary popup__button stage3-convertdeal-but">
 				 Convert Deal to Contract
 				</button></a>
 			</div>
@@ -873,6 +877,12 @@ jQuery(document).ready(function($) {
 				jQuery('.dealsend-popup h3').html('Email sent successfully');
 				jQuery('#selected_property_popup').modal('show');
 			});
+	});	
+	
+	$('.noallowed_contract').live('click',function(e){
+			e.preventDefault();
+			jQuery('.dealsend-popup h3').html('Please select price and property to convert deal.');
+			jQuery('#selected_property_popup').modal('show');
 	});	
 	
 	$('.no-send-email, .no-send-text').live('click',function(e){
