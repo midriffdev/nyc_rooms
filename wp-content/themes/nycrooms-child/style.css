@@ -2037,11 +2037,12 @@ transform: rotate(-90deg); }
 	z-index: 999;
 }
 
-/*@media only screen and (min-width: 1367px) {
-	.search-container {
-		padding: 90px 0;
+@media only screen and (min-width: 1367px) {
+	.container {
+		width:1170px;
+		padding:0px;
 	}
-}*/
+}
 
 .search-container h2 {
 	font-size: 40px;
@@ -11405,6 +11406,15 @@ input#date-picker:hover {
   left: 50px;
 }
 
+
+/***amit css 10-07-2020 start**/
+th.expire-date {
+    width: 11% !important;
+}
+
+/***amit css 10-07-2020 end**/
+
+
 @media (min-width: 1366px) {
 .daterangepicker.single .drp-calendar {
 	width: 100%;
@@ -12819,13 +12829,13 @@ table.contracts--table td:first-child {padding-left: 40px !important;}
 	display: block;
 	padding: 30px;
 }
-.dashboard-stats-section {margin: 45px 0 0 0;}
+.dashboard-stats-section {margin: 0px 0 0 0;}
 .dadhboard-featuredproperties_section {
     background: #f6f6f6;
     border-radius: 4px;
     padding: 15px 45px;
 }
-.dashbaord__wrapper .container {width: 1240px;}
+.dashbaord__wrapper .container {width: 1170px;padding:0;}
 .item--red {background: #f91942;}
 .item--blue{background: #274abb;}
 .item--green{background: #a1b789;}
@@ -14255,7 +14265,21 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
 /*------------ start Modal Popup Css ----------------------*/
 
 
-input[type=submit] {padding: 1px 21px;}.btn-default {color: #333;background-color: #fff;border-color: #ccc;}.btn-default:hover {color: #333;background-color: #e6e6e6;border-color: #adadad;}.close:focus,.close:hover{color:#000;text-decoration:none;cursor:pointer;filter:alpha(opacity=50);opacity:.5}button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:00;border:0}.modal-open{overflow:hidden}.modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050;display:none;overflow:hidden;-webkit-overflow-scrolling:touch;outline:0}.modal.fade .modal-dialog{-webkit-transition:-webkit-transform .3s ease-out;-o-transition:-o-transform .3s ease-out;transition:transform .3s ease-out;-webkit-transform:translate(0,-25%);-ms-transform:translate(0,-25%);-o-transform:translate(0,-25%);transform:translate(0,-25%)}.modal.in .modal-dialog{-webkit-transform:translate(0,0);-ms-transform:translate(0,0);-o-transform:translate(0,0);transform:translate(0,0)}.modal-open .modal{overflow-x:hidden;overflow-y:auto}.modal-dialog{position:relative;width:auto;margin:10px}.modal-content{position:relative;background-color:#fff;-webkit-background-clip:padding-box;background-clip:padding-box;border:1px solid #999;border:1px solid rgba(0,0,0,.2);border-radius:6px;outline:0;-webkit-box-shadow:0 3px 9px rgba(0,0,0,.5);box-shadow:0 3px 9px rgba(0,0,0,.5)}.modal-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:#000}.modal-backdrop.fade{filter:alpha(opacity=0);opacity:0}.modal-backdrop.in{filter:alpha(opacity=50);opacity:.5}.modal-header{padding:15px;border-bottom:1px solid #e5e5e5}.modal-header .close{margin-top:-2px}.modal-title{margin:0;line-height:1.42857143}.modal-body{position:relative;padding:15px}.modal-footer{padding:15px;text-align:right;border-top:1px solid #e5e5e5}.modal-footer .btn+.btn{margin-bottom:0;margin-left:5px}.modal-footer .btn-group .btn+.btn{margin-left:-1px}.modal-footer .btn-block+.btn-block{margin-left:0}.modal-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}@media (min-width:768px){.modal-dialog{width:600px;margin:30px auto}.modal-content{-webkit-box-shadow:0 5px 15px rgba(0,0,0,.5);box-shadow:0 5px 15px rgba(0,0,0,.5)}.modal-sm{width:300px}}@media (min-width:992px){.modal-lg{width:900px}}
+input[type=submit] {padding: 1px 21px;}.btn-default {color: #333;background-color: #fff;border-color: #ccc;}.btn-default:hover {color: #333;background-color: #e6e6e6;border-color: #adadad;}.close:focus,.close:hover{color:#000;text-decoration:none;cursor:pointer;filter:alpha(opacity=50);opacity:1}button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:00;border:0}.modal-open{overflow:hidden}.modal{position:fixed;top:25%;right:0;bottom:0;left:0;z-index:1050;display:none;overflow:hidden;-webkit-overflow-scrolling:touch;outline:0}.modal.fade .modal-dialog{-webkit-transition:-webkit-transform .3s ease-out;-o-transition:-o-transform .3s ease-out;transition:transform .3s ease-out;-webkit-transform:translate(0,-25%);-ms-transform:translate(0,-25%);-o-transform:translate(0,-25%);transform:translate(0,-25%)}.modal.in .modal-dialog{-webkit-transform:translate(0,0);-ms-transform:translate(0,0);-o-transform:translate(0,0);transform:translate(0,0)}.modal-open .modal{overflow-x:hidden;overflow-y:auto}.modal-dialog{position:relative;width:auto;margin:10px}.modal-content{position:relative;background-color:#fff;-webkit-background-clip:padding-box;background-clip:padding-box;border:1px solid #999;border:1px solid rgba(0,0,0,.2);border-radius:6px;outline:0;-webkit-box-shadow:0 3px 9px rgba(0,0,0,.5);box-shadow:0 3px 9px rgba(0,0,0,.5)}.modal-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:#000}.modal-backdrop.fade{filter:alpha(opacity=0);opacity:0}.modal-backdrop.in{filter:alpha(opacity=50);opacity:.5}.modal-header{padding:30px;}.modal-header .close {
+    font-size: 25px;
+    color: #fff;
+    background: #222;
+    padding: 0 5px;
+    border-radius: 50%;
+    position: absolute;
+    right: -11px;
+    top: -11px;
+	display:none;
+}
+.modal-body p {
+    text-align: center;
+    font-size: 20px;
+}.modal-title{margin:0;line-height:1.42857143}.modal-body{position:relative;padding:15px}.modal-footer{padding:15px;text-align:right;border-top:1px solid #e5e5e5}.modal-footer .btn+.btn{margin-bottom:0;margin-left:5px}.modal-footer .btn-group .btn+.btn{margin-left:-1px}.modal-footer .btn-block+.btn-block{margin-left:0}.modal-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}@media (min-width:768px){.modal-dialog{width:600px;margin:30px auto}.modal-content{-webkit-box-shadow:0 5px 15px rgba(0,0,0,.5);box-shadow:0 5px 15px rgba(0,0,0,.5)}.modal-sm{width:300px}}@media (min-width:992px){.modal-lg{width:900px}}
 
 /*------------ End Modal Popup Css ----------------------*/
 
@@ -14264,7 +14288,7 @@ input[type=submit] {padding: 1px 21px;}.btn-default {color: #333;background-colo
 
 /*****amit(08/06/2020)start******/
 /*****header(start)******/
-.tg-page-header {background-color: #f8f8f8;position: relative;padding: 70px 0 !important;margin-bottom: 65px;}
+.tg-page-header {background-color: #f8f8f8;position: relative;margin-bottom: 65px;}
 /*****header(end)******/
 table.all_agents_table th:first-child{width:10% !important;}
 table.all_leads_table th:first-child{width:10% !important;}
@@ -14430,7 +14454,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 .cvf-universal-pagination ul {margin: 0; padding: 0;}
 .cvf-universal-pagination ul li {display: inline; margin: 3px; padding: 4px 8px; background: #FFF; color: black; }
 .cvf-universal-pagination ul li.active:hover {cursor: pointer; background: #1E8CBE; color: white; }
-.cvf-universal-pagination ul li.inactive {background: #7E7E7E;}
+/*.cvf-universal-pagination ul li.inactive {background: #7E7E7E;}*/
 .cvf-universal-pagination ul li.selected {background: #1E8CBE; color: white;}
 
 .alert_note_panel {
