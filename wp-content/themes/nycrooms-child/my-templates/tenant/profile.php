@@ -75,7 +75,7 @@ get_header();
 							<div class="row">
 								<div class="col-md-12">
 									<label>Phone</label>
-									<input value="<?php echo get_user_meta($user_id,'user_phone',true); ?>" type="text" name="phone" placeholder="Phone" pattern="[0-9]{10}" maxlength=12 placeholder= "Enter Phone With +1.." required>
+									<input value="<?php echo get_user_meta($user_id,'user_phone',true); ?>" type="text" name="phone" placeholder="Phone" pattern="[+1]{2}[0-9]{10}" maxlength=12 placeholder= "Enter Phone With +1.." required>
 								</div>
 							</div>
 							<div class="row">

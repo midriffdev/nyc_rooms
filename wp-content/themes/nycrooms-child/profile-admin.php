@@ -65,7 +65,7 @@ get_header();
 						<input value="<?php if(!empty($user->data->display_name)){echo $user->data->display_name;} ?>" type="text" name="user_name">
 
 						<label>Phone</label>
-						<input value="<?php echo get_user_meta(get_current_user_id(),'user_phone',true); ?>" type="text" name="user_phone" pattern="[0-9]{10}" maxlength=12 placeholder= "Enter Phone With +1..">
+						<input value="<?php echo get_user_meta(get_current_user_id(),'user_phone',true); ?>" type="text" name="user_phone" pattern="[+1]{2}[0-9]{10}" maxlength=12 placeholder= "Enter Phone With +1..">
 
 						<label>Email</label>
 						<input value="<?php if(!empty($user->data->user_email)){echo $user->data->user_email;} ?>" type="email" name="user_email" readonly>

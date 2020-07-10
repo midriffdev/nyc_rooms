@@ -4,7 +4,7 @@ nyc_property_admin_authority();
 $usererror = '';
 $usersuccess = '';
 if(isset($_POST['add_owner'])){
-
+           $phone = '+1'.$_POST['phone'];
 		   $name = explode(' ', $_POST['Your_name']);
 		   $first_name = $name[0];
 		   $last_name = $name[1];
@@ -30,7 +30,7 @@ if(isset($_POST['add_owner'])){
 	   
 	    if($user_id){
 		     update_user_meta($user_id,'user_name', $_POST['Your_name']); 
-			 update_user_meta($user_id,'user_phone', $_POST['phone']);
+			 update_user_meta($user_id,'user_phone', $phone);
 			 update_user_meta($user_id,'user_email', $_POST['email']);
 			 update_user_meta($user_id,'about', $_POST['about']);
 			 update_user_meta($user_id,'user_twitter', $_POST['twitter']);
@@ -82,7 +82,7 @@ get_header();
 								</div>
 								<div class="col-md-6">
 									<label>Phone</label>
-									<input  type="text" name="phone" placeholder="Phone" required pattern="[0-9]{10}" maxlength=10>
+									<input  type="text" name="phone" placeholder="Enter Phone With +1 .." required pattern="[+1]{2}[0-9]{10}" maxlength=12>
 								</div>
 							</div>
 							
@@ -113,7 +113,7 @@ get_header();
 										<div class="change-photo-btn">
 											<div class="photoUpload">
 												<span><i class="fa fa-upload"></i> Upload Photo</span>
-												<input type="file" class="upload" name="profilepicture">
+												<input type="file" class="upload" id="imgupload" name="profilepicture">
 											</div>
 										</div>
 									</div>
@@ -189,6 +189,30 @@ get_header();
     </div>
   </div>
 <!-- Wrapper / End -->
+
+<script>
+jQuery(document).ready(function(){
+ jQuery(document).on('change', '.upload', function(){
+  var name = document.getElementById("imgupload").files[0].name;
+  var form_data = new FormData();
+  var ext = name.split('.').pop().toLowerCase();
+  var error = false;
+  if(jQuery.inArray(ext, ['gif','png','jpg','jpeg']) == -1) 
+  {
+   alert("Invalid Image File");
+   error = true;
+  }
+  var oFReader = new FileReader();
+	oFReader.onload = (function(imgupload){ //trigger function on successful read
+	return function(e) {
+		var img = jQuery('.edit-profile-photo img').attr('srcset', e.target.result); //create image element 
+	};
+	})(imgupload);
+  oFReader.readAsDataURL(document.getElementById("imgupload").files[0]);
+  });
+  jQuery('#sidebar-profile').addClass('current');
+});
+</script>
 
 <?php
 get_footer();

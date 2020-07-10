@@ -109,6 +109,9 @@ get_header();
       
 	<div class="admin-agent-account-details">
 		<div class="row">
+		    <div class="col-md-12">
+			 <p><a href="<?php echo site_url() . "/all-agent/" ?>"><i class="fa fa-arrow-left"></i> Back</a></p>
+			</div>
 			<div class="col-md-12">
 				<h4 class="margin-top-0 margin-bottom-30 admin-teanentdetail-title">Account Details</h4>
 			</div>
@@ -150,7 +153,7 @@ get_header();
 								</div>
 								<div class="col-md-6">
 									<label>Phone</label>
-									<input value="<?php echo get_user_meta($getuser->ID,'user_phone',true); ?>" type="text" name="phone" placeholder="Phone" required>
+									<input value="<?php echo get_user_meta($getuser->ID,'user_phone',true); ?>" type="text" name="phone" placeholder="Enter Phone With +1.." required pattern="[+1]{2}[0-9]{10}" maxlength=12>
 								</div>
 							</div>
 							
@@ -198,7 +201,7 @@ get_header();
 										<div class="change-photo-btn">
 											<div class="photoUpload">
 												<span><i class="fa fa-upload"></i> Upload Photo</span>
-												<input type="file" class="upload" name="agent_profile_picture">
+												<input type="file" class="upload" id="imgupload" name="agent_profile_picture">
 											</div>
 										</div>
 									</div>
@@ -250,5 +253,28 @@ label.reset_success {
     color: green;
 }
 </style>
+<script>
+jQuery(document).ready(function(){
+ jQuery(document).on('change', '.upload', function(){
+  var name = document.getElementById("imgupload").files[0].name;
+  var form_data = new FormData();
+  var ext = name.split('.').pop().toLowerCase();
+  var error = false;
+  if(jQuery.inArray(ext, ['gif','png','jpg','jpeg']) == -1) 
+  {
+   alert("Invalid Image File");
+   error = true;
+  }
+  var oFReader = new FileReader();
+	oFReader.onload = (function(imgupload){ //trigger function on successful read
+	return function(e) {
+		var img = jQuery('.edit-profile-photo img').attr('srcset', e.target.result); //create image element 
+	};
+	})(imgupload);
+  oFReader.readAsDataURL(document.getElementById("imgupload").files[0]);
+  });
+  jQuery('#sidebar-profile').addClass('current');
+});
+</script>
 <?php
 get_footer();
