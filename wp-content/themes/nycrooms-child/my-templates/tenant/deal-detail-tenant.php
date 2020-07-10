@@ -223,13 +223,14 @@ get_header();
 				
 				<!------------- Start Aplication form  and Payment multstep form --------------------->
 				<div class="col-md-12">	 
-							<div class="progress">
-								<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-							  </div>
-							  <div class="alert alert-success hide"></div>
+						   
+						 <div class="card">
+                           <div class="card-content">
+                             <ul class="stepper linear">
 							  
-							  <fieldset class="steps">
-							      <h3>Step 1 : Application Submission</h3>
+							 <li class="step active">
+							    <div data-step-label="There's labels too!" class="step-title waves-effect waves-dark">Step 1</div>
+								    <div class="step-content">
 									 <div class="submit-section">
 										<h4>Add Personnel Details</h4>
 											<div class="form">
@@ -382,13 +383,14 @@ get_header();
 												</div>
                                       
 									</div>
-								    <input type="button" class="button submit_application_form" value="Submit Application" id="submit_application_form"/>
-									<input type="button" name="next" class="nextbutton btn btn-info" value="Next" /> <span class="applction_frm_resp"><span>
-								  
-							  </fieldset>
-							  <fieldset class="steps">
-								
-											<h3>Step 2: Payments & Request An Agent</h3>
+								    <div class="step-actions">
+                                    <input type="button" class="button submit_application_form" id="submit_application_form" value="Submit Aplication"><button class="button waves-effect waves-dark btn blue next-step">CONTINUE</button>
+                                    </div>
+								  </div>
+							  </li>
+							  <li class="step">
+								    <div class="step-title waves-effect waves-dark">Step 2</div>
+									    <div class="step-content">
 											
 											<div class="col-md-12">
 											
@@ -418,7 +420,8 @@ get_header();
 															<?php
 															if(empty($check_deal_orders->posts)){
 															?>
-															  <button class="dealdetail-tenant-paynowb sqre_py_now" <?php if(!$get_document_file){ echo "disabled";} ?>>Pay Now</button>
+															  <button class="dealdetail-tenant-paynowb sqre_py_now">Pay Now</button>
+															  
 															<?php
 															}	
 															
@@ -438,14 +441,23 @@ get_header();
 														  <?php } ?>
 														  
 														</li>
+														<li>
+														  
+														</li>
 													</ul>
+													<span class="appcation_submission_err"></span>
 												</div>
 				                            </div>
-								<input type="button" name="previous" class="previousbutton btn btn-default" value="Previous" />
-							  </fieldset>
+								          <div class="step-actions">
+											<button class="button waves-effect waves-dark btn blue next-step">CONTINUE</button>
+											<button class="button waves-effect waves-dark btn-flat previous-step">BACK</button>
+                                          </div>
+								        </div>
+							  </li>
+							</ul>
 						</div>
-			
-				 
+			            </div>
+				        </div>
 				
 				
 				
@@ -897,6 +909,24 @@ get_header();
   </div>
 </div>
 
+<div class="modal fade popup-main--section" id="applcation_submison_success_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <div class="applcation-submison-success-popup">
+        	<h3></h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="modal fade popup-main--section" id="square_payment_success_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -988,6 +1018,12 @@ input.submit_application_form {
     padding: 0%;
 }
 
+input#submit_application_form {
+    /* height: 57px; */
+    margin: 0px 15px 0px 0px;
+}
+
+
 .advertisement_row input[type="radio"] {
     width: auto !important;
     margin: 0px 4px 0px 0px !important;
@@ -1037,111 +1073,311 @@ a.button.application_pdf {
     margin-top: 4%;
 }
 
+span.appcation_submission_err {
+    color: red;
+}
+
+
+/* Stepper */
+label.invalid {
+   font-size: 12px;
+   font-weight: 500;
+   color: red !important;
+   top: 50px !important;
+}
+
+label.invalid.active {
+   -webkit-transform: translateY(0%) !important;
+   transform: translateY(0%) !important;
+}
+/*Validate.js FIX*/
+
+ul.stepper {
+   counter-reset: section;
+   list-style: none;
+   /*max-width: 800px;*/
+}
+
+ul.stepper.horizontal {
+   position: relative;
+   display: -webkit-box;
+   display: -ms-flexbox;
+   display: flex;
+   -webkit-box-pack: justify;
+   -ms-flex-pack: justify;
+   justify-content: space-between;
+   min-height: 458px;
+}
+
+.card-content ul.stepper.horizontal {
+   margin-left: -20px;
+   margin-right: -20px;
+   padding-left: 20px;
+   padding-right: 20px;
+   overflow: hidden;
+}
+
+.card-content ul.stepper.horizontal:first-child {
+   margin-top: -20px;
+}
+
+ul.stepper.horizontal::before {
+   content: '';
+   background-color: transparent;
+   width: 100%;
+   min-height: 84px;
+   box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);
+   position: absolute;
+   left: 0;
+}
+
+ul.stepper .wait-feedback {
+   left: 0;
+   right: 0;
+   top: 0;
+   z-index: 2;
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   text-align: center;
+   display: -webkit-box;
+   display: -ms-flexbox;
+   display: flex;
+   -webkit-box-pack: center;
+   -ms-flex-pack: center;
+   justify-content: center;
+   -webkit-box-align: center;
+   -ms-flex-align: center;
+   align-items: center;
+}
+
+ul.stepper:not(.horizontal) .step {
+   position: relative;
+}
+
+ul.stepper .step.feedbacking .step-content>*:not(.wait-feedback) {
+   opacity: 0.1;
+}
+
+ul.stepper.horizontal .step {
+   width: 100%;
+   display: -webkit-box;
+   display: -ms-flexbox;
+   display: flex;
+   -webkit-box-align: center;
+   -ms-flex-align: center;
+   align-items: center;
+   height: 84px;
+}
+
+ul.stepper.horizontal .step:last-child {
+   width: auto;
+}
+
+ul.stepper.horizontal .step:not(:last-child)::after {
+   content: '';
+   display: inline-block;
+   width: 100%;
+   height: 1px;
+   background-color: rgba(0,0,0,0.1);
+}
+
+ul.stepper:not(.horizontal) .step:not(:last-child) {
+   margin-bottom: 10px;
+   -webkit-transition:margin-bottom 0.4s;
+   transition:margin-bottom 0.4s;
+}
+
+ul.stepper:not(.horizontal) .step:not(:last-child).active {
+   margin-bottom: 36px;
+}
+
+ul.stepper:not(.horizontal) .step::before {
+   left:0;
+   position: absolute;
+   top: 12px;
+   counter-increment: section;
+   content: counter(section);
+   height: 28px;
+   width: 28px;
+   color: white;
+   background-color: rgba(0,0,0,0.3);
+   border-radius: 50%;
+   text-align: center;
+   line-height: 28px;
+   font-weight: 400;
+}
+
+ul.stepper:not(.horizontal) .step.active::before, ul.stepper:not(.horizontal) .step.done::before, ul.stepper.horizontal .step.active .step-title::before, ul.stepper.horizontal .step.done .step-title::before {
+   background-color: #2196f3;
+}
+
+ul.stepper:not(.horizontal) .step.done::before, ul.stepper.horizontal .step.done .step-title::before {
+   content: '\e5ca';
+   font-size: 16px;
+   font-family: 'Material Icons';
+}
+
+ul.stepper:not(.horizontal) .step.wrong::before, ul.stepper.horizontal .step.wrong .step-title::before {
+   content: '\e001';
+   font-size: 24px;
+   font-family: 'Material Icons';
+   background-color: red !important;
+}
+
+ul.stepper:not(.horizontal) .step-title {
+   text-align: left;
+   margin: 0 -20px;
+   cursor: pointer;
+   padding: 15.5px 44px 24px 60px;
+   display: block;
+}
+
+ul.stepper.horizontal .step-title {
+   line-height: 84px;
+   height: 84px;
+   padding-left: 65px;
+   padding-right: 25px;
+   display: inline-block;
+   max-width: 220px;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   -ms-flex-negative: 0;
+   flex-shrink: 0;
+}
+
+ul.stepper.horizontal .step .step-title::before {
+   position: absolute;
+   top: 28.5px;
+   left: 19px;
+   counter-increment: section;
+   content: counter(section);
+   height: 28px;
+   width: 28px;
+   color: white;
+   background-color: rgba(0,0,0,0.3);
+   border-radius: 50%;
+   text-align: center;
+   line-height: 28px;
+   font-weight: 400;
+}
+
+ul.stepper .step-title::after {
+   content: attr(data-step-label);
+   display: block;
+   position: absolute;
+   font-size: 0.8rem;
+   color: #424242;
+   font-weight: 400;
+}
+
+ul.stepper.horizontal .step-title::after {
+   top:15px;
+}
+
+ul.stepper .step-title:hover {
+   background-color: rgba(0, 0, 0, 0.06);
+}
+
+ul.stepper .step.active .step-title {
+   font-weight: 500;
+}
+
+ul.stepper .step-content {
+	text-align: left;
+   position: relative;
+   display: none;
+   height: calc(100% - 132px);
+   width: inherit;
+   overflow: visible;
+   padding: 15.5px 15px 24px 60px;
+}
+
+ul.stepper.horizontal .step-content {
+   position: absolute;
+   height: calc(100% - 84px);
+   top: 84px;
+   left: 0;
+   width: 100%;
+   overflow-y: auto;
+   overflow-x: hidden;
+   margin: 0;
+   padding: 20px 20px 76px 20px;
+}
+
+.card-content ul.stepper.horizontal .step-content {
+   padding-left: 40px;
+   padding-right: 40px;
+}
+
+ul.stepper:not(.horizontal)>.step:not(:last-child)::after {
+   content: '';
+   position: absolute;
+   top: 50px;
+   left: 13.5px;
+   width: 1px;
+   height: calc(100% - 38px);
+   background-color: rgba(0,0,0,0.1);
+   -webkit-transition:height 0.4s;
+   transition:height 0.4s;
+}
+
+ul.stepper:not(.horizontal)>.step.active:not(:last-child)::after {
+   height: calc(100% - 12px);
+}
+
+ul.stepper .step-actions {
+   padding-top: 16px;
+   -webkit-display: flex;
+   -moz-display: flex;
+   -ms-display: flex;
+   display: -webkit-box;
+   display: flex;
+   -webkit-box-pack: start;
+   -ms-flex-pack: start;
+   justify-content: flex-start;
+}
+
+ul.stepper:not(.horizontal) .step-actions .btn:not(:last-child), ul.stepper:not(.horizontal) .step-actions .btn-flat:not(:last-child), ul.stepper:not(.horizontal) .step-actions .btn-large:not(:last-child) {
+   margin-right:5px;
+}
+
+ul.stepper.horizontal .step-actions .btn:not(:last-child), ul.stepper.horizontal .step-actions .btn-flat:not(:last-child), ul.stepper.horizontal .step-actions .btn-large:not(:last-child) {
+   margin-left:5px;
+}
+
+ul.stepper.horizontal .step-actions {
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   width: 100%;
+   padding: 20px;
+   background-color: #fff;
+   -webkit-box-orient: horizontal;
+   -webkit-box-direction: reverse;
+   -ms-flex-direction: row-reverse;
+   flex-direction: row-reverse;
+}
+
+.card-content ul.stepper.horizontal .step-actions {
+   padding-left: 40px;
+   padding-right: 40px;
+}
+
+ul.stepper .step-content .row {
+   margin-bottom: 7px;
+}
+
 </style>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/dropzone.js"></script>
+ <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/materialize.min.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/prism.min.js"></script>
+
 <script>
-
- 	/* $(".dropzone.dropzone_application_form").dropzone({
-		dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
-		addRemoveLinks: true,
-		acceptedFiles: "application/pdf,.doc,.docx",
-		maxFiles: 1,
-		init: function() { 
-			myDropzoneFiles = this;
-			var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
-	        var deal_id = '<?php echo $dealid; ?>';
-			jQuery.ajax({
-			  type: 'post',
-			  dataType: 'json',
-			  url: ajaxurl,
-			  data: {action:'nyc_get_existing_application_form_ajax',deal_id:deal_id},
-			  success: function(response){
-				  $.each(response, function(key,value) {
-                          if(value.size != false){
-						     var mockFile = { name: value.name, size: value.size };
-							  myDropzoneFiles.emit("addedfile", mockFile);
-							 // myDropzoneFiles.emit("thumbnail", mockFile, value.path);
-							  myDropzoneFiles.emit("complete", mockFile);
-						  }
-						 
-				  }); 
-
-			  }
-			 });
-			 
-        },
-        removedfile: function(file) {
-			 var file_name    = file.name;
-			 var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
-	         var deal_id = '<?php echo $dealid; ?>';
-			 jQuery.ajax({
-					  type: 'post',
-					  url: ajaxurl,
-					  data: {action:'nyc_delete_existing_application_form_ajax',deal_id:deal_id,file_name:file_name},
-					  success: function(response){
-							 if(response == "success"){
-								jQuery('.removed-file-popup h3').html('Document Removed Successfully');
-								jQuery('#removed_file_popup').modal('show');
-								location.reload();
-					         }
-					  }
-			  });
-			var _ref;
-			return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0; 
-	
-        }
-   
-	}); */
-	
-	
-	
-
-	jQuery(document).ready(function(){
-	
-	    $('#alocateagent-select').on('change', function() {
-	        $(".allocategent-tostage").show();
-	    });
-
-	    $(".desellect-sellectedproperty").click(function(){
-	    	$(this).parent().addClass('selected-property-none'); 
-	    });
-		
-		/* $("#save_document").click(function(e){
-		   e.preventDefault();
-		   jQuery('.loading').show();
-		   var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
-	       var deal_id = '<?php echo $dealid; ?>';
-		   jQuery(this).attr("disabled", true);
-		   var drop_doc_data = $('.dropzone.dropzone_application_form')[0].dropzone.getAcceptedFiles();
-		   var form_data = new FormData();
-           form_data.append("deal_id", deal_id);
-		   var document_files=[];
-		   for(var i = 0;i<drop_doc_data.length;i++){
-				form_data.append("doc_"+i, drop_doc_data[i]);
-				document_files.push("doc_"+i);
-		   }
-		   
-		   form_data.append( "action" , 'nyc_upload_application_form');	
-		   
-		   jQuery.ajax({
-				type : "post",
-				url : ajaxurl,
-				data: form_data,
-				processData: false,
-				contentType: false,
-				success: function(response) {
-				     if(response == "success"){
-						jQuery('.loading').hide();
-						jQuery('.application-popup h3').html('Application Saved Successfully');
-			            jQuery('#application_form_popup').modal('show');
-						location.reload();
-					}
-					
-				}
-			});	
-		
-		}); */
-		
+  $(document).ready(function() {
 		$('.dealdetail-tenant-reqagentb').click(function(){
 		    jQuery(this).attr("disabled", true);
 		    jQuery('.loading').show();
@@ -1196,43 +1432,13 @@ a.button.application_pdf {
 			  
 		});
 		
-		var current = 1,current_step,next_step,steps;
-               steps = $("fieldset.steps").length;
-               $(".nextbutton").click(function(){
-						current_step = $(this).parent();
-						next_step = $(this).parent().next();
-						next_step.show();
-						current_step.hide();
-						setProgressBarTenant(++current);
-              });
-			  $(".previousbutton").click(function(){
-				current_step = $(this).parent();
-				next_step = $(this).parent().prev();
-				next_step.show();
-				current_step.hide();
-				setProgressBarTenant(--current);
-			  });
-              setProgressBarTenant(current);
-  // Change progress bar action
-		function setProgressBarTenant(curStep){
-				var percent = parseFloat(100 / steps) * curStep;
-				percent = percent.toFixed();
-				$(".progress-bar")
-				  .css("width",percent+"%")
-				  .html(percent+"%");   
-			  }
-	 <?php if(!$application_submission) { ?>	  
-	   jQuery('#submit_application_form').next('.nextbutton').prop("disabled", true);
-	   jQuery('#submit_application_form').next('.nextbutton').css("background","#ccd1e3");
-	<?php } else {
-	?>
-	  jQuery('#submit_application_form').prop("disabled", true);
-	  jQuery('#submit_application_form').val("Application Submitted");
-	  jQuery('#submit_application_form').css("background","#ccd1e3");
-	  
-	 <?php   
-	 }
-	 ?>
+	 <?php if($application_submission) { ?>	  
+		   jQuery('#submit_application_form').prop("disabled", true);
+		   jQuery('#submit_application_form').val("Application Submitted");
+		   jQuery('#submit_application_form').css("background","#ccd1e3");
+	  <?php 
+	    } 
+	  ?>
 	 
 	 $('#submit_application_form').click(function(e){
 	    e.preventDefault();
@@ -1413,13 +1619,16 @@ a.button.application_pdf {
 				contentType: false,
 				success: function(response) {
 				     if(response == "success"){
+					 
 					    jQuery('.loading').hide();
-						$('.applction_frm_resp').html('Application Submitted Successfully');
-						jQuery('#submit_application_form').next('.nextbutton').prop("disabled", false);
-						jQuery('#submit_application_form').next('.nextbutton').css("background-color", "#274abb");
+						$('.applcation-submison-success-popup').html('Application Submitted Successfully');
+						$('#applcation_submison_success_popup').modal('show');
 						jQuery('#submit_application_form').prop("disabled", true);
-						 jQuery('#submit_application_form').css("background","#ccd1e3");
+						jQuery('#submit_application_form').css("background","#ccd1e3");
 						jQuery('#submit_application_form').val("Application Submitted");
+						setTimeout(function(){
+						    window.location.reload();
+                        }, 2000);
 						
 					 }
 				}
@@ -1445,7 +1654,18 @@ a.button.application_pdf {
 		    $('.check_consents_terms_err').html('Please check the consent agreement to continue further');
 			$("input[name=check_consents_terms]").focus();
 		} else {
-		     $('#Square_payment_form_js').modal('show');
+		      <?php 
+			    if(!$application_submission){
+			  ?>
+			      $('.appcation_submission_err').html('Please Submit The Application Form in the Previous Step Before Payment.');
+			  <?php
+			  } else {
+			  ?>
+			     $('#Square_payment_form_js').modal('show');
+			  <?php
+			  }
+			  ?>
+		     
 		}
 		 
 		 
@@ -1460,3 +1680,237 @@ a.button.application_pdf {
 		
 	});
 </script>
+
+
+<script type="text/javascript">
+
+var validation = $.isFunction($.fn.valid) ? 1 : 0;
+
+$.fn.isValid = function() {
+  if (validation) {
+    return this.valid();
+  } else {
+    return true;
+  }
+};
+
+if (validation) {
+  $.validator.setDefaults({
+    errorClass: 'invalid',
+    validClass: "valid",
+    errorPlacement: function(error, element) {
+      if (element.is(':radio') || element.is(':checkbox')) { // Input checkboxes or radio, maybe switches?
+        error.insertBefore($(element).parent());
+      } else {
+        error.insertAfter(element); // default error placement.
+        // element.closest('label').data('error', error);
+        // element.next().attr('data-error', error);
+      }
+    },
+    success: function(element) {
+      if (!$(element).closest('li').find('label.invalid:not(:empty)').length) {
+        $(element).closest('li').removeClass('wrong');
+      }
+    }
+  });
+}
+
+$.fn.getActiveStep = function() {
+  active = this.find('.step.active');
+  return $(this.children('.step:visible')).index($(active)) + 1;
+};
+
+$.fn.activateStep = function() {
+  $(this).addClass("step").stop().slideDown(function() {
+    $(this).css({
+      'height': 'auto',
+      'margin-bottom': ''
+    });
+  });
+};
+
+$.fn.deactivateStep = function() {
+  $(this).removeClass("step").stop().slideUp(function() {
+    $(this).css({
+      'height': 'auto',
+      'margin-bottom': '10px'
+    });
+  });
+};
+
+$.fn.showError = function(error) {
+  if (validation) {
+    name = this.attr('name');
+    form = this.closest('form'); // Change if not using FORM elements
+    var obj = {};
+    obj[name] = error;
+    form.validate().showErrors(obj);
+    this.closest('li').addClass('wrong');
+  } else {
+    this.removeClass('valid').addClass('invalid');
+    this.next().attr('data-error', error);
+  }
+};
+
+
+$.fn.resetStepper = function(step) {
+  if (!step) step = 1;
+  form = $(this).closest('form'); // Change if not using FORM elements
+  $(form)[0].reset();
+  Materialize.updateTextFields();
+  return $(this).openStep(step);
+};
+
+$.fn.submitStepper = function(step) {
+  form = this.closest('form'); // Change if not using FORM elements
+  if (form.isValid()) {
+    form.submit();
+  }
+};
+
+$.fn.nextStep = function(ignorefb) {
+  stepper = this;
+  form = this.closest('form');
+  active = this.find('.step.active');
+  next = $(this.children('.step:visible')).index($(active)) + 2;
+  feedback = $(active.find('.step-content').find('.step-actions').find('.next-step')).data("feedback");
+  if (form.isValid()) {
+    if (feedback && ignorefb) {
+      stepper.activateFeedback();
+      return window[feedback].call();
+    }
+    active.removeClass('wrong').addClass('done');
+    this.openStep(next);
+    return this.trigger('nextstep');
+  } else {
+    return active.removeClass('done').addClass('wrong');
+  }
+};
+
+$.fn.prevStep = function() {
+  active = this.find('.step.active');
+  prev = $(this.children('.step:visible')).index($(active));
+  active.removeClass('wrong');
+  this.openStep(prev);
+  return this.trigger('prevstep');
+};
+
+$.fn.openStep = function(step, callback) {
+  $this = this;
+  step_num = step - 1;
+  step = this.find('.step:visible:eq(' + step_num + ')');
+  if (step.hasClass('active')) return;
+  active = this.find('.step.active');
+  prev_active = next = $(this.children('.step:visible')).index($(active));
+  order = step_num > prev_active ? 1 : 0;
+  if (active.hasClass('feedbacking')) $this.destroyFeedback();
+  active.closeAction(order);
+  step.openAction(order, function() {
+    $this.trigger('stepchange').trigger('step' + (step_num + 1));
+    if (step.data('event')) $this.trigger(step.data('event'));
+    if (callback) callback();
+  });
+};
+
+$.fn.closeAction = function(order, callback) {
+  closable = this.removeClass('active').find('.step-content');
+  if (!this.closest('ul').hasClass('horizontal')) {
+    closable.stop().slideUp(300, "easeOutQuad", callback);
+  } else {
+    if (order == 1) {
+      closable.animate({
+        left: '-100%'
+      }, function() {
+        closable.css({
+          display: 'none',
+          left: '0%'
+        }, callback);
+      });
+    } else {
+      closable.animate({
+        left: '100%'
+      }, function() {
+        closable.css({
+          display: 'none',
+          left: '0%'
+        }, callback);
+      });
+    }
+  }
+};
+
+$.fn.openAction = function(order, callback) {
+  openable = this.removeClass('done').addClass('active').find('.step-content');
+  if (!this.closest('ul').hasClass('horizontal')) {
+    openable.slideDown(300, "easeOutQuad", callback);
+  } else {
+    if (order == 1) {
+      openable.css({
+        left: '100%',
+        display: 'block'
+      }).animate({
+        left: '0%'
+      }, callback);
+    } else {
+      openable.css({
+        left: '-100%',
+        display: 'block'
+      }).animate({
+        left: '0%'
+      }, callback);
+    }
+  }
+};
+
+$.fn.activateStepper = function() {
+  $(this).each(function() {
+    var $stepper = $(this);
+    if (!$stepper.parents("form").length) {
+      method = $stepper.data('method');
+      action = $stepper.data('action');
+      method = (method ? method : "GET");
+      action = (action ? action : "?");
+      $stepper.wrap('<form action="' + action + '" method="' + method + '"></div>');
+    }
+    $stepper.find('li.step.active').openAction(1);
+
+    $stepper.on("click", '.step:not(.active)', function() {
+      object = $($stepper.children('.step:visible')).index($(this));
+      if (!$stepper.hasClass('linear')) {
+        $stepper.openStep(object + 1);
+      } else {
+        active = $stepper.find('.step.active');
+        if ($($stepper.children('.step:visible')).index($(active)) + 1 == object) {
+          $stepper.nextStep(true);
+        } else if ($($stepper.children('.step:visible')).index($(active)) - 1 == object) {
+          $stepper.prevStep();
+        }
+      }
+    }).on("click", '.next-step', function(e) {
+      e.preventDefault();
+      $stepper.nextStep(true);
+    }).on("click", '.previous-step', function(e) {
+      e.preventDefault();
+      $stepper.prevStep();
+      // May want to ammend to 'a' tag for R purposes or more than likely use an ID selector
+      // for shiny observer purposes... so for R if the action button for submissions was 
+      // `input$form_step_submit`:
+      //}).on("click", "#form_step_submit", function(e) { 
+    }).on("click", "button:submit:not(.next-step, .previous-step)", function(e) {
+      e.preventDefault();
+      form = $stepper.closest('form');
+      if (form.isValid()) {
+        form.submit();
+      }
+    });
+  });
+};
+ 
+$(document).ready(function() {
+  $('ul.tabs').tabs()
+  $('.rt-select').material_select();
+  //Init for stepper
+  $('.stepper').activateStepper();
+  //$(selector).nextStep();
+
+});</script>
