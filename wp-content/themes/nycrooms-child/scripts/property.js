@@ -32,6 +32,13 @@ jQuery(document).ready(function($) {
 		var contact_phone = jQuery('#contact_phone').val();
 		var people_living_count = jQuery('#people_living_count').val();
 		var selected_property_owner  = jQuery('#selected_property_owner').val();
+		var phoneValid = /^[+1]{2}[0-9]{10}$/;
+		if(contact_phone != ''){
+			if(!(contact_phone.match(phoneValid))){
+				jQuery('#contact_phone-err').html('<span class="error">Please enter Valid phone with +1 code.</span>');
+				is_error = true;				
+			}
+		}
 		if(title == ''){
 			jQuery('#title-err').html('<span class="error">Please enter title</span>');
 			is_error = true;		

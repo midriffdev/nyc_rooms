@@ -513,7 +513,7 @@ get_header();
 				     <p class="form-row form-row-wide">
 								<label for="guest_phone_reg">Phone:
 									<i class="im im-icon-Phone"></i>
-									<input type="text" id="guest_phone_reg" name="guest_phone_reg" pattern="[0-9]{10}" maxlength=10 required>
+									<input type="text" id="guest_phone_reg" name="guest_phone_reg" pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
 								</label>
 				     </p>
 					 <p class="form-row form-row-wide">

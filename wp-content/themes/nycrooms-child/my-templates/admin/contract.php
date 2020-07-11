@@ -1701,7 +1701,7 @@ textarea:required:focus {
 											<span>Agent Name:</span>
 										</div>
 										<div class="agreement-pannel-content pannel2 agent-space">
-										<span><input type="text" class="form-input" name="agent_name" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_name']; }  ?>" required></span></div>
+										<span><input type="text" class="form-input" name="agent_name" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_name']; }  ?>" ></span></div>
 									</div>
 								</div>
 								<div class="form-content-inner-pannel">
@@ -1711,7 +1711,7 @@ textarea:required:focus {
 Customer Name:</span>
 							</div>
 							<div class="agreement-pannel-content pannel2 customer-space">
-								<span><input type="text" class="form-input" name="customer_name" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_name']; }  ?>" required></span></div>
+								<span><input type="text" class="form-input" name="customer_name" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_name']; }  ?>" ></span></div>
 							</div>
 								</div>
 							</div>
@@ -1723,7 +1723,7 @@ Customer Name:</span>
 Agent Signature:</span>
 										</div>
 										<div class="agreement-pannel-content pannel2 agent-sign-space">
-										<span><input type="text" class="form-input" name="agent_signature" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_signature']; }  ?>" required></span></div>
+										<span><input type="text" class="form-input" name="agent_signature" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_signature']; }  ?>" ></span></div>
 									</div>
 								</div>
 								<div class="form-content-inner-pannel">
@@ -1733,7 +1733,7 @@ Agent Signature:</span>
 Customer Signature:</span>
 							</div>
 							<div class="agreement-pannel-content pannel2 customer-sign-space">
-								<input type="text" class="form-input" name="customer_signature" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_signature']; }  ?>" required></span></div></div>
+								<input type="text" class="form-input" name="customer_signature" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_signature']; }  ?>" ></span></div></div>
 							</div>
 								</div>
 							<div class="form-content-pannel">
@@ -1744,7 +1744,7 @@ Customer Signature:</span>
 Date:</span>
 										</div>
 										<div class="agreement-pannel-content pannel2 date-last-space">
-										<span><input type="date" class="form-input" name="agent_date" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_date']; }  ?>" required></span></div>
+										<span><input type="date" class="form-input" name="agent_date" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_date']; }  ?>" ></span></div>
 									</div>
 								</div>
 								<div class="form-content-inner-pannel">
@@ -1754,7 +1754,7 @@ Date:</span>
 Date:</span>
 							</div>
 							<div class="agreement-pannel-content pannel2 date-last-space">
-								<input type="date" class="form-input" name="customer_date" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_date']; }  ?>" required></span></div></div>
+								<input type="date" class="form-input" name="customer_date" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_date']; }  ?>" ></span></div></div>
 							</div>
 								</div>
 							</div>

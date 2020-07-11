@@ -23,7 +23,7 @@ get_header();
 							</li>
 							<li>
 								<h5>Phone</h5>
-								<input  type="number" id="t_phone" value=""/>
+								<input  type="text" id="t_phone" maxlength="12" value=""/>
 							</li>
 							<li>
 								<h5>E-Mail</h5>
@@ -317,6 +317,7 @@ jQuery(document).ready(function($) {
 		var deal_price = jQuery('#deal_price').val();
 		var admin_notes = jQuery('#admin_notes').val();
 		var property_id = jQuery(".check_property:checked").val();
+		var phoneValid = /^[+1]{2}[0-9]{10}$/;
 		if(t_name == ''){
 			errors = true;
 			html += 'Tenant Name is rquired!</br>';
@@ -324,6 +325,9 @@ jQuery(document).ready(function($) {
 		if(t_phone == ''){
 			errors = true;
 			html += 'Tenant Phone is rquired!</br>';
+		}else if(!(t_phone.match(phoneValid))){
+			errors = true;
+			html += 'Tenant Phone Should be valid with +1 Code!</br>';			
 		}
 		if(t_email == ''){
 			errors = true;
