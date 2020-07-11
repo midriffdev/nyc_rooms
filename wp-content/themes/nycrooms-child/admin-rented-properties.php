@@ -285,7 +285,7 @@ get_header();
 							$payment_method = get_post_meta($post_id, 'payment_method',true);
 							$prop_image = wp_get_attachment_url(get_post_meta($post_id, 'file_0',true));
 							$contact_name = get_post_meta($post_id, 'contact_name',true);
-							$status = get_post_meta($post_id, 'status',true);
+							$status = get_post_status();
 							$document_files = explode(',',get_post_meta($post_id, 'document_files',true));
 				?>
 					
@@ -296,7 +296,7 @@ get_header();
 						<div class="title">
 							<h4><a href="<?php echo site_url().'/single-property/?property_id='.$post_id; ?>"><?php echo get_the_title($post_id); ?></a></h4>
 							<span><?php echo $address;?> </span>
-							<span class="table-property-price"><?php echo $price.'$ / Week' ;?></span> <span class="active--property"><?php echo $status ;?></span>
+							<span class="table-property-price"><?php echo $price.'$ / Week' ;?></span> <span class="active--property"><?php echo ucfirst($status); ?></span>
 							<?php 
 							if($document_files){
 								echo "</br></br>";
@@ -315,11 +315,11 @@ get_header();
 					</td>
 					<td class="action">
 					    <?php
-						   $checkpropactivation = get_post_meta($post_id,'property_activation',true);
+						   $property_inactive = get_post_meta($post_id,'property_inactive',true);
 						 ?>
 						  <a href="<?= site_url().'/single-property/?property_id='.$post_id  ?> "><i class="fa fa-eye"></i> View</a>
 						<?php
-						if(!$checkpropactivation){
+						if($property_inactive == true){
 						?>
 						<a style="cursor:pointer;" class="actvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-key"></i> Activate</a>
 						<?php

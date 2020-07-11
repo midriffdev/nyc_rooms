@@ -1313,7 +1313,7 @@ add_action( 'wp_ajax_activate_multiple_properties', 'activate_multiple_propertie
 function activate_multiple_properties() {
 	global $wpdb;
 	foreach($_POST['data'] as $ids){
-	  add_post_meta($ids,'property_activation',1);
+	  delete_post_meta($ids,'property_inactive');
 	}
 	echo "true";
 	wp_die();
@@ -1326,7 +1326,7 @@ add_action( 'wp_ajax_deactivate_multiple_properties', 'deactivate_multiple_prope
 function deactivate_multiple_properties() {
 	global $wpdb;
 	foreach($_POST['data'] as $ids){
-	   delete_post_meta($ids,'property_activation',1);
+	   update_post_meta($ids,'property_inactive',1);
 	}
 	echo "true";
 	wp_die();
