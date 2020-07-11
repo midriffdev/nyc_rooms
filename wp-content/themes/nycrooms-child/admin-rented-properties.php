@@ -338,7 +338,7 @@ get_header();
 						}
 					}
 					else{
-					    echo "<tr class='nyc-no-properties'><td>No Properties Found !</td></tr>";
+					    echo "<tr class='nyc-no-properties'><td class='no_property_found' colspan='4'>No Properties Found !</td></tr>";
 					}
 				?>
 			</tbody>
