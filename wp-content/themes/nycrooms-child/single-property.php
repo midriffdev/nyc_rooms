@@ -256,9 +256,16 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 				</ul>
 	
 				<!-- Location -->
+				<?php
+						 $propertyaddress = get_post_meta($post_id,'address',true);
+						 $region = get_post_meta($post_id,'state',true);
+						 $longlat = get_lat_long($propertyaddress,$region);
+						 $longitude  =   $longlat['longitude'];
+						 $latitude   =   $longlat['latitude'];
+			    ?>
 				<h3 class="desc-headline no-border" id="location">Location</h3>
 				<div id="propertyMap-container">
-					<div id="propertyMap" data-latitude="40.7427837" data-longitude="-73.11445617675781"></div>
+					<div id="propertyMap" data-latitude="<?= $latitude ?>" data-longitude="<?= $longitude; ?>"></div>
 					<a href="#" id="streetView">Street View</a>
 				</div>
                  
@@ -268,7 +275,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 				$user_name  =  get_user_meta($user->ID ,'user_full_name',true);
 				$user_phone =  get_user_meta($user->ID ,'user_phone',true);
 				$user_email =  get_user_meta($user->ID ,'user_email',true);
-				
+
 				
 				if(!is_user_logged_in()){
                 ?>
@@ -321,10 +328,16 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 				 }
 				}
 				?>
-
+                  <?php if(is_user_logged_in() && $user->roles[0] == "administrator" ){ ?>
+				  <?php
+				  } else {
+				  ?>
 				<div class="appointment-popup">
 		             <button class="appointment-button" data-toggle="modal" data-target="#bookappntmntpopup">Book Appointment</button>
 	            </div>
+				<?php
+				}
+				?>
 				 
 				</div>
 
@@ -511,12 +524,12 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 				<!-- Booking Widget / End -->
 
 				<!-- Widget -->
-				<div class="widget">
-					<h3 class="margin-bottom-35">Featured Properties</h3>
+				<!--div class="widget"-->
+					<!--h3 class="margin-bottom-35">Featured Properties</h3>
 
-					<div class="listing-carousel outer">
+					<div class="listing-carousel outer"-->
 						<!-- Item -->
-						<div class="item">
+						<!--div class="item">
 							<div class="listing-item compact">
 
 								<a href="#" class="listing-img-container">
@@ -537,15 +550,15 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 										</ul>
 									</div>
 
-									<img src="<?php echo get_stylesheet_directory_uri(); ?>/images/listing-01.jpg" alt="">
+									<img src="<?php //echo get_stylesheet_directory_uri(); ?>/images/listing-01.jpg" alt="">
 								</a>
 
 							</div>
-						</div>
+						</div-->
 						<!-- Item / End -->
 
 						<!-- Item -->
-						<div class="item">
+						<!--div class="item">
 							<div class="listing-item compact">
 
 								<a href="#" class="listing-img-container">
@@ -566,7 +579,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 										</ul>
 									</div>
 
-									<img src="<?php echo get_stylesheet_directory_uri(); ?>/images/listing-02.jpg" alt="">
+									<img src="<?php //echo get_stylesheet_directory_uri(); ?>/images/listing-02.jpg" alt="">
 								</a>
 
 							</div>
@@ -574,7 +587,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 						<!-- Item / End -->
 
 						<!-- Item -->
-						<div class="item">
+						<!--div class="item">
 							<div class="listing-item compact">
 
 								<a href="#" class="listing-img-container">
@@ -595,15 +608,15 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 										</ul>
 									</div>
 
-									<img src="<?php echo get_stylesheet_directory_uri(); ?>/images/listing-03.jpg" alt="">
+									<img src="<?php //echo get_stylesheet_directory_uri(); ?>/images/listing-03.jpg" alt="">
 								</a>
 
 							</div>
 						</div>
 						<!-- Item / End -->
-					</div>
+					<!--/div>
 
-				</div>
+				</div--->
 				<!-- Widget / End -->
 
 			</div>

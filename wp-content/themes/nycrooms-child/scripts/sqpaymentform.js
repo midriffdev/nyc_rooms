@@ -141,7 +141,7 @@ var paymentForm = new SqPaymentForm({
 	  var phone_teanant           =  document.getElementById('phone_square_teanant').value;
 	  
 	  
-	  jQuery('#Square_payment_form_js').modal('hide');
+	  jQuery('#Square_payment_form_js').modal('close');
       jQuery('.loading').show();
 		
 	    jQuery.ajax({
@@ -153,7 +153,10 @@ var paymentForm = new SqPaymentForm({
 							   if(response == "success"){
 								jQuery('.loading').hide();
 								jQuery('.square-payment-success-popup h3').html('Payment Successfully Done');
-								jQuery('#square_payment_success_popup').modal('show');
+								jQuery('.modal').modal({
+						            dismissible: true
+					            }); 
+								jQuery('#square_payment_success_popup').modal('open');
 									setTimeout(function(){
 										 window.location.reload();
 									}, 2000);
@@ -161,7 +164,10 @@ var paymentForm = new SqPaymentForm({
 					         } else {
 							     jQuery('.loading').hide();
 								 jQuery('.square-payment-success-popup h3').html('Something Went Wrong in Payment. Please try After sometime');
-								 jQuery('#square_payment_success_popup').modal('show');
+								 jQuery('.modal').modal({
+						            dismissible: true
+					             }); 
+								 jQuery('#square_payment_success_popup').modal('open');
 									setTimeout(function(){
 										 window.location.reload();
 									}, 2000);   								 
