@@ -425,10 +425,10 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 					<button class="widget-button with-tip nyc_bookmark <?php echo nyc_check_is_bookmark($post_id); ?>" data-id="<?php echo $post_id; ?>" data-tip-content="Add to Bookmarks"><i class="fa fa-star-o"></i></button>
 					<div class="clearfix"></div>
 				</div>
-				<?php } ?>
+
 				<!-- Widget / End -->
 
-
+                
 				<!-- Booking Widget -->
 				<div class="widget">
 					<div id="booking-widget-anchor" class="boxed-widget booking-widget margin-top-35">
@@ -523,6 +523,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 					</div>
 
 				</div>
+				<?php } ?>
 				<!-- Booking Widget / End -->
 
 				<!-- Widget -->
@@ -688,7 +689,7 @@ get_footer();
         			</li>
         			<li>
         				<label for="tel">Contact Number*:</label>
-		        		<input type="text" id="tel" placeholder="Include country code" name="user_num"  maxlength=13 required>
+		        		<input type="text" id="tel" placeholder="Enter Phone With +1.." name="user_num"  pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
         			</li>
         			<li>
         				<label for="date">Date*:</label>

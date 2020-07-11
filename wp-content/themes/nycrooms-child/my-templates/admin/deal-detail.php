@@ -52,8 +52,18 @@ if(count($check_deal_orders->posts) == 1){
    $payment_status = get_post_meta($post_id,'payment_status',true);
 }
 $convert_deal = '';
-if(empty($deal_price) || empty($property_id)){
+if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 	$convert_deal = "noallowed_contract";
+	$msg = '';
+	if(empty($deal_price)){
+		$msg .="Deal price is not assigned.</br>";
+	}
+	if(empty($property_id)){
+		$msg .="Propert is not selected.</br>";
+	}
+	if(empty($payment_status)){
+		$msg .="Payment is not completed.</br>";
+	}
 }	
 ?>
 <!-- Wrapper -->
@@ -141,13 +151,6 @@ if(empty($deal_price) || empty($property_id)){
 			</div>
 			<div class="col-md-6">
 				<div class="dealdetal-currentstage-status">Current Status:	<span>Stage <?php echo $deal_stage; ?></span></div>
-				<div class="deal-detail-uniformbutton">
-					<ul>
-						<li><a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-email' : 'deal-send-email'; ?>">Send as Email</a></li>
-						<li><a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-text' : 'deal-send-text'; ?>">Send as Text</a></li>
-						<li><a href="#" class="convert-to-contract button_disable">Convert to Contract</a></li>
-					</ul>
-				</div>
 			</div>
 		</div>
 		<div class="row">
@@ -319,7 +322,7 @@ if(empty($deal_price) || empty($property_id)){
 						<h2>Select Price</h2>
 						<!-- Select Input -->
 						<div class="select-input disabled-first-option">
-							<input type="text" name="deal_price" value="<?php echo $deal_price; ?>" placeholder="Enter Price" data-unit="USD">
+							<input type="text" name="deal_price" value="<?php echo $deal_price; ?>" placeholder="Enter Price" data-unit="USD" required>
 							<select>		
 								<option>Price</option>
 								<option>100</option>
@@ -344,7 +347,7 @@ if(empty($deal_price) || empty($property_id)){
 				<div class="col-md-6">
 					<div class="deal-detail-paymentstatus">
 						<h3>Payment Status
-						<span><?php echo ($payment_status) ? $payment_status : 'Pending'; ?> <i class="fa fa-check" aria-hidden="true"></i></span></h3>
+						<span><?php echo ($payment_status) ? $payment_status.'<i class="fa fa-check" aria-hidden="true"></i>' : 'Pending'; ?> </span></h3>
 						<?php if($payment_status){ ?>
 						<ul>
 							<li>Payment: <span><?= '$'.$payment_amount ?></span></li>
@@ -381,6 +384,8 @@ if(empty($deal_price) || empty($property_id)){
 				</div>
 				<div class="col-md-12 text-center">
 					<button type="submit" class="button" name="upadte_stag1">Save Details</button>
+					<a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-email' : 'deal-send-email'; ?>">Send as Email</a>
+					<a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-text' : 'deal-send-text'; ?>">Send as Text</a>
 				</div>
 			</div>
 			</form>
@@ -881,7 +886,8 @@ jQuery(document).ready(function($) {
 	
 	$('.noallowed_contract').live('click',function(e){
 			e.preventDefault();
-			jQuery('.dealsend-popup h3').html('Please select price and property to convert deal.');
+			var msg ='<?php echo $msg; ?>';
+			jQuery('.dealsend-popup h3').html(msg);
 			jQuery('#selected_property_popup').modal('show');
 	});	
 	

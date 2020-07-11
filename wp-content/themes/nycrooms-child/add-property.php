@@ -378,6 +378,7 @@ $phone = get_user_meta($user_id,'user_phone',true);
 				<div class="col-md-4">
 					<h5>Phone <span>(optional)</span></h5>
 					<input type="text" id="contact_phone" value="<?php echo $phone; ?>">
+					<span id="contact_phone-err"></span>
 				</div>
 
 			</div>

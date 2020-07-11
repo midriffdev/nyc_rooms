@@ -773,11 +773,11 @@ get_header();
  				</li>
  				<li>
  					<h5>Date</h5>
- 					<input class="search-field" type="text" value=""/>
+ 					<input class="search-field" type="text" value="<?php echo date("Y-m-d"); ?>"/>
  				</li>
  				<li>
  					<h5>Time</h5>
- 					<input class="search-field" type="text" value=""/>
+ 					<input class="search-field" type="text" value="<?php echo date("H:i"); ?>"/>
  				</li>
  			</ul>
         </div>
@@ -813,11 +813,11 @@ get_header();
  				</li>
  				<li>
  					<h5>Date</h5>
- 					<input class="search-field" type="date"  name="deal_order_date"/>
+ 					<input class="search-field" type="date"  value="<?php echo date("Y-m-d"); ?>" name="deal_order_date"/>
  				</li>
  				<li>
  					<h5>Time</h5>
- 					<input class="search-field" type="time" name="deal_order_time"/>
+ 					<input class="search-field" type="time" value="<?php echo date("H:i"); ?>" name="deal_order_time"/>
 					<input type="hidden" name="deal_id" value="<?= $dealid ?>">
  				</li>
  			</ul>

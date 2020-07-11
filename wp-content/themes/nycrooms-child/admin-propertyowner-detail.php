@@ -124,7 +124,7 @@ get_header();
 								</div>
 								<div class="col-md-6">
 									<label>Phone</label>
-									<input  type="text" name="phone" placeholder="Enter Phone With +1.." required pattern="[+1]{2}[0-9]{10}" maxlength=12 value="<?php echo get_user_meta($getuser->ID,'user_phone',true); ?>">
+									<input  type="text" name="phone" placeholder="Enter Phone With +1.." required pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}"  maxlength=12 value="<?php echo get_user_meta($getuser->ID,'user_phone',true); ?>">
 								</div>
 							</div>
 							
