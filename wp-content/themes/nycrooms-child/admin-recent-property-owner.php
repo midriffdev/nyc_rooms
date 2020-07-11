@@ -218,7 +218,7 @@ get_header();
 					</div>
 				</div>
 				<!-- Pagination Container / End -->
-				<div>
+				<div class="admin-advanced-searchfilter">
 			        <label>Select bulk action</label>
                   <div class="bulk_actions">
 						<select class="select_action">

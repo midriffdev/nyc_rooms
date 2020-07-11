@@ -340,7 +340,7 @@ input.checkbulkorders{
 				</div>
 				<!-- Pagination Container / End -->
 				
-				<div>
+				<div class="admin-advanced-searchfilter">
 			        <label>Select bulk action</label>
                   <div class="deal_bulk_actions_orders">
 						<select class="select_action_orders">

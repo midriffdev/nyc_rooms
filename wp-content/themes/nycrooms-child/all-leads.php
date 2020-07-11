@@ -212,7 +212,7 @@ get_header();
 
 						</div>
 			    </div>
-			    <div>
+			    <div class="admin-advanced-searchfilter">
 			        <label>Select bulk action</label>
                   <div class="bulk_actions_leads">
 						<select class="select_action_leads">

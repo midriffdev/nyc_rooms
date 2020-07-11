@@ -199,7 +199,7 @@ input.checkbulk{
 				</tbody>
 				</table>
 				
-				<div>
+				<div class="admin-advanced-searchfilter">
 			        <label>Select bulk action</label>
                   <div class="users_bulk_actions">
 						<select class="select_action">

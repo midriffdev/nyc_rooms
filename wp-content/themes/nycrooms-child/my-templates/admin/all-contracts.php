@@ -175,7 +175,7 @@ input.checkbulk{
 				?>
 				</tbody>
 				</table>
-				<div>
+				<div class="admin-advanced-searchfilter">
 			        <label>Select bulk action</label>
                   <div class="contract_bulk_actions">
 						<select class="select_action">
