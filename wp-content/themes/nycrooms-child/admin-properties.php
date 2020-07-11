@@ -447,8 +447,12 @@ input.apply_action_properties {
     padding: 0;
 }
 </style>
-
-
+<script>
+jQuery(document).ready(function($) {
+	jQuery('.admin-propertieslistings').addClass('show--submenu');
+	jQuery('#sidebar-all_propert').addClass('current');
+});
+</script>
 </div>
 <!-- Wrapper / End -->
 <?php

@@ -1242,4 +1242,9 @@ function count_tenant_hired_property(){
 	}	
 	return ($property_ids) ? count($property_ids): 0;
 }
+
+function modify_attachment_link($markup) {
+    return preg_replace('/^<a([^>]+)>(.*)$/', '<a\\1 target="_blank">\\2', $markup);
+}
+add_filter( 'wp_get_attachment_link', 'modify_attachment_link', 10, 6 );
 ?>

@@ -19,11 +19,11 @@
 								<i class="sl sl-icon-docs"></i>Properties <i class="sl sl-icon-arrow-down listing-dropdown-icon"></i>
 							</a>
 							<ul class="list--submenu show--submenu">
-								<li><a href="<?php echo get_site_url(); ?>/admin-properties" class="current">All Properties <span class="all-listing-no active-listing-no"><?php echo nyc_get_properties_admin_by_status(array('draft', 'available', 'rented','Pending Review'))->post_count; ?></span></a></li>
-								<li><a href="<?php echo get_site_url(); ?>/admin-available-properties" >Available <span class="active-listing-no"><?php echo nyc_get_properties_admin_by_status(array('available'))->post_count; ?></span></a></li>
-								<li><a href="<?php echo get_site_url(); ?>/admin-rented-properties" >Rented <span class="rented-listing-no"><?php echo nyc_get_properties_admin_by_status(array('rented'))->post_count; ?></span></a></li>
-								<li><a href="<?php echo get_site_url(); ?>/approved-properties-admin/">Approved Properties<span class="unapproved-listing-no"><?php echo  nyc_get_admin_approved_properties(); ?></span></a></li>
-								<li><a href="<?php echo get_site_url(); ?>/admin-recently-properties">UnApproved Properties<span class="unapproved-listing-no"><?php echo nyc_get_recent_properties(); ?></span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/admin-properties" id="sidebar-all_propert">All Properties <span class="all-listing-no active-listing-no"><?php echo nyc_get_properties_admin_by_status(array('draft', 'available', 'rented','Pending Review'))->post_count; ?></span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/admin-available-properties" id="sidebar-available_propert">Available <span class="active-listing-no"><?php echo nyc_get_properties_admin_by_status(array('available'))->post_count; ?></span></a></li>
+								<li ><a href="<?php echo get_site_url(); ?>/admin-rented-properties" id="sidebar-rented_propert">Rented <span class="rented-listing-no"><?php echo nyc_get_properties_admin_by_status(array('rented'))->post_count; ?></span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/approved-properties-admin/" id="sidebar-approved_propert">Approved Properties<span class="unapproved-listing-no"><?php echo  nyc_get_admin_approved_properties(); ?></span></a></li>
+								<li><a href="<?php echo get_site_url(); ?>/admin-recently-properties" id="sidebar-unapproved_propert">UnApproved Properties<span class="unapproved-listing-no"><?php echo nyc_get_recent_properties(); ?></span></a></li>
 							</ul>
 						</li>
 						<li><a href="<?= home_url() ?>/add-property-admin/"><i class="sl sl-icon-action-redo"></i> Submit New Property</a></li>

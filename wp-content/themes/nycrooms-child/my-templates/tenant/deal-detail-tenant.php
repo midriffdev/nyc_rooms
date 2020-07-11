@@ -384,17 +384,16 @@ get_header();
                                       
 									</div>
 								    <div class="step-actions">
-                                    <input type="button" class="button submit_application_form" id="submit_application_form" value="Submit Aplication"><button class="button waves-effect waves-dark btn blue next-step">CONTINUE</button>
+                                    <input type="button" class="button submit_application_form" id="submit_application_form" value="Submit Aplication"><button class=" waves-effect waves-dark btn blue next-step">CONTINUE</button>
                                     </div>
 								  </div>
 							  </li>
 							  <li class="step">
 								    <div class="step-title waves-effect waves-dark">Step 2</div>
 									    <div class="step-content">
-											
+										  <div class="row">
 											<div class="col-md-12">
-											
-												<div class="deal-detail-payment-tobedone mre_wdth">
+											    <div class="deal-detail-payment-tobedone mre_wdth">
 												   <?php if(empty($check_deal_orders->posts)){ ?>
 												    <div class="consent_terms">
 												    <p>Below is the consent terms  which the tenant has to accept with the date and stamp:</p>
@@ -420,7 +419,7 @@ get_header();
 															<?php
 															if(empty($check_deal_orders->posts)){
 															?>
-															  <button class="dealdetail-tenant-paynowb sqre_py_now">Pay Now</button>
+															  <button type="button" class="dealdetail-tenant-paynowb sqre_py_now" id="dealdetail-tenant-paynowb">Pay Now</button>
 															  
 															<?php
 															}	
@@ -441,16 +440,25 @@ get_header();
 														  <?php } ?>
 														  
 														</li>
-														<li>
-														  
-														</li>
 													</ul>
+													<?php
+													if($get_document_file) {
+													?>
+													<a class="button application_pdf" href="<?= wp_get_attachment_url($get_document_file) ?>" download >Download Application As Pdf </a> 
+													<?php 
+													}
+													if($get_invoice_doc){
+													?>
+													 <a class="button payment_pdf" href="<?= wp_get_attachment_url($get_invoice_doc) ?>" download >Download Invoice As Pdf </a> 
+													<?php
+													}
+													?>
 													<span class="appcation_submission_err"></span>
 												</div>
 				                            </div>
+										  </div>
 								          <div class="step-actions">
-											<button class="button waves-effect waves-dark btn blue next-step">CONTINUE</button>
-											<button class="button waves-effect waves-dark btn-flat previous-step">BACK</button>
+									         <button class="button waves-effect waves-dark btn-flat previous-step">BACK</button>
                                           </div>
 								        </div>
 							  </li>
@@ -464,59 +472,6 @@ get_header();
 				<!------------- End Aplication form  and Payment multstep form --------------------->
 				
 
-				<!-------------- start commented section --------------------------->
-
-				<div class="col-md-12">
-					<div class="deal-detail-payment-tobedone">
-					     <?php
-						if(count($check_deal_orders->posts) == 1){
-						?>
-						 <?php if($deal_price): ?><h3>Amount Paid: <span>$<?= $deal_price ?></span></h3> <?php endif;  ?>
-						<?php
-						}
-						?>
-						<ul class="dealdetail-tenant-actionbuttons">
-							<li>
-							    <?php
-                                if(count($check_deal_orders->posts) == 1){
-								?>
-								<button class="dealdetail-tenant-paynowb" disabled>Payment Done</button>
-								<?php
-								}
-								?>
-								
-							</li>
-							<li>
-							  <?php 
-							       if(empty($check_deal_orders->posts)){
-                      				if($get_requested_agent && $get_requested_agent == 1 ){			
-								?>
-										<button class="dealdetail-tenant-reqagentb">
-									   Agent Allotted
-										</button>
-							  <?php
-							       }
-							  }
-							  ?>
-							</li>
-						</ul>
-						<?php
-						if($get_document_file) {
-						?>
-						<a class="button application_pdf" href="<?= wp_get_attachment_url($get_document_file) ?>" download >Download Application As Pdf </a> 
-						<?php 
-						}
-						if($get_invoice_doc){
-						?>
-						 <a class="button payment_pdf" href="<?= wp_get_attachment_url($get_invoice_doc) ?>" download >Download Invoice As Pdf </a> 
-						<?php
-						}
-						?>
-						
-					</div>
-				</div>
-				
-				<!----------- end commented section ----------------->
 				
 				<div class="col-md-12">
 				    <?php if($admin_notes): ?>
@@ -808,28 +763,12 @@ get_header();
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary agent_assign_popup" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade popup-main--section" id="removed_file_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-      </div>
-      <div class="modal-body">
-        <div class="removed-file-popup">
-        	<h3></h3>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="modal fade popup-main--section" id="finalise_property_tenant" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -842,7 +781,7 @@ get_header();
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary finalise_property_tenant" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -903,7 +842,7 @@ get_header();
            </div> <!-- end #form-container -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary Square_payment_form_js" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -920,7 +859,7 @@ get_header();
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary applcation_submison_success_popup" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -938,16 +877,12 @@ get_header();
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary square_payment_success_popup" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
 
-
-<?php
-get_footer();
-?>
 <style>
 .deal-detail-tenant-subapp a {
     font-size: 17px;
@@ -1369,16 +1304,242 @@ ul.stepper.horizontal .step-actions {
 ul.stepper .step-content .row {
    margin-bottom: 7px;
 }
+.step-content .form, .step-content .with-forms{
+  	margin-bottom:20px;
+  }
+  .step-content .form input, .step-content .with-forms input{
+  	margin-bottom:0px;
+  }
 
+.next-step:hover {
+    color: #fff;
+    }
+ .content {
+  flex: 1 0 auto;
+}
+
+/*Handle the CHROME yellow background for autofill*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus input:-webkit-autofill,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: none !important;
+  -webkit-text-fill-color: inherit !important;
+  -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+svg:not(:root),
+svg {
+  display: block;
+  overflow:auto;
+}
+
+
+/* Icons */
+.material-icons.md-18 {
+  font-size: 18px;
+}
+.material-icons.md-24 {
+  font-size: 24px;
+}
+.material-icons.md-36 {
+  font-size: 36px;
+}
+.material-icons.md-48 {
+  font-size: 48px;
+}
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark {
+  color: rgba(0, 0, 0, 0.54);
+}
+.material-icons.md-dark.md-inactive {
+  color: rgba(0, 0, 0, 0.26);
+}
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light {
+  color: rgba(255, 255, 255, 1);
+}
+.material-icons.md-light.md-inactive {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/*Helpers*/
+.no-pad {
+  padding: 0 !important;
+}
+
+/*Scroll bars*/
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 2px;
+}
+
+::-webkit-scrollbar-button {
+  width: 3px;
+  height: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.54);
+  border: 3px none rgba(0, 0, 0, 0.54);
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.64);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgba(0, 0, 0, 0.54);
+}
+
+::-webkit-scrollbar-track {
+  background: #fff;
+  border: 2px none #fff;
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-track:hover {
+  background: #fff;
+}
+
+::-webkit-scrollbar-track:active {
+  background: #fff;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+
+
+.drag-target {
+  z-index: 997 !important;
+}
+
+.dark-1 {
+  background-color: #000000;
+}
+
+.dark-2 {
+  background-color: #212121;
+}
+
+.dark-3 {
+  background-color: #303030;
+}
+
+.dark-4 {
+  background-color: #424242;
+}
+
+.light-1 {
+  background-color: #E0E0E0;
+}
+
+.light-2 {
+  background-color: #F5F5F5;
+}
+
+.light-3 {
+  background-color: #FAFAFA;
+}
+
+.light-4 {
+  background-color: #FFFFFF;
+}
+
+.primary-500 {
+  background-color: #cddc39;
+}
+
+.primary-50 {
+  background-color: #f9fbe7;
+}
+
+.primary-100 {
+  background-color: #f0f4c3;
+}
+
+.primary-700 {
+  background-color: #afb42b;
+}
+
+.accent-50 {
+  background-color: #e0f7fa;
+}
+
+.accent-A100 {
+  background-color: #84ffff;
+}
+
+.accent-A200 {
+  background-color: #18ffff;
+}
+
+.accent-A400 {
+  background-color: #00e5ff;
+}
+
+.warn-500 {
+  background-color: #ff5722;
+}
+
+.warn-100 {
+  background-color: #ffccbc;
+}
+
+.warn-700 {
+  background-color: #e64a19;
+}
+
+.dropdown-content {
+  overflow: visible !important;
+  background-color: #e5e5e5 !important;
+  margin-top: -4px !important;
+}
+
+.dropdown-content.sub-menu {
+  margin-top: -0.3rem;
+}
+
+.button-collapse {
+  width: 64px;
+  text-align: -webkit-center;
+}
+
+a.button-collapse:hover {
+  background: rgba(0, 0, 0, 0.13);
+  border-radius: 50%;
+}
+.previous-step {
+    background: #efefef !important;
+    border-radius: 3px !important;
+    border: 1px solid !important;
+}
+.next-step {
+    background-color: #274abb !important;
+    color: #fff !important;
+    border-radius: 3px !important;
+}
+span.appcation_submission_err {
+    color: red;
+    font-size: 10px;
+}
 </style>
-<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/dropzone.js"></script>
- <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/materialize.min.js"></script>
-<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/jquery.validate.min.js"></script>
-<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/prism.min.js"></script>
 
+<?php
+get_footer();
+?>
 <script>
-  $(document).ready(function() {
+ 
+  jQuery(document).ready(function() {
 		$('.dealdetail-tenant-reqagentb').click(function(){
 		    jQuery(this).attr("disabled", true);
 		    jQuery('.loading').show();
@@ -1393,7 +1554,10 @@ ul.stepper .step-content .row {
 							 if(response == "success"){
 								jQuery('.loading').hide();
 								jQuery('.agent-assign-popup h3').html('Agent Assigned Successfully');
-								jQuery('#agent_assign_popup').modal('show');
+								$('.modal').modal({
+						           dismissible: true
+					            }); 
+						        $('#agent_assign_popup').modal('open');
 								location.reload();
 					         }
 					  }
@@ -1422,7 +1586,10 @@ ul.stepper .step-content .row {
 								  if(response == "success"){
 									jQuery('.loading').hide();
 									jQuery('.finalise-property-tenant h3').html('Property Assigned Successfully');
-									jQuery('#finalise_property_tenant').modal('show');
+									$('.modal').modal({
+						               dismissible: true
+					                }); 
+									jQuery('#finalise_property_tenant').modal('open');
 									location.reload();
 								 }	 
 						  }
@@ -1485,7 +1652,7 @@ ul.stepper .step-content .row {
 			  is_error = true;	
 		}
 		
-		if(secondary_contact_no == ''){
+		/* if(secondary_contact_no == ''){
 			jQuery('.secondary_contact_no-err').html('<span class="error">Please enter secandary contact</span>');
 			jQuery( ".secondary_contact_no" ).focus();
 			is_error = true;		
@@ -1497,7 +1664,7 @@ ul.stepper .step-content .row {
 		     jQuery('.secondary_contact_no-err').html('<span class="error">Contact Phone must be 10 digits long with +1 as country code.</span>');
 			 jQuery( ".secondary_contact_no" ).focus();
 			  is_error = true;	
-		}
+		} */
 		
 		if(emergency_contact_no == ''){
 			jQuery('.emergency_contact_no-err').html('<span class="error">Please enter emergency contact</span>');
@@ -1522,12 +1689,12 @@ ul.stepper .step-content .row {
 			jQuery( ".email_address" ).focus();
 			is_error = true;			
 		}
-		if(employer_school == ''){
+		/* if(employer_school == ''){
 			jQuery('.employer_school-err').html('<span class="error">Please enter employer/school</span>');
 			jQuery( ".employer_school" ).focus();
 			is_error = true;		
-		}
-		if(address == ''){
+		} */
+		/* if(address == ''){
 			jQuery('.address-err').html('<span class="error">Please enter address</span>');
 			jQuery( ".address" ).focus();
 			is_error = true;		
@@ -1585,7 +1752,7 @@ ul.stepper .step-content .row {
 			jQuery('.adversitement_check-err').html('<span class="error">Please choose any advertisement option above</span>');
 			jQuery( ".adversitement_check" ).focus();
 			is_error = true;		
-		}
+		} */
 		if(typeof privacy_policy == 'undefined'){
 			jQuery('.privacy_policy-err').html('<span class="error">Please check privacy policy before Submission</span>');
 			jQuery( ".privacy_policy" ).focus();
@@ -1623,7 +1790,10 @@ ul.stepper .step-content .row {
 					 
 					    jQuery('.loading').hide();
 						$('.applcation-submison-success-popup').html('Application Submitted Successfully');
-						$('#applcation_submison_success_popup').modal('show');
+						$('.modal').modal({
+						    dismissible: true
+					      }); 
+						$('#applcation_submison_success_popup').modal('open');
 						jQuery('#submit_application_form').prop("disabled", true);
 						jQuery('#submit_application_form').css("background","#ccd1e3");
 						jQuery('#submit_application_form').val("Application Submitted");
@@ -1649,7 +1819,8 @@ ul.stepper .step-content .row {
 	 
 	 
 	 
-     $(".dealdetail-tenant-paynowb.sqre_py_now").click(function(){
+     $("#dealdetail-tenant-paynowb").click(function(e){
+	    e.preventDefault();
 	    var consent_aggrement = $("input[name=check_consents_terms]:checked").val();
 		if(typeof consent_aggrement == 'undefined'){
 		    $('.check_consents_terms_err').html('Please check the consent agreement to continue further');
@@ -1662,7 +1833,16 @@ ul.stepper .step-content .row {
 			  <?php
 			  } else {
 			  ?>
-			     $('#Square_payment_form_js').modal('show');
+			     //initialize all modals
+ 					 $('.modal').modal({
+						dismissible: true
+					}); 
+
+					//call the specific div (modal)
+					$('#Square_payment_form_js').modal('open');
+					
+					
+					
 			  <?php
 			  }
 			  ?>
@@ -1677,10 +1857,37 @@ ul.stepper .step-content .row {
 	      $('.check_consents_terms_err').html('');
 	   }
 	 });
+	 
+	 $('.Square_payment_form_js').click(function(){
+	     $('#Square_payment_form_js').modal('close');
+	 });
+	 
+	 $('.applcation_submison_success_popup').click(function(){
+	     $('#applcation_submison_success_popup').modal('close');
+	 });
+	 
+	 $('.square_payment_success_popup').click(function(){
+	     $('#square_payment_success_popup').modal('close');
+	 });
+	 
+	 $('.agent_assign_popup').click(function(){
+	     $('#agent_assign_popup').modal('close');
+	 });
+	 
+	 $('.finalise_property_tenant').click(function(){
+	     $('#finalise_property_tenant').modal('close');
+	 });
+	  
 	  
 		
 	});
+
 </script>
+
+<!--script src="https://code.jquery.com/jquery-2.1.1.min.js"></script-->
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/materialize.min.js"></script>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/jquery.validate.min.js"></script>
+<!--script type="text/javascript" src="<?php //echo get_stylesheet_directory_uri(); ?>/scripts/prism.min.js"></script-->
 
 
 <script type="text/javascript">
@@ -1907,7 +2114,7 @@ $.fn.activateStepper = function() {
   });
 };
  
-$(document).ready(function() {
+jQuery(document).ready(function() {
   $('ul.tabs').tabs()
   $('.rt-select').material_select();
   //Init for stepper
