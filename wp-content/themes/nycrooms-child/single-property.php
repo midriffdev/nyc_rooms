@@ -159,6 +159,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 					</span>
 				</div>
 				<div class="property-pricing">
+					<?php if( current_user_can('editor') || current_user_can('administrator') ) { ?><a href="<?php echo get_site_url(); ?>/edit-property-admin/?pid=<?php echo $post_id; ?>"><span class="property-badge">Edit Property</span></a><?php } ?>
 					<div class="property-price">$<?php echo ($price) ? $price : 'N/A'; ?>/<?php echo  'Weekly'; ?></div>
 				</div>
 			</div>
@@ -358,8 +359,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 				) );	
 				foreach($similar_property as $property){
 				$sim_id=$property->ID;
-				$address = get_post_meta($sim_id, 'address',true)." ";
-				$address .= get_post_meta($sim_id, 'city',true)." ";
+				$address = get_post_meta($sim_id, 'city',true)." ";
 				$address .= get_post_meta($sim_id, 'state',true).", ";
 				$address .= get_post_meta($sim_id, 'zip',true)." ";
 				$price = get_post_meta($sim_id, 'price',true);
@@ -387,13 +387,13 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 						<div class="listing-content">
 
 							<div class="listing-title">
-								<h4><a href="<?php /*echo $property->guid;*/ echo site_url()?>/single-property/?property_id=<?= $sim_id?>"><?php echo $property->post_title; ?></a></h4>
+								<h4><a href="<?php echo get_post_permalink($sim_id); ?>"><?php echo $property->post_title; ?></a></h4>
 								<a href="https://maps.google.com/maps?q=<?php echo $address; ?>&amp;hl=en&amp;t=v&amp;hnear=<?php echo $address; ?>" class="listing-address popup-gmaps">
 									<i class="fa fa-map-marker"></i>
 									<?php echo $address; ?>
 								</a>
 
-								<a href="<?php /*echo $property->guid;*/  echo site_url()?>/single-property/?property_id=<?= $sim_id?>" class="details button border">Details</a>
+								<a href="<?php echo get_post_permalink($sim_id); ?>"  class="details button border">Details</a>
 							</div>
 
 							<ul class="listing-details">
@@ -420,10 +420,12 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 			<div class="sidebar sticky right">
 
 				<!-- Widget -->
+				<?php if( !current_user_can('editor') && !current_user_can('administrator') ) { ?>
 				<div class="widget margin-bottom-30">
 					<button class="widget-button with-tip nyc_bookmark <?php echo nyc_check_is_bookmark($post_id); ?>" data-id="<?php echo $post_id; ?>" data-tip-content="Add to Bookmarks"><i class="fa fa-star-o"></i></button>
 					<div class="clearfix"></div>
 				</div>
+				<?php } ?>
 				<!-- Widget / End -->
 
 
@@ -678,11 +680,11 @@ get_footer();
         		<ul>
         			<li>
         				<label for="name">Name*:</label>
-		        		<input type="text" id="name" name="user_name" placeholder="Atchyut" required>
+		        		<input type="text" id="name" name="user_name" placeholder="Enter Name" required>
         			</li>
         			<li>
         				<label for="mail">Email*:</label>
-		        		<input type="email" id="mail" name="user_email" placeholder="abc@xyz.com" required>
+		        		<input type="email" id="mail" name="user_email" placeholder="Enter Email" required>
         			</li>
         			<li>
         				<label for="tel">Contact Number*:</label>
@@ -690,15 +692,15 @@ get_footer();
         			</li>
         			<li>
         				<label for="date">Date*:</label>
-        				<input type="date" name="date"  required>
+        				<input type="date" name="date"  value="<?php echo date("Y-m-d"); ?>" required>
         			</li>
         			<li>
         				<label for="time">Time*:</label>
-        				<input type="time" name="time"  required>
+        				<input type="time" name="time" value="<?php echo date("H:i"); ?>" required>
         			</li>
         			<li>
         				<label for="appointment_description">Appointment Description*:</label>
-        				<textarea id="appointment_description" name="appointment_description" placeholder="I wish to get an appointment to skype for resolving a software problem."required ></textarea>
+        				<textarea id="appointment_description" name="appointment_description"  required ></textarea>
         			</li>
         		</ul>
 		      </fieldset>

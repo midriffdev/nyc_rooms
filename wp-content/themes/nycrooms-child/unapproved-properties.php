@@ -317,8 +317,8 @@ get_header();
 </div>
 
 <div class="margin-top-55"></div>
-
 </div>
+
 <?php
 get_footer();
 ?>

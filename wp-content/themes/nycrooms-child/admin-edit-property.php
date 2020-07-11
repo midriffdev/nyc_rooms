@@ -16,14 +16,7 @@ get_header();
 ================================================== -->
 <div class="container">
 <div class="row">
-			<?php 
-			if(isset($_GET['action']) && $_GET['action'] == "success"){ 
-			echo "<h3 class='nyc_success'>Your property Updated successfully.</h3>";
-			}
-			if(isset($_GET['action']) && $_GET['action'] == "false"){
-			echo "<h3 class='nyc_false'>Sorry! Something went wrong please try again later.</h3>"; 
-			}
-			?>
+
 	<!-- Submit Page -->
 	<div class="col-md-12">
 		<div class="submit-page add-property-page" id="prop_form_data">
@@ -665,13 +658,20 @@ jQuery(".preview-update").click(function(e){
 				processData: false,
 				contentType: false,
 				success: function(response) {
-				     console.log(response);
-				     if(response == "success"){
-						window.location.href = window.location.href + "&&action=success";
-					} else {
-						window.location.href = window.location.href + "&&action=false";
-					}
-					
+				       if(response == "success"){
+					      jQuery('.loading').hide();
+						  jQuery('#successModal .modal-body p').html('<h3 class="nyc_success">Your property Updated successfully.</h3>');
+						  jQuery('#successModal').modal('show');
+							setTimeout(function() {
+								window.location.href = window.location.href;
+							}, 3000);
+					   } else {
+						  jQuery('#successModal .modal-body p').html('<h3 class="nyc_false">Sorry! Something went wrong please try again later.</h3>');
+						  jQuery('#successModal').modal('show');						   
+							setTimeout(function() {
+								window.location.href = window.location.href;
+							}, 3000);
+					   }
 				}
 			});	
 		}

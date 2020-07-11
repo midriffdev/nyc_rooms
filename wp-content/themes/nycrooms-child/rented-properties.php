@@ -388,6 +388,7 @@ table.manage-table th:first-child {
 }
 
 </style>
+
 <?php
 get_footer();
 ?>

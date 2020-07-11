@@ -479,6 +479,12 @@ input.apply_action_properties {
     padding: 0;
 }
 </style>
+<script>
+jQuery(document).ready(function($) {
+	jQuery('.admin-propertieslistings').addClass('show--submenu');
+	jQuery('#sidebar-unapproved_propert').addClass('current');
+});
+</script>
 <?php 
 get_footer();
 ?>

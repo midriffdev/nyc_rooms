@@ -170,9 +170,17 @@ jQuery(document).ready(function($) {
 				success: function(response) {
 				       if(response == "success"){
 					      jQuery('.loading').hide();
-						  window.location.href = window.location.href + "?action=success";
+						  jQuery('#successModal .modal-body p').html('<h3 class="nyc_success">Your property listed successfully. It will publish after administrative review.</h3>');
+						  jQuery('#successModal').modal('show');
+							setTimeout(function() {
+								window.location.href = window.location.href;
+							}, 5000);
 					   } else {
-						  window.location.href = window.location.href + "?action=false";
+						  jQuery('#successModal .modal-body p').html('<h3 class="nyc_false">Sorry! Something went wrong please try again later.</h3>');
+						  jQuery('#successModal').modal('show');						   
+							setTimeout(function() {
+								window.location.href = window.location.href;
+							}, 5000);
 					   } 
 				}
 			})		
