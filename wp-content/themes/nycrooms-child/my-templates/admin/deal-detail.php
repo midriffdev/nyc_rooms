@@ -344,7 +344,7 @@ if(empty($deal_price) || empty($property_id)){
 				<div class="col-md-6">
 					<div class="deal-detail-paymentstatus">
 						<h3>Payment Status
-						<span><?php echo ($payment_status) ? $payment_status : 'Pending'; ?> <i class="fa fa-check" aria-hidden="true"></i></span></h3>
+						<span><?php echo ($payment_status) ? $payment_status : 'Pending'; ?> <i class="fa fa-credit-card-alt" aria-hidden="true"></i></span></h3>
 						<?php if($payment_status){ ?>
 						<ul>
 							<li>Payment: <span><?= '$'.$payment_amount ?></span></li>
