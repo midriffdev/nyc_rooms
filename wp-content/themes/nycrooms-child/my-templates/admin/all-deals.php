@@ -152,7 +152,7 @@ input.checkbulk{
 					<th><i class="fa fa-phone" ></i> Phone</th>
 					<th><i class="fa fa-check-square-o" ></i> Source</th>
 					<th><i class="fa fa-check-square-o" ></i> Date</th>
-					<th></th>
+					<th><i class="fa fa-hand-pointer-o"></i> Action</th>
 				</tr>
 
 				<?php 

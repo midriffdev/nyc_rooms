@@ -736,7 +736,9 @@ function cvf_demo_pagination_load_posts() {
 
         // Pagination Buttons logic     
         $pag_container .= "
-        <div class='cvf-universal-pagination'>
+        <div class='cvf-universal-pagination '>
+		<div class='pagination-container margin-top-10 margin-bottom-45'>
+		<nav class='pagination'>
             <ul>";
 
         if ($first_btn && $cur_page > 1) {
@@ -774,6 +776,8 @@ function cvf_demo_pagination_load_posts() {
 
         $pag_container = $pag_container . "
             </ul>
+			</nav>
+		  </div>
         </div>";
 
         // We echo the final output
