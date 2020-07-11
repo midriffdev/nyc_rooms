@@ -146,13 +146,13 @@ input.checkbulk{
 				<tbody>
 				<tr>
 					<th><input type="checkbox" class="checkallbulk"></th>
-					<th><i class="fa fa-list-ol"></i> Deal No</th>
-					<th><i class="fa fa-user"></i>Name</th>
-					<th><i class="fa fa-envelope"></i> Email</th>
-					<th><i class="fa fa-phone" ></i> Phone</th>
-					<th><i class="fa fa-check-square-o" ></i> Source</th>
-					<th><i class="fa fa-check-square-o" ></i> Date</th>
-					<th><i class="fa fa-hand-pointer-o"></i> Action</th>
+					<th style="width:20%;"><i class="fa fa-list-ol"></i> Deal No</th>
+					<th style="width:20%;"><i class="fa fa-user"></i>Name</th>
+					<th style="width:20%;"><i class="fa fa-envelope"></i> Email</th>
+					<th style="width:10%;"><i class="fa fa-phone" ></i> Phone</th>
+					<th style="width:10%;"><i class="fa fa-check-square-o" ></i> Source</th>
+					<th style="width:10%;"><i class="fa fa-check-square-o" ></i> Date</th>
+					<th style="width:10%;"><i class="fa fa-hand-pointer-o"></i> Action</th>
 				</tr>
 
 				<?php 
@@ -188,7 +188,7 @@ input.checkbulk{
 				?>
 				</tbody>
 				</table>
-				<div>
+				<div class="admin-advanced-searchfilter">
 			        <label>Select bulk action</label>
                   <div class="deal_bulk_actions">
 						<select class="select_action">

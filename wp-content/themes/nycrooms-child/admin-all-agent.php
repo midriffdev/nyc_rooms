@@ -185,7 +185,7 @@ get_header();
 				</tbody>
 				</table>
 				
-				<div>
+				<div class="admin-advanced-searchfilter">
 			        <label>Select bulk action</label>
                   <div class="bulk_actions">
 						<select class="select_action">

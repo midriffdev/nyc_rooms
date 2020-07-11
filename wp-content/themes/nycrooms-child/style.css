@@ -13844,7 +13844,7 @@ table.all_properties_table th:first-child{width:10% !important;}
 
 
 
-input.checkallagents {height: 18px;}
+input.checkallagents {height: 18px;margin: 0}
 input.checkagent {height: 18px;margin: 0 13px !important;}
 
 input.checkallleads {height: 18px;}
@@ -14550,9 +14550,6 @@ table.all_agents_table th:first-child{width:10% !important;}
 table.all_leads_table th:first-child{width:10% !important;}
 table.all_properties_table th:first-child{width:10% !important;}
 
-
-
-input.checkallagents {height: 18px;}
 input.checkagent {height: 18px;margin: 0 13px !important;}
 
 input.checkallleads {height: 18px;}
@@ -14769,5 +14766,8 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 .copy_link_sec .tooltip {
     font-size: 24px;
     padding: 0px 0 0 40px;
+}
+th.expire-date {
+    width: 15%!important;
 }
 /* End Absolute Center Spinner */
