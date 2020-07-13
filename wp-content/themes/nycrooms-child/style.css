@@ -4982,6 +4982,12 @@ table.manage-table {
 	border-collapse: separate;
 	border-spacing: 0;
 	border: none;
+	table-layout:fixed;
+}
+.page-id-736 .deal_number {
+    padding: 0 14px !important;
+    margin: 0;
+    word-break: break-all;
 }
 
 table.manage-table th {
@@ -5058,7 +5064,7 @@ table.manage-table td:first-child { padding-left: 0px; line-height: 25px; }
 
 table.manage-table td {
 	padding: 35px 10px;
-	vertical-align: middle;	border-bottom: 1px solid #e4e4e4;
+	vertical-align: middle;	border-bottom: 1px solid #e4e4e4;     word-break: break-all;    word-break: break-all;   word-break: break-all;
 }
 
 table.manage-table td.centered { text-align: center; }
@@ -13198,9 +13204,7 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
 .lead_number {
     padding-left: 30px !important;
 }
-th.action_mt {
-    width: 155px;
-}
+
 .into--deal{color:#a1b789 !important;}
 .deal--done{color:#274abb !important;}
 .lead-bypropform-cont {
@@ -13320,12 +13324,8 @@ th.action_mt {
 .dealdetail-signapplicationform h3 {
     margin: 0;
 }
-.dealdetail--agentnotes-sec.col-md-6 {
-    background: #efefef;
-    border-radius: 5px;
-    box-shadow: 0 0 19px rgba(0,0,0,0.2);
-    padding: 31px 34px 24px;
-    /* margin: 0; */
+.dealdetail_view {
+    margin: 20px 0 0 0;
 }
 .dealdetail-signapplicationform {
     box-shadow: 0 0 12px rgba(0,0,0,0.2);
@@ -13424,7 +13424,12 @@ th.action_mt {
     font-size: 23px;
     margin: 0 0 17px 0;
 }
-.dealdetail--agentnotes-sec p {font-size: 16px;}
+.dealdetail--agentnotes-sec p {    font-size: 16px;
+    background: #efefef;
+    border-radius: 5px;
+    box-shadow: 0 0 19px rgba(0,0,0,0.2);
+    padding: 44px 35px;
+    margin: 27px 0 0 0;}
 .deal-detail__suggestedpropertysec > ul {
     margin: 0;
     padding: 0;
@@ -13853,10 +13858,10 @@ table.all_leads_table th:first-child{width:10% !important;}
 table.all_properties_table th:first-child{width:10% !important;}
 
 
-.page-id-612 .admin-advanced-searchfilter {
+.page-id-612 .admin-advanced-searchfilter.new_margin {
     margin-top: 50PX;
 }
-.page-id-736 .admin-advanced-searchfilter {
+.admin-advanced-searchfilter.new_margin {
     margin-top: 50px;
 }
 input.checkallagents {height: 18px;margin: 0;}
@@ -14067,9 +14072,6 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   visibility: visible;
   opacity: 1;
 }
-.copy_link_sec {
-    padding: 5px 0px;
-}
 /***amit css 10-07-2020 start**/
 th.expire-date {
     width: 11% !important;
@@ -14078,12 +14080,12 @@ table th, table td{border:none;}
 td.no_property_found {
     text-align: center;
 }
-table.manage-table.responsive-table.deal--table {
+/***table.manage-table.responsive-table.deal--table {
     overflow-x: auto;
     flex-wrap: nowrap;
     display: flex;
     width: 100%;
-}
+}***/
 
 /***amit css 10-07-2020 end**/
 /* End Absolute Center Spinner */
@@ -14776,7 +14778,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
     color: #fff;
 }
 .copy_link_sec {
-    padding: 30px !important;
+    padding: 20px 30px !important;
     border-left: 2px solid #f91 !important;
     background: #f5f5f5 !important;
 	margin: 0 0 30px 0 !important;

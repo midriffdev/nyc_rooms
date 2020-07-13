@@ -42,6 +42,7 @@ if(isset($date_query) && !empty($date_query)){
 }
 $contracts = new WP_Query( $args );
 ?>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 .pagination-next-prev ul li.prev a {
     left: 0;
@@ -128,18 +129,18 @@ input.checkbulk{
                  <div class="col-md-12">
 					 <p class="showing-results"><?php echo $contracts->found_posts; ?> Results Found On Page <?php echo $paged ;?> of <?php echo $contracts->max_num_pages;?> </p>
 				 </div>
-				 
+				 <div style="overflow-x:auto !important;width:100%">
 				<table class="manage-table responsive-table deal--table">
 				<tbody>
 				<tr>
-					<th><input type="checkbox" class="checkallbulk"></th>
-					<th class="action_mt"><i class="fa fa-list-ol"></i> Contract ID</th>
-					<th class="action_mt"><i class="fa fa-list-ol"></i> Deal ID</th>
-					<th class="action_mt"><i class="fa fa-list-ol"></i> Tenant Name</th>
-					<th class="action_mt"><i class="fa fa-list-ol"></i> Tenant Email</th>
-					<th class="action_mt"><i class="fa fa-list-ol"></i> Owner Email</th>
-					<th class="action_mt"><i class="fa fa-list-ol"></i> Contract PDF</th>
-					<th class="action_mt">Action</th>
+					<th style="width: 3% "><input type="checkbox" class="checkallbulk"></th>
+					<th style="width: 13% "><i class="fa fa-list-ol"></i> Contract ID</th>
+					<th style="width: 10% "><i class="fa fa-list-ol"></i> Deal ID</th>
+					<th style="width: 15% "><i class="fa fa-list-ol"></i> Tenant Name</th>
+					<th style="width: 15% "><i class="fa fa-list-ol"></i> Tenant Email</th>
+					<th style="width: 15% "><i class="fa fa-list-ol"></i> Owner Email</th>
+					<th style="width: 19% "><i class="fa fa-list-ol"></i> Contract PDF</th>
+					<th style="width: 10% ">Action</th>
 				</tr>
 
 				<?php 
@@ -174,8 +175,8 @@ input.checkbulk{
 				}
 				?>
 				</tbody>
-				</table>
-				<div class="admin-advanced-searchfilter">
+				</table></div>
+				<div class="admin-advanced-searchfilter new_margin">
 			        <label>Select bulk action</label>
                   <div class="contract_bulk_actions">
 						<select class="select_action">
