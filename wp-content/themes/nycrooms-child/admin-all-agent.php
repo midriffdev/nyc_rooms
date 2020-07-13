@@ -146,10 +146,10 @@ get_header();
 				<tr>
 				    <th><input type="checkbox" class="checkallagents"></th>
 					<th><i class="fa fa-file-text"></i> Agent</th>
-					<th><i class="fa fa-envelope"></i> Email</th>
-					<th><i class="fa fa-phone" ></i> Phone</th>
-					<th><i class="fa fa-toggle-on" ></i>status</th>
-					<th><i class="fa fa-hand-pointer-o"></i> Action</th>
+					<th  class="action_mt"><i class="fa fa-envelope"></i> Email</th>
+					<th  class="action_mt"><i class="fa fa-phone" ></i> Phone</th>
+					<th  class="action_mt"><i class="fa fa-toggle-on" ></i>status</th>
+					<th  class="action_mt"><i class="fa fa-hand-pointer-o"></i> Action</th>
 				</tr>
 
 				<?php foreach($all_users as $agents){ ?>

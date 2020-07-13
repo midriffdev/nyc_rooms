@@ -117,12 +117,12 @@ get_header();
 				<tbody>
 				<tr>
 				    <th><input type="checkbox" class="checkallleads"></th>
-					<th><i class="fa fa-list-ol"></i> Lead No</th>
-					<th><i class="fa fa-user"></i>Name</th>
-					<th ><i class="fa fa-phone"></i> Phone</th>
+					<th  class="action_mt"><i class="fa fa-list-ol"></i> Lead No</th>
+					<th  class="action_mt"><i class="fa fa-user"></i>Name</th>
+					<th  class="action_mt"><i class="fa fa-phone"></i> Phone</th>
 					<th class="expire-date"><i class="fa fa-envelope" ></i>Email</th>
 					<th><i class="fa fa-bolt" ></i> Lead Source</th>
-					<th></th>
+					<th class="action_mt">Action</th>
 				</tr>
                  
 				 

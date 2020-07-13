@@ -4870,7 +4870,7 @@ section.fullwidth.border-bottom { border-bottom: 1px solid #e4e4e4;}
 
 .my-account-nav {
 	padding: 0;
-	padding: 0 35px;
+	padding: 0 25px;
 	padding-bottom: 20px;
 	margin-bottom: 20px;
 	border-bottom: 1px solid #e6e6e6;
@@ -5050,14 +5050,14 @@ table.manage-table .title-container .title .table-property-price {
 	padding: 2px 10px;
 }
 
-table.manage-table th:first-child { width: 50%; border-radius: 3px 0 0 3px }
+table.manage-table th:first-child { width: 50%; border-radius: 3px 0 0 3px;}
 table.manage-table th:last-child {  border-radius: 0 3px 3px 0; }
 table.manage-table th:first-child i { left: 35px; }
 
 table.manage-table td:first-child { padding-left: 0px; line-height: 25px; }
 
 table.manage-table td {
-	padding: 35px 20px;
+	padding: 35px 10px;
 	vertical-align: middle;	border-bottom: 1px solid #e4e4e4;
 }
 
@@ -13119,7 +13119,7 @@ table.deal--table th:first-child{width:auto;}
 table.deal-suggestproperty-table th:first-child{width:auto;}
 .select_property {padding: 0 0 0 30px !important;}
 .select_property input {
-    width: 25px;
+    width: 17px;
     margin: 0;
 }
 .deal-suggest-proptab-prop{width:40%;}
@@ -13197,6 +13197,9 @@ table.manage-table th{padding: 17px 14px;}
 table.leads-maintable .lead-tablepropertyheading{width:30%;}
 .lead_number {
     padding-left: 30px !important;
+}
+th.action_mt {
+    width: 155px;
 }
 .into--deal{color:#a1b789 !important;}
 .deal--done{color:#274abb !important;}
@@ -13313,7 +13316,7 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
     font-size: 23px;
     margin: 0 0 27px 0;
 }
-.deal-detail-adminnotes-sec {margin: 45px 0 0 0;}
+.deal-detail-adminnotes-sec {margin: 45px 0 0 0;background: #fff;box-shadow: 0 0 12px rgba(0,0,0,0.2);border-radius: 4px;padding: 40px;text-align: center;}
 .dealdetail-signapplicationform h3 {
     margin: 0;
 }
@@ -13843,19 +13846,24 @@ table.all_leads_table th:first-child{width:10% !important;}
 table.all_properties_table th:first-child{width:10% !important;}
 
 
-
-input.checkallagents {height: 18px;margin: 0}
+.page-id-612 .admin-advanced-searchfilter {
+    margin-top: 50PX;
+}
+.page-id-736 .admin-advanced-searchfilter {
+    margin-top: 50px;
+}
+input.checkallagents {height: 18px;margin: 0;}
 input.checkagent {height: 18px;margin: 0 13px !important;}
 
 input.checkallleads {height: 18px;}
 input.checkleads {height: 18px;margin: 0 13px !important;}
 
-input.checkallproperties {height: 18px;margin: 0}
+input.checkallproperties {height: 18px;margin: 0;}
 input.checkproperties {height: 18px;margin: 0 13px !important;}
-
+input.checkallbulk {height: 18px;margin: 0;}
 
 table.manage-table .title-container{padding: 50px 20px;}
-table.manage-table th {padding: 20px 0 !important;}
+table.manage-table th {padding: 20px 4px !important;}
 
 /******property-search CSS Start********/
 .page-id-72 .site-content {margin-top:0px;margin-bottom: 0px;}
@@ -14764,7 +14772,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 	margin: 0 0 30px 0;
 }
 .copy_link_sec .tooltip {
-    font-size: 24px;
+    font-size: 15px;
     padding: 0px 0 0 40px;
 }
 th.expire-date {
