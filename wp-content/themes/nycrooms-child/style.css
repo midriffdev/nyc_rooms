@@ -5064,7 +5064,7 @@ table.manage-table td:first-child { padding-left: 0px; line-height: 25px; }
 
 table.manage-table td {
 	padding: 35px 10px;
-	vertical-align: middle;	border-bottom: 1px solid #e4e4e4;
+	vertical-align: middle;	border-bottom: 1px solid #e4e4e4;     word-break: break-all;    word-break: break-all;   word-break: break-all;
 }
 
 table.manage-table td.centered { text-align: center; }
