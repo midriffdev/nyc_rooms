@@ -133,13 +133,13 @@ input.checkbulk{
 				<tbody>
 				<tr>
 					<th><input type="checkbox" class="checkallbulk"></th>
-					<th><i class="fa fa-list-ol"></i> Contract ID</th>
-					<th><i class="fa fa-list-ol"></i> Deal ID</th>
-					<th><i class="fa fa-list-ol"></i> Tenant Name</th>
-					<th><i class="fa fa-list-ol"></i> Tenant Email</th>
-					<th><i class="fa fa-list-ol"></i> Owner Email</th>
-					<th><i class="fa fa-list-ol"></i> Contract PDF</th>
-					<th></th>
+					<th class="action_mt"><i class="fa fa-list-ol"></i> Contract ID</th>
+					<th class="action_mt"><i class="fa fa-list-ol"></i> Deal ID</th>
+					<th class="action_mt"><i class="fa fa-list-ol"></i> Tenant Name</th>
+					<th class="action_mt"><i class="fa fa-list-ol"></i> Tenant Email</th>
+					<th class="action_mt"><i class="fa fa-list-ol"></i> Owner Email</th>
+					<th class="action_mt"><i class="fa fa-list-ol"></i> Contract PDF</th>
+					<th class="action_mt">Action</th>
 				</tr>
 
 				<?php 

@@ -74,7 +74,7 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
         <?php 
 		if($request_an_agent == true && empty($selectedAgent)){
 		?>
-        <div class='alert_note_panel'>		
+        <div class='alert_note_panel copy_link_sec'>		
 			<h4 class="tenant_req">Tenant Requested for an agent.</h4>
 		</div>
 		<?php 
@@ -84,7 +84,7 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 		<?php 
 		if(count($check_deal_orders->posts) == 1){
 		?>
-        <div class='alert_note_panel'>		
+        <div class='alert_note_panel copy_link_sec'>		
 			<h4 class="tenant_req"> A Payment has been Done on this Deal</h4>
 		</div>
 		<?php 
@@ -94,7 +94,7 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 		<?php 
 		if($property_finalization){
 		?>
-        <div class='alert_note_panel'>		
+        <div class='alert_note_panel copy_link_sec'>		
 			<h4 class="tenant_req">A Property has been Finalized on this deal.</h4>
 		</div>
 		<?php 

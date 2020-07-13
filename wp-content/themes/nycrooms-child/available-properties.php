@@ -267,7 +267,7 @@ get_header();
 				    <th><input type="checkbox" class="checkallproperties"></th>
 					<th><i class="fa fa-file-text"></i> Property</th>
 					<th><i class="fa fa-user"></i> Owner</th>
-					<th><i class="fa fa-hand-pointer-o"></i> Action</th>
+					<th class="action_mt"><i class="fa fa-hand-pointer-o"></i> Action</th>
 				</tr>
 
 				<!-- Item #1 --><?php

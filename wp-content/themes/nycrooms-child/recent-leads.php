@@ -124,7 +124,7 @@ get_header();
 					<th ><i class="fa fa-phone"></i> Phone</th>
 					<th class="expire-date"><i class="fa fa-envelope" ></i>Email</th>
 					<th><i class="fa fa-bolt" ></i> Lead Source</th>
-					<th></th>
+					<th>Action</th>
 				</tr>
                  
 				 
