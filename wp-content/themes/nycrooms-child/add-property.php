@@ -407,7 +407,6 @@ get_footer();
 <script>		
 Dropzone.autoDiscover = false;		
 jQuery(".dropzone").dropzone({
-	url: "/file/post",
 	dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
 	addRemoveLinks: true,
 	removedfile: function(file) {

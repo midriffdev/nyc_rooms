@@ -67,7 +67,8 @@ if(isset($_POST['deal_ordersubmit'])){
 			 update_post_meta($dealorderid, 'payment_status', $paymentstatus);
 			 update_post_meta($dealorderid, 'payment_source_type', $payment_source_type);
 			 update_post_meta($dealorderid, 'payment_mode', 'Cash_payment');
-			 
+			$notification = "A Payment has been Done by Agent on Deal no ".$deal_id;
+			nyc_add_noticication($notification);				 
 			  /*----------------Start creating invoice ---------------------------- */
 														  $html = '<html>
 										<head>

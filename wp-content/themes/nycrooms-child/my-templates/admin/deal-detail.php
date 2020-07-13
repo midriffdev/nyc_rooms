@@ -59,12 +59,13 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 		$msg .="Deal price is not assigned.</br>";
 	}
 	if(empty($property_id)){
-		$msg .="Propert is not selected.</br>";
+		$msg .="Property is not selected.</br>";
 	}
 	if(empty($payment_status)){
 		$msg .="Payment is not completed.</br>";
 	}
 }	
+
 ?>
 <!-- Wrapper -->
 <div id="wrapper">

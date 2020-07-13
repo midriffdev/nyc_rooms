@@ -120,8 +120,5 @@ $(".submit").click(function(){
 });
 /*---------Query for tenant question closed---------*/
 
-/*---------Query for display block none start---------*/
-$(".recent-activity .act-wrap .close").click(function(){
-$(".alert.br-o.fade.show").removeClass("show");
-});
+
 /*---------Query for display block none closed---------*/

@@ -390,6 +390,7 @@ get_header();
 				<div class="col-md-4">
 					<h5>Phone <span>(optional)</span></h5>
 					<input type="text" id="contact_phone">
+					<span id="contact_phone-err"></span>
 				</div>
 
 			</div>
@@ -416,7 +417,13 @@ get_footer();
 ?>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/dropzone.js"></script>
 <script>				
+Dropzone.autoDiscover = false;		
 jQuery(".dropzone").dropzone({
 	dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
-});
+	addRemoveLinks: true,
+	removedfile: function(file) {
+		var _ref;
+		return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+	  }
+});	
 </script>
