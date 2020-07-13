@@ -1147,7 +1147,7 @@ function nyc_deal_send_sms(){
 }
 
 add_action( 'wp_ajax_nyc-deal-select-agent', 'nyc_deal_select_agent' );
-add_action( 'wp_ajax_nyc-deal-select-agent', 'nyc_deal_select_agent' ); 
+add_action( 'wp_ajax_nopriv_nyc-deal-select-agent', 'nyc_deal_select_agent' ); 
 function nyc_deal_select_agent(){
 	if(isset($_POST['deal_id'])){
 		$deal_id = $_POST['deal_id'];
@@ -1164,7 +1164,7 @@ function nyc_deal_select_agent(){
 }
 
 add_action( 'wp_ajax_add-new-custom-deal', 'add_new_custom_deal' );
-add_action( 'wp_ajax_add-new-custom-deal', 'add_new_custom_deal' ); 
+add_action( 'wp_ajax_nopriv_add-new-custom-deal', 'add_new_custom_deal' ); 
 function add_new_custom_deal(){
 	if(isset($_POST['action']) && $_POST['action'] == 'add-new-custom-deal'){
 	$deal_id = wp_insert_post(
@@ -1242,4 +1242,76 @@ function count_tenant_hired_property(){
 	}	
 	return ($property_ids) ? count($property_ids): 0;
 }
+
+add_action('init','nyc_create_additional_table');
+function nyc_create_additional_table(){
+	global $wpdb;
+	$notification_table_name = $wpdb->prefix."notification";
+	if($wpdb->get_var("show tables like '$notification_table_name'") != $notification_table_name) {
+
+		$sql = "CREATE TABLE " . $notification_table_name . " (
+			id int(11) NOT NULL AUTO_INCREMENT,
+			message VARCHAR(255) NOT NULL,
+			is_read enum('0','1') NOT NULL DEFAULT '0' COMMENT '0=>unread, 1=>read',
+			created_at datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+			UNIQUE KEY id (id)
+		);";
+
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
+	}	
+}
+
+function nyc_add_noticication($message){
+        if(empty($message)){
+			return;
+		}
+		global $wpdb;
+		$table = $wpdb->prefix.'notification';
+		$data = array('message' => $message, 'is_read' => 0, 'created_at' => current_time('mysql'));
+		$format = array('%s','%s','%s');
+		$wpdb->insert($table,$data,$format);
+}
+
+function nyc_time_elapsed_string($datetime, $full = false) {
+    $now = new DateTime;
+    $ago = new DateTime($datetime);
+    $diff = $now->diff($ago);
+
+    $diff->w = floor($diff->d / 7);
+    $diff->d -= $diff->w * 7;
+
+    $string = array(
+        'y' => 'year',
+        'm' => 'month',
+        'w' => 'week',
+        'd' => 'day',
+        'h' => 'hour',
+        'i' => 'minute',
+        's' => 'second',
+    );
+    foreach ($string as $k => &$v) {
+        if ($diff->$k) {
+            $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+        } else {
+            unset($string[$k]);
+        }
+    }
+
+    if (!$full) $string = array_slice($string, 0, 1);
+    return $string ? implode(', ', $string) . ' ago' : 'just now';
+}
+
+add_action( 'wp_ajax_nyc_remove_notification', 'nyc_remove_notification' );
+add_action( 'wp_ajax_nopriv_nyc_remove_notification', 'nyc_remove_notification' ); 
+function nyc_remove_notification(){
+	if(isset($_POST['action']) && $_POST['action'] == 'nyc_remove_notification'){
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'notification';
+		$wpdb->query( 
+		$wpdb->prepare("DELETE FROM $table_name WHERE id = %d",$_POST['noti_id']));		
+	}	
+	exit;
+}
+
 ?>
