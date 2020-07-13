@@ -145,12 +145,12 @@ input.checkbulk{
 				<table class="manage-table responsive-table admin-teanent-maintable all_agents_table">
 				<tbody>
 				<tr>
-					<th><input type="checkbox" class="checkallbulk"></th>
-					<th><i class="fa fa-file-text"></i> Teanent</th>
+					<th style="width:8%;"><input type="checkbox" class="checkallbulk"></th>
+					<th><i class="fa fa-file-text"></i> Tenants</th>
 					<th><i class="fa fa-envelope"></i> Email</th>
 					<th><i class="fa fa-phone" ></i> Phone</th>
-					<th><i class="fa fa-toggle-on" ></i>Status</th>
-					<th><i class="fa fa-hand-pointer-o"></i> Action</th>
+					<th style="width:15%;"><i class="fa fa-toggle-on" ></i>Status</th>
+					<th style="width:15%;"><i class="fa fa-hand-pointer-o"></i> Action</th>
 				</tr>
 
 				<!-- Item #1 -->

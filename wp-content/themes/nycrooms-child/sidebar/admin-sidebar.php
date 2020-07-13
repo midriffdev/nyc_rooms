@@ -48,7 +48,7 @@
 						<li class="admin-propertieslistings">
 							<a href="<?php echo get_site_url(); ?>/admin/all-tenants/" id="sidebar-alltenant">All Tenants <span class="all-listing-no active-listing-no"><?php echo nyc_count_user_by_role('tenant'); ?></span></a>
 						</li>
-						<li><a href="<?php echo get_site_url(); ?>/admin/add-tenant/" id="sidebar-addtenant"><i class="sl sl-icon-action-redo"></i> Add New Teanent</a></li>
+						<li><a href="<?php echo get_site_url(); ?>/admin/add-tenant/" id="sidebar-addtenant"><i class="sl sl-icon-action-redo"></i> Add New Tenant</a></li>
 					</ul>
 
 					<ul class="my-account-nav">
