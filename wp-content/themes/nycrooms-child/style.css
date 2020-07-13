@@ -13320,6 +13320,13 @@ th.action_mt {
 .dealdetail-signapplicationform h3 {
     margin: 0;
 }
+.dealdetail--agentnotes-sec.col-md-6 {
+    background: #efefef;
+    border-radius: 5px;
+    box-shadow: 0 0 19px rgba(0,0,0,0.2);
+    padding: 31px 34px 24px;
+    /* margin: 0; */
+}
 .dealdetail-signapplicationform {
     box-shadow: 0 0 12px rgba(0,0,0,0.2);
     border-radius: 4px;
