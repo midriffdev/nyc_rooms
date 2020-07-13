@@ -275,6 +275,7 @@ get_header();
 							$payment_method = get_post_meta($post_id, 'payment_method',true);
 							$prop_image = wp_get_attachment_url(get_post_meta($post_id, 'file_0',true));
 							$document_files = explode(',',get_post_meta($post_id, 'document_files',true));
+							$property_inactive = get_post_meta($post_id,'property_inactive',true);
 				?>
 							<tr class="property-id-<?php echo $post_id; ?>">
 							    <td><input type="checkbox" class="checkproperties" value="<?= $post_id ?>"></td>
@@ -300,18 +301,15 @@ get_header();
 								<td class="expire-date">December 30, 2016</td>
 
 								<td class="action">
-								     <?php
-						               $checkpropactivation = get_post_meta($post_id,'property_activation',true);
-						             ?>
 								    <a href="<?= get_post_permalink( get_the_ID()) ?>"><i class="fa fa-eye"></i> View</a>
 									<?php
-									if(!$checkpropactivation){
+									if($property_inactive == true){
 									?>
 									<a style="cursor:pointer;" class="actvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-key"></i> Activate</a>
 									<?php
 									} else {
 									?>
-									<a style="cursor:pointer;" class="deactvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-eye-slash"></i> Deactivate</a>
+									<a style="cursor:pointer;" class="deactvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-eye-slash"></i> Inactive</a>
 									<?php
 									}
 									?>
