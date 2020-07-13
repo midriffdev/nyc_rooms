@@ -285,11 +285,12 @@ get_header();
 							$payment_method = get_post_meta($post_id, 'payment_method',true);
 							$prop_image = wp_get_attachment_url(get_post_meta($post_id, 'file_0',true));
 							$contact_name = get_post_meta($post_id, 'contact_name',true);
-							$status = get_post_meta($post_id, 'status',true);
+							$status =  get_post_status();
 							if(!$prop_image){
 							   $prop_image = wp_get_attachment_url(get_post_meta($post_id, 'file_1',true));
 							}
 							$document_files = explode(',',get_post_meta($post_id, 'document_files',true));
+							$property_inactive = get_post_meta($post_id,'property_inactive',true);
 				?>
 					
 				<tr>
@@ -299,7 +300,8 @@ get_header();
 						<div class="title">
 							<h4><a href="<?= get_post_permalink( get_the_ID()) ?>"><?php echo get_the_title($post_id); ?></a></h4>
 							<span><?php echo $address;?> </span>
-							<span class="table-property-price"><?php echo $price . '$ / Week' ;?></span> <span class="active--property"><?php echo $status ;?></span>
+							<span class="table-property-price"><?php echo $price . '$ / Week' ;?></span> <span class="active--property"><?php echo ucfirst($status);?></span>
+							<span class="active--property"><?php echo ($property_inactive == true) ? 'Inactive' : 'Active';?></span>
 							<?php 
 							if($document_files){
 								echo "</br></br>";
@@ -318,6 +320,17 @@ get_header();
 					</td>
 					<td class="action">
 					    <a href="<?= get_post_permalink( get_the_ID()) ?> "><i class="fa fa-eye"></i> View</a>
+						<?php
+						if($property_inactive == true){
+						?>
+						<a style="cursor:pointer;" class="actvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-key"></i> Activate</a>
+						<?php
+						} else {
+						?>
+						<a style="cursor:pointer;" class="deactvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-eye-slash"></i> Inactive</a>
+						<?php
+						}
+						?>						
 						<a href= "<?php echo get_site_url();?>/edit-property-admin/?pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
 						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 					</td>
@@ -375,6 +388,8 @@ get_header();
                   <div class="bulk_actions_properties">
 						<select class="select_action_properties">
 						 <option value="-1">Bulk Actions</option>
+						 <option value="activate">Activate</option>
+						 <option value="deactivate">Inactive</option>						 
 						 <option value="delete">Delete</option>
 						</select>
                     <input type="button" value="Apply" class="apply_action_properties">
@@ -412,7 +427,45 @@ get_header();
       
     </div>
   </div>
- 
+  <!-- Modal Activate Property -->
+  <div class="modal fade" id="Modalactivate" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Properties Activated Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- Modal Dectivate Property -->
+  <div class="modal fade" id="Modaldeactivate" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Properties Inactived Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
   
 
 <style>

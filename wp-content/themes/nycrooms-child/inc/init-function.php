@@ -1113,7 +1113,7 @@ function nyc_deal_send_sms(){
 			$input = new SendMessageInputObject();
 			$msg = "Hi, Here's the link where you can check deal details: ".$tenant_deal_link;
 			$input->setText($msg);
-			$input->setPhones('+1'.$tenant_phone);	
+			$input->setPhones($tenant_phone);	
 			try {
 				$result = $api->sendMessage($input);
 				if($result){
@@ -1130,7 +1130,7 @@ function nyc_deal_send_sms(){
 				$input = new SendMessageInputObject();
 				$msg = "You are assigned for tenant deals. Click on the link for more details. ".$agent_deal_link;
 				$input->setText($msg);
-				$input->setPhones('+1'.$agent_phone);	
+				$input->setPhones($agent_phone);	
 				try {
 					$result = $api->sendMessage($input);
 					if($result){

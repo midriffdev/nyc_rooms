@@ -287,7 +287,7 @@ get_header();
 							$contact_name = get_post_meta($post_id, 'contact_name',true);
 							$status = get_post_status();
 							$document_files = explode(',',get_post_meta($post_id, 'document_files',true));
-							echo $property_inactive = get_post_meta($post_id,'property_inactive',true);
+							$property_inactive = get_post_meta($post_id,'property_inactive',true);
 				?>
 					
 				<tr>
@@ -385,7 +385,7 @@ get_header();
 						<select class="select_action_properties">
 						 <option value="-1">Bulk Actions</option>
 						 <option value="activate">Activate</option>
-						 <option value="deactivate">Deactivate</option>
+						 <option value="deactivate">Inactive</option>
 						 <option value="delete">Delete</option>
 						</select>
                     <input type="button" value="Apply" class="apply_action_properties">
