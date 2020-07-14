@@ -28,9 +28,9 @@ $success_msg = '';
 			add_post_meta($lead_id, 'lead_chckt_prp_owner_email', get_post_meta($_POST['Property_search_id'],'contact_email',true));
 			add_post_meta($lead_id, 'lead_created_from', 'logined_user' );
 			add_post_meta($lead_id, 'lead_created_user_id', $_POST['logined_user_id']);
-			
-			
-			
+			$notification = "A new lead submission by ".$_POST['guest_name'];
+			nyc_add_noticication($notification);				 
+						
 			/*----------- Email to Tenant After Lead Submission --------*/
 			 
 			$subject1 = "Lead Submission Enquiry Recieved On NYCROOMS";
@@ -55,18 +55,10 @@ $success_msg = '';
 			$msg .=  '<p>Thanks!<p>';
 			$headers = array('Content-Type: text/html; charset=UTF-8');
 		    $mail = wp_mail($to, $subject, $msg,$headers);
-			if($mail){
-			
-			    $success_msg = "We have recieved your request for property. We will contact you soon";
-				
-				
-			   
-			}
-			
-			
-		
-		}
-		
+			if($mail){		
+			    $success_msg = "We have recieved your request for property. We will contact you soon";		   
+			}			
+		}	
 }
 if(isset($_POST['book_appointment'])){
       $user = wp_get_current_user();
@@ -95,7 +87,8 @@ if(isset($_POST['book_appointment'])){
 			add_post_meta($lead_id, 'lead_source','Appointment Form');
 			add_post_meta($lead_id, 'lead_created_from', 'Appointment_user' );
 			add_post_meta($lead_id, 'lead_created_user_id', $user_id);
-			
+			$notification = "A new lead submission from Book Appointment by ".$_POST['user_name'];
+			nyc_add_noticication($notification);				
 			
 			$strtotime =  strtotime($_POST['date'] . ' '.$_POST['time']);
 			$datetime =  date("F j, Y h:i:s A", $strtotime);

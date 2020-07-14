@@ -1012,7 +1012,7 @@ if(isset($_POST['create_contract']) && $contract_created == false){
 				'ID'             => $property_id,
 				'post_status' => 'rented',
 			);
-			wp_update_post( $args );			
+			wp_update_post( $args );							
 			contract_created_notification_tenant($email,get_the_title($property_id),$attach_id);
 			contract_created_notification_property_owner(get_the_author_meta( 'user_email' , $authid),get_the_title($property_id),$name,$attach_id);
 		}
