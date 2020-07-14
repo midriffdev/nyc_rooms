@@ -148,7 +148,9 @@ get_header();
 				</tr>
 
 				<!-- Item #1 -->
-				<?php foreach ( $all_users as $user ) {
+				<?php 
+				if($all_users){	
+				foreach ( $all_users as $user ) {
                    $phone = get_user_meta($user->ID,'user_phone',true);
 				   $profile_picture = get_user_meta($user->ID,'profile_picture',true);
 					?>
@@ -178,7 +180,12 @@ get_header();
 				      break;
 				   }
 
-				} ?>
+				}
+				}else{
+					echo "<tr class='nyc-no-properties'><td class='no_property_found' colspan='6'>No Property Owner Found !</td></tr>";
+				}
+				
+				?>
 				</tbody>
 				</table>
 
@@ -291,12 +298,12 @@ input.apply_action {
     padding: 0;
 }
 </style>
-
-<!-- Scripts
-================================================== --
-
-</div>
-<!-- Wrapper / End -->
+<script>
+jQuery(document).ready(function($) {
+	jQuery('.admin-propertiesowner').addClass('show--submenu');
+	jQuery('#sidebar-recentowner').addClass('current');
+});
+</script>
 
 <?php 
 get_footer();

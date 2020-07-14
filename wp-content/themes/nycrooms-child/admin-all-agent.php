@@ -152,34 +152,41 @@ get_header();
 					<th  class="action_mt"><i class="fa fa-hand-pointer-o"></i> Action</th>
 				</tr>
 
-				<?php foreach($all_users as $agents){ ?>
-				<!-- Item #1 -->
-				<tr>
-				    <td><input type="checkbox" class="checkagent" value="<?= $agents->ID ?>"></td>
-					<td class="title-container teanent-title-container">
-					     <?php
-						  $profile_imgid =  get_user_meta($agents->ID,'profile_user_image',true);
-						  if($profile_imgid){
-								echo wp_get_attachment_image( $profile_imgid, array('150', '150'), "", array( "class" => "img-responsive" ) );
-						   } else {
-						 ?>
-						       <img src="<?= get_stylesheet_directory_uri() ?>/images/male-icon.png" alt="">
-						 <?php
-						   }
-						 ?>
-						<div class="title">
-							<h4><a href="<?= home_url() . '/agent-details/?agentid='.$agents->ID ?>"><?php echo $agents->data->display_name; ?></a></h4>
-						</div>
-					</td>
-					<td class="owner--username"><?php echo $agents->data->user_email; ?></td>
-					<td><div class="owner-phone-no"><?php echo get_user_meta($agents->ID,'user_phone',true); ?></div></td>
-					<td><div class="owner-status"><?php echo get_user_meta($agents->ID,'user_agent_status',true); ?></div></td>
-					<td class="action">
-						<a href="<?= home_url() . '/agent-details/?agentid='.$agents->ID  ?>"><i class="fa fa-pencil"></i> Edit</a>
-						<a  class="delete_agent_profile" data-id="<?= $agents->ID ?>" style="cursor:pointer;"><i class="fa fa-remove"></i> Delete</a>
-					</td>
-				</tr>
-			<?php } ?>
+				<?php 
+				if($all_users){
+					foreach($all_users as $agents){ ?>
+						<!-- Item #1 -->
+						<tr>
+							<td><input type="checkbox" class="checkagent" value="<?= $agents->ID ?>"></td>
+							<td class="title-container teanent-title-container">
+								 <?php
+								  $profile_imgid =  get_user_meta($agents->ID,'profile_user_image',true);
+								  if($profile_imgid){
+										echo wp_get_attachment_image( $profile_imgid, array('150', '150'), "", array( "class" => "img-responsive" ) );
+								   } else {
+								 ?>
+									   <img src="<?= get_stylesheet_directory_uri() ?>/images/male-icon.png" alt="">
+								 <?php
+								   }
+								 ?>
+								<div class="title">
+									<h4><a href="<?= home_url() . '/agent-details/?agentid='.$agents->ID ?>"><?php echo $agents->data->display_name; ?></a></h4>
+								</div>
+							</td>
+							<td class="owner--username"><?php echo $agents->data->user_email; ?></td>
+							<td><div class="owner-phone-no"><?php echo get_user_meta($agents->ID,'user_phone',true); ?></div></td>
+							<td><div class="owner-status"><?php echo get_user_meta($agents->ID,'user_agent_status',true); ?></div></td>
+							<td class="action">
+								<a href="<?= home_url() . '/agent-details/?agentid='.$agents->ID  ?>"><i class="fa fa-pencil"></i> Edit</a>
+								<a  class="delete_agent_profile" data-id="<?= $agents->ID ?>" style="cursor:pointer;"><i class="fa fa-remove"></i> Delete</a>
+							</td>
+						</tr>
+						<?php 
+					} 
+				}else{
+					echo "<tr class='nyc-no-properties'><td class='no_property_found' colspan='6'>No Agent Found !</td></tr>";
+				}
+				?>
 
 
 				</tbody>
@@ -338,6 +345,11 @@ input.apply_action {
     padding: 0;
 }
 </style>
+<script>
+jQuery(document).ready(function($) {
+	jQuery('#sidebar-allagent').addClass('current');
+});
+</script>
 <!-- Wrapper / End -->
 <?php
 get_footer();

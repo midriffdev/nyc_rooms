@@ -301,7 +301,7 @@ if ( $properties->have_posts() ) {
 				<tr>
 				    <td><input type="checkbox" class="checkproperties" value="<?= $post_id ?>"></td>
 					<td class="title-container">
-						<img src="<?php if($prop_image){ echo $prop_image; } ?>"alt="">
+						<img src="<?php if($prop_image){ echo $prop_image; } ?>" alt="">
 						<div class="title">
 							<h4><a href="<?= get_post_permalink( get_the_ID()) ?>"><?php echo get_the_title($post_id); ?></a></h4>
 							<span><?php echo $address;?> </span>
@@ -335,7 +335,7 @@ if ( $properties->have_posts() ) {
 						}
 }
 					else{
-					    echo "<tr class='nyc-no-properties'><td>No Properties Found !</td></tr>";
+					    echo "<tr class='nyc-no-properties'><td class='no_property_found' colspan='5'>No Properties Found !</td></tr>";
 					}
 				?>
 				

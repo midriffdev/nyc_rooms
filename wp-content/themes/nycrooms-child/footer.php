@@ -67,6 +67,59 @@
  */
 do_action( 'zakra_action_after' );
 ?>
+<div class="modal fade popup-main--section" id="bookappntmntpopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered bookappointment--popup" role="document">
+    <div class="modal-content">
+	 <form  method="post">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="fillamount-popup">
+        	<h3>Book an Appointment</h3>
+ 			
+        	
+        		<fieldset>
+        		<ul>
+        			<li>
+        				<label for="name">Name*:</label>
+		        		<input type="text" id="name" name="user_name" placeholder="Enter Name" required>
+        			</li>
+        			<li>
+        				<label for="mail">Email*:</label>
+		        		<input type="email" id="mail" name="user_email" placeholder="Enter Email" required>
+        			</li>
+        			<li>
+        				<label for="tel">Contact Number*:</label>
+		        		<input type="text" id="tel" placeholder="Enter Phone With +1.." name="user_num"  pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
+        			</li>
+        			<li>
+        				<label for="date">Date*:</label>
+        				<input type="date" name="date"  value="<?php echo date("Y-m-d"); ?>" required>
+        			</li>
+        			<li>
+        				<label for="time">Time*:</label>
+        				<input type="time" name="time" value="<?php echo date("H:i"); ?>" required>
+        			</li>
+        			<li>
+        				<label for="appointment_description">Appointment Description*:</label>
+        				<textarea id="appointment_description" name="appointment_description"  required ></textarea>
+        			</li>
+        		</ul>
+		      </fieldset>
+    		
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-secondary dealdetail-popupsub" name="book_appointment">Submit</button>
+      </div>
+	</form>
+    </div>
+  </div>
+</div>
 <div class="modal fade" id="successModal" role="dialog">
     <div class="modal-dialog"> 
       <!-- Modal content-->

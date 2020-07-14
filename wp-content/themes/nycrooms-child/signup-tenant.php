@@ -75,7 +75,8 @@ if(is_user_logged_in()){
 			                 );
 			     
 			    $user_verify = wp_signon( $login_data, false ); 
-				
+				$notification = "A new tenant (".$username.") is registered";
+				nyc_add_noticication($notification);				
 				
 				 if(!is_wp_error($user_verify)){
 				      add_user_meta($user,'user_full_name', $_REQUEST['guest_name_reg']);

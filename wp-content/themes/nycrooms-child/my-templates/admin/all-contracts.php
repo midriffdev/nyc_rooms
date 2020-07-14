@@ -171,7 +171,7 @@ input.checkbulk{
 					<?php 
 					}
 				}else{
-					echo "<tr><td colspan='7'>No Contracts Found!</td></tr>";
+					echo "<tr><td colspan='7' class='no_property_found'>No Contracts Found!</td></tr>";
 				}
 				?>
 				</tbody>

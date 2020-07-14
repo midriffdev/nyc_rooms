@@ -3,6 +3,7 @@
  * Template Name: Single Property
  * Template Post Type: property
  */
+$user = wp_get_current_user();
 $success_msg = '';
  if(isset($_POST['guest_checkout'])){
 	
@@ -60,70 +61,7 @@ $success_msg = '';
 			}			
 		}	
 }
-if(isset($_POST['book_appointment'])){
-      $user = wp_get_current_user();
-      if(!is_user_logged_in()){
-	     $user_id = null;
-	  } else {
-	     if($user->roles[0] == "tenant"){
-		      $user_id = $user->ID;
-		 }
-	  }
-       $lead_id = wp_insert_post(array (
-						'post_type'		=> 'leads',
-						'post_title' 	=> 'Lead submission',
-						'post_content' 	=> 'Lead submission by guest user',
-						'post_author' 	=> 1,
-						'post_status'   => 'publish'
-		           ));
-		
-		
-		 if ($lead_id) {
-			add_post_meta($lead_id, 'lead_name', $_POST['user_name']);
-			add_post_meta($lead_id, 'lead_email', $_POST['user_email']);
-			add_post_meta($lead_id, 'lead_phone', $_POST['user_num']);
-			add_post_meta($lead_id, 'lead_datetime', strtotime($_POST['date'] . ' '.$_POST['time']));
-			add_post_meta($lead_id, 'lead_summary', $_POST['appointment_description']);
-			add_post_meta($lead_id, 'lead_source','Appointment Form');
-			add_post_meta($lead_id, 'lead_created_from', 'Appointment_user' );
-			add_post_meta($lead_id, 'lead_created_user_id', $user_id);
-			$notification = "A new lead submission from Book Appointment by ".$_POST['user_name'];
-			nyc_add_noticication($notification);				
-			
-			$strtotime =  strtotime($_POST['date'] . ' '.$_POST['time']);
-			$datetime =  date("F j, Y h:i:s A", $strtotime);
-			
-			/*----------- Email to Tenant After Lead Submission --------*/
-			
-			$subject1 = "Appointment Lead Submission Enquiry Recieved On NYCROOMS";
-			$to1 = $_POST['user_email'];
-			$msg1  = '<h4>Hello '.$_POST['user_name'].',</h4>';
-			$msg1 .= '<p>Thank you For Lead Submission on NYC Rooms. We Have Recevied Your Appointment Enquiry Request for lead submission. One of our Represntative will be in touch with you as soon as possible.</p>';
-			$msg1 .=  '<p>Thanks!<p>';
-			$headers1 = array('Content-Type: text/html; charset=UTF-8');
-			$mail1 = wp_mail($to1, $subject1, $msg1,$headers1);
-			
-	       /*---------- Email to Admin After Lead Submission --------*/
-			
-			$subject = "New Lead Submission";
-			$to = get_option('admin_email');
-			$msg  = __( '<h4>Hello Admin,</h4>') . "\r\n\r\n";
-			$msg .= '<p>A new lead Submission by Appointment Form with following Details:</p>';
-			$msg .= '<p>Name:'.$_POST['user_name'] .'</p>';
-			$msg .= '<p>Email:'.$_POST['user_email'] .'</p>';
-			$msg .= '<p>Phone:'.$_POST['user_num'] .'</p>';
-			$msg .= '<p>Date & time:'. $datetime .'</p>';
-			$msg .= '<p>Requirements:</p><p>'.$_POST['appointment_description'] .'</p>';
-			$msg .=  '<p>Thanks!<p>';
-			$headers = array('Content-Type: text/html; charset=UTF-8');
-		    $mail = wp_mail($to, $subject, $msg,$headers);
-			if($mail){
-			    $success_msg = "We have recieved your request for property. We will contact you soon";
-			}
-		
-		}
-		
-}
+
 get_header();
 $post_id = get_the_ID();
 $address = get_post_meta($post_id, 'address',true)." ";
@@ -204,7 +142,11 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 	<div class="row">
 
 		<!-- Property Description -->
+		<?php if(is_user_logged_in() && $user->roles[0] == "administrator" ){ ?>
+		<div class="col-md-12 sp-content">
+		<?php }else{ ?>
 		<div class="col-lg-8 col-md-7 sp-content">
+		<?php }?>
 			<div class="property-description">
 
 				<!-- Main Features -->
@@ -321,18 +263,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 				<?php
 				 }
 				}
-				?>
-                  <?php if(is_user_logged_in() && $user->roles[0] == "administrator" ){ ?>
-				  <?php
-				  } else {
-				  ?>
-				<div class="appointment-popup">
-		             <button class="appointment-button" data-toggle="modal" data-target="#bookappntmntpopup">Book Appointment</button>
-	            </div>
-				<?php
-				}
-				?>
-				 
+				?> 
 				</div>
 
 				<!-- Similar Listings Container -->
@@ -350,6 +281,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 					 'post_status'    => 'available',
 					 'exclude'        => $post_id,
 				) );	
+				if($similar_property ){
 				foreach($similar_property as $property){
 				$sim_id=$property->ID;
 				$address = get_post_meta($sim_id, 'city',true)." ";
@@ -398,7 +330,10 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 
 					</div>
 					<!-- Listing Item / End -->
-				<?php } ?>
+				<?php } 
+				}else{
+					echo "<p class='no+property_found'><span>No Similar Property Found !</span></p>";
+				}?>
 
 				</div>
 				<!-- Similar Listings Container / End -->
@@ -655,60 +590,8 @@ if(!empty($success_msg)):
 endif;
 get_footer();
 ?>
-<!-- Modal for Amount details -->
-<div class="modal fade popup-main--section" id="bookappntmntpopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered bookappointment--popup" role="document">
-    <div class="modal-content">
-	 <form  method="post">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="fillamount-popup">
-        	<h3>Book an Appointment</h3>
- 			
-        	
-        		<fieldset>
-        		<ul>
-        			<li>
-        				<label for="name">Name*:</label>
-		        		<input type="text" id="name" name="user_name" placeholder="Enter Name" required>
-        			</li>
-        			<li>
-        				<label for="mail">Email*:</label>
-		        		<input type="email" id="mail" name="user_email" placeholder="Enter Email" required>
-        			</li>
-        			<li>
-        				<label for="tel">Contact Number*:</label>
-		        		<input type="text" id="tel" placeholder="Enter Phone With +1.." name="user_num"  pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
-        			</li>
-        			<li>
-        				<label for="date">Date*:</label>
-        				<input type="date" name="date"  value="<?php echo date("Y-m-d"); ?>" required>
-        			</li>
-        			<li>
-        				<label for="time">Time*:</label>
-        				<input type="time" name="time" value="<?php echo date("H:i"); ?>" required>
-        			</li>
-        			<li>
-        				<label for="appointment_description">Appointment Description*:</label>
-        				<textarea id="appointment_description" name="appointment_description"  required ></textarea>
-        			</li>
-        		</ul>
-		      </fieldset>
-    		
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-secondary dealdetail-popupsub" name="book_appointment">Submit</button>
-      </div>
-	</form>
-    </div>
-  </div>
-</div>
+
+
 <!-- Maps -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgeuuDfRlweIs7D6uo4wdIHVvJ0LonQ6g"></script>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/infobox.min.js"></script>

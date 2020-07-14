@@ -184,7 +184,7 @@ input.checkbulk{
 					<?php 
 					}
 				}else{
-					echo "<tr><td colspan='7'>No deals found!</td></tr>";
+					echo "<tr><td colspan='7' class='no_property_found'>No Deal found !</td></tr>";
 				}
 				?>
 				</tbody>

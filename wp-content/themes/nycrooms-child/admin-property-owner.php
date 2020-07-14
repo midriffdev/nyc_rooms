@@ -147,32 +147,39 @@ get_header();
 				</tr>
 
 				<!-- Item #1 -->
-				<?php foreach ( $all_users as $user ) {
-                   $phone = get_user_meta($user->ID,'user_phone',true);
-				   $profile_picture = get_user_meta($user->ID,'profile_picture',true);
+				<?php 
+				if($all_users){				
+					foreach ( $all_users as $user ) {
+					   $phone = get_user_meta($user->ID,'user_phone',true);
+					   $profile_picture = get_user_meta($user->ID,'profile_picture',true);
 					?>
-					<tr>
-					    <td><input type="checkbox" class="checkagent" value="<?= $user->ID ?>"></td>
-						<td class="title-container teanent-title-container">
-						   <?php if($profile_picture){
-						       echo wp_get_attachment_image( $profile_picture, array('150', '150'), "", array( "class" => "img-responsive" ) );
-						   ?>
-							<?php } else { ?>
-							  <img src="<?= get_stylesheet_directory_uri() ?>/images/male-icon.png" alt="">
-							<?php } ?>
-							<div class="title">
-							 <h4><!--a href="<?php //echo get_site_url();?>/property-owner-details"---><?php echo $user->display_name; ?><!--/a--></h4>
-							</div>
-						</td>
-						<td class="admin-owner-propertycount"><?php echo nyc_get_properties_by_property_owner($user->ID)->post_count;?></td>
-						<td class="owner--username"><?php echo $user->user_email ;?></td>
-						<td><div class="owner-phone-no"><?php echo $phone ;?></div></td>
-						<td class="action">
-							<a href="<?php echo get_site_url();?>/property-owner-details/?uid=<?php echo $user->ID;?>"><i class="fa fa-pencil"></i> Edit</a>
-							<a style="cursor:pointer;" class="delete_agent_profile" data-id="<?php echo $user->ID; ?>"><i class="fa fa-remove"></i> Delete</a>
-						</td>
-					</tr>
-				<?php } ?>
+						<tr>
+							<td><input type="checkbox" class="checkagent" value="<?= $user->ID ?>"></td>
+							<td class="title-container teanent-title-container">
+							   <?php if($profile_picture){
+								   echo wp_get_attachment_image( $profile_picture, array('150', '150'), "", array( "class" => "img-responsive" ) );
+							   ?>
+								<?php } else { ?>
+								  <img src="<?= get_stylesheet_directory_uri() ?>/images/male-icon.png" alt="">
+								<?php } ?>
+								<div class="title">
+								 <h4><!--a href="<?php //echo get_site_url();?>/property-owner-details"---><?php echo $user->display_name; ?><!--/a--></h4>
+								</div>
+							</td>
+							<td class="admin-owner-propertycount"><?php echo nyc_get_properties_by_property_owner($user->ID)->post_count;?></td>
+							<td class="owner--username"><?php echo $user->user_email ;?></td>
+							<td><div class="owner-phone-no"><?php echo $phone ;?></div></td>
+							<td class="action">
+								<a href="<?php echo get_site_url();?>/property-owner-details/?uid=<?php echo $user->ID;?>"><i class="fa fa-pencil"></i> Edit</a>
+								<a style="cursor:pointer;" class="delete_agent_profile" data-id="<?php echo $user->ID; ?>"><i class="fa fa-remove"></i> Delete</a>
+							</td>
+						</tr>
+					<?php 
+					} 
+				}else{
+					echo "<tr class='nyc-no-properties'><td class='no_property_found' colspan='6'>No Property Owner Found !</td></tr>";
+				}
+				?>
 				</tbody>
 				</table>
 
@@ -285,12 +292,12 @@ input.apply_action {
     padding: 0;
 }
 </style>
-
-<!-- Scripts
-================================================== --
-
-</div>
-<!-- Wrapper / End -->
+<script>
+jQuery(document).ready(function($) {
+	jQuery('.admin-propertiesowner').addClass('show--submenu');
+	jQuery('#sidebar-propertiesowner').addClass('current');
+});
+</script>
 
 <?php 
 get_footer();

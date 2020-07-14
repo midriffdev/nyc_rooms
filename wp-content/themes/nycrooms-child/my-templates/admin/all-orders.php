@@ -300,7 +300,7 @@ input.checkbulkorders{
 					<?php 
 					}
 				}else{
-					echo "<tr><td colspan='7'>No Orders found!</td></tr>";
+					echo "<tr><td class='no_property_found' colspan='10'>No Orders found!</td></tr>";
 				}
 				?>
 				</tbody>
@@ -423,7 +423,7 @@ jQuery('.delete-deal-order').click(function (e) {
 
 jQuery(document).ready(function($) {
     var site_url = "<?= site_url(); ?>";
-	jQuery('#sidebar-alldeals').addClass('current');
+	jQuery('#sidebar-allorders').addClass('current');
 	$('select[name="monthly_payments"]').change(function(){
 	     var monthval = $(this).val();
 		  if(monthval != ''){

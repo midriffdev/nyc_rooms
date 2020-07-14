@@ -108,17 +108,29 @@ get_header();
 						</li>
 						<?php 
 						$user_count_data = count_users();
-						$avail_roles = $user_count_data['avail_roles'];
-						$tenant = $avail_roles['tenant'];
-						$administrator = $avail_roles['administrator']; 
-						$sales_agent = $avail_roles['sales_agent'];
-						$property_owner = $avail_roles['property_owner'];
+						if($user_count_data){
+							if(isset($user_count_data['avail_roles'])){
+								$avail_roles = $user_count_data['avail_roles'];
+								if(isset($avail_roles['tenant'])){
+									$tenant = $avail_roles['tenant'];
+								}
+								if(isset($avail_roles['administrator'])){
+									$administrator = $avail_roles['administrator']; 
+								}
+								if(isset($avail_roles['sales_agent'])){
+									$sales_agent = $avail_roles['sales_agent'];
+								}
+								if(isset($avail_roles['property_owner'])){
+									$property_owner = $avail_roles['property_owner'];
+								}
+							}
+						}
 ?>
 						<li class="statistic__item item--dark">
 							<a href="<?php echo get_site_url();?>/admin-property-owner"> 
 								<div class="statistic__item_cont">
 									<div class="statistic__item_title-sec">
-										<h2 class="counter-value"><?php echo $property_owner;?></h2>
+										<h2 class="counter-value"><?php echo (isset($property_owner)) ? $property_owner : 0;?></h2>
 	                            		<span class="desc">Property Owners</span>
 									</div>
 									<div class="statistic__item_img-sec">
@@ -131,7 +143,7 @@ get_header();
 							<a href="<?php echo get_site_url(); ?>/admin/all-tenants/">
 								<div class="statistic__item_cont">
 									<div class="statistic__item_title-sec">
-										<h2 class="counter-value"><?php echo $tenant;?></h2>
+										<h2 class="counter-value"><?php echo (isset($tenant)) ? $tenant : 0;?></h2>
 	                            		<span class="desc">Tenants</span>
 									</div>
 									<div class="statistic__item_img-sec">

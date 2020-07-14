@@ -315,6 +315,8 @@ function add_login_logout_link($items, $args) {
 			ob_end_clean();
 			$items .= '<li>'. $loginoutlink .'</li>';			
 		}
+		$appointment = '<button class="appointment-button" data-toggle="modal" data-target="#bookappntmntpopup">Book Appointment</button>';
+		$items .= '<li>'. $appointment .'</li>';			
 	return $items;
 }
 
@@ -1314,4 +1316,73 @@ function nyc_remove_notification(){
 	exit;
 }
 
+function submit_book_appointment_form(){
+	if(isset($_POST['book_appointment'])){
+	  $user = wp_get_current_user();
+	  $user_id = null;
+      if(is_user_logged_in()){
+			if($user->roles[0] == "tenant"){
+			  $user_id = $user->ID;
+			}
+	  } 
+       $lead_id = wp_insert_post(array (
+						'post_type'		=> 'leads',
+						'post_title' 	=> 'Lead submission',
+						'post_content' 	=> 'Lead submission by guest user',
+						'post_author' 	=> 1,
+						'post_status'   => 'publish'
+		           ));
+		
+		
+		 if ($lead_id) {
+			add_post_meta($lead_id, 'lead_name', $_POST['user_name']);
+			add_post_meta($lead_id, 'lead_email', $_POST['user_email']);
+			add_post_meta($lead_id, 'lead_phone', $_POST['user_num']);
+			add_post_meta($lead_id, 'lead_datetime', strtotime($_POST['date'] . ' '.$_POST['time']));
+			add_post_meta($lead_id, 'lead_summary', $_POST['appointment_description']);
+			add_post_meta($lead_id, 'lead_source','Appointment Form');
+			add_post_meta($lead_id, 'lead_created_from', 'Appointment_user' );
+			add_post_meta($lead_id, 'lead_created_user_id', $user_id);
+			$notification = "A new lead submission from Book Appointment by ".$_POST['user_name'];
+			nyc_add_noticication($notification);				
+			
+			$strtotime =  strtotime($_POST['date'] . ' '.$_POST['time']);
+			$datetime =  date("F j, Y h:i:s A", $strtotime);
+			
+			/*----------- Email to Tenant After Lead Submission --------*/
+			
+			$subject1 = "Appointment Lead Submission Enquiry Recieved On NYCROOMS";
+			$to1 = $_POST['user_email'];
+			$msg1  = '<h4>Hello '.$_POST['user_name'].',</h4>';
+			$msg1 .= '<p>Thank you For Lead Submission on NYC Rooms. We Have Recevied Your Appointment Enquiry Request for lead submission. One of our Represntative will be in touch with you as soon as possible.</p>';
+			$msg1 .=  '<p>Thanks!<p>';
+			$headers1 = array('Content-Type: text/html; charset=UTF-8');
+			$mail1 = wp_mail($to1, $subject1, $msg1,$headers1);
+			
+	       /*---------- Email to Admin After Lead Submission --------*/
+			
+			$subject = "New Lead Submission";
+			$to = get_option('admin_email');
+			$msg  = __( '<h4>Hello Admin,</h4>') . "\r\n\r\n";
+			$msg .= '<p>A new lead Submission by Appointment Form with following Details:</p>';
+			$msg .= '<p>Name:'.$_POST['user_name'] .'</p>';
+			$msg .= '<p>Email:'.$_POST['user_email'] .'</p>';
+			$msg .= '<p>Phone:'.$_POST['user_num'] .'</p>';
+			$msg .= '<p>Date & time:'. $datetime .'</p>';
+			$msg .= '<p>Requirements:</p><p>'.$_POST['appointment_description'] .'</p>';
+			$msg .=  '<p>Thanks!<p>';
+			$headers = array('Content-Type: text/html; charset=UTF-8');
+		    $mail = wp_mail($to, $subject, $msg,$headers);
+				?>
+				<script>
+				jQuery(document).ready(function(){
+					jQuery('#successModal .modal-body p').html('We have recieved your request for property. We will contact you soon');
+					jQuery('#successModal').modal('show');
+				});
+				</script>				
+				<?php 				
+		}		
+	}
+}
+add_action('wp_footer','submit_book_appointment_form');
 ?>

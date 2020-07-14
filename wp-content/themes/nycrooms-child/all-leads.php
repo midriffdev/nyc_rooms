@@ -163,11 +163,9 @@ get_header();
 					
 					<?php  } 
 
-               } else { ?>
-
-                      <li><h3>No Leads Found</h3></li>
-
-          <?php } ?> 
+               } else { 
+						echo "<tr class='nyc-no-properties'><td class='no_property_found' colspan='7'>No Leads Found !</td></tr>";
+			   } ?> 
 
                 <?php 
 				wp_reset_query();
@@ -318,7 +316,11 @@ input.apply_action_leads {
     margin-left: 5%;
     padding: 0;
 }
-
 </style>
+<script>
+jQuery(document).ready(function($) {
+	jQuery('#sidebar-allleads').addClass('current');
+});
+</script>
 <?php
 get_footer();

@@ -193,7 +193,7 @@ input.checkbulk{
 				<?php 
 				} 
 				}else{
-				echo "<tr><td colspan='6'>No record founds</td></tr>";
+				echo "<tr><td colspan='6' class='no_property_found'>No Tenant Found !</td></tr>";
 				}
 				?>
 				</tbody>

@@ -71,7 +71,8 @@ if(is_user_logged_in()){
 			                 );
 			     
 			    $user_verify = wp_signon( $login_data, false ); 
-				
+				$notification = "A property owner (".$username.") is registered";
+				nyc_add_noticication($notification);				
 				
 				 if(!is_wp_error($user_verify)){
 				   wp_new_user_notification($user, null, 'both');

@@ -321,7 +321,7 @@ get_header();
 						}
 
 					}else{
-					    echo "<tr class='nyc-no-properties'><td>No Properties Found !</td></tr>";
+					    echo "<tr class='nyc-no-properties'><td class='no_property_found' colspan='4'>No Properties Found !</td></tr>";
 					}
 				?>
 
@@ -386,7 +386,12 @@ table.manage-table th:first-child {
 }
 
 </style>
-
+<script>
+jQuery(document).ready(function($) {
+	jQuery('.propertyOwnerList').addClass('show--submenu');
+	jQuery('#sidebar-rentedproperty').addClass('current');
+});
+</script>
 <?php
 get_footer();
 ?>
