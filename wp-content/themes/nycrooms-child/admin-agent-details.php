@@ -1,17 +1,10 @@
 <?php
 /* Template Name: Admin Agent Details */
 $getuser = get_user_by('id',$_GET['agentid']);
-$usererror = '';
-$usersuccess = '';
 if(isset($_POST['add_agent'])){
 
-	  $phonenold = $_POST['phone'];
-		 if(strpos($phonenold,'+1') === false){
-			$phoneno = '+1'.$phonenold;
-		 } else {
-			$phoneno = $phonenold;
-		 }
- 
+	  $phoneno = $_POST['phone'];
+
        if( $_POST['email'] != $getuser->user_email  ) {
 	     
 	    if(email_exists( $_POST['email'] )){
@@ -117,21 +110,6 @@ get_header();
 			</div>
 		</div>
 		<div class="row">
-		            <?php
-                         if($usererror){
-						?>
-						    <label class="form_errors"><?= $usererror ?></label>
-						<?php
-						 }
-						?>
-						<?php
-                         if($usersuccess){
-						?>
-						    <label class="reset_success"><?= $usersuccess ?></label>
-						<?php
-						 }
-						?>
-						
 				   <form method="post" enctype="multipart/form-data">
 						<div class="col-md-6 my-profile">
 							
@@ -153,7 +131,7 @@ get_header();
 								</div>
 								<div class="col-md-6">
 									<label>Phone</label>
-									<input value="<?php echo get_user_meta($getuser->ID,'user_phone',true); ?>" type="text" name="phone" placeholder="Enter Phone With +1.." required pattern="[+1]{2}[0-9]{10}" maxlength=12>
+									<input value="<?php echo get_user_meta($getuser->ID,'user_phone',true); ?>" type="text" name="phone" placeholder="Enter Phone With +1.." required pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
 								</div>
 							</div>
 							
@@ -244,6 +222,35 @@ get_header();
 <div id="backtotop"><a href="#"></a></div>
 
 </div>
+<?php 
+if(isset($usererror) || !empty($usererror)){ 
+$msg = '';
+$msg .= '<p><span style="color:#f81515;font-size: large">'.$usererror.'</span></p>'; 
+?>
+<script>
+jQuery(document).ready(function(){
+	var msg ='<?php echo $msg; ?>';
+	jQuery('#successModal .modal-body p').html(msg);
+	jQuery('#successModal').modal('show');
+});
+</script>
+<?php 
+} 
+
+if(isset($usersuccess) || !empty($usersuccess)){ 
+$msg = '';
+$msg .= '<p><span style="color:#1db40a;font-size: large">'.$usersuccess.'</span></p>'; 
+?>
+<script>
+jQuery(document).ready(function(){
+	var msg ='<?php echo $msg; ?>';
+	jQuery('#successModal .modal-body p').html(msg);
+	jQuery('#successModal').modal('show');
+});
+</script>
+<?php 
+} 
+?>
 <!-- Wrapper / End -->
 <style>
 label.form_errors {

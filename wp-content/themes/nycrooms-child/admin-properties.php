@@ -66,24 +66,60 @@ if(isset($_GET['update_search'])){
 					//'compare'      => 'NOT LIKE',
 					'compare'      => '<=',
 					'type'          => 'NUMERIC'
-                   );	
-				   
+                   );				   
 	}
-		
-		
 	
-
+	if(isset($_GET['property_lang']) && !empty($_GET['property_lang']) ){	
+		$argarray[] =  array
+		(
+			'key'          => 'rm_lang',
+			'value'        => $_GET['property_lang'],
+			'compare'      => '=',
+		);
+	}
+	
+	if(isset($_GET['property_gender']) && !empty($_GET['property_gender']) ){	
+		$argarray[] =  array
+		(
+			'key'          => 'gender',
+			'value'        => $_GET['property_gender'],
+			'compare'      => '=',
+		);
+	}
+	if(isset($_GET['property_location']) && !empty($_GET['property_location']) ){	
+		$argarray[] = array(
+		    'relation'    => 'OR',
+			array
+			(
+				'key'          => 'address',
+				'value'        => $_GET['property_location'],
+				'compare'      => '%LIKE%',
+			),
+			array
+			(
+				'key'          => 'city',
+				'value'        => $_GET['property_location'],
+				'compare'      => '%LIKE%',
+			),
+			array
+			(
+				'key'          => 'state',
+				'value'        => $_GET['property_location'],
+				'compare'      => '%LIKE%',
+			),
+		);
+	}
 }
 
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 $args = array(
-'post_type'=> 'property',
-'post_status' => array('draft', 'available', 'rented','Pending Review'),
-'posts_per_page'   => 6,
-         //'no_found_rows'    => true,
-'suppress_filters' => false,
-'paged' => $paged
+	'post_type'=> 'property',
+	'post_status' => array('draft', 'available', 'rented','Pending Review'),
+	'posts_per_page'   => 6,
+			 //'no_found_rows'    => true,
+	'suppress_filters' => false,
+	'paged' => $paged
 );
 
 if(isset($_GET['Property_name']) && !empty($_GET['Property_name'])){
@@ -92,21 +128,15 @@ if(isset($_GET['Property_name']) && !empty($_GET['Property_name'])){
 
 }
 
-
- if(isset($_GET['furnish_unfurnish_type']) && !empty($_GET['furnish_unfurnish_type'])){
-
-   
+if(isset($_GET['furnish_unfurnish_type']) && !empty($_GET['furnish_unfurnish_type'])){
+	
 			  $args['tax_query'] = array(
 												array(
 													'taxonomy' => 'types',
 													'field' => 'slug',
 													'terms' => $_GET['furnish_unfurnish_type'],
 												)
-								   );
-						  
-	   
-	   
-						   
+								   );					   
 }
 
 if(!empty($argarray)){
@@ -241,8 +271,29 @@ get_header();
 										</div>
 										<!-- Select Input / End -->
 									</div>
-
 								</div>
+								
+								<div class="row with-forms">
+									<div class="col-md-4">
+										<input type="text" placeholder="Enter Location" value="" name="property_location"/>
+									</div>
+									<div class="col-md-4">
+										<select data-placeholder="Any Status" class="chosen-select-no-single" name="property_lang" >
+											<option value="">Select Language</option>	
+											<option value="English">English</option>
+											<option value="Spanish">Spanish</option>
+											<option value="">Any</option>
+										</select>
+									</div>
+									<div class="col-md-4">
+										<select data-placeholder="Any Status" class="chosen-select-no-single" name="property_gender" >
+											<option value="">Select Gender</option>	
+											<option value="Female">Female</option>
+											<option value="Male">Male</option>
+											<option value="">Any</option>
+										</select>
+									</div>
+								</div>								
 								<!-- Row With Forms / End -->
 
 								<!-- Search Button -->

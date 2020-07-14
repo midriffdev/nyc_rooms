@@ -1357,24 +1357,27 @@ textarea:required:focus {
 					<h2>Property Owner Detail</h2>
 					<?php 
 					$property_owner = get_userdata($authid);
+					if($property_owner){
+					if(isset($property_owner->data->ID)){
 					$owner_id = $property_owner->data->ID;
 					?>
-					<div class="contract-ownerdetail-cont">
-						<ul>
-						<li>
-							<p>Name: </p>
-							<span><?php echo $property_owner->data->display_name; ?></span>
-						</li>
-						<li>
-							<p>Email:</p>
-							<span><?php echo $property_owner->data->user_email; ?></span>
-						</li>
-						<li>
-							<p>Phone:</p>
-							<span><?php echo get_user_meta($owner_id,'user_phone',true); ?></span>
-						</li>
-					</ul>
-					</div>
+						<div class="contract-ownerdetail-cont">
+							<ul>
+							<li>
+								<p>Name: </p>
+								<span><?php echo $property_owner->data->display_name; ?></span>
+							</li>
+							<li>
+								<p>Email:</p>
+								<span><?php echo $property_owner->data->user_email; ?></span>
+							</li>
+							<li>
+								<p>Phone:</p>
+								<span><?php echo get_user_meta($owner_id,'user_phone',true); ?></span>
+							</li>
+						</ul>
+						</div>
+					<?php } } ?>
 				</div>
 			</div>
 

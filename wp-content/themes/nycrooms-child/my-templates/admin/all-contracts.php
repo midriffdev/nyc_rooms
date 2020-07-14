@@ -113,6 +113,9 @@ input.checkbulk{
 								<div class="col-md-6">
 									<input type="text" placeholder="Deal No" name="deal_no" value=""/>
 								</div>
+								<div class="col-md-6">
+									<input type="text" placeholder="Enter Tenant / Property Owner" name="name" value=""/>
+								</div>
 							</div>
 							<!-- Search Button -->
 							<div class="row with-forms">

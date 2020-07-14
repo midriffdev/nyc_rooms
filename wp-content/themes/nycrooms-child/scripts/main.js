@@ -1,10 +1,10 @@
 /*---------Query for listing submenu---------*/
 jQuery( document ).ready(function() {
-    $(".list-has--submenu > a").click(function(){
-    event.preventDefault();
+    $(".list-has--submenu > a").click(function(event){
+		event.preventDefault();
 	});
     $(".list-has--submenu ").click(function(){
-  	$(this).toggleClass("show--submenu");
+		$(this).toggleClass("show--submenu");
 	});
 });
 /*---------Query for listing submenu closed---------*/
@@ -24,9 +24,9 @@ $(".next").click(function(){
 	var stateval = current_fs.find('select[name="state"]').val();
 	if(typeof stateval == 'undefined'){
 	   next_fs = $(this).parent().next();
-	} else if(stateval != 'new jersey'){
+	} else if(stateval != 'new york'){
 	  next_fs = $(this).parent().next().next();
-	} else if(stateval == 'new jersey') {
+	} else if(stateval == 'new york') {
 	   next_fs = $(this).parent().next();
 	}
 	
@@ -70,9 +70,9 @@ $(".previous").click(function(){
 	  console.log(stateval);
 	if(typeof stateval == 'undefined'){
 	   previous_fs = $(this).parent().prev();
-	} else if(stateval != 'new jersey'){
+	} else if(stateval != 'new york'){
 	   previous_fs = $(this).parent().prev().prev();
-	} else if(stateval == 'new jersey') {
+	} else if(stateval == 'new york') {
 	   previous_fs = $(this).parent().prev();
 	}
 	

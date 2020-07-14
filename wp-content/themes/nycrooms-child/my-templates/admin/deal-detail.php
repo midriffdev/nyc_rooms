@@ -138,20 +138,18 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 						?>
 					</select>
 					
-					<div class="allocategent-tostage">
-						<p>To</p>
-					<select data-placeholder="Any Status" class="chosen-select-no-single" >
-						<option>Select Stage</option>	
-						<option>Stage 1</option>
-						<option>Stage 2</option>
-						<option>Stage 3</option>
-					</select>
-					</div>
-					
 				</div>
 			</div>
 			<div class="col-md-6">
+											
 				<div class="dealdetal-currentstage-status">Current Status:	<span>Stage <?php echo $deal_stage; ?></span></div>
+				<div class="deal-detail-uniformbutton">
+					<ul>
+						<li><a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-email' : 'deal-send-email'; ?>">Send as Email</a></li>
+						<li><a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-text' : 'deal-send-text'; ?>">Send as Text</a></li>
+						<li><a href="<?php echo get_site_url(); ?>/admin/deals/contract/<?php echo base64_encode($post_id); ?>" class="<?php echo $convert_deal; ?>"><button type="button" class="btn btn-primary popup__button stage3-convertdeal-but">Convert Deal to Contract</button></a></li>
+					</ul>
+				</div>				
 			</div>
 		</div>
 		<div class="row">

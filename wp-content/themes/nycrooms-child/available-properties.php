@@ -70,9 +70,47 @@ if(isset($_GET['update_search'])){
 				   
 	}
 		
-		
+	if(isset($_GET['property_lang']) && !empty($_GET['property_lang']) ){	
+		$argarray[] =  array
+		(
+			'key'          => 'rm_lang',
+			'value'        => $_GET['property_lang'],
+			'compare'      => '=',
+		);
+	}
 	
-
+	if(isset($_GET['property_gender']) && !empty($_GET['property_gender']) ){	
+		$argarray[] =  array
+		(
+			'key'          => 'gender',
+			'value'        => $_GET['property_gender'],
+			'compare'      => '=',
+		);
+	}
+	if(isset($_GET['property_location']) && !empty($_GET['property_location']) ){	
+		$argarray[] = array(
+		    'relation'    => 'OR',
+			array
+			(
+				'key'          => 'address',
+				'value'        => $_GET['property_location'],
+				'compare'      => '%LIKE%',
+			),
+			array
+			(
+				'key'          => 'city',
+				'value'        => $_GET['property_location'],
+				'compare'      => '%LIKE%',
+			),
+			array
+			(
+				'key'          => 'state',
+				'value'        => $_GET['property_location'],
+				'compare'      => '%LIKE%',
+			),
+		);
+	}		
+	
 }
 
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
@@ -244,7 +282,27 @@ get_header();
 
 								</div>
 								<!-- Row With Forms / End -->
-
+								<div class="row with-forms">
+									<div class="col-md-4">
+										<input type="text" placeholder="Enter Location" value="" name="property_location"/>
+									</div>
+									<div class="col-md-4">
+										<select data-placeholder="Any Status" class="chosen-select-no-single" name="property_lang" >
+											<option value="">Select Language</option>	
+											<option value="English">English</option>
+											<option value="Spanish">Spanish</option>
+											<option value="">Any</option>
+										</select>
+									</div>
+									<div class="col-md-4">
+										<select data-placeholder="Any Status" class="chosen-select-no-single" name="property_gender" >
+											<option value="">Select Gender</option>	
+											<option value="Female">Female</option>
+											<option value="Male">Male</option>
+											<option value="">Any</option>
+										</select>
+									</div>
+								</div>	
 								<!-- Search Button -->
 								<div class="row with-forms">
 									<div class="col-md-12">

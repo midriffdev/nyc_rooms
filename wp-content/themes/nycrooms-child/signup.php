@@ -58,12 +58,15 @@ if(is_user_logged_in()){
 									  'user_login' => $username,
 									  'user_pass' => $password,
 									  'user_email' => $email,
+									  'display_name' => $_REQUEST['full_name'],
 									  'role'  => 'property_owner'
                            );
 			  
 			$user =  wp_insert_user($signin_data);
 			 
 			 if($user){
+				add_user_meta($user,'user_full_name', $_REQUEST['full_name']);
+				add_user_meta($user,'user_phone', $_REQUEST['user_phone']);
 			   $login_data = array(
 			                    'user_login' => $username,
 							    'user_password' => $password,
@@ -340,7 +343,12 @@ get_header();
 			<div class="tab-content" id="tab2" style="display: none;">
                 
 				<form method="post" class="register"  action="<?php echo $_SERVER['REQUEST_URI']; ?>" >
-					
+				<p class="form-row form-row-wide">
+					<label for="full_name">Name:
+						<i class="im im-icon-Male"></i>
+						<input type="text" class="input-text" name="full_name" id="full_name"  required />
+					</label>
+				</p>					
 				<p class="form-row form-row-wide">
 					<label for="username2">Username:
 						<i class="im im-icon-Male"></i>
@@ -348,7 +356,12 @@ get_header();
 					</label>
 					<label class="form_errors"><?php if(!empty($errors['username'])){ echo $errors['username'];} ?></label>
 				</p>
-					
+				<p class="form-row form-row-wide">
+					<label for="user_phone">Phone:
+						<i class="im im-icon-Phone"></i>
+						<input type="text" id="user_phone" name="user_phone" pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
+					</label>
+				</p>					
 				<p class="form-row form-row-wide">
 					<label for="email2">Email Address:
 						<i class="im im-icon-Mail"></i>

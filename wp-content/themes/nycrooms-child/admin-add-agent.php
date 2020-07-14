@@ -4,7 +4,7 @@ $usererror = '';
 $usersuccess = '';
 nyc_property_admin_authority();
 if(isset($_POST['add_agent'])){
-     $phone = '+1'.$_POST['phone'];
+     $phone = $_POST['phone'];
 if( email_exists( $_POST['email'] ) ) {
      $usererror ="Sorry!! Email Already Exists";
   } else {
@@ -90,7 +90,7 @@ get_header();
 								</div>
 								<div class="col-md-6">
 									<label>Phone</label>
-									<input  type="text" name="phone" placeholder="Enter Phone With +1.." required pattern="[+1]{2}[0-9]{10}" maxlength=12>
+									<input  type="text" name="phone" placeholder="Enter Phone With +1.." pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
 								</div>
 							</div>
 							

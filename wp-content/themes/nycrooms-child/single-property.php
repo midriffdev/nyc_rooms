@@ -349,11 +349,12 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 
 				<!-- Widget -->
 				<?php if( !current_user_can('editor') && !current_user_can('administrator') ) { ?>
+				<?php if( is_user_logged_in() ) { ?>
 				<div class="widget margin-bottom-30">
 					<button class="widget-button with-tip nyc_bookmark <?php echo nyc_check_is_bookmark($post_id); ?>" data-id="<?php echo $post_id; ?>" data-tip-content="Add to Bookmarks"><i class="fa fa-star-o"></i></button>
 					<div class="clearfix"></div>
 				</div>
-
+				<?php } ?>
 				<!-- Widget / End -->
 
                 
