@@ -12772,7 +12772,7 @@ table.contracts--table td:first-child {padding-left: 40px !important;}
     font-weight: 600;
     color: #333;
 }
-.act-wrap {padding: 0 !important;}
+.act-wrap {padding: 0 !important;margin:0;}
 .act-wrap li p {
     margin: 0;
 }
@@ -13723,18 +13723,21 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
 	flex-wrap: wrap;
 }
 .contract-admin-notes {
-    background: #efefef;
-    border-radius: 5px;
-    box-shadow: 0 0 19px rgba(0,0,0,0.2);
-    padding: 31px 34px 24px;
     margin: 45px 0 0 0;
 }
 .contract-admin-notes h2 {
     font-size: 23px;
     margin: 0 0 17px 0;
 }
+.deal-detail-paymentstatus a {
+    color: #fff;
+}
 .contract-admin-notes p {
     font-size: 16px;
+	background: #efefef;
+    border-radius: 5px;
+    box-shadow: 0 0 19px rgba(0,0,0,0.2);
+    padding: 31px 34px 24px;
 }
 .row.contract-detail-formsection {
     box-shadow: 0 0 13px rgba(0,0,0,0.2);
