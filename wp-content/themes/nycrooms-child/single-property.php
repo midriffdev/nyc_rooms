@@ -714,7 +714,7 @@ get_footer();
   </div>
 </div>
 <!-- Maps -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgeuuDfRlweIs7D6uo4wdIHVvJ0LonQ6g"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkB8x8TIEGgMQIeZjIEJILbKOn_5uEP8I"></script>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/infobox.min.js"></script>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/markerclusterer.js"></script>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/maps.js"></script>
