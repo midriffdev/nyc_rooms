@@ -11,13 +11,7 @@ if($user->roles[0] == "property_owner"){
 }
 if(isset($_POST['user_submit'])){
    
-        $phonenold = $_POST['user_phone'];
-		 if(strpos($phonenold,'+1') === false){
-			$phoneno = '+1'.$phonenold;
-		 } else {
-			$phoneno = $phonenold;
-		 }
-	 
+        $phoneno = $_POST['user_phone'];
       $userdata = array( 
 	            'ID' => get_current_user_id(),
 	            'user_nicename'  => $_POST['user_name'],
@@ -65,7 +59,7 @@ get_header();
 						<input value="<?php if(!empty($user->data->display_name)){echo $user->data->display_name;} ?>" type="text" name="user_name">
 
 						<label>Phone</label>
-						<input value="<?php echo get_user_meta(get_current_user_id(),'user_phone',true); ?>" type="text" name="user_phone" pattern="[+1]{2}[0-9]{10}" maxlength=12 placeholder= "Enter Phone With +1..">
+						<input value="<?php echo get_user_meta(get_current_user_id(),'user_phone',true); ?>" type="text" name="user_phone" required pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" placeholder= "Enter Phone With +1..">
 
 						<label>Email</label>
 						<input value="<?php if(!empty($user->data->user_email)){echo $user->data->user_email;} ?>" type="email" name="user_email" readonly>

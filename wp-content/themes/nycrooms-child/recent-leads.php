@@ -124,7 +124,7 @@ get_header();
 					<th ><i class="fa fa-phone"></i> Phone</th>
 					<th class="expire-date"><i class="fa fa-envelope" ></i>Email</th>
 					<th><i class="fa fa-bolt" ></i> Lead Source</th>
-					<th></th>
+					<th>Action</th>
 				</tr>
                  
 				 
@@ -162,11 +162,9 @@ get_header();
 						 }
 					} 
 
-               } else { ?>
-
-                      <li><h3>No Leads Found</h3></li>
-
-          <?php } ?> 
+               } else { 
+						echo "<tr class='nyc-no-properties'><td class='no_property_found' colspan='6'>No Recent Lead Found !</td></tr>";
+			   } ?> 
 
                 <?php 
 				wp_reset_query();
@@ -178,7 +176,7 @@ get_header();
 				</tbody>
 				</table>
                  
-                <div>
+                <div class="admin-advanced-searchfilter">
 			        <label>Select bulk action</label>
                   <div class="bulk_actions_leads">
 						<select class="select_action_leads">
@@ -299,5 +297,10 @@ input.apply_action_leads {
     padding: 0;
 }
 </style>
+<script>
+jQuery(document).ready(function($) {
+	jQuery('#sidebar-recentleads').addClass('current');
+});
+</script>
 <?php
 get_footer();

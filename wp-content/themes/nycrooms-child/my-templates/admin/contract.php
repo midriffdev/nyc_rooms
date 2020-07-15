@@ -1012,7 +1012,7 @@ if(isset($_POST['create_contract']) && $contract_created == false){
 				'ID'             => $property_id,
 				'post_status' => 'rented',
 			);
-			wp_update_post( $args );			
+			wp_update_post( $args );							
 			contract_created_notification_tenant($email,get_the_title($property_id),$attach_id);
 			contract_created_notification_property_owner(get_the_author_meta( 'user_email' , $authid),get_the_title($property_id),$name,$attach_id);
 		}
@@ -1357,24 +1357,27 @@ textarea:required:focus {
 					<h2>Property Owner Detail</h2>
 					<?php 
 					$property_owner = get_userdata($authid);
+					if($property_owner){
+					if(isset($property_owner->data->ID)){
 					$owner_id = $property_owner->data->ID;
 					?>
-					<div class="contract-ownerdetail-cont">
-						<ul>
-						<li>
-							<p>Name: </p>
-							<span><?php echo $property_owner->data->display_name; ?></span>
-						</li>
-						<li>
-							<p>Email:</p>
-							<span><?php echo $property_owner->data->user_email; ?></span>
-						</li>
-						<li>
-							<p>Phone:</p>
-							<span><?php echo get_user_meta($owner_id,'user_phone',true); ?></span>
-						</li>
-					</ul>
-					</div>
+						<div class="contract-ownerdetail-cont">
+							<ul>
+							<li>
+								<p>Name: </p>
+								<span><?php echo $property_owner->data->display_name; ?></span>
+							</li>
+							<li>
+								<p>Email:</p>
+								<span><?php echo $property_owner->data->user_email; ?></span>
+							</li>
+							<li>
+								<p>Phone:</p>
+								<span><?php echo get_user_meta($owner_id,'user_phone',true); ?></span>
+							</li>
+						</ul>
+						</div>
+					<?php } } ?>
 				</div>
 			</div>
 
@@ -1701,7 +1704,7 @@ textarea:required:focus {
 											<span>Agent Name:</span>
 										</div>
 										<div class="agreement-pannel-content pannel2 agent-space">
-										<span><input type="text" class="form-input" name="agent_name" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_name']; }  ?>" required></span></div>
+										<span><input type="text" class="form-input" name="agent_name" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_name']; }  ?>" ></span></div>
 									</div>
 								</div>
 								<div class="form-content-inner-pannel">
@@ -1711,7 +1714,7 @@ textarea:required:focus {
 Customer Name:</span>
 							</div>
 							<div class="agreement-pannel-content pannel2 customer-space">
-								<span><input type="text" class="form-input" name="customer_name" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_name']; }  ?>" required></span></div>
+								<span><input type="text" class="form-input" name="customer_name" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_name']; }  ?>" ></span></div>
 							</div>
 								</div>
 							</div>
@@ -1723,7 +1726,7 @@ Customer Name:</span>
 Agent Signature:</span>
 										</div>
 										<div class="agreement-pannel-content pannel2 agent-sign-space">
-										<span><input type="text" class="form-input" name="agent_signature" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_signature']; }  ?>" required></span></div>
+										<span><input type="text" class="form-input" name="agent_signature" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_signature']; }  ?>" ></span></div>
 									</div>
 								</div>
 								<div class="form-content-inner-pannel">
@@ -1733,7 +1736,7 @@ Agent Signature:</span>
 Customer Signature:</span>
 							</div>
 							<div class="agreement-pannel-content pannel2 customer-sign-space">
-								<input type="text" class="form-input" name="customer_signature" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_signature']; }  ?>" required></span></div></div>
+								<input type="text" class="form-input" name="customer_signature" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_signature']; }  ?>" ></span></div></div>
 							</div>
 								</div>
 							<div class="form-content-pannel">
@@ -1744,7 +1747,7 @@ Customer Signature:</span>
 Date:</span>
 										</div>
 										<div class="agreement-pannel-content pannel2 date-last-space">
-										<span><input type="date" class="form-input" name="agent_date" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_date']; }  ?>" required></span></div>
+										<span><input type="date" class="form-input" name="agent_date" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_date']; }  ?>" ></span></div>
 									</div>
 								</div>
 								<div class="form-content-inner-pannel">
@@ -1754,7 +1757,7 @@ Date:</span>
 Date:</span>
 							</div>
 							<div class="agreement-pannel-content pannel2 date-last-space">
-								<input type="date" class="form-input" name="customer_date" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_date']; }  ?>" required></span></div></div>
+								<input type="date" class="form-input" name="customer_date" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_date']; }  ?>" ></span></div></div>
 							</div>
 								</div>
 							</div>

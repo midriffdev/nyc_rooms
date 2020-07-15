@@ -315,6 +315,8 @@ function add_login_logout_link($items, $args) {
 			ob_end_clean();
 			$items .= '<li>'. $loginoutlink .'</li>';			
 		}
+		$appointment = '<button class="appointment-button" data-toggle="modal" data-target="#bookappntmntpopup">Book Appointment</button>';
+		$items .= '<li>'. $appointment .'</li>';			
 	return $items;
 }
 
@@ -736,7 +738,9 @@ function cvf_demo_pagination_load_posts() {
 
         // Pagination Buttons logic     
         $pag_container .= "
-        <div class='cvf-universal-pagination'>
+        <div class='cvf-universal-pagination '>
+		<div class='pagination-container margin-top-10 margin-bottom-45'>
+		<nav class='pagination'>
             <ul>";
 
         if ($first_btn && $cur_page > 1) {
@@ -774,6 +778,8 @@ function cvf_demo_pagination_load_posts() {
 
         $pag_container = $pag_container . "
             </ul>
+			</nav>
+		  </div>
         </div>";
 
         // We echo the final output
@@ -1109,7 +1115,7 @@ function nyc_deal_send_sms(){
 			$input = new SendMessageInputObject();
 			$msg = "Hi, Here's the link where you can check deal details: ".$tenant_deal_link;
 			$input->setText($msg);
-			$input->setPhones('+1'.$tenant_phone);	
+			$input->setPhones($tenant_phone);	
 			try {
 				$result = $api->sendMessage($input);
 				if($result){
@@ -1126,7 +1132,7 @@ function nyc_deal_send_sms(){
 				$input = new SendMessageInputObject();
 				$msg = "You are assigned for tenant deals. Click on the link for more details. ".$agent_deal_link;
 				$input->setText($msg);
-				$input->setPhones('+1'.$agent_phone);	
+				$input->setPhones($agent_phone);	
 				try {
 					$result = $api->sendMessage($input);
 					if($result){
@@ -1143,7 +1149,7 @@ function nyc_deal_send_sms(){
 }
 
 add_action( 'wp_ajax_nyc-deal-select-agent', 'nyc_deal_select_agent' );
-add_action( 'wp_ajax_nyc-deal-select-agent', 'nyc_deal_select_agent' ); 
+add_action( 'wp_ajax_nopriv_nyc-deal-select-agent', 'nyc_deal_select_agent' ); 
 function nyc_deal_select_agent(){
 	if(isset($_POST['deal_id'])){
 		$deal_id = $_POST['deal_id'];
@@ -1160,7 +1166,7 @@ function nyc_deal_select_agent(){
 }
 
 add_action( 'wp_ajax_add-new-custom-deal', 'add_new_custom_deal' );
-add_action( 'wp_ajax_add-new-custom-deal', 'add_new_custom_deal' ); 
+add_action( 'wp_ajax_nopriv_add-new-custom-deal', 'add_new_custom_deal' ); 
 function add_new_custom_deal(){
 	if(isset($_POST['action']) && $_POST['action'] == 'add-new-custom-deal'){
 	$deal_id = wp_insert_post(
@@ -1238,4 +1244,145 @@ function count_tenant_hired_property(){
 	}	
 	return ($property_ids) ? count($property_ids): 0;
 }
+
+add_action('init','nyc_create_additional_table');
+function nyc_create_additional_table(){
+	global $wpdb;
+	$notification_table_name = $wpdb->prefix."notification";
+	if($wpdb->get_var("show tables like '$notification_table_name'") != $notification_table_name) {
+
+		$sql = "CREATE TABLE " . $notification_table_name . " (
+			id int(11) NOT NULL AUTO_INCREMENT,
+			message VARCHAR(255) NOT NULL,
+			is_read enum('0','1') NOT NULL DEFAULT '0' COMMENT '0=>unread, 1=>read',
+			created_at datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+			UNIQUE KEY id (id)
+		);";
+
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
+	}	
+}
+
+function nyc_add_noticication($message){
+        if(empty($message)){
+			return;
+		}
+		global $wpdb;
+		$table = $wpdb->prefix.'notification';
+		$data = array('message' => $message, 'is_read' => 0, 'created_at' => current_time('mysql'));
+		$format = array('%s','%s','%s');
+		$wpdb->insert($table,$data,$format);
+}
+
+function nyc_time_elapsed_string($datetime, $full = false) {
+    $now = new DateTime;
+    $ago = new DateTime($datetime);
+    $diff = $now->diff($ago);
+
+    $diff->w = floor($diff->d / 7);
+    $diff->d -= $diff->w * 7;
+
+    $string = array(
+        'y' => 'year',
+        'm' => 'month',
+        'w' => 'week',
+        'd' => 'day',
+        'h' => 'hour',
+        'i' => 'minute',
+        's' => 'second',
+    );
+    foreach ($string as $k => &$v) {
+        if ($diff->$k) {
+            $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+        } else {
+            unset($string[$k]);
+        }
+    }
+
+    if (!$full) $string = array_slice($string, 0, 1);
+    return $string ? implode(', ', $string) . ' ago' : 'just now';
+}
+
+add_action( 'wp_ajax_nyc_remove_notification', 'nyc_remove_notification' );
+add_action( 'wp_ajax_nopriv_nyc_remove_notification', 'nyc_remove_notification' ); 
+function nyc_remove_notification(){
+	if(isset($_POST['action']) && $_POST['action'] == 'nyc_remove_notification'){
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'notification';
+		$wpdb->query( 
+		$wpdb->prepare("DELETE FROM $table_name WHERE id = %d",$_POST['noti_id']));		
+	}	
+	exit;
+}
+
+function submit_book_appointment_form(){
+	if(isset($_POST['book_appointment'])){
+	  $user = wp_get_current_user();
+	  $user_id = null;
+      if(is_user_logged_in()){
+			if($user->roles[0] == "tenant"){
+			  $user_id = $user->ID;
+			}
+	  } 
+       $lead_id = wp_insert_post(array (
+						'post_type'		=> 'leads',
+						'post_title' 	=> 'Lead submission',
+						'post_content' 	=> 'Lead submission by guest user',
+						'post_author' 	=> 1,
+						'post_status'   => 'publish'
+		           ));
+		
+		
+		 if ($lead_id) {
+			add_post_meta($lead_id, 'lead_name', $_POST['user_name']);
+			add_post_meta($lead_id, 'lead_email', $_POST['user_email']);
+			add_post_meta($lead_id, 'lead_phone', $_POST['user_num']);
+			add_post_meta($lead_id, 'lead_datetime', strtotime($_POST['date'] . ' '.$_POST['time']));
+			add_post_meta($lead_id, 'lead_summary', $_POST['appointment_description']);
+			add_post_meta($lead_id, 'lead_source','Appointment Form');
+			add_post_meta($lead_id, 'lead_created_from', 'Appointment_user' );
+			add_post_meta($lead_id, 'lead_created_user_id', $user_id);
+			$notification = "A new lead submission from Book Appointment by ".$_POST['user_name'];
+			nyc_add_noticication($notification);				
+			
+			$strtotime =  strtotime($_POST['date'] . ' '.$_POST['time']);
+			$datetime =  date("F j, Y h:i:s A", $strtotime);
+			
+			/*----------- Email to Tenant After Lead Submission --------*/
+			
+			$subject1 = "Appointment Lead Submission Enquiry Recieved On NYCROOMS";
+			$to1 = $_POST['user_email'];
+			$msg1  = '<h4>Hello '.$_POST['user_name'].',</h4>';
+			$msg1 .= '<p>Thank you For Lead Submission on NYC Rooms. We Have Recevied Your Appointment Enquiry Request for lead submission. One of our Represntative will be in touch with you as soon as possible.</p>';
+			$msg1 .=  '<p>Thanks!<p>';
+			$headers1 = array('Content-Type: text/html; charset=UTF-8');
+			$mail1 = wp_mail($to1, $subject1, $msg1,$headers1);
+			
+	       /*---------- Email to Admin After Lead Submission --------*/
+			
+			$subject = "New Lead Submission";
+			$to = get_option('admin_email');
+			$msg  = __( '<h4>Hello Admin,</h4>') . "\r\n\r\n";
+			$msg .= '<p>A new lead Submission by Appointment Form with following Details:</p>';
+			$msg .= '<p>Name:'.$_POST['user_name'] .'</p>';
+			$msg .= '<p>Email:'.$_POST['user_email'] .'</p>';
+			$msg .= '<p>Phone:'.$_POST['user_num'] .'</p>';
+			$msg .= '<p>Date & time:'. $datetime .'</p>';
+			$msg .= '<p>Requirements:</p><p>'.$_POST['appointment_description'] .'</p>';
+			$msg .=  '<p>Thanks!<p>';
+			$headers = array('Content-Type: text/html; charset=UTF-8');
+		    $mail = wp_mail($to, $subject, $msg,$headers);
+				?>
+				<script>
+				jQuery(document).ready(function(){
+					jQuery('#successModal .modal-body p').html('We have recieved your request for property. We will contact you soon');
+					jQuery('#successModal').modal('show');
+				});
+				</script>				
+				<?php 				
+		}		
+	}
+}
+add_action('wp_footer','submit_book_appointment_form');
 ?>

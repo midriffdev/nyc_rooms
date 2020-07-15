@@ -71,7 +71,46 @@ if(isset($_GET['update_search'])){
 				   
 	}
 		
-		
+	if(isset($_GET['property_lang']) && !empty($_GET['property_lang']) ){	
+		$argarray[] =  array
+		(
+			'key'          => 'rm_lang',
+			'value'        => $_GET['property_lang'],
+			'compare'      => '=',
+		);
+	}
+	
+	if(isset($_GET['property_gender']) && !empty($_GET['property_gender']) ){	
+		$argarray[] =  array
+		(
+			'key'          => 'gender',
+			'value'        => $_GET['property_gender'],
+			'compare'      => '=',
+		);
+	}
+	if(isset($_GET['property_location']) && !empty($_GET['property_location']) ){	
+		$argarray[] = array(
+		    'relation'    => 'OR',
+			array
+			(
+				'key'          => 'address',
+				'value'        => $_GET['property_location'],
+				'compare'      => '%LIKE%',
+			),
+			array
+			(
+				'key'          => 'city',
+				'value'        => $_GET['property_location'],
+				'compare'      => '%LIKE%',
+			),
+			array
+			(
+				'key'          => 'state',
+				'value'        => $_GET['property_location'],
+				'compare'      => '%LIKE%',
+			),
+		);
+	}			
 	
 
 }
@@ -248,7 +287,27 @@ get_header();
 
 								</div>
 								<!-- Row With Forms / End -->
-
+								<div class="row with-forms">
+									<div class="col-md-4">
+										<input type="text" placeholder="Enter Location" value="" name="property_location"/>
+									</div>
+									<div class="col-md-4">
+										<select data-placeholder="Any Status" class="chosen-select-no-single" name="property_lang" >
+											<option value="">Select Language</option>	
+											<option value="English">English</option>
+											<option value="Spanish">Spanish</option>
+											<option value="">Any</option>
+										</select>
+									</div>
+									<div class="col-md-4">
+										<select data-placeholder="Any Status" class="chosen-select-no-single" name="property_gender" >
+											<option value="">Select Gender</option>	
+											<option value="Female">Female</option>
+											<option value="Male">Male</option>
+											<option value="">Any</option>
+										</select>
+									</div>
+								</div>	
 								<!-- Search Button -->
 								<div class="row with-forms">
 									<div class="col-md-12">
@@ -270,11 +329,11 @@ get_header();
 				<table class="manage-table responsive-table all_properties_table">
 				<tbody>
 				<tr>
-				    <th><input type="checkbox" class="checkallproperties"></th>
-					<th><i class="fa fa-file-text"></i> Property</th>
-					<th><i class="fa fa-user"></i> Owner</th>
-					<th><i class="fa fa-hand-pointer-o"></i> Action</th>
-					<th></th>
+				    <th style="width:8% !important;"><input type="checkbox" class="checkallproperties"></th>
+					<th style="width:52% !important;"><i class="fa fa-file-text"></i> Property</th>
+					<th style="width:10% !important;"><i class="fa fa-user"></i> Owner</th>
+					<th style="width:10% !important;"><i class="fa fa-hand-pointer-o"></i> Action</th>
+					<th style="width:20% !important;">unapproved</th>
 				</tr>
 				<?php 
 				
@@ -301,7 +360,7 @@ if ( $properties->have_posts() ) {
 				<tr>
 				    <td><input type="checkbox" class="checkproperties" value="<?= $post_id ?>"></td>
 					<td class="title-container">
-						<img src="<?php if($prop_image){ echo $prop_image; } ?>"alt="">
+						<img src="<?php if($prop_image){ echo $prop_image; } ?>" alt="">
 						<div class="title">
 							<h4><a href="<?= get_post_permalink( get_the_ID()) ?>"><?php echo get_the_title($post_id); ?></a></h4>
 							<span><?php echo $address;?> </span>
@@ -335,7 +394,7 @@ if ( $properties->have_posts() ) {
 						}
 }
 					else{
-					    echo "<tr class='nyc-no-properties'><td>No Properties Found !</td></tr>";
+					    echo "<tr class='nyc-no-properties'><td class='no_property_found' colspan='5'>No Properties Found !</td></tr>";
 					}
 				?>
 				
@@ -380,7 +439,7 @@ if ( $properties->have_posts() ) {
 				</div>
 				<!-- Pagination Container / End -->
 				
-				<div>
+				<div class="admin-advanced-searchfilter">
 			        <label>Select bulk action</label>
                   <div class="bulk_actions_properties">
 						<select class="select_action_properties">
@@ -479,6 +538,12 @@ input.apply_action_properties {
     padding: 0;
 }
 </style>
+<script>
+jQuery(document).ready(function($) {
+	jQuery('.admin-propertieslistings').addClass('show--submenu');
+	jQuery('#sidebar-unapproved_propert').addClass('current');
+});
+</script>
 <?php 
 get_footer();
 ?>

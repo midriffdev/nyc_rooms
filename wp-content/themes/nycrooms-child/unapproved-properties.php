@@ -306,7 +306,7 @@ get_header();
 						}
 
 					}else{
-					    echo "<tr class='nyc-no-properties'><td>No Properties Found !</td></tr>";
+					    echo "<tr class='nyc-no-properties'><td class='no_property_found' colspan='3'>No Properties Found !</td></tr>";
 					}
 				?>
 			</table>
@@ -317,8 +317,13 @@ get_header();
 </div>
 
 <div class="margin-top-55"></div>
-
 </div>
+<script>
+jQuery(document).ready(function($) {
+	jQuery('.propertyOwnerList').addClass('show--submenu');
+	jQuery('#sidebar-unapproveproperty').addClass('current');
+});
+</script>
 <?php
 get_footer();
 ?>

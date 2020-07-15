@@ -79,11 +79,8 @@ if(isset($_POST['add_tenant'])){
 				</div>
 				<div class="row">
 				    
-				    <form method="post" enctype="multipart/form-data">
+				    <form method="post" id="add_tenant_form" enctype="multipart/form-data">
 						<div class="col-md-6 my-profile">
-						<?php if(isset($errorusername)){ echo '<p><span style="color:#f81515;font-size: large">'.$errorusername.'</span></p>'; } ?>
-						<?php if(isset($erroremail)){ echo '<p><span style="color:#f81515;font-size: large">'.$erroremail.'</span></p>'; } ?>						
-						<?php if(isset($createmsg)){ echo '<p><span style="color:#1db40a;font-size: large">'.$createmsg.'</span></p>'; } ?>
 							<div class="row">
 								<div class="col-md-6">
 									<label>First Name</label>
@@ -98,7 +95,7 @@ if(isset($_POST['add_tenant'])){
 							<div class="row">
 								<div class="col-md-6">
 									<label>Phone</label>
-									<input  type="text" name="phone" placeholder="Phone" required pattern="[0-9]{10}" value="<?php if(isset($phone)){ echo $phone; } ?>"  maxlength=10>
+									<input  type="text" name="phone" placeholder="Enter Phone With +1.."  value="<?php if(isset($phone)){ echo $phone; } ?>" pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12"  required>
 								</div>
 								<div class="col-md-6">
 									<label>Username</label>
@@ -183,6 +180,39 @@ if(isset($_POST['add_tenant'])){
 
 </div>
 <!-- Wrapper / End -->
+
+<?php 
+if(isset($errorusername) || isset($erroremail)){ 
+$msg = '';
+$msg .= '<p><span style="color:#f81515;font-size: large">'.$errorusername.'</span></p>'; 
+$msg .= '<p><span style="color:#f81515;font-size: large">'.$erroremail.'</span></p>'; 
+?>
+<script>
+jQuery(document).ready(function(){
+	var msg ='<?php echo $msg; ?>';
+	jQuery('#successModal .modal-body p').html(msg);
+	jQuery('#successModal').modal('show');
+});
+</script>
+<?php 
+} 
+
+if(isset($createmsg)){
+$msg = '';
+$msg .= '<p><span style="color:#1db40a;font-size: large">'.$createmsg.'</span></p>'; 
+?>
+<script>
+jQuery(document).ready(function(){
+	var msg ='<?php echo $msg; ?>';
+	jQuery('#successModal .modal-body p').html(msg);
+	jQuery('#successModal').modal('show');
+	jQuery('#add_tenant_form').find("input[type=text], textarea").val("");
+});
+</script>
+<?php 	
+}
+?>
+
 <script>
 jQuery(document).ready(function(){
  jQuery(document).on('change', '.upload', function(){

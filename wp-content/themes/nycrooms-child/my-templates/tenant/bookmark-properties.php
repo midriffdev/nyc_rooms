@@ -55,7 +55,7 @@ $bookmark_properties = array_filter($bookmark_properties);
 					<?php 
 					} 
 				}else{
-					echo "<tr><td colspan='2'><strong>No Bookmark propery founds!</strong></td></tr>";
+					echo "<tr><td colspan='2' class='no_property_found'>No Bookmark Propery Found !</td></tr>";
 				}
 				?>
 

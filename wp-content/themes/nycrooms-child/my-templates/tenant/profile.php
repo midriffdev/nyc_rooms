@@ -51,13 +51,6 @@ get_header();
 			</div>
 		</div>
 		<div class="row">
-						<?php
-                         if(isset($usersuccess) && $usersuccess){
-						?>
-						    <label class="reset_success"><?= $usersuccess ?></label>
-						<?php
-						 }
-						?>
 				   <form method="post" enctype="multipart/form-data">
 						<div class="col-md-6 my-profile">
 							
@@ -75,7 +68,7 @@ get_header();
 							<div class="row">
 								<div class="col-md-12">
 									<label>Phone</label>
-									<input value="<?php echo get_user_meta($user_id,'user_phone',true); ?>" type="text" name="phone" placeholder="Phone" pattern="[+1]{2}[0-9]{10}" maxlength=12 placeholder= "Enter Phone With +1.." required>
+									<input value="<?php echo get_user_meta($user_id,'user_phone',true); ?>" type="text" name="phone"  placeholder= "Enter Phone With +1.." required pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
 								</div>
 							</div>
 							<div class="row">
@@ -169,6 +162,22 @@ label.reset_success {
     color: green;
 }
 </style>
+<?php
+	if(isset($usersuccess)){
+	$msg = '';
+	$msg .= '<p><span style="color:#1db40a;font-size: large">'.$usersuccess.'</span></p>'; 
+	?>
+	<script>
+	jQuery(document).ready(function(){
+		var msg ='<?php echo $msg; ?>';
+		jQuery('#successModal .modal-body p').html(msg);
+		jQuery('#successModal').modal('show');
+		jQuery('#add_tenant_form').find("input[type=text], textarea").val("");
+	});
+	</script>
+	<?php 	
+}
+?>
 <script>
 jQuery(document).ready(function(){
  jQuery(document).on('change', '.upload', function(){

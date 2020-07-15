@@ -116,13 +116,13 @@ get_header();
 				<table class="manage-table responsive-table all_leads_table">
 				<tbody>
 				<tr>
-				    <th><input type="checkbox" class="checkallleads"></th>
-					<th><i class="fa fa-list-ol"></i> Lead No</th>
-					<th><i class="fa fa-user"></i>Name</th>
-					<th ><i class="fa fa-phone"></i> Phone</th>
-					<th class="expire-date"><i class="fa fa-envelope" ></i>Email</th>
-					<th><i class="fa fa-bolt" ></i> Lead Source</th>
-					<th></th>
+				    <th style="width: 8% !important"><input type="checkbox" class="checkallleads"></th>
+					<th style="width: 15%"><i class="fa fa-list-ol"></i> Lead No</th>
+					<th style="width: 12%"><i class="fa fa-user"></i>Name</th>
+					<th style="width: 15%"><i class="fa fa-phone"></i> Phone</th>
+					<th style="width: 15%" class="expire-date"><i class="fa fa-envelope" ></i>Email</th>
+					<th style="width: 20%"><i class="fa fa-bolt" ></i> Lead Source</th>
+					<th style="width: 15%">Action</th>
 				</tr>
                  
 				 
@@ -163,11 +163,9 @@ get_header();
 					
 					<?php  } 
 
-               } else { ?>
-
-                      <li><h3>No Leads Found</h3></li>
-
-          <?php } ?> 
+               } else { 
+						echo "<tr class='nyc-no-properties'><td class='no_property_found' colspan='7'>No Leads Found !</td></tr>";
+			   } ?> 
 
                 <?php 
 				wp_reset_query();
@@ -212,7 +210,7 @@ get_header();
 
 						</div>
 			    </div>
-			    <div>
+			    <div class="admin-advanced-searchfilter">
 			        <label>Select bulk action</label>
                   <div class="bulk_actions_leads">
 						<select class="select_action_leads">
@@ -318,7 +316,11 @@ input.apply_action_leads {
     margin-left: 5%;
     padding: 0;
 }
-
 </style>
+<script>
+jQuery(document).ready(function($) {
+	jQuery('#sidebar-allleads').addClass('current');
+});
+</script>
 <?php
 get_footer();

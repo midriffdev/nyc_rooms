@@ -308,7 +308,8 @@ function nyc_add_property_ajax(){
 				  nyc_property_gallery_image_upload($key,$property_id);
 			  }
 			}
-			
+			$notification = "A new property listed by ".$_POST['contact_name']." title is ".$_POST['title'];
+			nyc_add_noticication($notification);			
 			$subject = "New Property Listed - ".$_POST['title'];
 			$to = get_option('admin_email');
 			$msg  = __( 'Hello Admin,') . "\r\n\r\n";
@@ -797,10 +798,10 @@ function nyc_property_owner_authority(){
 		if(in_array('administrator',$roles) || in_array('property_owner',$roles)){
 		  
 		} else {
-		   wp_redirect(get_site_url().'/login-register');
+		   wp_redirect(get_site_url().'/property-owner');
 		}
 	}else{
-		wp_redirect(get_site_url().'/login-register');
+		wp_redirect(get_site_url().'/property-owner');
 	}
 }
 
@@ -1313,7 +1314,7 @@ add_action( 'wp_ajax_activate_multiple_properties', 'activate_multiple_propertie
 function activate_multiple_properties() {
 	global $wpdb;
 	foreach($_POST['data'] as $ids){
-	  add_post_meta($ids,'property_activation',1);
+	  delete_post_meta($ids,'property_inactive');
 	}
 	echo "true";
 	wp_die();
@@ -1326,7 +1327,7 @@ add_action( 'wp_ajax_deactivate_multiple_properties', 'deactivate_multiple_prope
 function deactivate_multiple_properties() {
 	global $wpdb;
 	foreach($_POST['data'] as $ids){
-	   delete_post_meta($ids,'property_activation',1);
+	   update_post_meta($ids,'property_inactive',1);
 	}
 	echo "true";
 	wp_die();
@@ -2418,6 +2419,8 @@ function nyc_request_agent_ajax(){
    if(isset($_POST['action']) && $_POST['action'] == 'nyc_request_agent_ajax'){
      $deal_id    = $_POST['deal_id'];			
 	 $meta_key   = 'request_an_agent';
+	 $notification = "Tenant Requested for an agent on Deal no ".$deal_id;
+	 nyc_add_noticication($notification);
 	 update_post_meta($deal_id,$meta_key,1);
 	        $subject = "New Agent Request";
 	        $to = get_option('admin_email');
@@ -2447,6 +2450,8 @@ function nyc_tenant_final_selected_property_ajax(){
 	 $meta_key   = 'property_id';
 	 update_post_meta($deal_id,$meta_key,$property_id);
 	 update_post_meta($deal_id,'property_finalization',1);
+	$notification = "A Property has been Finalized by Tenant on Deal no ".$deal_id;
+	nyc_add_noticication($notification);		 
 	 $subject = "New Property Finalization Request on Deal No-".$deal_id;
 	  /*----------- admin mail -------------*/
 	 $to = get_option('admin_email');
@@ -2856,7 +2861,8 @@ function nyc_tenant_payment_square_ajax(){
 			$msg1 .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
 			$headers1 = array('Content-Type: text/html; charset=UTF-8');
 		    $sent1 = wp_mail($to1, $subject1, $msg1,$headers1);
-			
+			$notification = "A Payment has been Done by Tenant on Deal no ".$deal_id;
+			nyc_add_noticication($notification);			
 			/* ----------- End Sending mail to Tenant  ---------------- */
 			
 			 echo "success";
@@ -3478,7 +3484,8 @@ $attach_data = wp_generate_attachment_metadata($attach_id, $uploadfile);
 $update = wp_update_attachment_metadata($attach_id, $attach_data); // Updated the image details
 update_post_meta($deal_id,'application_doc', $attach_id);
 update_post_meta($deal_id,'application_submission', 1);
-
+$notification = "Application Form Submitted by Tenant on Deal no ".$deal_id;
+nyc_add_noticication($notification);
 echo "success";
 
 }

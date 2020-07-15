@@ -31,7 +31,7 @@ $countargs= array(
         'user_email',
         'display_name',
     ),
-	'order_by'=>'ID',
+	'orderby'=>'ID',
 	'order'=>'DESC',
 );
 $args= array(
@@ -45,7 +45,7 @@ $args= array(
         'user_email',
         'display_name',
     ),
-	'order_by'=>'ID',
+	'orderby'=>'ID',
 	'order'=>'DESC',
 );
 if($searchphone){
@@ -106,7 +106,7 @@ input.checkbulk{
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
                 <div class="admin-advanced-searchfilter">
-					<h2>Tenent filter</h2>
+					<h2>Tenant filter</h2>
 					<form action='' >
 					<div class="row with-forms">
 						<!-- Form -->
@@ -145,12 +145,12 @@ input.checkbulk{
 				<table class="manage-table responsive-table admin-teanent-maintable all_agents_table">
 				<tbody>
 				<tr>
-					<th><input type="checkbox" class="checkallbulk"></th>
-					<th><i class="fa fa-file-text"></i> Teanent</th>
+					<th style="width:8%;"><input type="checkbox" class="checkallbulk"></th>
+					<th><i class="fa fa-file-text"></i> Tenants</th>
 					<th><i class="fa fa-envelope"></i> Email</th>
 					<th><i class="fa fa-phone" ></i> Phone</th>
-					<th><i class="fa fa-toggle-on" ></i>Status</th>
-					<th><i class="fa fa-hand-pointer-o"></i> Action</th>
+					<th style="width:15%;"><i class="fa fa-toggle-on" ></i>Status</th>
+					<th style="width:15%;"><i class="fa fa-hand-pointer-o"></i> Action</th>
 				</tr>
 
 				<!-- Item #1 -->
@@ -193,13 +193,13 @@ input.checkbulk{
 				<?php 
 				} 
 				}else{
-				echo "<tr><td colspan='6'>No record founds</td></tr>";
+				echo "<tr><td colspan='6' class='no_property_found'>No Tenant Found !</td></tr>";
 				}
 				?>
 				</tbody>
 				</table>
 				
-				<div>
+				<div class="admin-advanced-searchfilter">
 			        <label>Select bulk action</label>
                   <div class="users_bulk_actions">
 						<select class="select_action">

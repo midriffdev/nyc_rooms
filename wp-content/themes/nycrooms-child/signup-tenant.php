@@ -75,7 +75,8 @@ if(is_user_logged_in()){
 			                 );
 			     
 			    $user_verify = wp_signon( $login_data, false ); 
-				
+				$notification = "A new tenant (".$username.") is registered";
+				nyc_add_noticication($notification);				
 				
 				 if(!is_wp_error($user_verify)){
 				      add_user_meta($user,'user_full_name', $_REQUEST['guest_name_reg']);
@@ -105,7 +106,8 @@ if(is_user_logged_in()){
 							add_post_meta($lead_id, 'lead_chckt_prp_owner_email', get_post_meta($_REQUEST['guest_search_pid'],'contact_email',true));
 							add_post_meta($lead_id, 'lead_created_from', 'registered_user' );
 							add_post_meta($lead_id, 'lead_created_user_id', $user);
-							
+							$notification = "A new lead submission by ".$_REQUEST['guest_name_reg'];
+							nyc_add_noticication($notification);							
 							
 							
 							/*----------- Email to Tenant After Lead Submission --------*/
@@ -228,7 +230,8 @@ if(isset($_POST['guest_checkout'])){
 			add_post_meta($lead_id, 'lead_chckt_prp_owner_email', get_post_meta($_POST['Property_search_id'],'contact_email',true));
 			add_post_meta($lead_id, 'lead_created_from', 'guest_user' );
 			add_post_meta($lead_id, 'lead_created_user_id', null);
-			
+			$notification = "A new lead submission by ".$_POST['guest_name'];
+			nyc_add_noticication($notification);				
 			
 			/*----------- Email to Tenant After Lead Submission --------*/
 			 
@@ -513,7 +516,7 @@ get_header();
 				     <p class="form-row form-row-wide">
 								<label for="guest_phone_reg">Phone:
 									<i class="im im-icon-Phone"></i>
-									<input type="text" id="guest_phone_reg" name="guest_phone_reg" pattern="[0-9]{10}" maxlength=10 required>
+									<input type="text" id="guest_phone_reg" name="guest_phone_reg" pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
 								</label>
 				     </p>
 					 <p class="form-row form-row-wide">

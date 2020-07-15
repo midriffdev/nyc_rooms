@@ -2039,7 +2039,7 @@ transform: rotate(-90deg); }
 
 @media only screen and (min-width: 1367px) {
 	.container {
-		width:1170px;
+		width:1240px;
 		padding:0px;
 	}
 }
@@ -4870,7 +4870,7 @@ section.fullwidth.border-bottom { border-bottom: 1px solid #e4e4e4;}
 
 .my-account-nav {
 	padding: 0;
-	padding: 0 35px;
+	padding: 0 25px;
 	padding-bottom: 20px;
 	margin-bottom: 20px;
 	border-bottom: 1px solid #e6e6e6;
@@ -4982,6 +4982,12 @@ table.manage-table {
 	border-collapse: separate;
 	border-spacing: 0;
 	border: none;
+	table-layout:fixed;
+}
+.page-id-736 .deal_number {
+    padding: 0 14px !important;
+    margin: 0;
+    word-break: break-all;
 }
 
 table.manage-table th {
@@ -5050,15 +5056,15 @@ table.manage-table .title-container .title .table-property-price {
 	padding: 2px 10px;
 }
 
-table.manage-table th:first-child { width: 50%; border-radius: 3px 0 0 3px }
+table.manage-table th:first-child { width: 50%; border-radius: 3px 0 0 3px;}
 table.manage-table th:last-child {  border-radius: 0 3px 3px 0; }
 table.manage-table th:first-child i { left: 35px; }
 
 table.manage-table td:first-child { padding-left: 0px; line-height: 25px; }
 
 table.manage-table td {
-	padding: 35px 20px;
-	vertical-align: middle;	border-bottom: 1px solid #e4e4e4;
+	padding: 35px 10px;
+	vertical-align: middle;	border-bottom: 1px solid #e4e4e4;     word-break: break-all;    word-break: break-all;   word-break: break-all;
 }
 
 table.manage-table td.centered { text-align: center; }
@@ -12766,7 +12772,7 @@ table.contracts--table td:first-child {padding-left: 40px !important;}
     font-weight: 600;
     color: #333;
 }
-.act-wrap {padding: 0 !important;}
+.act-wrap {padding: 0 !important;margin:0;}
 .act-wrap li p {
     margin: 0;
 }
@@ -13119,7 +13125,7 @@ table.deal--table th:first-child{width:auto;}
 table.deal-suggestproperty-table th:first-child{width:auto;}
 .select_property {padding: 0 0 0 30px !important;}
 .select_property input {
-    width: 25px;
+    width: 17px;
     margin: 0;
 }
 .deal-suggest-proptab-prop{width:40%;}
@@ -13198,6 +13204,7 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
 .lead_number {
     padding-left: 30px !important;
 }
+
 .into--deal{color:#a1b789 !important;}
 .deal--done{color:#274abb !important;}
 .lead-bypropform-cont {
@@ -13313,9 +13320,12 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
     font-size: 23px;
     margin: 0 0 27px 0;
 }
-.deal-detail-adminnotes-sec {margin: 45px 0 0 0;}
+.deal-detail-adminnotes-sec {margin: 45px 0 0 0;background: #fff;box-shadow: 0 0 12px rgba(0,0,0,0.2);border-radius: 4px;padding: 40px;text-align: center;}
 .dealdetail-signapplicationform h3 {
     margin: 0;
+}
+.dealdetail_view {
+    margin: 20px 0 0 0;
 }
 .dealdetail-signapplicationform {
     box-shadow: 0 0 12px rgba(0,0,0,0.2);
@@ -13374,7 +13384,7 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
 .dealdetail-instruction.section {
     background: #f4f4f4;
     padding: 36px 51px;
-    margin: 35px 0 0 0;
+    margin: 35px 0 ;
     border-radius: 5px;
 }
 .dealdetail-instruction.section ul {
@@ -13414,7 +13424,12 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
     font-size: 23px;
     margin: 0 0 17px 0;
 }
-.dealdetail--agentnotes-sec p {font-size: 16px;}
+.dealdetail--agentnotes-sec p {    font-size: 16px;
+    background: #efefef;
+    border-radius: 5px;
+    box-shadow: 0 0 19px rgba(0,0,0,0.2);
+    padding: 44px 35px;
+    margin: 27px 0 0 0;}
 .deal-detail__suggestedpropertysec > ul {
     margin: 0;
     padding: 0;
@@ -13708,18 +13723,21 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
 	flex-wrap: wrap;
 }
 .contract-admin-notes {
-    background: #efefef;
-    border-radius: 5px;
-    box-shadow: 0 0 19px rgba(0,0,0,0.2);
-    padding: 31px 34px 24px;
     margin: 45px 0 0 0;
 }
 .contract-admin-notes h2 {
     font-size: 23px;
     margin: 0 0 17px 0;
 }
+.deal-detail-paymentstatus a {
+    color: #fff;
+}
 .contract-admin-notes p {
     font-size: 16px;
+	background: #efefef;
+    border-radius: 5px;
+    box-shadow: 0 0 19px rgba(0,0,0,0.2);
+    padding: 31px 34px 24px;
 }
 .row.contract-detail-formsection {
     box-shadow: 0 0 13px rgba(0,0,0,0.2);
@@ -13843,19 +13861,24 @@ table.all_leads_table th:first-child{width:10% !important;}
 table.all_properties_table th:first-child{width:10% !important;}
 
 
-
-input.checkallagents {height: 18px;}
+.page-id-612 .admin-advanced-searchfilter.new_margin {
+    margin-top: 50PX;
+}
+.admin-advanced-searchfilter.new_margin {
+    margin-top: 50px;
+}
+input.checkallagents {height: 18px;margin: 0;}
 input.checkagent {height: 18px;margin: 0 13px !important;}
 
 input.checkallleads {height: 18px;}
 input.checkleads {height: 18px;margin: 0 13px !important;}
 
-input.checkallproperties {height: 18px;margin: 0}
+input.checkallproperties {height: 18px;margin: 0;}
 input.checkproperties {height: 18px;margin: 0 13px !important;}
-
+input.checkallbulk {height: 18px;margin: 0;}
 
 table.manage-table .title-container{padding: 50px 20px;}
-table.manage-table th {padding: 20px 0 !important;}
+table.manage-table th {padding: 20px 4px !important;}
 
 /******property-search CSS Start********/
 .page-id-72 .site-content {margin-top:0px;margin-bottom: 0px;}
@@ -14052,9 +14075,6 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   visibility: visible;
   opacity: 1;
 }
-.copy_link_sec {
-    padding: 5px 0px;
-}
 /***amit css 10-07-2020 start**/
 th.expire-date {
     width: 11% !important;
@@ -14063,6 +14083,13 @@ table th, table td{border:none;}
 td.no_property_found {
     text-align: center;
 }
+/***table.manage-table.responsive-table.deal--table {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    display: flex;
+    width: 100%;
+}***/
+
 /***amit css 10-07-2020 end**/
 /* End Absolute Center Spinner */
 /*****End Ashutosh(16-06-2020)******/
@@ -14543,9 +14570,6 @@ table.all_agents_table th:first-child{width:10% !important;}
 table.all_leads_table th:first-child{width:10% !important;}
 table.all_properties_table th:first-child{width:10% !important;}
 
-
-
-input.checkallagents {height: 18px;}
 input.checkagent {height: 18px;margin: 0 13px !important;}
 
 input.checkallleads {height: 18px;}
@@ -14753,7 +14777,20 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   visibility: visible;
   opacity: 1;
 }
+.dealdetail-signapplicationform i.fa.fa-eye {
+    color: #fff;
+}
 .copy_link_sec {
-    padding: 5px 0px;
+    padding: 20px 30px !important;
+    border-left: 2px solid #f91 !important;
+    background: #f5f5f5 !important;
+	margin: 0 0 30px 0 !important;
+}
+.copy_link_sec .tooltip {
+    font-size: 15px;
+    padding: 0px 0 0 40px;
+}
+th.expire-date {
+    width: 15%!important;
 }
 /* End Absolute Center Spinner */

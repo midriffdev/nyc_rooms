@@ -12,12 +12,7 @@ if(empty($getuser)){
 }
 get_header();
 if(isset($_POST['update_user'])){
-         $phonenold = $_POST['phone'];
-		 if(strpos($phonenold,'+1') === false){
-			$phoneno = '+1'.$phonenold;
-		 } else {
-			$phoneno = $phonenold;
-		 }
+        $phoneno = $_POST['phone'];
        if( $_POST['email'] != $getuser->user_email  ) {
 	     
 	    if(email_exists( $_POST['email'] )){
@@ -144,7 +139,7 @@ if(isset($_POST['update_user'])){
 							<div class="row">
 								<div class="col-md-12">
 									<label>Phone</label>
-									<input value="<?php echo get_user_meta($getuser->ID,'user_phone',true); ?>" type="text" name="phone" placeholder="Phone" placeholder="Phone" pattern="[+1]{2}[0-9]{10}" maxlength=12 placeholder= "Enter Phone With +1.." required>
+									<input value="<?php echo get_user_meta($getuser->ID,'user_phone',true); ?>" type="text" name="phone"  maxlength=12 placeholder= "Enter Phone With +1.." required pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
 								</div>
 							</div>
 							<div class="row">

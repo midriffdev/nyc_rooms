@@ -67,7 +67,8 @@ if(isset($_POST['deal_ordersubmit'])){
 			 update_post_meta($dealorderid, 'payment_status', $paymentstatus);
 			 update_post_meta($dealorderid, 'payment_source_type', $payment_source_type);
 			 update_post_meta($dealorderid, 'payment_mode', 'Cash_payment');
-			 
+			$notification = "A Payment has been Done by Agent on Deal no ".$deal_id;
+			nyc_add_noticication($notification);				 
 			  /*----------------Start creating invoice ---------------------------- */
 														  $html = '<html>
 										<head>
@@ -773,11 +774,11 @@ get_header();
  				</li>
  				<li>
  					<h5>Date</h5>
- 					<input class="search-field" type="text" value=""/>
+ 					<input class="search-field" type="text" value="<?php echo date("Y-m-d"); ?>"/>
  				</li>
  				<li>
  					<h5>Time</h5>
- 					<input class="search-field" type="text" value=""/>
+ 					<input class="search-field" type="text" value="<?php echo date("H:i"); ?>"/>
  				</li>
  			</ul>
         </div>
@@ -813,11 +814,11 @@ get_header();
  				</li>
  				<li>
  					<h5>Date</h5>
- 					<input class="search-field" type="date"  name="deal_order_date"/>
+ 					<input class="search-field" type="date"  value="<?php echo date("Y-m-d"); ?>" name="deal_order_date"/>
  				</li>
  				<li>
  					<h5>Time</h5>
- 					<input class="search-field" type="time" name="deal_order_time"/>
+ 					<input class="search-field" type="time" value="<?php echo date("H:i"); ?>" name="deal_order_time"/>
 					<input type="hidden" name="deal_id" value="<?= $dealid ?>">
  				</li>
  			</ul>

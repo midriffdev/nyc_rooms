@@ -152,7 +152,7 @@ input.checkbulk{
 			    <?php 
 					}
 				}else{
-					echo "<tr><td colspan='3'>No Property Hired!</td></tr>";
+					echo "<tr><td colspan='3' class='no_property_found'>No Hired Property Found!</td></tr>";
 				}
 				?>
 				</tbody>

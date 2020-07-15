@@ -32,76 +32,91 @@ jQuery(document).ready(function($) {
 		var contact_phone = jQuery('#contact_phone').val();
 		var people_living_count = jQuery('#people_living_count').val();
 		var selected_property_owner  = jQuery('#selected_property_owner').val();
+		var phoneValid = /^[+1]{2}[0-9]{10}$/;
+		if(contact_phone != ''){
+			if(!(contact_phone.match(phoneValid))){
+				jQuery('#contact_phone-err').html('<span class="error">Please enter Valid phone with +1 code.</span>');
+				is_error = true;				
+			}
+		}
 		if(title == ''){
 			jQuery('#title-err').html('<span class="error">Please enter title</span>');
+			$('#prop_title').focus();
 			is_error = true;		
 		}
 		if(status == ''){
 			jQuery('#status-err').html('<span class="error">Please select status</span>');
-			is_error = true;		
+			$('#prop_status').focus();
+			is_error = true;				
 		}
 		if(type == ''){
 			jQuery('#type-err').html('<span class="error">Please select type</span>');
+			$('#prop_type').focus();
 			is_error = true;		
 		}
 		if(price == ''){
 			jQuery('#price-err').html('<span class="error">Please enter price</span>');
+			$('#prop_price').focus();
 			is_error = true;		
 		}
 		if(accomodation == ''){
 			jQuery('#accomodation-err').html('<span class="error">Please enter accomodation</span>');
+			$('#prop_accomodation').focus();
 			is_error = true;		
 		}
 		if(rooms == ''){
 			jQuery('#rooms-err').html('<span class="error">Please select rooms</span>');
+			$('#prop_rooms').focus();
 			is_error = true;		
 		}
 		if(hear == ''){
 			jQuery('#hear-err').html('<span class="error">Please select How You Hear About Us?</span>');
+			$('#prop_hear').focus();
 			is_error = true;		
 		}		
 		if(gender == ''){
 			jQuery('#gender-err').html('<span class="error">Please select gender</span>');
+			$('#prop_gender').focus();
 			is_error = true;		
-		}		
-		if(gender == ''){
-			jQuery('#gender-err').html('<span class="error">Please select gender</span>');
-			is_error = true;		
-		}		
+		}	
 		if(rm_lang == ''){
 			jQuery('#rm_lang-err').html('<span class="error">Please select roommate language</span>');
+			$('#prop_rm_lang').focus();
 			is_error = true;		
 		}		
 		if(relationship == ''){
 			jQuery('#relationship-err').html('<span class="error">Please select relationship</span>');
-			is_error = true;		
-		}		
-		if(relationship == ''){
-			jQuery('#couple_price-err').html('<span class="error">Please select Couple price</span>');
+			$('#prop_relationship').focus();
 			is_error = true;		
 		}		
 		if(payment_method == ''){
 			jQuery('#payment_method-err').html('<span class="error">Please select payment method</span>');
+			$('#prop_payment_method').focus();
 			is_error = true;		
 		}	
 		if(address == ''){
 			jQuery('#address-err').html('<span class="error">Please enter address</span>');
+			$('#prop_address').focus();
 			is_error = true;		
 		}		
 		if(city == ''){
 			jQuery('#city-err').html('<span class="error">Please enter city</span>');
+			$('#prop_city').focus();
 			is_error = true;		
 		}		
 		if(state == ''){
 			jQuery('#state-err').html('<span class="error">Please enter state</span>');
+			$('#prop_state').focus();
 			is_error = true;		
 		}		
 		if(zip == ''){
 			jQuery('#zip-err').html('<span class="error">Please enter zip</span>');
+			$('#prop_zip').focus();
 			is_error = true;		
 		}		
 		if(desc == ''){
 			jQuery('#desc-err').html('<span class="error">Please enter desc</span>');
+			$('#prop_desc').focus();
 			is_error = true;		
 		}	
 		if(contact_name == ''){
@@ -170,9 +185,17 @@ jQuery(document).ready(function($) {
 				success: function(response) {
 				       if(response == "success"){
 					      jQuery('.loading').hide();
-						  window.location.href = window.location.href + "?action=success";
+						  jQuery('#successModal .modal-body p').html('<h3 class="nyc_success">Your property listed successfully. It will publish after administrative review.</h3>');
+						  jQuery('#successModal').modal('show');
+							setTimeout(function() {
+								window.location.href = window.location.href;
+							}, 5000);
 					   } else {
-						  window.location.href = window.location.href + "?action=false";
+						  jQuery('#successModal .modal-body p').html('<h3 class="nyc_false">Sorry! Something went wrong please try again later.</h3>');
+						  jQuery('#successModal').modal('show');						   
+							setTimeout(function() {
+								window.location.href = window.location.href;
+							}, 5000);
 					   } 
 				}
 			})		

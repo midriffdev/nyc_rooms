@@ -141,18 +141,19 @@ input.checkbulk{
                  <div class="col-md-12">
 					 <p class="showing-results"><?php echo $deals->found_posts; ?> Results Found On Page <?php echo $paged ;?> of <?php echo $deals->max_num_pages;?> </p>
 				 </div>
-				 
+				<div >
 				<table class="manage-table responsive-table deal--table">
+				
 				<tbody>
 				<tr>
-					<th><input type="checkbox" class="checkallbulk"></th>
-					<th><i class="fa fa-list-ol"></i> Deal No</th>
-					<th><i class="fa fa-user"></i>Name</th>
-					<th><i class="fa fa-envelope"></i> Email</th>
-					<th><i class="fa fa-phone" ></i> Phone</th>
-					<th><i class="fa fa-check-square-o" ></i> Source</th>
-					<th><i class="fa fa-check-square-o" ></i> Date</th>
-					<th></th>
+					<th style="width:4%;"><input type="checkbox" class="checkallbulk"></th>
+					<th style="width:14%;"><i class="fa fa-list-ol"></i> Deal No</th>
+					<th style="width:10%;"><i class="fa fa-user"></i>Name</th>
+					<th style="width:15%;"><i class="fa fa-envelope"></i> Email</th>
+					<th style="width:10%;"><i class="fa fa-phone" ></i> Phone</th>
+					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Source</th>
+					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Date</th>
+					<th style="width:20%;"><i class="fa fa-hand-pointer-o"></i> Action</th>
 				</tr>
 
 				<?php 
@@ -183,12 +184,13 @@ input.checkbulk{
 					<?php 
 					}
 				}else{
-					echo "<tr><td colspan='7'>No deals found!</td></tr>";
+					echo "<tr><td colspan='7' class='no_property_found'>No Deal found !</td></tr>";
 				}
 				?>
 				</tbody>
 				</table>
-				<div>
+				</div>
+				<div class="admin-advanced-searchfilter new_margin">
 			        <label>Select bulk action</label>
                   <div class="deal_bulk_actions">
 						<select class="select_action">

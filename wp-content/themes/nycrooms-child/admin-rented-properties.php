@@ -70,7 +70,46 @@ if(isset($_GET['update_search'])){
 				   
 	}
 		
-		
+	if(isset($_GET['property_lang']) && !empty($_GET['property_lang']) ){	
+		$argarray[] =  array
+		(
+			'key'          => 'rm_lang',
+			'value'        => $_GET['property_lang'],
+			'compare'      => '=',
+		);
+	}
+	
+	if(isset($_GET['property_gender']) && !empty($_GET['property_gender']) ){	
+		$argarray[] =  array
+		(
+			'key'          => 'gender',
+			'value'        => $_GET['property_gender'],
+			'compare'      => '=',
+		);
+	}
+	if(isset($_GET['property_location']) && !empty($_GET['property_location']) ){	
+		$argarray[] = array(
+		    'relation'    => 'OR',
+			array
+			(
+				'key'          => 'address',
+				'value'        => $_GET['property_location'],
+				'compare'      => '%LIKE%',
+			),
+			array
+			(
+				'key'          => 'city',
+				'value'        => $_GET['property_location'],
+				'compare'      => '%LIKE%',
+			),
+			array
+			(
+				'key'          => 'state',
+				'value'        => $_GET['property_location'],
+				'compare'      => '%LIKE%',
+			),
+		);
+	}		
 	
 
 }
@@ -244,7 +283,27 @@ get_header();
 
 								</div>
 								<!-- Row With Forms / End -->
-
+								<div class="row with-forms">
+									<div class="col-md-4">
+										<input type="text" placeholder="Enter Location" value="" name="property_location"/>
+									</div>
+									<div class="col-md-4">
+										<select data-placeholder="Any Status" class="chosen-select-no-single" name="property_lang" >
+											<option value="">Select Language</option>	
+											<option value="English">English</option>
+											<option value="Spanish">Spanish</option>
+											<option value="">Any</option>
+										</select>
+									</div>
+									<div class="col-md-4">
+										<select data-placeholder="Any Status" class="chosen-select-no-single" name="property_gender" >
+											<option value="">Select Gender</option>	
+											<option value="Female">Female</option>
+											<option value="Male">Male</option>
+											<option value="">Any</option>
+										</select>
+									</div>
+								</div>	
 								<!-- Search Button -->
 								<div class="row with-forms">
 									<div class="col-md-12">
@@ -264,10 +323,10 @@ get_header();
 				<table class="manage-table responsive-table all_properties_table">
 				<tbody>
 				<tr>
-				    <th><input type="checkbox" class="checkallproperties"></th>
-					<th><i class="fa fa-file-text"></i> Property</th>
-					<th><i class="fa fa-user"></i> Owner</th>
-					<th><i class="fa fa-hand-pointer-o"></i> Action</th>
+				    <th style="width:8% !important;"><input type="checkbox" class="checkallproperties"></th>
+					<th style="width:52% !important;"><i class="fa fa-file-text"></i> Property</th>
+					<th style="width:20% !important;"><i class="fa fa-user"></i> Owner</th>
+					<th style="width:20% !important;"><i class="fa fa-hand-pointer-o"></i> Action</th>
 				</tr>
 
 				<!-- Item #1 --><?php
@@ -285,8 +344,9 @@ get_header();
 							$payment_method = get_post_meta($post_id, 'payment_method',true);
 							$prop_image = wp_get_attachment_url(get_post_meta($post_id, 'file_0',true));
 							$contact_name = get_post_meta($post_id, 'contact_name',true);
-							$status = get_post_meta($post_id, 'status',true);
+							$status = get_post_status();
 							$document_files = explode(',',get_post_meta($post_id, 'document_files',true));
+							$property_inactive = get_post_meta($post_id,'property_inactive',true);
 				?>
 					
 				<tr>
@@ -296,7 +356,8 @@ get_header();
 						<div class="title">
 							<h4><a href="<?php echo site_url().'/single-property/?property_id='.$post_id; ?>"><?php echo get_the_title($post_id); ?></a></h4>
 							<span><?php echo $address;?> </span>
-							<span class="table-property-price"><?php echo $price.'$ / Week' ;?></span> <span class="active--property"><?php echo $status ;?></span>
+							<span class="table-property-price"><?php echo $price.'$ / Week' ;?></span> <span class="active--property"><?php echo ucfirst($status); ?></span>
+							<span class="active--property"><?php echo ($property_inactive == true) ? 'Inactive' : 'Active';?></span>
 							<?php 
 							if($document_files){
 								echo "</br></br>";
@@ -314,18 +375,15 @@ get_header();
 						<div class="owner--name"><a href="#"><?php echo $contact_name ; ?></a></div>
 					</td>
 					<td class="action">
-					    <?php
-						   $checkpropactivation = get_post_meta($post_id,'property_activation',true);
-						 ?>
 						  <a href="<?= site_url().'/single-property/?property_id='.$post_id  ?> "><i class="fa fa-eye"></i> View</a>
 						<?php
-						if(!$checkpropactivation){
+						if($property_inactive == true){
 						?>
 						<a style="cursor:pointer;" class="actvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-key"></i> Activate</a>
 						<?php
 						} else {
 						?>
-						<a style="cursor:pointer;" class="deactvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-eye-slash"></i> Deactivate</a>
+						<a style="cursor:pointer;" class="deactvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-eye-slash"></i> Inactive</a>
 						<?php
 						}
 						?>
@@ -381,13 +439,13 @@ get_header();
 				</div>
 				<!-- Pagination Container / End -->
 				
-				<div>
+				<div class="admin-advanced-searchfilter">
 			        <label>Select bulk action</label>
                   <div class="bulk_actions_properties">
 						<select class="select_action_properties">
 						 <option value="-1">Bulk Actions</option>
 						 <option value="activate">Activate</option>
-						 <option value="deactivate">Deactivate</option>
+						 <option value="deactivate">Inactive</option>
 						 <option value="delete">Delete</option>
 						</select>
                     <input type="button" value="Apply" class="apply_action_properties">
@@ -426,6 +484,45 @@ get_header();
     </div>
   </div>
 
+ <!-- Modal Activate Property -->
+  <div class="modal fade" id="Modalactivate" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Properties Activated Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- Modal Dectivate Property -->
+  <div class="modal fade" id="Modaldeactivate" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Properties Inactived Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 <style>
 .pagination-next-prev ul li.prev a {
     left: 0;
@@ -458,8 +555,12 @@ input.apply_action_properties {
     padding: 0;
 }
 </style>
-
-
+<script>
+jQuery(document).ready(function($) {
+	jQuery('.admin-propertieslistings').addClass('show--submenu');
+	jQuery('#sidebar-rented_propert').addClass('current');
+});
+</script>
 </div>
 <!-- Wrapper / End -->
 <?php

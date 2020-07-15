@@ -52,9 +52,20 @@ if(count($check_deal_orders->posts) == 1){
    $payment_status = get_post_meta($post_id,'payment_status',true);
 }
 $convert_deal = '';
-if(empty($deal_price) || empty($property_id)){
+if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 	$convert_deal = "noallowed_contract";
+	$msg = '';
+	if(empty($deal_price)){
+		$msg .="Deal price is not assigned.</br>";
+	}
+	if(empty($property_id)){
+		$msg .="Property is not selected.</br>";
+	}
+	if(empty($payment_status)){
+		$msg .="Payment is not completed.</br>";
+	}
 }	
+
 ?>
 <!-- Wrapper -->
 <div id="wrapper">
@@ -63,7 +74,7 @@ if(empty($deal_price) || empty($property_id)){
         <?php 
 		if($request_an_agent == true && empty($selectedAgent)){
 		?>
-        <div class='alert_note_panel'>		
+        <div class='alert_note_panel copy_link_sec'>		
 			<h4 class="tenant_req">Tenant Requested for an agent.</h4>
 		</div>
 		<?php 
@@ -73,7 +84,7 @@ if(empty($deal_price) || empty($property_id)){
 		<?php 
 		if(count($check_deal_orders->posts) == 1){
 		?>
-        <div class='alert_note_panel'>		
+        <div class='alert_note_panel copy_link_sec'>		
 			<h4 class="tenant_req"> A Payment has been Done on this Deal</h4>
 		</div>
 		<?php 
@@ -83,7 +94,7 @@ if(empty($deal_price) || empty($property_id)){
 		<?php 
 		if($property_finalization){
 		?>
-        <div class='alert_note_panel'>		
+        <div class='alert_note_panel copy_link_sec'>		
 			<h4 class="tenant_req">A Property has been Finalized on this deal.</h4>
 		</div>
 		<?php 
@@ -127,27 +138,18 @@ if(empty($deal_price) || empty($property_id)){
 						?>
 					</select>
 					
-					<div class="allocategent-tostage">
-						<p>To</p>
-					<select data-placeholder="Any Status" class="chosen-select-no-single" >
-						<option>Select Stage</option>	
-						<option>Stage 1</option>
-						<option>Stage 2</option>
-						<option>Stage 3</option>
-					</select>
-					</div>
-					
 				</div>
 			</div>
 			<div class="col-md-6">
+											
 				<div class="dealdetal-currentstage-status">Current Status:	<span>Stage <?php echo $deal_stage; ?></span></div>
 				<div class="deal-detail-uniformbutton">
 					<ul>
 						<li><a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-email' : 'deal-send-email'; ?>">Send as Email</a></li>
 						<li><a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-text' : 'deal-send-text'; ?>">Send as Text</a></li>
-						<li><a href="#" class="convert-to-contract button_disable">Convert to Contract</a></li>
+						<li><a href="<?php echo get_site_url(); ?>/admin/deals/contract/<?php echo base64_encode($post_id); ?>" class="<?php echo $convert_deal; ?>"><button type="button" class="btn btn-primary popup__button stage3-convertdeal-but">Convert Deal to Contract</button></a></li>
 					</ul>
-				</div>
+				</div>				
 			</div>
 		</div>
 		<div class="row">
@@ -310,7 +312,7 @@ if(empty($deal_price) || empty($property_id)){
 
 				<div class="col-md-6">
 					<div class="dealdetail-signapplicationform">
-						<h3>Application Form Status <span> <?= ($tenant_application_check == 1) ? 'Complete <a href="'.wp_get_attachment_url($tenant_application).'" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i></a>' : 'Pending'; ?> </span></h3>
+						<h3>Application Form Status <br><?= ($tenant_application_check == 1) ? ' <a class="deal-send-button deal-send-text dealdetail_view" href="'.wp_get_attachment_url($tenant_application).'" target="_blank">Complete &nbsp;<i class="fa fa-eye" aria-hidden="true"></i></a>' : 'Pending'; ?> </h3>
 					</div>
 				</div>
 
@@ -319,7 +321,7 @@ if(empty($deal_price) || empty($property_id)){
 						<h2>Select Price</h2>
 						<!-- Select Input -->
 						<div class="select-input disabled-first-option">
-							<input type="text" name="deal_price" value="<?php echo $deal_price; ?>" placeholder="Enter Price" data-unit="USD">
+							<input type="text" name="deal_price" value="<?php echo $deal_price; ?>" placeholder="Enter Price" data-unit="USD" required>
 							<select>		
 								<option>Price</option>
 								<option>100</option>
@@ -344,7 +346,7 @@ if(empty($deal_price) || empty($property_id)){
 				<div class="col-md-6">
 					<div class="deal-detail-paymentstatus">
 						<h3>Payment Status
-						<span><?php echo ($payment_status) ? $payment_status : 'Pending'; ?> <i class="fa fa-check" aria-hidden="true"></i></span></h3>
+						<span><?php echo ($payment_status) ? $payment_status.'<i class="fa fa-check" aria-hidden="true"></i>' : 'Pending'; ?> </span></h3>
 						<?php if($payment_status){ ?>
 						<ul>
 							<li>Payment: <span><?= '$'.$payment_amount ?></span></li>
@@ -381,6 +383,8 @@ if(empty($deal_price) || empty($property_id)){
 				</div>
 				<div class="col-md-12 text-center">
 					<button type="submit" class="button" name="upadte_stag1">Save Details</button>
+					<a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-email' : 'deal-send-email'; ?>">Send as Email</a>
+					<a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-text' : 'deal-send-text'; ?>">Send as Text</a>
 				</div>
 			</div>
 			</form>
@@ -881,7 +885,8 @@ jQuery(document).ready(function($) {
 	
 	$('.noallowed_contract').live('click',function(e){
 			e.preventDefault();
-			jQuery('.dealsend-popup h3').html('Please select price and property to convert deal.');
+			var msg ='<?php echo $msg; ?>';
+			jQuery('.dealsend-popup h3').html(msg);
 			jQuery('#selected_property_popup').modal('show');
 	});	
 	
