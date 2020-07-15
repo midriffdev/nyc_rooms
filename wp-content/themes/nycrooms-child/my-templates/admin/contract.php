@@ -1004,8 +1004,10 @@ if(isset($_POST['create_contract']) && $contract_created == false){
 			update_post_meta($contract_id,'contract_pdf',$attach_id);
 			update_post_meta($contract_id,'deal_id',$post_id);
 			update_post_meta($contract_id,'tenant_email',$email);
+			update_post_meta($contract_id,'tenant_name',$name);
 			update_post_meta($contract_id,'property_id',$property_id);
 			update_post_meta($contract_id,'property_owner_email',get_the_author_meta( 'user_email' , $authid));
+			update_post_meta($contract_id,'property_owner_name',get_the_author_meta( 'display_name' , $authid));
 			update_post_meta($post_id,'contract_id',$contract_id);		
 			update_post_meta($post_id,'deal_created', 1);		
 			$args = array(
@@ -1037,7 +1039,8 @@ if($contract_id){
 $lead_source = get_post_meta($post_id,'lead_source',true);
 $phone = get_post_meta($post_id,'phone',true);
 $description = get_post_meta($post_id,'description',true);
-$tenant_application = get_post_meta($post_id,'document_files',true);
+$tenant_application = get_post_meta($post_id,'application_doc',true);
+$tenant_application_check = get_post_meta($post_id,'application_submission',true);
 $deal_price = get_post_meta($post_id,'deal_price',true);
 $admin_notes = get_post_meta($post_id,'admin_notes',true);
 $selected_property = get_post_meta($post_id, 'selected_property', true);
@@ -1418,7 +1421,7 @@ textarea:required:focus {
 
 			<div class="col-md-6">
 				<div class="dealdetail-signapplicationform">
-						<h3>Application Form Status <span> <?php echo ($tenant_application) ? 'Complete <a href="'.wp_get_attachment_url($tenant_application).'" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i></a>' : 'Pending'; ?> </span></h3>
+						<h3>Application Form Status <br><?= ($tenant_application_check == 1) ? ' <a class="deal-send-button deal-send-text dealdetail_view" href="'.wp_get_attachment_url($tenant_application).'" target="_blank">Complete &nbsp;<i class="fa fa-eye" aria-hidden="true"></i></a>' : 'Pending'; ?> </h3>
 				</div>
 			</div>
 
