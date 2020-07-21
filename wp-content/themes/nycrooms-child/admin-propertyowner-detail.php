@@ -6,14 +6,7 @@ $getuser = get_user_by('id',$_GET['uid']);
 $usererror = '';
 $usersuccess = '';
 if(isset($_POST['update_owner'])){
-           $phonenold = $_POST['phone'];
-		 if(strpos($phonenold,'+1') === false){
-			$phoneno = '+1'.$phonenold;
-		 } else {
-			$phoneno = $phonenold;
-		 }
-		 
-
+        $phoneno = $_POST['phone'];
 		   if( $_POST['email'] != $getuser->user_email  ) {
 	     
 	    if(email_exists( $_POST['email'] )){
@@ -276,76 +269,60 @@ get_header();
 		</div>
 		<table class="manage-table responsive-table contracts--table">
 			<tr>
-				<th><i class="fa fa-list-ol"></i> Contract No</th>
-				<th><i class="fa fa-file-text"></i> Contract Name</th>
-				<th class="expire-date"><i class="fa fa-calendar"></i> Date</th>
-				<th><i class="fa fa-hand-pointer-o"></i> Action</th>
+				<th><i class="fa fa-list-ol"></i> Contract ID</th>
+				<th><i class="fa fa-list-ol"></i> Deal ID</th>
+				<th><i class="fa fa-list-ol"></i> Tenant Name</th>
+				<th><i class="fa fa-list-ol"></i> Tenant Email</th>
+				<th><i class="fa fa-list-ol"></i> Contract PDF</th>
+				<th>Action</th>
 			</tr>
+		<?php
+		$args = array(
+			'post_type'=> 'contracts',
+			'post_status' => array('publish'),
+			'posts_per_page'   => -1,
+		);
+		$meta_query = array();
+		$meta_query[] =  array(
+				'key'          => 'property_owner_email',
+				'value'        => $getuser->data->user_email,
+				'compare'      => 'REGEXP',
+		);	
+		if(!empty($meta_query)){
+		   $args['meta_query'] = $meta_query;
+		} 
+		$contracts = new WP_Query( $args );
+		if($contracts->have_posts()){
+			while ($contracts->have_posts() ) {
+				$contracts->the_post(); 
+				$contract_id = get_the_ID();
+				$contract_data = get_post_meta($contract_id,'contract_data', true); 
+				$contract_pdf_id = get_post_meta($contract_id,'contract_pdf', true); 
+				$deal_id = get_post_meta($contract_id,'deal_id', true);
+				$property_id = get_post_meta($deal_id,'property_id',true);
+				$auth = get_post($property_id);
+				$authid = $auth->post_author;	
+				?>
+				<!-- Item #1 -->
+				<tr class="contract-id-<?php echo $contract_id; ?>">
+					<td class="deal_number"><?php echo $contract_id; ?></td>
+					<td class="deal_number"><?php echo $deal_id; ?></td>
+					<td class="deal_number"><?php echo get_post_meta($deal_id,'name', true); ?></td>
+					<td class="deal_number"><?php echo get_post_meta($deal_id,'email', true); ?></td>
+					<td class="deal_number"><?php echo  '<a href="'.wp_get_attachment_url($contract_pdf_id).'" download>'.pathinfo(basename ( get_attached_file( $contract_pdf_id ) ),PATHINFO_FILENAME).'</a>'; ?></td>
+					<td class="action">
+						<a href="<?php echo get_site_url(); ?>/admin/all-contracts/view/<?php echo base64_encode($contract_id); ?>" ><i class="fa fa-eye"></i> View</a>				
+					</td>
+				</tr>
+				<?php 
+			} 
+		}else{
+			echo "<tr><td colspan='4'>No Contract Found !</td></tr>";
+		}
 
-			<!-- Item #1 -->
-			<tr>
-				<td class="contact-number">#101</td>
-				<td class="title-container-contract">
-					<div class="title">
-						<h4><a href="#">Contract Name 1</a></h4>
-					</div>
-				</td>
-				<td class="expire-date">December 30, 2016</td>
-				<td class="action">
-					<a href="#"><i class="fa fa-eye"></i> View</a>
-					<a href="#"><i class="fa fa-download"></i> Download</a>
-				</td>
-			</tr>
-
-			<!-- Item #2 -->
-			<tr>
-				<td class="contact-number">#110</td>
-				<td class="title-container-contract">
-					<div class="title">
-						<h4><a href="#">Contract Name 2</a></h4>
-					</div>
-				</td>
-				<td class="expire-date">December 30, 2016</td>
-				<td class="action">
-					<a href="#"><i class="fa fa-eye"></i> View</a>
-					<a href="#"><i class="fa fa-download"></i> Download</a>
-				</td>
-			</tr>
-
-			<!-- Item #3 -->
-			<tr>
-				<td class="contact-number">#151</td>
-				<td class="title-container-contract">
-					<div class="title">
-						<h4><a href="#">Contract Name 3</a></h4>
-					</div>
-				</td>
-				<td class="expire-date">December 30, 2016</td>
-				<td class="action">
-					<a href="#"><i class="fa fa-eye"></i> View</a>
-					<a href="#"><i class="fa fa-download"></i> Download</a>
-				</td>
-			</tr>
-
-			<!-- Item #4 -->
-			<tr>
-				<td class="contact-number">#105</td>
-				<td class="title-container-contract">
-					<div class="title">
-						<h4><a href="#">Contract Name 4</a></h4>
-					</div>
-				</td>
-				<td class="expire-date">December 30, 2016</td>
-				<td class="action">
-					<a href="#"><i class="fa fa-eye"></i> View</a>
-					<a href="#"><i class="fa fa-download"></i> Download</a>
-				</td>
-			</tr>
-
+		?>
 		</table>
 	</div>
-
-	
 
 	</div>
 </div>

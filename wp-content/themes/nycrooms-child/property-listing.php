@@ -628,7 +628,7 @@ get_header();
 
                } else { ?>
 
-                      <li><h3>No Property Found</h3></li>
+                     <h3>No Property Found</h3>
 
         <?php } ?> 
 

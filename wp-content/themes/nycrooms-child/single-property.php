@@ -231,7 +231,7 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 				$user = wp_get_current_user();
 				$user_name  =  get_user_meta($user->ID ,'user_full_name',true);
 				$user_phone =  get_user_meta($user->ID ,'user_phone',true);
-				$user_email =  get_user_meta($user->ID ,'user_email',true);
+				$user_email =  $user->user_email;
 
 				
 				if(!is_user_logged_in()){

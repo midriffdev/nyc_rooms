@@ -31,6 +31,22 @@ if(isset($_GET['deal_no']) && !empty($_GET['deal_no'])){
     );	
 }
 
+if(isset($_GET['filter_by_name']) && !empty($_GET['filter_by_name'])){
+	$meta_query[] = array(
+	'relation'    => 'OR',
+	array(
+            'key'          => 'tenant_name',
+            'value'        => $_GET['filter_by_name'],
+            'compare'      => 'LIKE',
+    ),
+	array(
+            'key'          => 'property_owner_name',
+            'value'        => $_GET['filter_by_name'],
+            'compare'      => 'LIKE',
+    )
+	);
+}
+
 if(isset($_GET['contract_no']) && !empty($_GET['contract_no'])){
 	$args['post__in'] =  array($_GET['contract_no']);
 }
@@ -114,7 +130,7 @@ input.checkbulk{
 									<input type="text" placeholder="Deal No" name="deal_no" value=""/>
 								</div>
 								<div class="col-md-6">
-									<input type="text" placeholder="Enter Tenant / Property Owner" name="name" value=""/>
+									<input type="text" placeholder="Enter Tenant / Property Owner" name="filter_by_name" value=""/>
 								</div>
 							</div>
 							<!-- Search Button -->

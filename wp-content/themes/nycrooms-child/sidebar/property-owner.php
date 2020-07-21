@@ -25,7 +25,7 @@ $current_user = wp_get_current_user();
 					</ul>
 				</li>
 				<li><a href="<?php echo get_site_url(); ?>/add-property/"><i class="sl sl-icon-action-redo"></i> Submit New Property</a></li>
-			</ul>
+			</ul>		
 			<ul class="my-account-nav">
 				<li class="sub-nav-title">Manage Contracts</li>
 				<li class="admin-propertieslistings">

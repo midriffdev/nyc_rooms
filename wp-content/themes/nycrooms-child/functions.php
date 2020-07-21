@@ -1704,9 +1704,8 @@ function nyc_get_properties_by_property_owner($id){
 	$properties = new WP_Query(array(
 		'posts_per_page' 	=> -1,
 		'post_type' 		=> 'property',
-		'post_status' 		=> array('available','rented','inherit'),
-		'author' 			=>  'property-owner',
-		'post_author'       => $id,
+		'post_status' 		=> array('available','rented','draft'),
+		'author' 			=>  $id,
 	));
 	return $properties;
 }

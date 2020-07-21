@@ -160,9 +160,9 @@ jQuery(document).ready(function($) {
 			form_data.append("contact_email", contact_email);
 			form_data.append("contact_phone", contact_phone);
 			form_data.append("people_living_count", people_living_count);
-			form_data.append("selected_property_owner", selected_property_owner);
-			
-			
+			if(selected_property_owner != null){
+				form_data.append("selected_property_owner", selected_property_owner);
+			}				
 			var gallery_files=[];
 			for(var i = 0;i<file_data.length;i++){
 				form_data.append("file_"+i, file_data[i]);

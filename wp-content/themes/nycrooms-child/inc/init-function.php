@@ -134,6 +134,11 @@ add_action( 'template_redirect', function(){
         die;
      }
 	 
+	 if ( is_page('tenant/deals')) {
+        include get_stylesheet_directory() . '/my-templates/tenant/all-deals.php';
+        die;
+     }	 
+	 
 	 if ( is_page('tenant/hired-property')) {
         include get_stylesheet_directory() . '/my-templates/tenant/hired-property.php';
         die;
@@ -1392,4 +1397,24 @@ function submit_book_appointment_form(){
 	}
 }
 add_action('wp_footer','submit_book_appointment_form');
+
+function count_deal_of_tenant($user_email){
+	$args = array(
+		'post_type'=> 'deals',
+		'post_status' => array('publish'),
+		'posts_per_page'   => -1,
+	);
+	$meta_query = array();
+	$meta_query[] =  array(
+			'key'          => 'email',
+			'value'        => $user_email,
+			'compare'      => 'LIKE',
+	);	
+	if(!empty($meta_query)){
+	   $args['meta_query'] = $meta_query;
+	} 	
+	$deals = new WP_Query( $args );
+	$count = $deals->found_posts;
+	return ($count) ? $count: 0;
+}
 ?>
