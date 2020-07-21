@@ -3,16 +3,37 @@
 Template Name: Admin Add Tenant
 */
 nyc_property_admin_authority();
+$errors = array();
 $usererror = '';
 $usersuccess = '';
 if(isset($_POST['add_tenant'])){
-           $phone = '+1'.$_POST['phone'];
+       
+           $phone = $_POST['phone'];
+           $username = esc_sql($_POST['username']);
+		   $email    = esc_sql($_POST['email']);
+		   
+  if( email_exists( $email ) ) {
+        $errors['email'] ="Sorry!! Email Already Exists";
+  }
+ 
+  if ( strpos($username, ' ') !== false )
+  {   
+  
+        $errors['username'] = "Sorry, no spaces allowed in usernames";
+		
+  } elseif( username_exists( $username ) ) 
+  {  
+  
+        $errors['username'] = "Username already exists, please try another";  
+		
+  }  
+  
+    
 
-  if( email_exists( $_POST['email'] ) ) {
-     $usererror ="Sorry!! Email Already Exists";
-  } else {
+
+   if(0 === count($errors)) {
       $userdata = array(
-					'user_login'  => $_POST['email'],
+					'user_login'  => $_POST['username'],
 					'user_pass'   =>  wp_generate_password(), // random password, you can also send a notification to new users, so they could set a password themselves
 					'user_email' => $_POST['email'],
 					'first_name' => $_POST['first_name'],
@@ -97,8 +118,14 @@ get_header();
 									<input  type="text" name="phone" placeholder="Enter Phone With +1.." required pattern="[+1]{2}[0-9]{10}" maxlength=12>
 								</div>
 								<div class="col-md-6">
+									<label>Username</label>
+									<input type="text" class="input-text" name="username" id="username2" Placeholder="Username" required />
+									<p><label class="form_errors"><?php if(!empty($errors['username'])){ echo $errors['username'];} ?></label></p>
+								</div>
+								<div class="col-md-12">
 									<label>Email</label>
-									<input type="text" name="email" placeholder="Email" required>
+									<input type="email" name="email" placeholder="Email" required>
+									<p><label class="form_errors"><?php if(!empty($errors['email'])){ echo $errors['email'];} ?></label></p>
 								</div>
 							</div>
 							
@@ -182,12 +209,7 @@ get_header();
         </div>
         <div class="modal-body">
           <p>
-		  <?php
-            if(!empty($usererror)){
-		         echo $usererror;
-						
-			}
-					
+		  <?php	
 		    if(!empty($usersuccess)){
 	          echo $usersuccess; 
 			}
@@ -201,6 +223,12 @@ get_header();
       
     </div>
   </div>
+  <style>
+   label.form_errors {
+    color: red;
+	margin: 0;
+   }
+  </style>
 <!-- Wrapper / End -->
 <script>
 jQuery(document).ready(function(){
@@ -227,13 +255,6 @@ jQuery(document).ready(function(){
 </script>
 <?php
 get_footer();
-if(!empty($usererror)){
-   echo "<script>
-         jQuery(window).load(function(){
-             $('#myModal').modal('show');
-         });
-    </script>";
-}
 if(!empty($usersuccess)){
    echo "<script>
          jQuery(window).load(function(){

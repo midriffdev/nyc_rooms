@@ -303,6 +303,8 @@ function nyc_add_property_ajax(){
 			add_post_meta($property_id, 'gallery_files', $_POST['gallery_files']);
 			add_post_meta($property_id, 'document_files', $_POST['document_files']);
 			add_post_meta($property_id, 'people_living_count', $_POST['people_living_count']);
+			add_post_meta($property_id, 'prop_active_inactive', 0);
+			
 			if(isset($_FILES)){
 			  foreach($_FILES as $key=>$file){
 				  nyc_property_gallery_image_upload($key,$property_id);
@@ -1314,7 +1316,7 @@ add_action( 'wp_ajax_activate_multiple_properties', 'activate_multiple_propertie
 function activate_multiple_properties() {
 	global $wpdb;
 	foreach($_POST['data'] as $ids){
-	  delete_post_meta($ids,'property_inactive');
+	  update_post_meta($ids,'prop_active_inactive',1);
 	}
 	echo "true";
 	wp_die();
@@ -1327,7 +1329,7 @@ add_action( 'wp_ajax_deactivate_multiple_properties', 'deactivate_multiple_prope
 function deactivate_multiple_properties() {
 	global $wpdb;
 	foreach($_POST['data'] as $ids){
-	   update_post_meta($ids,'property_inactive',1);
+	   update_post_meta($ids,'prop_active_inactive',2);
 	}
 	echo "true";
 	wp_die();

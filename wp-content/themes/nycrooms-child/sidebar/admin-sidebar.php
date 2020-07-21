@@ -92,7 +92,7 @@
 					<ul class="my-account-nav">
 					    <li class="sub-nav-title">Manage Account</li>
 					    <li><a href="<?= home_url();?>/profile-admin/" id="sidebar-profile"><i class="sl sl-icon-user"></i> My Profile</a></li>
-						<li><a href="<?php echo home_url(); ?>/change-password/"><i class="sl sl-icon-lock"></i> Change Password</a></li>
+						<li><a href="<?php echo home_url(); ?>/change-password/?ppage=admin"><i class="sl sl-icon-lock"></i> Change Password</a></li>
 						<li><a href="<?php echo wp_logout_url(home_url().'/login-admin/'); ?>"><i class="sl sl-icon-power"></i> Log Out</a></li>
 						
 					</ul>

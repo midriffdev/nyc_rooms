@@ -250,6 +250,55 @@ function nyc_export_as_CSV($ids='') {
 	exit();
 }
 
+function nyc_export_as_CSV_Prop_Owner($ids='') {
+	ob_start();
+	$csv = '';
+	$headers = array(
+		'S NO',
+		'Account ID',
+		'Owner Name',
+		'Email',
+		'Phone',
+		'Date'
+	);
+	$args = array(
+		'role'   	  => 'property_owner',
+	);
+	if($ids){
+		$args['include']=explode(",",$ids);
+	}
+	$users = get_users($args);
+	$handle = fopen('php://output', 'w'); 
+	fputcsv($handle, $headers, ',', '"');
+
+	foreach($users as $key=>$results1)
+	{
+		$row = array(
+			$key+1,
+			$results1->data->ID,
+			$results1->data->display_name,
+			$results1->data->user_email,
+			get_user_meta($results1->data->ID,'user_phone',true),
+			date('Y-m-d',strtotime($results1->data->user_registered))
+		);
+
+		fputcsv($handle, $row, ',', '"');
+	}
+
+
+	$now = gmdate('D, d M Y H:i:s') . ' GMT';
+
+	header('Content-Type: text/csv');
+	header('Expires: ' . $now);
+
+	header('Content-Disposition: attachment; filename="referralsowners.csv"');
+	header('Pragma: no-cache'); 
+
+	echo $csv; 
+	exit();
+}
+
+
 function nyc_wp_new_user_notification( $user_id, $plaintext_pass = '' ) {
 	$user = new WP_User($user_id);
 

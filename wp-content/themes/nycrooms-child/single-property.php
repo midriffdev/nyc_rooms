@@ -64,7 +64,8 @@ $success_msg = '';
 
 get_header();
 $post_id = get_the_ID();
-$address = get_post_meta($post_id, 'address',true)." ";
+//$address = get_post_meta($post_id, 'address',true)." ";
+$address = '';
 $address .= get_post_meta($post_id, 'city',true)." ";
 $address .= get_post_meta($post_id, 'state',true).", ";
 $address .= get_post_meta($post_id, 'zip',true)." ";

@@ -2,6 +2,16 @@
 /* Template Name: Change Password */
 global $wpdb;
 $user = wp_get_current_user();
+if(empty($user->roles)){
+    if($_GET['ppage'] == 'admin'){
+      header( 'Location:' . site_url() .'/login-admin/');
+   } else if($_GET['ppage'] == 'powner'){
+      header( 'Location:' . site_url() .'/owner-registeration/');
+   } else if($_GET['ppage'] == 'tenant'){
+      header( 'Location:' . site_url() .'/tenant-registration/');
+   } 
+   
+}
 $errors = array();
 $message = '';
 if(isset($_POST['reset_pass_Sbumit'])){
@@ -9,9 +19,9 @@ if(isset($_POST['reset_pass_Sbumit'])){
 	 if(empty($_POST['password'])) 
 		{   
             $errors['password'] = "Please enter a password";  
-        } elseif(0 === preg_match("/.{12,}/", $_POST['password']))
+        } elseif(0 === preg_match("/.{6,}/", $_POST['password']))
         {  
-          $errors['password'] = "Password must be at least 12 characters";  
+          $errors['password'] = "Password must be at least 6 characters";  
         }  
         if(empty($_POST['cpassword'])) 
 		{   
@@ -45,24 +55,26 @@ get_header();
 	<div class="row">
 		<!-- Widget -->
 						 <?php
-                       if($user->roles[0] == "administrator"){
+						 if(!empty($user->roles)){
+                        if($user->roles[0] == "administrator"){
 					   ?>
 						<?php include(locate_template('sidebar/admin-sidebar.php')); ?>
 						<?php
 						}
 						?>
 						<?php
-                       if($user->roles[0] == "property_owner"){
+                        if($user->roles[0] == "property_owner"){
 					   ?>
 						<?php include(locate_template('sidebar/property-owner.php')); ?>
 						<?php
 						}
 						?>
 						<?php
-                       if($user->roles[0] == "tenant"){
+                        if($user->roles[0] == "tenant"){
 					   ?>
 						<?php include(locate_template('sidebar/tenant-sidebar.php')); ?>
 						<?php
+						}
 						}
 						?>
 						
@@ -94,13 +106,6 @@ get_header();
 			           <input type="submit" class="margin-top-20 button" value="Save Changes" > 
 					</form>
 				</div>
-
-				<div class="col-md-6">
-					<div class="notification notice">
-						<p>Your password should be at least 12 random characters long to be safe</p>
-					</div>
-				</div>
-
 			</div>
 		</div>
 

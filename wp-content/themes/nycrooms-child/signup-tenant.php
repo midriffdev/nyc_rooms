@@ -62,6 +62,7 @@ if(is_user_logged_in()){
 									  'user_login' => $username,
 									  'user_pass' => $password,
 									  'user_email' => $email,
+									  'display_name' => $_REQUEST['guest_name_reg'],
 									  'role'  => 'tenant'
                            );
 			  
@@ -320,11 +321,13 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 					'user_login'  =>  $fb_user->email,
 					'user_pass'   =>  wp_generate_password(), // random password, you can also send a notification to new users, so they could set a password themselves
 					'user_email' => $fb_user->email,
-					'first_name' => $fb_user->first_name,
-					'last_name' => $fb_user->last_name,
+					'display_name' => $fb_user->first_name . ' ' . $fb_user->last_name,
 					'role'  => 'tenant'
 				);
 				$user_id = wp_insert_user( $userdata );
+				if($user_id){
+				    add_user_meta($user_id,'user_full_name', $fb_user->first_name . ' ' . $fb_user->last_name);
+				}
 				wp_new_user_notification($user_id, null, 'both');
 			} else {
 				// user exists, so we need just get his ID
@@ -386,11 +389,13 @@ if (isset($_GET['code'])) {
 					'user_login'  =>  $google_account_info->email,
 					'user_pass'   =>  wp_generate_password(), // random password, you can also send a notification to new users, so they could set a password themselves
 					'user_email' => $google_account_info->email,
-					'first_name' => $google_account_info->givenName,
-					'last_name' =>  $google_account_info->familyName,
+					'display_name' => $google_account_info->givenName . ' ' . $google_account_info->familyName,
 					'role'  => 'tenant'
 				);
 				$user_id = wp_insert_user( $userdata );
+				if($user_id){
+				    add_user_meta($user_id,'user_full_name', $google_account_info->givenName . ' ' . $google_account_info->familyName);
+				}
 				wp_new_user_notification($user_id, null, 'both');
 				
  

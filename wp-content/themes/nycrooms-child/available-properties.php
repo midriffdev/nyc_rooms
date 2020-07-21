@@ -364,7 +364,13 @@ get_header();
 								echo "<span>Document Files </span>";
 								foreach($document_files as $file){
 										$attc_id = get_post_meta($post_id,$file,true);
-										echo wp_get_attachment_link($attc_id);
+										$checkattachment = wp_get_attachment_link($attc_id);
+										if($checkattachment == 'Missing Attachment'){
+										   echo "No Files Attachment";
+										} else {
+										   echo $checkattachment;
+										}
+										
 										echo "</br>";
 								}
 							} 	

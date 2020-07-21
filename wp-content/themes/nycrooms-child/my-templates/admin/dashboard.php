@@ -210,7 +210,7 @@ get_header();
 									</div>
 								</div>
 							</a>
-						</li>
+					   </li>
 					</ul>
 				</div>
 			</div>

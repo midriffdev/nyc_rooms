@@ -90,6 +90,13 @@ if(isset($_GET['datesearch']) && !empty($_GET['datesearch'])){
 
 $usersquery = new WP_User_Query( $args ); 
 $all_users = $usersquery->get_results();
+global $wp;
+$current_url = home_url( add_query_arg( array(), $wp->request ) );
+if(isset($_GET['download-csv']) && $_GET['download-csv'] == 'true'){
+	ob_end_clean();   
+	nyc_export_as_CSV_Prop_Owner();	
+}
+
 get_header();
 ?>
 
@@ -148,9 +155,12 @@ get_header();
 					</div>
 					</form>
 				</div>
-				<div class="col-md-12">
+				<div class="col-md-10">
 					     <p class="showing-results"><?= count($all_users); ?> Results Found On Page <?php echo $page ;?> of <?php echo $total_pages;?> </p>
 				 </div>
+				 <div class="col-md-2 mx-auto">
+					 <p class="showing-results"><?php if(count($all_users) > 0){ echo '<a href="'.$current_url.'/?download-csv=true">Download CSV</a>'; } ?></p>
+				</div>
 				<table class="manage-table responsive-table admin-teanent-maintable all_agents_table">
 				<tbody>
 				<tr>

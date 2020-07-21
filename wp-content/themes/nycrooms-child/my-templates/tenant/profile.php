@@ -1,5 +1,6 @@
 <?php
 /* Template Name: Profile Tenant */
+global $wpdb;
 $getuser = wp_get_current_user();
 $user_id = $getuser->ID;
 nyc_tenant_check_authentication();
@@ -53,15 +54,37 @@ get_header();
 		<div class="row">
 				   <form method="post" enctype="multipart/form-data">
 						<div class="col-md-6 my-profile">
-							
+							<?php 
+							  $user_full_name  = get_user_meta($user_id, 'user_full_name', true);
+							?>
 							<div class="row">
 								<div class="col-md-6">
 									<label>First Name</label>
-									<input value="<?php echo get_user_meta($user_id,'first_name',true); ?>" type="text" name="first_name" placeholder="First Name" required>
+									<input value="<?php  if($user_full_name){
+									      $user_first_name_tenant  = explode(" ",$user_full_name);
+										  $first_name_tenant = $user_first_name_tenant[0];
+									      echo $first_name_tenant;
+										  
+									   } else {
+									       echo get_user_meta($user_id,'first_name',true);
+									   } ?>" type="text" name="first_name" placeholder="First Name" required>
 								</div>
 								<div class="col-md-6">
 									<label>Last Name</label>
-									<input value="<?php echo get_user_meta($user_id,'last_name',true); ?>" type="text" name="last_name" placeholder="Last Name" required>
+									<input value="<?php
+									
+                                       if($user_full_name){
+									      $user_last_name_tenant  = explode(" ",$user_full_name);
+										  foreach($user_last_name_tenant as $key=>$last_name_user){
+										       if($key !=0){
+											     echo $last_name_user;
+											   }
+										  }
+									 } else {
+									      echo get_user_meta($user_id,'last_name',true); 
+									 }
+
+									?>" type="text" name="last_name" placeholder="Last Name" required>
 								</div>
 							</div>
 							
@@ -71,6 +94,14 @@ get_header();
 									<input value="<?php echo get_user_meta($user_id,'user_phone',true); ?>" type="text" name="phone"  placeholder= "Enter Phone With +1.." required pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
 								</div>
 							</div>
+							
+							<div class="row">
+								<div class="col-md-12">
+									<label>Username</label>
+									<input value="<?php echo $getuser->data->user_login; ?>" type="text" name="username_tenant" placeholder="Username" readonly>
+								</div>
+							</div>
+							
 							<div class="row">
 								<div class="col-md-12">
 									<label>Email</label>

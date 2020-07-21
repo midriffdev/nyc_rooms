@@ -1,5 +1,6 @@
 <?php
 /* Template Name: Admin Edit Tenant */
+global $wpdb;
 if(empty($_GET['uid'])){
 	wp_redirect(home_url());
 }
@@ -12,8 +13,10 @@ if(empty($getuser)){
 }
 get_header();
 if(isset($_POST['update_user'])){
+
         $phoneno = $_POST['phone'];
-       if( $_POST['email'] != $getuser->user_email  ) {
+		
+       if( $_POST['email'] != $getuser->data->user_email  ) {
 	     
 	    if(email_exists( $_POST['email'] )){
             $usererror ="Sorry!! Email Already Exists";
@@ -49,20 +52,22 @@ if(isset($_POST['update_user'])){
 								update_user_meta($getuser->ID, 'user_facebook', $_POST['facebook'] );
 								update_user_meta($getuser->ID, 'user_googleplus', $_POST['googleplus'] );
 								update_user_meta($getuser->ID, 'user_linkedin', $_POST['linkedin'] );
-								$usersuccess = "User profile updated successfully";
+								$usersuccess = "Tenant profile updated successfully";
+								
 
                    }						
         }
 		
       } else {
-	        $user_data = wp_update_user( 
-		            array(
-					       'ID' => $getuser->ID, 
-		                   'user_email' => $_POST['email'],
-						   'display_name' => $_POST['first_name'].' ' .$_POST['last_name']
-				    ) 
-				   
-				   );
+	      
+	              $user_data = wp_update_user( 
+									array(
+										   'ID' => $getuser->ID, 
+										   'user_email' => $_POST['email'],
+										   'display_name' => $_POST['first_name'].' ' .$_POST['last_name']
+									) 
+				         );
+
 				   
 				    if ( is_wp_error( $user_data ) ) {
     
@@ -139,6 +144,7 @@ if(isset($_POST['update_user'])){
 									      $user_first_name_tenant  = explode(" ",$user_full_name);
 										  $first_name_tenant = $user_first_name_tenant[0];
 									      echo $first_name_tenant;
+										  
 									   } else {
 									       echo get_user_meta($getuser->ID,'first_name',true);
 									   }
@@ -151,8 +157,11 @@ if(isset($_POST['update_user'])){
 									<input value="<?php
 									 if($user_full_name){
 									      $user_last_name_tenant  = explode(" ",$user_full_name);
-										  $last_name_tenant = $user_first_name_tenant[1];
-									      echo $last_name_tenant;
+										  foreach($user_last_name_tenant as $key=>$last_name_user){
+										       if($key !=0){
+											     echo $last_name_user;
+											   }
+										  }
 									 } else {
 									      echo get_user_meta($getuser->ID,'last_name',true); 
 									 }
@@ -168,6 +177,14 @@ if(isset($_POST['update_user'])){
 									<input value="<?php echo get_user_meta($getuser->ID,'user_phone',true); ?>" type="text" name="phone"  maxlength=12 placeholder= "Enter Phone With +1.." required pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
 								</div>
 							</div>
+							
+							<div class="row">
+								<div class="col-md-12">
+									<label>Username</label>
+									<input value="<?php echo $getuser->data->user_login; ?>" type="text" name="username_tenant" placeholder="Username" readonly>
+								</div>
+							</div>
+							
 							<div class="row">
 								<div class="col-md-12">
 									<label>Email</label>
@@ -184,7 +201,7 @@ if(isset($_POST['update_user'])){
 								
 								<div class="col-md-12">
 									<h4 class="margin-top-50 margin-bottom-25">About Me</h4>
-									<textarea name="about" id="about" cols="30" rows="10" placeholder="About"><?php echo get_user_meta($getuser->ID,'user_about',true); ?></textarea>
+									<textarea name="about" id="about" cols="30" rows="10" placeholder="About Tenant"><?php echo get_user_meta($getuser->ID,'user_about',true); ?></textarea>
 								</div>
 								
 							</div>

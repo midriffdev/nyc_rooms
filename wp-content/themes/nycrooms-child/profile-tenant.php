@@ -1,5 +1,6 @@
 <?php
 /* Template Name: Profile Tenant */
+echo "hello there";
 if(!is_user_logged_in()){
      header( 'Location:' . site_url() . '/tenant-registration/');
 }

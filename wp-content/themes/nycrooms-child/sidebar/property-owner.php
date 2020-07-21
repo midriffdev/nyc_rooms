@@ -33,7 +33,7 @@ $current_user = wp_get_current_user();
 				</li>
 			</ul>
 			<ul class="my-account-nav">
-					<li><a href="<?php echo home_url(); ?>/change-password/"><i class="sl sl-icon-lock"></i> Change Password</a></li>
+					<li><a href="<?php echo home_url(); ?>/change-password/?ppage=powner"><i class="sl sl-icon-lock"></i> Change Password</a></li>
 					<li><a href="<?php echo wp_logout_url(home_url().'/owner-registeration/'); ?>"><i class="sl sl-icon-power"></i> Log Out</a></li>
 			</ul>
 

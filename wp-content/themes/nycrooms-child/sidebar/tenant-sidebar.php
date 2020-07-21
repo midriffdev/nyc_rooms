@@ -29,7 +29,7 @@ $no_of_bookmark = get_user_meta($current_user->ID,'nyc_bookmark',true);
 				</li>
 			</ul>
 			<ul class="my-account-nav">
-				<li><a href="<?php echo home_url(); ?>/change-password/"><i class="sl sl-icon-lock"></i> Change Password</a></li>
+				<li><a href="<?php echo home_url(); ?>/change-password/?ppage=tenant"><i class="sl sl-icon-lock"></i> Change Password</a></li>
 				<li><a href="<?php echo wp_logout_url(home_url().'/tenant-registration/'); ?>"><i class="sl sl-icon-power"></i> Log Out</a></li>
 			</ul>
 		</div>
