@@ -166,6 +166,7 @@ get_header();
 	<div class="row">
 <?php include(locate_template('sidebar/admin-sidebar.php')); ?>
 		<div class="col-md-9">
+		     <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
 			<div class="dashboard-main--cont">
 
 				<div class="admin-advanced-searchfilter">
@@ -388,7 +389,7 @@ get_header();
 						}
 						?>
 						
-						<a href= "<?php echo site_url();?>/edit-property-admin/?pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
+						<a href= "<?php echo site_url();?>/edit-property-admin/?prpage=admin-rented-properties&&pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
 						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 					</td>
 				</tr>

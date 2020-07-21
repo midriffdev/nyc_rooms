@@ -92,7 +92,7 @@ get_header();
 		<?php include(locate_template('sidebar/admin-sidebar.php')); ?>
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
-
+                   <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
 				<div class="admin-advanced-searchfilter">
 					<h2>Agents filter</h2>
 					

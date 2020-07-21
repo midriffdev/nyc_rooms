@@ -55,7 +55,7 @@ get_header();
 													<option label="blank"></option>		
 													<option value="new york" >New York</option>
 													<option value="connecticut" >Connecticut</option>
-													<option value="new jersey" >New Jersey</option>
+													<option value="new jersy" >New Jersey</option>
 												</select>
 									    	</div>
 							    		</li>

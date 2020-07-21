@@ -8,6 +8,7 @@ get_header();
 ================================================== -->
 <div class="deal-detail-container">		
 	<div class="container">
+	    <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
 		<!------Stage 1---->
 		<div class="dealdetail--stageonecont addnewdeal-stageone">
 

@@ -91,6 +91,12 @@ add_action( 'template_redirect', function(){
         die;
     }
 	
+	if ( is_page('admin/all-notifications') ) {
+        include get_stylesheet_directory() . '/my-templates/admin/all-notification.php';
+        die;
+    }
+	
+	
     if ( is_page('tenant') ) {
         include get_stylesheet_directory() . '/my-templates/tenant/profile.php';
         die;
@@ -142,6 +148,7 @@ add_action( 'template_redirect', function(){
         include get_stylesheet_directory() . '/my-templates/property-owner/all-contracts.php';
         die;
      }
+	 
 	
 } );
 

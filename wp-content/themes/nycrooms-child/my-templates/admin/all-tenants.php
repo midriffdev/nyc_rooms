@@ -105,6 +105,7 @@ input.checkbulk{
        <?php include(locate_template('sidebar/admin-sidebar.php')); ?>
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
+			    <p style="color:#274abb"><a href="<?= site_url() . '/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
                 <div class="admin-advanced-searchfilter">
 					<h2>Tenant filter</h2>
 					<form action='' >
@@ -186,7 +187,7 @@ input.checkbulk{
 					
 					?></div></td>					
 					<td class="action">
-						<a href="<?= site_url()?>/admin/edit-profile/?uid=<?php echo $user_id; ?>"><i class="fa fa-pencil"></i> Edit</a>
+						<a href="<?= site_url()?>/admin/edit-profile/?prpage=all-tenants&&uid=<?php echo $user_id; ?>"><i class="fa fa-pencil"></i> Edit</a>
 						<a href="#" class="delete delete-tenant" data-id="<?php echo $user_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 					</td>
 				</tr>

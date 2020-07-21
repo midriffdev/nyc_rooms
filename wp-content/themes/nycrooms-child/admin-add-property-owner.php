@@ -62,7 +62,7 @@ get_header();
 		 <?php include(locate_template('sidebar/admin-sidebar.php')); ?>
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
-
+                <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
 			<div class="admin-teanent-account-details">
 				<div class="row">
 					<div class="col-md-12">

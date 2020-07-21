@@ -46,10 +46,12 @@ get_header();
 	<div class="row">
 		<!-- Widget -->
 		<?php include(locate_template('sidebar/admin-sidebar.php')); ?>
-
+	
 		
 		<div class="col-md-8">
 			<div class="row">
+			     <p style="color:#274abb"><a href="<?= site_url() . '/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
+
                   <label class="reset_success"><?php //echo $message; ?></label>
 				<form method="post" class="profile"  action="<?php echo $_SERVER['REQUEST_URI']; ?>" enctype='multipart/form-data' >
 					<div class="col-md-8 my-profile">

@@ -93,8 +93,9 @@ get_header();
 
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
-
+                    <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
 				<div class="admin-advanced-searchfilter">
+				    
 					<h2>Property Owner filter</h2>
 					<form method="get">
 					<div class="row with-forms">
@@ -171,7 +172,7 @@ get_header();
 						<td class="owner--username"><?php echo $user->user_email ;?></td>
 						<td><div class="owner-phone-no"><?php echo $phone ;?></div></td>
 						<td class="action">
-							<a href="<?php echo get_site_url();?>/property-owner-details/?uid=<?php echo $user->ID;?>"><i class="fa fa-pencil"></i> Edit</a>
+							<a href="<?php echo get_site_url();?>/property-owner-details/?prpage=recent-property-owner&&uid=<?php echo $user->ID;?>"><i class="fa fa-pencil"></i> Edit</a>
 							<a style="cursor:pointer;" class="delete_agent_profile" data-id="<?php echo $user->ID; ?>"><i class="fa fa-remove"></i> Delete</a>
 						</td>
 					</tr>

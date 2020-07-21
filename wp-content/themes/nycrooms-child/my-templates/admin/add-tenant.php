@@ -70,7 +70,7 @@ if(isset($_POST['add_tenant'])){
 		<?php get_template_part('sidebar/admin-sidebar'); ?>
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
-
+                <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
 			<div class="admin-teanent-account-details">
 				<div class="row">
 					<div class="col-md-12">

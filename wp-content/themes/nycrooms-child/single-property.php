@@ -74,6 +74,27 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 ?>
 <!-- Wrapper -->
 <div id="wrapper">
+<?php if(is_user_logged_in()){
+                       $userrole = wp_get_current_user();
+					if($userrole->roles[0] == "administrator"){
+			 ?>
+		              <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
+					  
+			       <?php
+                    } else if($userrole->roles[0] == "property_owner"){
+					?>
+					  <p style="color:#274abb"><a href="<?= site_url().'/property-owner/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To Profile</a></p>
+					  
+					<?php
+					} 
+			 
+			 } else { ?>
+			 
+			   <p style="color:#274abb"><a href="<?= site_url().'/property-search/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</a></p>
+					  
+			 <?php
+			 }
+			 ?>
 <!-- Titlebar
 ================================================== -->
 <div id="titlebar"  class="property-titlebar margin-bottom-0">

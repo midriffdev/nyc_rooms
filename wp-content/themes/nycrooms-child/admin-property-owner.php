@@ -75,8 +75,20 @@ if(!empty($argarray)){
    $args['meta_query'] = $argarray; 
 }
 
-$usersquery = new WP_User_Query( $args ); 
+if(isset($_GET['datesearch']) && !empty($_GET['datesearch'])){
+     
+	 $date = explode('-',$_GET['datesearch']);
+	 $args['date_query'] = array(
+								array(
+									'year'  => (int) $date[0],
+									'month' => (int) $date[1],
+									'day'   => (int) $date[2]
+								)
+                        ); 
+   
+}
 
+$usersquery = new WP_User_Query( $args ); 
 $all_users = $usersquery->get_results();
 get_header();
 ?>
@@ -92,7 +104,7 @@ get_header();
 
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
-
+                 <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
 				<div class="admin-advanced-searchfilter">
 					<h2>Property Owner filter</h2>
 					<form method="get">
@@ -117,7 +129,11 @@ get_header();
 								<div class="col-md-6">
 									<input type="text" placeholder="Enter Phone" name="phone"/>
 								</div>
+								<div class="col-md-6">
+									<input type="date" placeholder="Enter Date" name="datesearch"/>
+								</div>
 							</div>
+							
 							<!-- Row With Forms / End -->	
 
 							<!-- Search Button -->
@@ -170,7 +186,7 @@ get_header();
 							<td class="owner--username"><?php echo $user->user_email ;?></td>
 							<td><div class="owner-phone-no"><?php echo $phone ;?></div></td>
 							<td class="action">
-								<a href="<?php echo get_site_url();?>/property-owner-details/?uid=<?php echo $user->ID;?>"><i class="fa fa-pencil"></i> Edit</a>
+								<a href="<?php echo get_site_url();?>/property-owner-details/?prpage=admin-property-owner-all&&uid=<?php echo $user->ID;?>"><i class="fa fa-pencil"></i> Edit</a>
 								<a style="cursor:pointer;" class="delete_agent_profile" data-id="<?php echo $user->ID; ?>"><i class="fa fa-remove"></i> Delete</a>
 							</td>
 						</tr>

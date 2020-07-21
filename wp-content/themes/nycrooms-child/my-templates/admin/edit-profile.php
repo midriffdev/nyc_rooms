@@ -103,6 +103,10 @@ if(isset($_POST['update_user'])){
 	<div class="col-md-9">
 	<div class="admin-agent-account-details">
 		<div class="row">
+		   <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'all-tenants'): ?>
+				      <p style="color:#274abb"><a href="<?= site_url().'/all-tenants/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+				   
+			<?php endif; ?>
 			<div class="col-md-12">
 				<h4 class="margin-top-0 margin-bottom-30 admin-teanentdetail-title">Account Details</h4>
 			</div>
@@ -124,15 +128,37 @@ if(isset($_POST['update_user'])){
 						?>
 				   <form method="post" enctype="multipart/form-data">
 						<div class="col-md-6 my-profile">
-							
+							<?php 
+							  $user_full_name  = get_user_meta($getuser->ID, 'user_full_name', true);
+							?>
 							<div class="row">
 								<div class="col-md-6">
 									<label>First Name</label>
-									<input value="<?php echo get_user_meta($getuser->ID,'first_name',true); ?>" type="text" name="first_name" placeholder="First Name" required>
+									<input value="<?php
+                                       if($user_full_name){
+									      $user_first_name_tenant  = explode(" ",$user_full_name);
+										  $first_name_tenant = $user_first_name_tenant[0];
+									      echo $first_name_tenant;
+									   } else {
+									       echo get_user_meta($getuser->ID,'first_name',true);
+									   }
+
+
+									?>" type="text" name="first_name" placeholder="First Name" required>
 								</div>
 								<div class="col-md-6">
 									<label>Last Name</label>
-									<input value="<?php echo get_user_meta($getuser->ID,'last_name',true); ?>" type="text" name="last_name" placeholder="Last Name" required>
+									<input value="<?php
+									 if($user_full_name){
+									      $user_last_name_tenant  = explode(" ",$user_full_name);
+										  $last_name_tenant = $user_first_name_tenant[1];
+									      echo $last_name_tenant;
+									 } else {
+									      echo get_user_meta($getuser->ID,'last_name',true); 
+									 }
+									
+									
+									?>" type="text" name="last_name" placeholder="Last Name" required>
 								</div>
 							</div>
 							

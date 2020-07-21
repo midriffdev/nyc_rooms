@@ -21,8 +21,9 @@ get_header();
 			?>
 	<!-- Submit Page -->
 	<div class="col-md-12">
+	    
 		<div class="submit-page add-property-page" id="prop_form_data">
-        
+        <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
 		<!-- Section -->
 		<h3>Basic Information</h3>
 		<div class="submit-section">

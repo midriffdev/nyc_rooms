@@ -1236,6 +1236,7 @@ textarea:required:focus {
 	<div class="container">
 
 		<div class="row contractdetail--stageinnersection">
+		    <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
 			<div class="col-md-12">
 				<div class="contract-property_detail">
 					<?php 

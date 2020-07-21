@@ -25,6 +25,7 @@ get_header();
 <div class="lead-detail-container">		
 	<div class="container">
 		<div class="row">
+		     <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
 		     <?php if($lead_source == "Property Form"){ ?>
 			 <div class="col-md-12">
 			   <h4>Lead by Property Form</h4>

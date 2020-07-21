@@ -3615,5 +3615,11 @@ function nyc_get_count_order_post_type(){
    
 }
 
+function get_notification_count(){
+   global $wpdb;
+   $get_notification = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."notification ORDER BY id DESC LIMIT 8;");
+   return count($get_notification);
+}
+
 require_once( 'inc/init-function.php');
 ?>

@@ -20,7 +20,22 @@ get_header();
 	<!-- Submit Page -->
 	<div class="col-md-12">
 		<div class="submit-page add-property-page" id="prop_form_data">
-        
+		<?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'admin-properties'): ?>
+           <p style="color:#274abb"><a href="<?= site_url().'/admin-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+		 <?php endif; ?>
+		 <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'admin-available-properties'): ?>
+           <p style="color:#274abb"><a href="<?= site_url().'/admin-available-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+		 <?php endif; ?>
+		  <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'admin-rented-properties'): ?>
+           <p style="color:#274abb"><a href="<?= site_url().'/admin-rented-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+		 <?php endif; ?>
+		 <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'approved-properties-admin'): ?>
+           <p style="color:#274abb"><a href="<?= site_url().'/approved-properties-admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+		 <?php endif; ?>
+		  <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'admin-recently-properties'): ?>
+           <p style="color:#274abb"><a href="<?= site_url().'/admin-recently-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+		 <?php endif; ?>
+		 
 		<!-- Section -->
 		<h3>Basic Information</h3>
 		<div class="submit-section">

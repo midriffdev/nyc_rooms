@@ -6,9 +6,7 @@
 					
 					<ul class="my-account-nav">
 						<li class="sub-nav-title">Manage Account</li>
-
 						<li><a href="<?= home_url();?>/admin/" id="sidebar-dashboard"><i class="sl sl-icon-screen-desktop"></i> Dashboard</a></li>
-						<li><a href="<?= home_url();?>/profile-admin/" id="sidebar-profile"><i class="sl sl-icon-user"></i> My Profile</a></li>
 
 					</ul>
 					
@@ -86,10 +84,17 @@
 						</li>
 					</ul>
 					
+					<ul class="my-account-nav">
+						<li class="sub-nav-title">Manage Notifications</li>
+						<li><a href="<?php echo get_site_url(); ?>/admin/all-notifications/">All Notifications <span class="all-listing-no active-listing-no"><?= get_notification_count() ?></span></a></li>
+					</ul>
 					
 					<ul class="my-account-nav">
+					    <li class="sub-nav-title">Manage Account</li>
+					    <li><a href="<?= home_url();?>/profile-admin/" id="sidebar-profile"><i class="sl sl-icon-user"></i> My Profile</a></li>
 						<li><a href="<?php echo home_url(); ?>/change-password/"><i class="sl sl-icon-lock"></i> Change Password</a></li>
 						<li><a href="<?php echo wp_logout_url(home_url().'/login-admin/'); ?>"><i class="sl sl-icon-power"></i> Log Out</a></li>
+						
 					</ul>
 
 				</div>
