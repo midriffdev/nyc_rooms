@@ -88,12 +88,18 @@ if(isset($_GET['update_search'])){
 	}
 	
 	if(isset($_GET['property_Act_inact']) && !empty($_GET['property_Act_inact']) ){	
-		$argarray[] =  array
-		(
-			'key'          => 'prop_active_inactive',
-			'value'        => (int)$_GET['property_Act_inact'],
-			'compare'      => '=',
-		);
+	
+	    if($_GET['property_Act_inact'] == 1 or $_GET['property_Act_inact'] == 2):
+		
+			$argarray[] =  array
+			(
+				'key'          => 'prop_active_inactive',
+				'value'        => (int)$_GET['property_Act_inact'],
+				'compare'      => '=',
+			);
+			
+		endif;
+		
 	}
 	
 	
@@ -150,7 +156,20 @@ if(isset($_GET['furnish_unfurnish_type']) && !empty($_GET['furnish_unfurnish_typ
 								   );					   
 }
 
-
+if(isset($_GET['property_Act_inact']) && !empty($_GET['property_Act_inact']) ){	
+	
+	    if($_GET['property_Act_inact'] == "approved"):
+			$args['post_status'] = array('available' , 'rented');
+		endif;
+		
+		if($_GET['property_Act_inact'] == "unapproved"):
+	        $args['post_status'] = array('draft');
+		endif;
+		
+		
+		
+}
+	
 
 if(!empty($argarray)){
    $args['meta_query'] = $argarray;
@@ -309,7 +328,9 @@ get_header();
 									</div>
 									<div class="col-md-4">
 										<select data-placeholder="Any Status" class="chosen-select-no-single" name="property_Act_inact" >
-											<option value="">Filter By Active or Inactive</option>	
+											<option value="">Filter By Status</option>
+                                            <option value="approved">Approved</option>
+                                            <option value="unapproved">Unapproved</option>											
 											<option value="1">Active</option>
 											<option value="2">Inactive</option>
 										</select>
@@ -363,6 +384,7 @@ get_header();
 							}
 							$document_files = explode(',',get_post_meta($post_id, 'document_files',true));
 							$property_inactive = get_post_meta($post_id,'prop_active_inactive',true);
+							
 				?>
 					
 				<tr>
@@ -410,6 +432,17 @@ get_header();
 						?>						
 						<a href= "<?php echo get_site_url();?>/edit-property-admin/?prpage=admin-properties&&pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
 						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
+						<?php if($status == 'draft') { ?>
+						   <button class="button approve_property" data-id="<?php echo $post_id; ?>">Approve</button>
+						<?php 
+						} else if($status == 'available' or $status == 'rented'){
+						?>
+						   <button class="button unapprove_property" data-id="<?php echo $post_id; ?>">UnApprove</button>
+						<?php
+						}
+						?>
+						
+						
 					</td>
 				</tr>
 <?php 
@@ -464,10 +497,12 @@ get_header();
 			        <label>Select bulk action</label>
                   <div class="bulk_actions_properties">
 						<select class="select_action_properties">
-						 <option value="-1">Bulk Actions</option>
-						 <option value="activate">Activate</option>
-						 <option value="deactivate">Inactive</option>						 
-						 <option value="delete">Delete</option>
+							 <option value="-1">Bulk Actions</option>
+							 <option value="approve">Approve</option>
+							 <option value="unapprove">UnApprove</option>
+							 <option value="activate">Activate</option>
+							 <option value="deactivate">Inactive</option>						 
+							 <option value="delete">Delete</option>
 						</select>
                     <input type="button" value="Apply" class="apply_action_properties">
                  </div>
@@ -543,6 +578,44 @@ get_header();
       
     </div>
   </div>
+  <!--------- Approved Property Modal ----------->
+  <div class="modal fade" id="ModalApproveProp" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Properties Approved Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!--------- UnApproved Property Modal ----------->
+  <div class="modal fade" id="ModalUnApproveProp" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Properties UnApproved Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   
 
 <style>

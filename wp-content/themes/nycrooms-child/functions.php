@@ -303,7 +303,7 @@ function nyc_add_property_ajax(){
 			add_post_meta($property_id, 'gallery_files', $_POST['gallery_files']);
 			add_post_meta($property_id, 'document_files', $_POST['document_files']);
 			add_post_meta($property_id, 'people_living_count', $_POST['people_living_count']);
-			add_post_meta($property_id, 'prop_active_inactive', 2);
+			add_post_meta($property_id, 'prop_active_inactive', 1);
 			
 			if(isset($_FILES)){
 			  foreach($_FILES as $key=>$file){
@@ -345,6 +345,7 @@ function nyc_add_property_ajax(){
 }
 add_action( 'wp_ajax_nyc_add_property_ajax', 'nyc_add_property_ajax' );
 add_action( 'wp_ajax_nopriv_nyc_add_property_ajax', 'nyc_add_property_ajax' );
+
 
 
 function nyc_update_property_ajax(){
@@ -731,6 +732,7 @@ function nyc_property_gallery_image_upload($file_name,$post_id){
 	   $update = wp_update_attachment_metadata($attach_id, $attach_data); // Updated the image details
 	   add_post_meta($post_id, $file_name, $attach_id);
 }
+
 
 function nyc_property_gallery_image_upload_update($files,$file_name,$post_id){
 		$uploaddir = wp_upload_dir();
@@ -3621,6 +3623,183 @@ function get_notification_count(){
    $get_notification = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."notification ORDER BY id DESC LIMIT 8;");
    return count($get_notification);
 }
+
+/*---------- Uploading Documents for tenant -----------------*/
+
+function nyc_upload_tenant_docs(){
+  if(isset($_POST['action']) && $_POST['action'] == 'nyc_upload_tenant_docs'){
+   $deal_id = $_POST['deal_id'];
+   $tenant_docs_all =  $_POST['tenant_docs_all'];
+   $doc_files_post = array();
+   if(isset($_FILES) && !empty($_FILES)){
+            $doc_gallery = get_post_meta($deal_id, 'tenant_docs_all', true);
+			if($doc_gallery){
+			    $document_files = explode(',',$doc_gallery);
+				$countdoc_meta = count($document_files);
+				$doc_files_post = $document_files;
+				$k = 1;
+				$FILESDOC = array();
+				foreach($_FILES as $key=>$file){
+					  if("doc_tenant_" == substr($key,0,11)){
+							if($k == 1){
+							  $key = 'doc_tenant_'.$countdoc_meta;
+							} else {
+							  $incresecount_doc = ($countdoc_meta + $k)- 1;
+							  $key = 'doc_tenant_'.$incresecount_doc;
+							}
+							$FILESDOC[$key] = $file;
+						   
+							   nyc_property_gallery_image_upload_tenant_docs($FILESDOC,$key,$deal_id);
+							   $doc_files_post[] = $key;
+							   
+							 $k++;
+					  }
+                    					  
+                }
+				
+				update_post_meta($deal_id, 'tenant_docs_all', implode(',',$doc_files_post));
+				 
+				
+				
+			} else {
+			
+				  foreach($_FILES as $key=>$file){
+					  nyc_property_gallery_image_upload_tenant_docs($_FILES,$key,$deal_id);
+				  }
+				  update_post_meta($deal_id,'tenant_docs_all',$tenant_docs_all);
+				  update_post_meta($deal_id,'tenant_docs_status',1);
+			  
+			}
+			
+    }
+	
+	echo 'success';
+	
+   }
+   exit;
+}
+
+add_action( 'wp_ajax_nyc_upload_tenant_docs', 'nyc_upload_tenant_docs' );
+add_action( 'wp_ajax_nopriv_nyc_upload_tenant_docs', 'nyc_upload_tenant_docs' );
+
+/*-------------- Upload functionality for documents ----------*/
+
+function nyc_property_gallery_image_upload_tenant_docs($files,$file_name,$post_id){
+		$uploaddir = wp_upload_dir();
+		$tmp_file = $files[$file_name]["tmp_name"];
+		$uploadfile = $uploaddir['path'] . '/' . $files[$file_name]['name'];
+		move_uploaded_file($tmp_file, $uploadfile);
+		$wp_filetype = wp_check_filetype(basename($uploadfile), null);
+		$attachment = array(
+			'post_mime_type' => $wp_filetype['type'],
+			'post_title' => preg_replace('/\.[^.]+$/', '', basename($uploadfile)),
+			'post_status' => 'inherit',
+		);
+	   $attach_id = wp_insert_attachment($attachment, $uploadfile); // adding the image to th media
+	   require_once(ABSPATH . 'wp-admin/includes/image.php');
+	   $attach_data = wp_generate_attachment_metadata($attach_id, $uploadfile);
+	   $update = wp_update_attachment_metadata($attach_id, $attach_data); // Updated the image details
+	   update_post_meta($post_id, $file_name, $attach_id);
+}
+
+
+add_action( 'wp_ajax_nyc_get_existing_doc_tenant_ajax', 'nyc_get_existing_doc_tenant_ajax' );
+add_action( 'wp_ajax_nopriv_nyc_get_existing_doc_tenant_ajax', 'nyc_get_existing_doc_tenant_ajax' );
+
+function nyc_get_existing_doc_tenant_ajax(){
+        if(isset($_POST['action']) && $_POST['action'] == 'nyc_get_existing_doc_tenant_ajax'){
+		  $deal_id    = $_POST['deal_id'];
+          $gallery_files_ids   = explode(',',get_post_meta($deal_id,'tenant_docs_all',true)); 
+		  $arrayfiles = array();
+		    foreach($gallery_files_ids as $gallery_files){
+			   $ids = get_post_meta($deal_id,$gallery_files,true);
+			   $filename = basename(get_attached_file($ids));
+			   $arrayfiles[] = $filename;
+			   
+			}
+
+			 $file_list = array();
+			 $uploaddir = wp_upload_dir();
+
+			  $dir       =  $uploaddir['path'].'/';
+			  $pathurl   =  $uploaddir['url'].'/';
+			 
+			 
+			  foreach($arrayfiles as $file){
+			 // File path
+                $file_path = $dir.$file;
+				$file_pathurl  = $pathurl.$file;
+				$type = pathinfo($file_pathurl, PATHINFO_EXTENSION);
+				$data = file_get_contents($file_pathurl);
+				$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+				
+				if(!is_dir($file_path)){
+                   $size = filesize($file_path);
+                   $file_list[] = array('name'=>$file,'size'=>$size,'path'=> $base64);
+				}
+            }
+           echo json_encode($file_list);  
+		}
+  exit; 
+}
+
+add_action( 'wp_ajax_nyc_delete_existing_doc_tenant_ajax', 'nyc_delete_existing_doc_tenant_ajax' );
+add_action( 'wp_ajax_nopriv_nyc_delete_existing_doc_tenant_ajax', 'nyc_delete_existing_doc_tenant_ajax' );
+
+function nyc_delete_existing_doc_tenant_ajax(){
+   if(isset($_POST['action']) && $_POST['action'] == 'nyc_delete_existing_doc_tenant_ajax'){
+     $uploaddir = wp_upload_dir();
+	 $dir       =  $uploaddir['path'].'/';
+	 $pathurl   =  $uploaddir['url'].'/';
+     $deal_id = $_POST['deal_id'];
+	 $file_name  =  $_POST['file_name'];
+	 $file_url   = $pathurl . $file_name;
+	 $gallery_files_meta = get_post_meta($deal_id,'tenant_docs_all',true);
+	 $gallery_files = explode(',',$gallery_files_meta);
+	  foreach($gallery_files as $key => $metakeyattach){
+	        $attachment_id = get_post_meta($deal_id,$metakeyattach,true);
+		    $attachment_url = wp_get_attachment_url($attachment_id);
+			if($attachment_url == $file_url){
+			   wp_delete_attachment($attachment_id, true);
+			   delete_post_meta( $deal_id, $metakeyattach,$attachment_id); 
+			   unset($gallery_files[$key]);
+			  
+			}	
+	  }
+	  
+	  $i = 0;
+	  foreach($gallery_files as $key => $newgalleryfiles){
+	      $attachment_id = get_post_meta($deal_id,$newgalleryfiles,true);
+		  if($attachment_id){
+			  delete_post_meta($deal_id,$newgalleryfiles,$attachment_id);
+			  unset($gallery_files[$key]);
+			  add_post_meta($deal_id,'doc_tenant_'.$i,$attachment_id);
+			  $gallery_files[$i] = 'doc_tenant_'.$i;
+		  }
+		  
+	   $i++;
+	  
+	  }      
+              
+	         if(empty($gallery_files)){
+	              delete_post_meta($deal_id,'tenant_docs_all', implode(',',$gallery_files));
+				  delete_post_meta($deal_id,'tenant_docs_status',1);
+	         } else {
+			      update_post_meta($deal_id,'tenant_docs_all', implode(',',$gallery_files));	
+			 }
+             
+			
+	  echo "success";
+	   
+   } else {
+      echo "faliure";
+   }
+  exit; 
+}
+
+
+
+
 
 require_once( 'inc/init-function.php');
 ?>

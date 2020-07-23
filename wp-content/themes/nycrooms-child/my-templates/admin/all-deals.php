@@ -153,6 +153,7 @@ input.checkbulk{
 					<th style="width:10%;"><i class="fa fa-phone" ></i> Phone</th>
 					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Source</th>
 					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Date</th>
+					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Attachments</th>
 					<th style="width:20%;"><i class="fa fa-hand-pointer-o"></i> Action</th>
 				</tr>
 
@@ -162,6 +163,7 @@ input.checkbulk{
 						$deals->the_post();
 						$deal_id = get_the_ID();
 						$deal_stage =  get_post_meta($deal_id,'deal_stage',true); 
+						$document_files = explode(',',get_post_meta($deal_id, 'tenant_docs_all',true));
 					?>
 						<tr class="deal__stage-one deal-id-<?php echo $deal_id; ?>">
 							<td><input type="checkbox" class="checkbulk" value="<?php echo $deal_id; ?>" ></td>
@@ -171,6 +173,25 @@ input.checkbulk{
 							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'phone',true); ?></td>
 							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'lead_source',true); ?></td>
 							<td class="deal-phone-number"><?php echo get_the_date( 'Y-m-d' ); ?></td>
+							<td class="deal-phone-number">
+							<?php 
+							if($document_files){
+								echo "</br></br>";
+								echo "<span>Document Files </span>";
+								foreach($document_files as $file){
+										$attc_id = get_post_meta($deal_id,$file,true);
+										$checkattachment = wp_get_attachment_link($attc_id);
+										if($checkattachment == 'Missing Attachment'){
+										   echo "No Files Attachment";
+										} else {
+										   echo $checkattachment;
+										}
+										echo "</br>";
+								}
+							} 	
+							?>	
+							
+							</td>
 							<td class="action">
 								<a href="<?php echo get_site_url(); ?>/admin/deals/details/<?php echo base64_encode($deal_id); ?>" ><i class="fa fa-eye"></i> View</a>
 								<a href="#" class="delete delete-deal" data-id="<?php echo $deal_id; ?>"><i class="fa fa-remove"></i> Delete</a>

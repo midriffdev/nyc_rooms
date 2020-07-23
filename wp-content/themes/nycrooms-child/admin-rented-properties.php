@@ -317,7 +317,7 @@ get_header();
 									</div>
 									<div class="col-md-4">
 										<select data-placeholder="Any Status" class="chosen-select-no-single" name="property_Act_inact" >
-											<option value="">Filter By Active or Inactive</option>	
+											<option value="">Filter By Status</option>	
 											<option value="1">Active</option>
 											<option value="2">Inactive</option>
 										</select>
