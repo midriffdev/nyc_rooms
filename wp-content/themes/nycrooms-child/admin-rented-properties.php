@@ -87,6 +87,17 @@ if(isset($_GET['update_search'])){
 			'compare'      => '=',
 		);
 	}
+	
+	if(isset($_GET['property_Act_inact']) && !empty($_GET['property_Act_inact']) ){	
+		$argarray[] =  array
+		(
+			'key'          => 'prop_active_inactive',
+			'value'        => (int)$_GET['property_Act_inact'],
+			'compare'      => '=',
+		);
+	}
+	
+	
 	if(isset($_GET['property_location']) && !empty($_GET['property_location']) ){	
 		$argarray[] = array(
 		    'relation'    => 'OR',
@@ -304,6 +315,13 @@ get_header();
 											<option value="">Any</option>
 										</select>
 									</div>
+									<div class="col-md-4">
+										<select data-placeholder="Any Status" class="chosen-select-no-single" name="property_Act_inact" >
+											<option value="">Filter By Active or Inactive</option>	
+											<option value="1">Active</option>
+											<option value="2">Inactive</option>
+										</select>
+									</div>
 								</div>	
 								<!-- Search Button -->
 								<div class="row with-forms">
@@ -347,7 +365,7 @@ get_header();
 							$contact_name = get_post_meta($post_id, 'contact_name',true);
 							$status = get_post_status();
 							$document_files = explode(',',get_post_meta($post_id, 'document_files',true));
-							$property_inactive = get_post_meta($post_id,'property_inactive',true);
+							$property_inactive = get_post_meta($post_id,'prop_active_inactive',true);
 				?>
 					
 				<tr>
@@ -358,7 +376,7 @@ get_header();
 							<h4><a href="<?php echo site_url().'/single-property/?property_id='.$post_id; ?>"><?php echo get_the_title($post_id); ?></a></h4>
 							<span><?php echo $address;?> </span>
 							<span class="table-property-price"><?php echo $price.'$ / Week' ;?></span> <span class="active--property"><?php echo ucfirst($status); ?></span>
-							<span class="active--property"><?php echo ($property_inactive == true) ? 'Inactive' : 'Active';?></span>
+							<span class="active--property"><?php echo ($property_inactive == 1) ?   'Active' : 'Inactive';?></span>
 							<?php 
 							if($document_files){
 								echo "</br></br>";
@@ -383,13 +401,13 @@ get_header();
 					<td class="action">
 						  <a href="<?= site_url().'/single-property/?property_id='.$post_id  ?> "><i class="fa fa-eye"></i> View</a>
 						<?php
-						if($property_inactive == true){
+						if($property_inactive == 1){
 						?>
-						<a style="cursor:pointer;" class="actvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-key"></i> Activate</a>
+						<a style="cursor:pointer;" class="deactvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-key"></i>Inactivate</a>
 						<?php
 						} else {
 						?>
-						<a style="cursor:pointer;" class="deactvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-eye-slash"></i> Inactive</a>
+						<a style="cursor:pointer;" class="actvate_prperty" data-id="<?php echo $post_id; ?>" ><i class="fa fa-eye-slash"></i>Activate</a>
 						<?php
 						}
 						?>

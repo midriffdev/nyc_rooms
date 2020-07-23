@@ -303,7 +303,7 @@ function nyc_add_property_ajax(){
 			add_post_meta($property_id, 'gallery_files', $_POST['gallery_files']);
 			add_post_meta($property_id, 'document_files', $_POST['document_files']);
 			add_post_meta($property_id, 'people_living_count', $_POST['people_living_count']);
-			add_post_meta($property_id, 'prop_active_inactive', 0);
+			add_post_meta($property_id, 'prop_active_inactive', 2);
 			
 			if(isset($_FILES)){
 			  foreach($_FILES as $key=>$file){

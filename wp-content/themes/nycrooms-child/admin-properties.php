@@ -86,6 +86,7 @@ if(isset($_GET['update_search'])){
 			'compare'      => '=',
 		);
 	}
+	
 	if(isset($_GET['property_Act_inact']) && !empty($_GET['property_Act_inact']) ){	
 		$argarray[] =  array
 		(
