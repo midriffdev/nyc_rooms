@@ -147,7 +147,7 @@ input.checkbulk{
 				<tbody>
 				<tr>
 					<th style="width:4%;"><input type="checkbox" class="checkallbulk"></th>
-					<th style="width:14%;"><i class="fa fa-list-ol"></i> Deal No</th>
+					<th style="width:14%;"><i class="fa fa-list-ol"></i> Deal ID</th>
 					<th style="width:10%;"><i class="fa fa-user"></i>Name</th>
 					<th style="width:15%;"><i class="fa fa-envelope"></i> Email</th>
 					<th style="width:10%;"><i class="fa fa-phone" ></i> Phone</th>

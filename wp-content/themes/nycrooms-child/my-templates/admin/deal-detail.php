@@ -69,7 +69,7 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 ?>
 <!-- Wrapper -->
 <div id="wrapper">
- <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
+ <p style="color:#274abb"><a href="<?= site_url().'/admin/deals/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
 <div class="deal-detail-container">		
 	<div class="container">
         <?php 

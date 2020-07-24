@@ -148,7 +148,7 @@ get_header();
 						<td class="lead-email-address"><?= get_post_meta(get_the_ID(),'lead_email',true); ?></td>
 						<td><?= get_post_meta(get_the_ID(),'lead_source',true); ?></td>
 						<td class="action">
-							<a href="<?= get_post_permalink(get_the_ID()) ?>"><i class="fa fa-eye"></i> View</a>
+							<a href="<?= get_post_permalink(get_the_ID()).'?prpage=recent-leads' ?>"><i class="fa fa-eye"></i> View</a>
 							<a class="delete" data-id="<?= get_the_ID() ?>" style="cursor:pointer;"><i class="fa fa-remove"></i> Delete</a>
 							<a href="#" class="into--deal"><i class="fa fa-share" aria-hidden="true"></i> Into Deal</a>
 						</td>

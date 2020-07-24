@@ -25,7 +25,14 @@ get_header();
 <div class="lead-detail-container">		
 	<div class="container">
 		<div class="row">
-		     <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
+			 <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'all-leads'): ?>
+				     <p style="color:#274abb"><a href="<?= site_url().'/all-leads/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+			 <?php endif; ?>
+				   
+		     <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'recent-leads'): ?>
+				      <p style="color:#274abb"><a href="<?= site_url().'/recent-leads/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+		     <?php endif; ?>
+				   
 		     <?php if($lead_source == "Property Form"){ ?>
 			 <div class="col-md-12">
 			   <h4>Lead by Property Form</h4>

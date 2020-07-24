@@ -79,7 +79,26 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
                        $userrole = wp_get_current_user();
 					if($userrole->roles[0] == "administrator"){
 			 ?>
-		              <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
+		              <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'admin-properties'): ?>
+				         <p style="color:#274abb"><a href="<?= site_url().'/admin-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+			          <?php endif; ?>
+				   
+					 <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'admin-available-properties'): ?>
+					     <p style="color:#274abb"><a href="<?= site_url().'/admin-available-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+					 <?php endif; ?>
+					 
+					 <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'admin-rented-properties'): ?>
+					     <p style="color:#274abb"><a href="<?= site_url().'/admin-rented-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+					 <?php endif; ?>
+					 
+					 <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'approved-properties-admin'): ?>
+					     <p style="color:#274abb"><a href="<?= site_url().'/approved-properties-admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+					 <?php endif; ?>
+					 
+					 <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'admin-recently-properties'): ?>
+					     <p style="color:#274abb"><a href="<?= site_url().'/admin-recently-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+					 <?php endif; ?>
+					 
 					  
 			       <?php
                     } else if($userrole->roles[0] == "property_owner"){

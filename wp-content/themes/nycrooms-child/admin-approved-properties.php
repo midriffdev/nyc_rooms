@@ -363,7 +363,7 @@ if ( $properties->have_posts() ) {
 					<td class="title-container">
 						<img src="<?php if($prop_image){ echo $prop_image; } ?>"alt="">
 						<div class="title">
-							<h4><a href="<?= get_post_permalink( get_the_ID()) ?>"><?php echo get_the_title($post_id); ?></a></h4>
+							<h4><a href="<?= get_post_permalink( get_the_ID()).'?prpage=approved-properties-admin' ?>"><?php echo get_the_title($post_id); ?></a></h4>
 							<span><?php echo $address;?> </span>
 							<span class="table-property-price"><?php echo $price . '$ / Week';?></span> <span class="rented--property recently_prop">Recently</span>
 							<?php 
@@ -388,7 +388,7 @@ if ( $properties->have_posts() ) {
 						<div class="owner--name"><a href="#"><?php echo $contact_name;?></a></div>
 					</td>
 					<td class="action">
-						<a href="<?= get_post_permalink( get_the_ID()) ?>"><i class="fa fa-eye"></i> View</a>
+						<a href="<?= get_post_permalink( get_the_ID()).'?prpage=approved-properties-admin' ?>"><i class="fa fa-eye"></i> View</a>
 						<a href="<?php echo site_url();?>/edit-property-admin/?prpage=approved-properties-admin&&pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
 						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 					</td>

@@ -373,7 +373,7 @@ get_header();
 					<td class="title-container">
 						<img src="<?php if($prop_image){ echo $prop_image; } ?>" alt="">
 						<div class="title">
-							<h4><a href="<?php echo site_url().'/single-property/?property_id='.$post_id; ?>"><?php echo get_the_title($post_id); ?></a></h4>
+							<h4><a href="<?= get_post_permalink( get_the_ID()).'?prpage=admin-rented-properties'  ?>"><?php echo get_the_title($post_id); ?></a></h4>
 							<span><?php echo $address;?> </span>
 							<span class="table-property-price"><?php echo $price.'$ / Week' ;?></span> <span class="active--property"><?php echo ucfirst($status); ?></span>
 							<span class="active--property"><?php echo ($property_inactive == 1) ?   'Active' : 'Inactive';?></span>
@@ -399,7 +399,7 @@ get_header();
 						<div class="owner--name"><a href="#"><?php echo $contact_name ; ?></a></div>
 					</td>
 					<td class="action">
-						  <a href="<?= site_url().'/single-property/?property_id='.$post_id  ?> "><i class="fa fa-eye"></i> View</a>
+						  <a href="<?= get_post_permalink( get_the_ID()).'?prpage=admin-rented-properties'  ?> "><i class="fa fa-eye"></i> View</a>
 						<?php
 						if($property_inactive == 1){
 						?>

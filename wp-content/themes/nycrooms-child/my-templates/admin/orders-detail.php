@@ -14,7 +14,7 @@ get_header();
 <div id="wrapper">
   <div class="container">
    <div class="row">
-     <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
+     <p style="color:#274abb"><a href="<?= site_url().'/admin/dealsorders/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
    <div class="col-md-12">
    <table>
    <?php 
