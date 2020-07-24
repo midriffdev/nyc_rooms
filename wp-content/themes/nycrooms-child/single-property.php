@@ -237,14 +237,19 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 						 $propertyaddress = get_post_meta($post_id,'address',true);
 						 $region = get_post_meta($post_id,'state',true);
 						 $longlat = get_lat_long($propertyaddress,$region);
-						 $longitude  =   $longlat['longitude'];
-						 $latitude   =   $longlat['latitude'];
+						 if(!empty($longlat)){
+							 $longitude  =   $longlat['longitude'];
+							 $latitude   =   $longlat['latitude'];
+						 }
+						 
 			    ?>
 				<h3 class="desc-headline no-border" id="location">Location</h3>
+				<?php if(!empty($longlat)){ ?>
 				<div id="propertyMap-container">
 					<div id="propertyMap" data-latitude="<?= $latitude ?>" data-longitude="<?= $longitude; ?>"></div>
 					<a href="#" id="streetView">Street View</a>
 				</div>
+				<?php } ?>
                  
 				<div class="checkoutproperty">
 				<?php

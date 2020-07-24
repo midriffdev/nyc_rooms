@@ -1466,13 +1466,22 @@ function get_lat_long($address,$region){
 
     $json = file_get_contents("https://maps.google.com/maps/api/geocode/json?key=AIzaSyDkB8x8TIEGgMQIeZjIEJILbKOn_5uEP8I&&address=$address&&region=$region");
     $json = json_decode($json);
-
-    $lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
-    $long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
-    return array( 
-	              'longitude' => $long,
-	              'latitude' => $lat,
-				 );
+	
+	if(empty($json->results)){
+	     return array();
+	}
+   
+     if(!empty($json->results) && !empty($json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'}) && !empty($json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'}) ){
+	 
+			$lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
+			$long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
+			
+			return array( 
+						  'longitude' => $long,
+						  'latitude' => $lat,
+						 );
+	}
+	
 }
 
 add_action( 'init', 'nyc_create_custom_post_leads', 0 );
