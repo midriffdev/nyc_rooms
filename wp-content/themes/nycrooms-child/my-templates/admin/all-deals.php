@@ -172,7 +172,7 @@ input.checkbulk{
 							<td class="deal-email-address"><?php echo get_post_meta($deal_id,'email',true); ?></td>
 							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'phone',true); ?></td>
 							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'lead_source',true); ?></td>
-							<td class="deal-phone-number"><?php echo get_the_date( 'Y-m-d' ); ?></td>
+							<td class="deal-phone-number"><?php echo get_the_date( 'd-m-Y' ); ?></td>
 							<td class="deal-phone-number">
 							<?php 
 							if($document_files){
