@@ -473,7 +473,7 @@ get_header();
 						   <form action="<?= site_url() ?>/tenant/deal-details-tenant/<?php echo $dealid; ?>" class="dropzone dropzone_tenant_documents" ></form>
 						   <p align=center><button type="button" class="button save_tenant_doc">Save Documents</button></p>
 					   </div>
-				  </div>
+				   </div>
 				
 				<!------------- End Aplication form  and Payment multstep form --------------------->
 				

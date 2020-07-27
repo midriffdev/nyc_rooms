@@ -390,7 +390,7 @@ if ( $properties->have_posts() ) {
 					<td class="action">
 						<a href="<?= get_post_permalink( get_the_ID()).'&prpage=admin-recently-properties' ?>"><i class="fa fa-eye"></i> View</a>
 						<a href="<?php echo site_url();?>/edit-property-admin/?prpage=admin-recently-properties&&pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
-						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
+						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Trash</a>
 					</td>
 					<td class="recently-approved-btn">
 					  <button class="approve_property" data-id="<?php echo $post_id; ?>">Approve</button>
@@ -450,7 +450,7 @@ if ( $properties->have_posts() ) {
                   <div class="bulk_actions_properties">
 						<select class="select_action_properties">
 							 <option value="-1">Bulk Actions</option>
-							 <option value="delete">Delete</option>
+							 <option value="delete">Trash</option>
 							 <option value="approve">Approve</option>
 						</select>
                     <input type="button" value="Apply" class="apply_action_properties">

@@ -262,11 +262,54 @@ get_header();
 	</div>
 
 	<div class="admin-teanent-contract-details">
+	    
 		<div class="row">
 			<div class="col-md-12">
 				<h4 class="margin-top-50 margin-bottom-30 admin-teanentdetail-title">Contract Details</h4>
 			</div>
 		</div>
+		<div class="admin-advanced-searchfilter" style="margin-bottom:2%">
+					<h2>Contract Filter</h2>
+					<form>
+						<div class="row with-forms">
+							<!-- Form -->
+							<div class="main-search-box no-shadow">
+
+								<!-- Row With Forms -->
+								<div class="row with-forms">
+									<!-- Main Search Input -->
+									<div class="col-md-6">
+										<input type="text" placeholder="Contract Number" name="contract_no" value=""/>
+									</div>
+									<div class="col-md-6">
+										<input type="text" id="date-picker-from" placeholder="Date Range" name="date_range" readonly="readonly">								
+									</div>
+								</div>	
+								<!-- Row With Forms -->
+								<div class="row with-forms">
+									<div class="col-md-6">
+										<input type="text" placeholder="Deal No" name="deal_no" value=""/>
+									</div>
+									<div class="col-md-6">
+										<input type="text" placeholder="Enter Tenant / Property Owner" name="filter_by_name" value=""/>
+									</div>
+								</div>
+								<!-- Search Button -->
+								<div class="row with-forms">
+								    <input type="hidden" value="<?= ($_GET['prpage'])? $_GET['prpage'] : '' ?>" name="prpage" >
+									<input type="hidden" value="<?= ($_GET['uid'])? $_GET['uid'] : '' ?>" name="uid" >
+									
+									<div class="col-md-12">
+										<button class="button fs-map-btn">Search</button>
+									</div>
+								</div>
+
+							</div>
+							<!-- Box / End -->
+						</div>
+					</form>
+		</div>
+				
 		<table class="manage-table responsive-table contracts--table">
 			<tr>
 				<th><i class="fa fa-list-ol"></i> Contract ID</th>
@@ -277,10 +320,14 @@ get_header();
 				<th>Action</th>
 			</tr>
 		<?php
+		global $paged;
+        $paged = (get_query_var('id')) ? get_query_var('id') : 1;
 		$args = array(
 			'post_type'=> 'contracts',
 			'post_status' => array('publish'),
-			'posts_per_page'   => -1,
+			'posts_per_page'   => 6,
+			'suppress_filters' => false,
+            'paged' => $paged
 		);
 		$meta_query = array();
 		$meta_query[] =  array(
@@ -288,9 +335,54 @@ get_header();
 				'value'        => $getuser->data->user_email,
 				'compare'      => 'REGEXP',
 		);	
+		/*--------- Meta Queries -----------*/
+		if(isset($_GET['date_range']) && !empty($_GET['date_range'])){
+				$date = explode('-',$_GET['date_range']);
+				$start_date =  date('Y-m-d',strtotime($date['0']));
+				$end_date = date('Y-m-d',strtotime($date['1']));
+				$date_query = array(
+				'after' => $start_date,
+				'before' => $end_date,
+				'inclusive' => true,
+				);	
+	    }
+		
+	    if(isset($_GET['deal_no']) && !empty($_GET['deal_no'])){
+				$meta_query[] =  array(
+						'key'          => 'deal_id',
+						'value'        => $_GET['deal_no'],
+						'compare'      => 'REGEXP',
+				);	
+	    }
+
+	    if(isset($_GET['filter_by_name']) && !empty($_GET['filter_by_name'])){
+			$meta_query[] = array(
+			'relation'    => 'OR',
+			array(
+					'key'          => 'tenant_name',
+					'value'        => $_GET['filter_by_name'],
+					'compare'      => 'LIKE',
+			),
+			array(
+					'key'          => 'property_owner_name',
+					'value'        => $_GET['filter_by_name'],
+					'compare'      => 'LIKE',
+			)
+			);
+	    }
+
+	    if(isset($_GET['contract_no']) && !empty($_GET['contract_no'])){
+			$args['post__in'] =  array($_GET['contract_no']);
+	    }
+
+		
 		if(!empty($meta_query)){
-		   $args['meta_query'] = $meta_query;
+		    $args['meta_query'] = $meta_query;
 		} 
+		if(isset($date_query) && !empty($date_query)){
+	        $args['date_query'] = $date_query;
+        }
+
 		$contracts = new WP_Query( $args );
 		if($contracts->have_posts()){
 			while ($contracts->have_posts() ) {
@@ -392,6 +484,27 @@ jQuery(document).ready(function(){
   oFReader.readAsDataURL(document.getElementById("imgupload").files[0]);
   });
   jQuery('#sidebar-profile').addClass('current');
+  
+    jQuery('#date-picker-from').daterangepicker({
+		autoUpdateInput: false,
+			locale: {
+			cancelLabel: 'Clear'
+		}		
+	});
+	
+
+	jQuery('#date-picker-from').on('show.daterangepicker', function(ev, picker) {
+		jQuery('.daterangepicker').addClass('calendar-visible');
+		jQuery('.daterangepicker').removeClass('calendar-hidden');
+	});
+	jQuery('#date-picker-from').on('apply.daterangepicker', function(ev, picker) {
+		  $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+	});
+
+	jQuery('#date-picker-from').on('cancel.daterangepicker', function(ev, picker) {
+		  $(this).val('');
+	});
+  
 });
 </script>
 

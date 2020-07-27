@@ -437,7 +437,7 @@ get_header();
 						}
 						?>						
 						<a href= "<?php echo get_site_url();?>/edit-property-admin/?prpage=admin-properties&&pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
-						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
+						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Trash</a>
 						<?php if($status == 'draft') { ?>
 						   <button class="button approve_property" data-id="<?php echo $post_id; ?>">Approve</button>
 						<?php 
@@ -508,7 +508,7 @@ get_header();
 							 <option value="unapprove">UnApprove</option>
 							 <option value="activate">Activate</option>
 							 <option value="deactivate">Inactive</option>						 
-							 <option value="delete">Delete</option>
+							 <option value="delete">Trash</option>
 						</select>
                     <input type="button" value="Apply" class="apply_action_properties">
                  </div>

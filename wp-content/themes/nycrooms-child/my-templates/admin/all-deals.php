@@ -198,8 +198,6 @@ input.checkbulk{
 								<a href="<?php echo get_site_url(); ?>/admin/deals/details/<?php echo base64_encode($deal_id); ?>" class="deal__link" data-toggle="tooltip"><i class="fa fa-clone"></i> Deal Link</a>
 								<a href="<?php echo get_site_url(); ?>/tenant/deal-details-tenant/<?php echo base64_encode($deal_id); ?>" class="deal__link" data-toggle="tooltip"><i class="fa fa-clone"></i> Tenant Link</a>
 								<a href="<?php echo get_site_url(); ?>/agent/deal-details-agent/<?php echo base64_encode($deal_id); ?>" class="deal__link" data-toggle="tooltip"><i class="fa fa-clone"></i> Agent Link</a>
-								
-								
 							</td>
 						</tr>
 					<?php 

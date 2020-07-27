@@ -411,7 +411,7 @@ get_header();
 						}
 						?>
 						<a href= "<?php echo get_site_url();?>/edit-property-admin/?prpage=admin-available-properties&&pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
-						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
+						<a style="cursor:pointer;" class="delete_admin_property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Trash</a>
 					</td>
 				</tr>
 <?php 
@@ -468,7 +468,7 @@ get_header();
 						 <option value="-1">Bulk Actions</option>
 						 <option value="activate">Activate</option>
 						 <option value="deactivate">Inactive</option>
-						 <option value="delete">Delete</option>
+						 <option value="delete">Trash</option>
 						</select>
                     <input type="button" value="Apply" class="apply_action_properties">
                  </div>

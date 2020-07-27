@@ -1358,6 +1358,7 @@ textarea:required:focus {
 				<div class="contract-owner-detail">
 					<h2>Property Owner Detail</h2>
 					<?php 
+					if($authid){
 					$property_owner = get_userdata($authid);
 					$owner_id = $property_owner->data->ID;
 					?>
@@ -1377,6 +1378,9 @@ textarea:required:focus {
 						</li>
 					</ul>
 					</div>
+				   <?php 
+				   }
+				   ?>
 				</div>
 			</div>
 

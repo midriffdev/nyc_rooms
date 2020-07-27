@@ -52,6 +52,7 @@ if(count($check_deal_orders->posts) == 1){
    $payment_status = get_post_meta($post_id,'payment_status',true);
 }
 $convert_deal = '';
+$msg = '';
 if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 	$convert_deal = "noallowed_contract";
 	$msg = '';
@@ -368,6 +369,8 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 					</div>
 				</div>
 				
+				
+				
 				<div class="col-md-12">
 					<div class="dealdetail-instruction section">
 						<h3>Instructions</h3>
@@ -382,13 +385,17 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 						</ul>
 					</div>
 				</div>
+				
+				
 				<div class="col-md-12 text-center">
 					<button type="submit" class="button" name="upadte_stag1">Save Details</button>
 					<a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-email' : 'deal-send-email'; ?>">Send as Email</a>
 					<a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-text' : 'deal-send-text'; ?>">Send as Text</a>
 				</div>
+				
 			</div>
 			</form>
+			
 		</div>
 		
 		<!----Stage 2---->
@@ -396,6 +403,15 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 			<div class="current-stage-title">
 				<h3>Stage 2</h3>
 			</div>
+			
+			<!------------ Documents Tenants  ------------------->
+			    <div class="col-md-12">
+						<h3>Kindly Upload The Documents Here</h3>
+						<div class="submit-section prop_req_docs">
+						   <form action="<?= site_url() ?>/tenant/deal-details-tenant/<?php echo $post_id; ?>" class="dropzone dropzone_tenant_documents" ></form>
+						   <p align=center><button type="button" class="button save_tenant_doc">Save Documents</button></p>
+					   </div>
+			    </div> 
 
 			<div class="deal-detail__suggestedpropertysec">
 				<h3>Selected Properties</h3>
@@ -684,6 +700,39 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
   </div>
 </div>
 
+<div class="modal fade popup-main--section" id="applcation_docs_tenant_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <div class="applcation-docs-tenant-popup">
+        	<h3></h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary applcation_docs_tenant_popup" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade popup-main--section" id="applcation_docs_tenant_delete_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <div class="applcation-docs-tenant-delete-popup">
+        	<h3></h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary applcation_docs_tenant_delete_popup" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal for Sign Application Form-->
 <div class="modal fade popup-main--section" id="signapplicationform" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -979,3 +1028,109 @@ jQuery(document).ready(function($) {
 <?php
 get_footer();
 ?>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/dropzone.js"></script>
+<script>
+ var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+ var deal_id = '<?php echo $post_id; ?>';
+Dropzone.autoDiscover = false;		
+jQuery(".dropzone").dropzone({
+	dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
+	addRemoveLinks: true,
+	init: function() { 
+			myDropzoneFiles = this; 		
+			jQuery.ajax({
+			  type: 'post',
+			  dataType: 'json',
+			  url: ajaxurl,
+			  data: {action:'nyc_get_existing_doc_tenant_ajax',deal_id:deal_id},
+			  success: function(response){
+			          console.log(response);
+				   $.each(response, function(key,value) {
+                          if(value.size != false){
+						  
+						     var mockFile = { name: value.name, size: value.size };
+							 var extension = value.name.substr( (value.name.lastIndexOf('.') +1) );
+							 if(extension == 'jpg' || extension == 'png' || extension == 'gif' ){
+								  myDropzoneFiles.emit("addedfile", mockFile);
+								  myDropzoneFiles.emit("thumbnail", mockFile, value.path);
+								  myDropzoneFiles.emit("complete", mockFile);
+							 } else {
+							      myDropzoneFiles.emit("addedfile", mockFile);
+								  myDropzoneFiles.emit("complete", mockFile);
+							 }
+							  
+							  
+						  }
+						 
+				  }); 
+
+			  }
+			 });
+			 
+   },
+   removedfile: function(file) {
+     var file_name    = file.name; 
+	   jQuery.ajax({
+			  type: 'post',
+			  url: ajaxurl,
+			  data: {action:'nyc_delete_existing_doc_tenant_ajax',deal_id:deal_id,file_name:file_name},
+			  success: function(response){
+                     if(response == "success"){
+					    jQuery('.applcation-docs-tenant-delete-popup h3').html('Documents Removed successfully.</h3>');
+						jQuery('#applcation_docs_tenant_delete_popup').modal('show');
+					    setTimeout(function() {
+							window.location.reload();
+						}, 1000);
+							
+					 }
+			  }
+	  });
+	var _ref;
+	return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0; 
+	
+   }
+   
+});	
+
+jQuery(document).ready(function($) {
+   jQuery(".save_tenant_doc").click(function(e){
+      e.preventDefault();
+	  $(this).prop('disabled',true);
+	  var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+	  var deal_id = '<?php echo $post_id; ?>';
+	  var tenant_docs = $('.dropzone.dropzone_tenant_documents')[0].dropzone.getAcceptedFiles();
+	  jQuery('.loading').show();
+	  var form_data = new FormData();
+      form_data.append("deal_id", deal_id); 
+	  var tenant_docs_all =[];
+			for(var i = 0;i<tenant_docs.length;i++){
+				form_data.append("doc_tenant_"+i, tenant_docs[i]);
+				tenant_docs_all.push("doc_tenant_"+i);
+	        }
+		
+	   form_data.append("tenant_docs_all", tenant_docs_all);
+	   form_data.append( "action" , 'nyc_upload_tenant_docs');	
+			 jQuery.ajax({
+				type : "post",
+				url : ajaxurl,
+				data: form_data,
+				processData: false,
+				contentType: false,
+				success: function(response) {
+				        if(response == "success"){
+					      jQuery('.loading').hide();
+						  jQuery('.applcation-docs-tenant-popup h3').html('Documents uploaded successfully.</h3>');
+					      jQuery('#applcation_docs_tenant_popup').modal('show');
+						  setTimeout(function() {
+								window.location.reload();
+							}, 3000);
+					   }
+				}
+			});
+	   
+			
+			
+       
+   });
+});
+</script>
