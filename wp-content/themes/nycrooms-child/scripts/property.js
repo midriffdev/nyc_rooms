@@ -558,15 +558,15 @@ jQuery(document).ready(function($) {
 						    
 						// We can also pass the url value separately from ajaxurl for front end AJAX implementations
 							jQuery.post(my_ajax_object.ajax_url, data, function(response) {
-					            
-									  if(response == "true"){
+					                  console.log(response);
+									  /* if(response == "true"){
 									    jQuery('.loading').hide();
 										$('#ModalDeals').modal('show');
 										setTimeout(function(){
 										   window.location.reload();
 										   // or window.location = window.location.href; 
 										}, 2000);
-									 }
+									 } */
 									 
 							});   
 				 

@@ -34,10 +34,13 @@ if(isset($_GET['search_leadsall'])){
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $args = array(
          'post_type'        => 'leads',
+		 'numberposts'      => 1,
 		 'post_status'       => 'publish',
          'posts_per_page'   => 6,
          //'no_found_rows'    => true,
          'suppress_filters' => false,
+		 'orderby'          => 'post_date',
+         'order'            => 'DESC',
 		 'paged' => $paged
 
         );

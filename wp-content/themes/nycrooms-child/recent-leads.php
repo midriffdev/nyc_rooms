@@ -50,6 +50,7 @@ if(!empty($argarray)){
 }
 		
 $all_leads = new WP_Query( $args );
+
 get_header();
 ?>
 
@@ -58,6 +59,7 @@ get_header();
 
 <!-- Titlebar
 ================================================== -->
+
 
 
 <!-- Content
@@ -70,7 +72,7 @@ get_header();
 
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
-                  <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
+                 <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
 				<div class="admin-advanced-searchfilter">
 					<h2>Property Lead Filter</h2>
 				<form method="get" name="search_leads">
@@ -110,21 +112,20 @@ get_header();
 					</div>
 					</form>
 				</div>
-				
-				 <div class="col-md-12">
+                 <div class="col-md-12">
 					 <p class="showing-results"><?= $all_leads->found_posts; ?> Results Found On Page <?php echo $paged ;?> of <?php echo $all_leads->max_num_pages;?> </p>
 				 </div>
-
+					
 				<table class="manage-table responsive-table all_leads_table">
 				<tbody>
 				<tr>
-				    <th><input type="checkbox" class="checkallleads"></th>
-					<th><i class="fa fa-list-ol"></i> Lead No</th>
-					<th><i class="fa fa-user"></i>Name</th>
-					<th ><i class="fa fa-phone"></i> Phone</th>
-					<th class="expire-date"><i class="fa fa-envelope" ></i>Email</th>
-					<th><i class="fa fa-bolt" ></i> Lead Source</th>
-					<th>Action</th>
+				    <th style="width: 8% !important"><input type="checkbox" class="checkallleads"></th>
+					<th style="width: 15%"><i class="fa fa-list-ol"></i> Lead No</th>
+					<th style="width: 12%"><i class="fa fa-user"></i>Name</th>
+					<th style="width: 15%"><i class="fa fa-phone"></i> Phone</th>
+					<th style="width: 15%" class="expire-date"><i class="fa fa-envelope" ></i>Email</th>
+					<th style="width: 20%"><i class="fa fa-bolt" ></i> Lead Source</th>
+					<th style="width: 15%">Action</th>
 				</tr>
                  
 				 
@@ -133,37 +134,40 @@ get_header();
 
                  while ( $all_leads->have_posts() ) { 
                       $all_leads->the_post();
-					  
-					
-				     $property_id = get_post_meta(get_the_ID(),'lead_checkout_property',true);
-					  
-					        
-								
+						 $checkdeal   = get_post_meta(get_the_ID(),'is_deal_created',true);
+					     $checkdealid = get_post_meta(get_the_ID(),'deal_id',true);	
                     ?> 
 					<tr>
-						<td><input type="checkbox" class="checkleads" value="<?= get_the_ID() ?>"></td>
+						<td>
+						<input type="checkbox" class="checkleads" value="<?= get_the_ID() ?>" <?php if($checkdeal && $checkdealid){ ?> disabled <?php } ?> >
+						
+						</td>
 						<td class="lead_number">#<?= get_the_ID() ?></td>
 						<td><div class="Lead--name"><a href="<?= get_post_permalink(get_the_ID()) ?>"><?= get_post_meta(get_the_ID(),'lead_name',true); ?></a></div></td>
 						<td class="lead-phone"><?= get_post_meta(get_the_ID(),'lead_phone',true); ?></td>
 						<td class="lead-email-address"><?= get_post_meta(get_the_ID(),'lead_email',true); ?></td>
 						<td><?= get_post_meta(get_the_ID(),'lead_source',true); ?></td>
 						<td class="action">
-							<a href="<?= get_post_permalink(get_the_ID()).'?prpage=recent-leads' ?>"><i class="fa fa-eye"></i> View</a>
+							<a href="<?= get_post_permalink(get_the_ID()).'?prpage=all-leads' ?>"><i class="fa fa-eye"></i> View</a>
 							<a class="delete" data-id="<?= get_the_ID() ?>" style="cursor:pointer;"><i class="fa fa-remove"></i> Delete</a>
-							<a href="#" class="into--deal"><i class="fa fa-share" aria-hidden="true"></i> Into Deal</a>
+							<?php 
+							   if($checkdeal && $checkdealid){
+							?>
+							   <a class="deal--done" disabled><i class="fa fa-check-square-o" aria-hidden="true"></i> Deal Done</a>
+							<?php
+							 } else {
+							?>
+							   <a style="cursor:pointer;" class="into--deal" data-id="<?= get_the_ID() ?>"><i class="fa fa-share" aria-hidden="true"></i> Into Deal</a>
+							<?php
+							}
+							?>
 						</td>
 				    </tr>
-				            
 					
-					<?php 
-                          $count = $all_leads->found_posts;
-                         if($count > 20){
-						   break;
-						 }
-					} 
+					<?php  } 
 
                } else { 
-						echo "<tr class='nyc-no-properties'><td class='no_property_found' colspan='6'>No Recent Lead Found !</td></tr>";
+						echo "<tr class='nyc-no-properties'><td class='no_property_found' colspan='7'>No Leads Found !</td></tr>";
 			   } ?> 
 
                 <?php 
@@ -175,54 +179,51 @@ get_header();
 
 				</tbody>
 				</table>
-                 
-                <div class="admin-advanced-searchfilter">
+				<div class="row fs-listings">
+						<div class="col-md-12">
+
+							<!-- Pagination -->
+							<div class="clearfix"></div>
+							<div class="pagination-container margin-top-10 margin-bottom-45">
+								<nav class="pagination">
+									<?php 
+											echo paginate_links( array(
+													'base'         => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
+													'total'        => $all_leads->max_num_pages,
+													'current'      => max( 1, get_query_var( 'paged' ) ),
+													'format'       => '?paged=%#%',
+													'show_all'     => false,
+													'type'         => 'list',
+													'end_size'     => 2,
+													'mid_size'     => 1,
+													'prev_next'    => false,
+													'add_args'     => false,
+													'add_fragment' => '',
+												) );
+									  ?>
+								</nav>
+
+								<nav class="pagination-next-prev">
+									<ul>
+										<li class="prev"><!--a href="#" class="prev">Previous</a--> <?php previous_posts_link( 'Previous',$all_leads->max_num_pages ); ?> </li>
+										<li class="next"><!--a href="#" class="next">Next</a--> <?php next_posts_link( 'Next', $all_leads->max_num_pages);  ?> </li>
+									</ul>
+								</nav>
+							</div>
+
+						</div>
+			    </div>
+			    <div class="admin-advanced-searchfilter">
 			        <label>Select bulk action</label>
                   <div class="bulk_actions_leads">
 						<select class="select_action_leads">
-						 <option value="-1">Bulk Actions</option>
-						 <option value="delete">Delete</option>
+							 <option value="-1">Bulk Actions</option>
+							 <option value="intodeal">Into Deal</option>
+							 <option value="delete">Delete</option>
 						</select>
                     <input type="button" value="Apply" class="apply_action_leads">
                  </div>
                 </div>
-			
-				
-				<div class="row fs-listings">
-				<div class="col-md-12">
-
-					<!-- Pagination -->
-					<div class="clearfix"></div>
-					<div class="pagination-container margin-top-10 margin-bottom-45">
-						<nav class="pagination">
-							<?php 
-									echo paginate_links( array(
-											'base'         => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
-											'total'        => $all_leads->max_num_pages,
-											'current'      => max( 1, get_query_var( 'paged' ) ),
-											'format'       => '?paged=%#%',
-											'show_all'     => false,
-											'type'         => 'list',
-											'end_size'     => 2,
-											'mid_size'     => 1,
-											'prev_next'    => false,
-											'add_args'     => false,
-											'add_fragment' => '',
-										) );
-                              ?>
-						</nav>
-
-						<nav class="pagination-next-prev">
-							<ul>
-								<li class="prev"><!--a href="#" class="prev">Previous</a--> <?php previous_posts_link( 'Previous',$all_leads->max_num_pages ); ?> </li>
-								<li class="next"><!--a href="#" class="next">Next</a--> <?php next_posts_link( 'Next', $all_leads->max_num_pages);  ?> </li>
-							</ul>
-						</nav>
-					</div>
-
-				</div>
-			</div>
-			
 				<!-- Pagination Container / End -->
 
 			</div>
@@ -256,6 +257,27 @@ get_header();
     </div>
   </div>
   
+  <!-- Modal -->
+  <div class="modal fade" id="ModalDeals" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Deals Created Successfully</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  
 
 <!-- Scripts
 ================================================== -->
@@ -285,6 +307,7 @@ get_header();
     display: inline-block;
     border-radius: 3px;
 }
+
 .bulk_actions_leads {
     display: flex;
 }
@@ -299,7 +322,7 @@ input.apply_action_leads {
 </style>
 <script>
 jQuery(document).ready(function($) {
-	jQuery('#sidebar-recentleads').addClass('current');
+	jQuery('#sidebar-allleads').addClass('current');
 });
 </script>
 <?php
