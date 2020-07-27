@@ -1355,10 +1355,11 @@ textarea:required:focus {
 			</div>
 			<?php } ?>			
 			<div class="col-md-6">
+			  <?php if($authid){ ?>
 				<div class="contract-owner-detail">
 					<h2>Property Owner Detail</h2>
 					<?php 
-					if($authid){
+					
 					$property_owner = get_userdata($authid);
 					$owner_id = $property_owner->data->ID;
 					?>
