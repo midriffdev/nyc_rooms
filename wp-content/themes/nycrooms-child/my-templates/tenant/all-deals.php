@@ -83,7 +83,7 @@ input.checkallbulk{
     height: 18px;
 }
 input.checkbulk{
-    height: 18px;
+    height: 13px;
     margin: 0 13px !important;
 }
 </style>
@@ -139,7 +139,7 @@ input.checkbulk{
 					 <p class="showing-results"><?php echo $deals->found_posts; ?> Results Found On Page <?php echo $paged ;?> of <?php echo $deals->max_num_pages;?> </p>
 				 </div>
 				<div >
-				<table class="manage-table responsive-table deal--table">
+				<table class="manage-table responsive-table deal--table tenant-alldeals_table">
 				
 				<tbody>
 				<tr>

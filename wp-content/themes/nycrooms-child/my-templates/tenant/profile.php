@@ -113,16 +113,12 @@ get_header();
 							
 								 <div class="col-md-12">
 									<h4 class="margin-top-50 margin-bottom-25">Address</h4>
-									<textarea name="address" id="address" cols="30" rows="10" name="address" placeholder="Address"><?php echo get_user_meta($user_id,'user_personal_address',true); ?></textarea>
+									<textarea name="address" id="address" name="address" placeholder="Address"><?php echo get_user_meta($user_id,'user_personal_address',true); ?></textarea>
 								</div>
 								
-								<div class="col-md-12">
-									<h4 class="margin-top-50 margin-bottom-25">About Me</h4>
-									<textarea name="about" id="about" cols="30" rows="10" placeholder="About"><?php echo get_user_meta($user_id,'user_about',true); ?></textarea>
-								</div>
 								
 							</div>
-							
+							<button class="button margin-top-20 margin-bottom-20" type="submit" name="update_user">Save Changes</button>
 						</div>
 
 						<div class="col-md-6 admin-teanent-right">
@@ -171,8 +167,12 @@ get_header();
 									<label><i class="fa fa-linkedin"></i> Linkedin</label>
 									<input value="<?php echo get_user_meta($user_id,'user_linkedin',true); ?>" type="text" placeholder="linkedin" name="linkedin">
 								</div>
+								<div class="col-md-12">
+									<h4 class="margin-top-50 margin-bottom-25">About Me</h4>
+									<textarea name="about" id="about"  placeholder="About"><?php echo get_user_meta($user_id,'user_about',true); ?></textarea>
+								</div>
 							</div>
-							<button class="button margin-top-20 margin-bottom-20" type="submit" name="update_user">Save Changes</button>
+							
 						</div>
 					</form>
 		</div>

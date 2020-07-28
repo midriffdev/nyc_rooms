@@ -13839,6 +13839,8 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
     transition: 0.5s;
 }
 .admin-add-States button:hover{opacity: 0.8;}
+
+.tenant-alldeals_table i{display:none;}
 /* --------------------############## Shubham CSS end ######################------------------ */
 
 /*****saurabh(08/06/2020)start******/
@@ -13878,7 +13880,6 @@ input.checkproperties {height: 18px;margin: 0 13px !important;}
 input.checkallbulk {height: 18px;margin: 0;}
 
 table.manage-table .title-container{padding: 50px 20px;}
-table.manage-table th {padding: 20px 4px !important;}
 
 /******property-search CSS Start********/
 .page-id-72 .site-content {margin-top:0px;margin-bottom: 0px;}
@@ -14535,7 +14536,6 @@ td.no_property_found {
 	.property-slider .item,
 	.property-slider.default .item  { height: 200px; }
 }
-<<<<<<< HEAD
 /*****saurabh(08/06/2020)start******/
 
 /*------------ start Modal Popup Css ----------------------*/
