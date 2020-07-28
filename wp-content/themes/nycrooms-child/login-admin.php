@@ -31,10 +31,10 @@ if(isset($_POST['login'])){
 	  $userrolecheck = get_user_by('email', $username);
 	}
 	
-   
+    if($userrolecheck){
      if($userrolecheck->roles[0] != "administrator" ){
 	   $loginerror = "Invalid login details";
-	} else {
+	 } else {
 		$user_verify = wp_signon( $login_data, false );
 	   
 		if ( is_wp_error($user_verify) ) {  
@@ -44,7 +44,10 @@ if(isset($_POST['login'])){
 		   echo "<script type='text/javascript'>window.location.href='". site_url().'/admin/' ."'</script>";  
 		   exit();  
 		 }
-   }
+     }
+	 } else {
+	   $loginerror = "Invalid login details";
+	 }
    
 }
 //Check whether the user is already logged in  

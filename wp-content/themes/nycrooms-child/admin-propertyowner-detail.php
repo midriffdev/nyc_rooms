@@ -414,6 +414,39 @@ get_header();
 
 		?>
 		</table>
+			<!-- Pagination Container -->
+				<div class="row fs-listings">
+					<div class="col-md-12">
+
+						<!-- Pagination -->
+						<div class="clearfix"></div>
+						<div class="pagination-container margin-top-10 margin-bottom-45">
+							<nav class="pagination">
+							<ul>
+								<?php 
+									echo paginate_links( array(
+										'base' 		=> get_pagenum_link(1) . '%_%',
+										'format' 	=> 'page/%#%/',
+										'current' 	=> max( 1, get_query_var( 'id' ) ),
+										'total'  	=> $contracts->max_num_pages,
+										'prev_next'	=> false,
+										'type' 		=> 'list',											
+										) );
+                              ?>
+							 </ul>
+							</nav>
+
+							<nav class="pagination-next-prev">
+								<ul>
+									<li><?php previous_posts_link( 'Previous',$contracts->max_num_pages ); ?></li>
+									<li><?php next_posts_link( 'Next', $contracts->max_num_pages);  ?></li>
+								</ul>
+							</nav>
+						</div>
+
+					</div>
+				</div>
+				<!-- Pagination Container / End -->
 	</div>
 
 	</div>

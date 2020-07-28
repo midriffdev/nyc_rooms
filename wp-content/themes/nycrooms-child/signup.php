@@ -112,12 +112,13 @@ if(is_user_logged_in()){
     $login_data['remember'] = $remember;  
     $userrolecheck = get_user_by('login', $username);
 	if(!$userrolecheck){
-	  $userrolecheck = get_user_by('email', $username);
+	$userrolecheck = get_user_by('email', $username);
 	}
    
+    if($userrolecheck){
      if($userrolecheck->roles[0] != "property_owner"){
 	   $loginerror = "Invalid login details";
-	} else {
+	 } else {
 		$user_verify = wp_signon( $login_data, false );
 	   
 		if ( is_wp_error($user_verify) ) {  
@@ -127,7 +128,10 @@ if(is_user_logged_in()){
 		   echo "<script type='text/javascript'>window.location.href='". site_url().'/property-owner/' ."'</script>";  
 		   exit();  
 		 }
-   }
+     }
+	} else {
+	   $loginerror = "Invalid login details";
+	}
    
 }
 

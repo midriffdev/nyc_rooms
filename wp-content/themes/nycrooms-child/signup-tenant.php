@@ -186,6 +186,7 @@ if(is_user_logged_in()){
 	  $userrolecheck = get_user_by('email', $username);
 	}
 	
+	if($userrolecheck){
     if($userrolecheck->roles[0] != "tenant"){
 	   $loginerror = "Invalid login details";
 	} else {
@@ -198,6 +199,10 @@ if(is_user_logged_in()){
 			   exit();  
 		   } 
 	}
+	} else {
+	   $loginerror = "Invalid login details";
+	}
+	
    
 }
 
