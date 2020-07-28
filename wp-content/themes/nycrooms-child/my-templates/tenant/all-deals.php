@@ -83,7 +83,7 @@ input.checkallbulk{
     height: 18px;
 }
 input.checkbulk{
-    height: 18px;
+    height: 13px;
     margin: 0 13px !important;
 }
 </style>
@@ -139,7 +139,7 @@ input.checkbulk{
 					 <p class="showing-results"><?php echo $deals->found_posts; ?> Results Found On Page <?php echo $paged ;?> of <?php echo $deals->max_num_pages;?> </p>
 				 </div>
 				<div >
-				<table class="manage-table responsive-table deal--table">
+				<table class="manage-table responsive-table deal--table tenant-alldeals_table">
 				
 				<tbody>
 				<tr>
@@ -147,9 +147,9 @@ input.checkbulk{
 					<th style="width:14%;"><i class="fa fa-list-ol"></i> Deal No</th>
 					<th style="width:20%;"><i class="fa fa-user"></i>Tenant Name</th>
 					<th style="width:18%;"><i class="fa fa-phone" ></i> Phone</th>
-					<th style="width:18%;"><i class="fa fa-check-square-o" ></i> Source</th>
+					<th style="width:22%;"><i class="fa fa-check-square-o" ></i> Source</th>
 					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Date</th>
-					<th style="width:15%;">View</th>
+					<th style="width:10%;">View</th>
 				</tr>
 
 				<?php 
