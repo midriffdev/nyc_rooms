@@ -228,9 +228,10 @@ get_header();
                            <div class="card-content">
                              <ul class="stepper linear">
 							  
-							 <li class="step active">
-							    <div data-step-label="There's labels too!" class="step-title waves-effect waves-dark">Step 1</div>
+							 <li class="step <?= (!$application_submission)? 'active' : '' ?>">
+							    <div data-step-label="<?php if(!$application_submission) { echo "Please Fill the Application Form"; } else { echo "Download Application";} ?>" class="step-title waves-effect waves-dark">Step 1</div>
 								    <div class="step-content">
+									<?php if(!$application_submission) { ?>	  
 									 <div class="submit-section">
 										<h4>Add Personnel Details</h4>
 											<div class="form">
@@ -336,37 +337,17 @@ get_header();
 												<div class="form">
 													<h5>Where did you see our advertisement?</h5>
 													<div class="advertisement_row in-row margin-bottom-20">
-																	        
-																			<input id="Google" type="radio" class="adversitement_check" name="adversitement_check" value="Google">
-																			<label for="Google">Google</label>
-																			
-																			<input id="El Diario" type="radio" class="adversitement_check" name="adversitement_check" value="El Diario">
-																			<label for="El Diario">El Diario</label>
-																			
-																			
-																			<input id="Facebook" type="radio" class="adversitement_check" name="adversitement_check" value="Facebook">
-																			<label for="Facebook">Facebook</label>
-																			
-																			
-																			<input id="Amsterdam Newspaper" type="radio" class="adversitement_check" name="adversitement_check" value="Amsterdam Newspaper">
-                                                                            <label for="Amsterdam Newspaper">Amsterdam Newspaper</label>
-																			
-																			
-																			<input id="Craigslist" type="radio" class="adversitement_check" name="adversitement_check" value="Craigslist">
-																			<label for="Craigslist">Craigslist</label>
-																			
-																			
-                                                                            <input id="Metro Newspaper" type="radio" class="adversitement_check" name="adversitement_check" value="Metro Newspaper">
-																			<label for="Metro Newspaper">Metro Newspaper </label>
-																			
-                                                                            
-																			<input id="Referral" type="radio" class="adversitement_check" name="adversitement_check" value="Referral">
-																			<label for="Referral">Referral</label>
-																			
-																			
-																			<input id="Other" type="radio" class="adversitement_check" name="adversitement_check" value="Other">
-																			<label for="Other">Other</label>
-																			
+														<select class="chosen-select-no-single adversitement_check" name="adversitement_check" id="adversitement_check">
+														    <option label="blank">Please Choose An option</option>
+															<option value="Google">Google</option>
+															<option value="El Diario">El Diario</option>
+															<option value="Facebook">Facebook</option>
+															<option value="Amsterdam Newspaper">Amsterdam Newspaper</option>
+															<option value="Craigslist">Craigslist</option>
+															<option value="Metro Newspaper">Metro Newspaper</option>
+															<option value="Referral">Referral</option>
+															<option value="Other">Other</option>
+														</select>					
 													</div>
 													<span class="adversitement_check-err"></span>
 												</div>
@@ -383,12 +364,28 @@ get_header();
 												</div>
                                       
 									</div>
+									<?php } else {
+							 
+										    if($get_document_file) {
+									?>
+									  
+									  <h4 align=center>Thank you for submitting Application Form. Now You can Download it from Below</h4>
+									  <p align=center>
+									  <a class="button application_pdf" href="<?= wp_get_attachment_url($get_document_file) ?>" download ><i class="fa fa-download" aria-hidden="true"></i> Download Application Form</a>
+                                      </p>									  
+									<?php } } ?>
+									
 								    <div class="step-actions">
-                                    <input type="button" class="button submit_application_form" id="submit_application_form" value="Submit Aplication"><button class=" waves-effect waves-dark btn blue next-step">CONTINUE</button>
+									<?php if(!$application_submission) { ?>
+                                    <input type="button" class="button submit_application_form" id="submit_application_form" value="Submit Aplication">
+									<?php } ?>
+									
+									
+									<button class=" waves-effect waves-dark btn blue next-step">CONTINUE</button>
                                     </div>
 								  </div>
 							  </li>
-							  <li class="step">
+							  <li class="step <?= (!$application_submission) ? '' : 'active' ?>">
 								    <div class="step-title waves-effect waves-dark">Step 2</div>
 									    <div class="step-content">
 										  <div class="row">
@@ -433,23 +430,14 @@ get_header();
 															
 														</li>
 														<li>
-														  <?php if(empty($check_deal_orders->posts)){ ?>
-															<button class="dealdetail-tenant-reqagentb" <?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'disabled';}  ?>>
-															<?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'Agent Allotted';} else { echo 'Request an Agent';} ?>
-															</button>
-														  <?php } ?>
-														  
-														</li>
+														 <button class="dealdetail-tenant-reqagentb" <?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'disabled';}  ?>><?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'Agent Allotted';} else { echo 'Request an Agent';} ?>
+														 </button>
+													    </li>
 													</ul>
-													<?php
-													if($get_document_file) {
-													?>
-													<a class="button application_pdf" href="<?= wp_get_attachment_url($get_document_file) ?>" download >Download Application As Pdf </a> 
 													<?php 
-													}
 													if($get_invoice_doc){
 													?>
-													 <a class="button payment_pdf" href="<?= wp_get_attachment_url($get_invoice_doc) ?>" download >Download Invoice As Pdf </a> 
+													<p align=center style="margin-top:4%"> <a class="button payment_pdf" href="<?= wp_get_attachment_url($get_invoice_doc) ?>" download ><i class="fa fa-download" aria-hidden="true"></i> Download Invoice</a> </p>
 													<?php
 													}
 													?>
@@ -1670,7 +1658,7 @@ get_footer();
 		var week_rent_budget = jQuery('.week_rent_budget').val();
 		var people_living_count = jQuery('.people_living_count').val();
 		var Periods_of_living = jQuery('.Periods_of_living').val();
-		var adversitement_check = jQuery(".adversitement_check:checked").val();
+		var adversitement_check = jQuery(".adversitement_check").val();
 		var privacy_policy  =  jQuery('.privacy_policy:checked').val(); 
 		
 		
@@ -1707,7 +1695,7 @@ get_footer();
 			  is_error = true;	
 		} */
 		
-		if(emergency_contact_no == ''){
+		/* if(emergency_contact_no == ''){
 			jQuery('.emergency_contact_no-err').html('<span class="error">Please enter emergency contact</span>');
 			jQuery( ".emergency_contact_no" ).focus();
 			is_error = true;		
@@ -1719,7 +1707,7 @@ get_footer();
 		     jQuery('.emergency_contact_no-err').html('<span class="error">Contact Phone must be 10 digits long with +1 as country code.</span>');
 			 jQuery( ".emergency_contact_no" ).focus();
 			  is_error = true;	
-		}
+		} */
 		
 		if(email_address == ''){
 			jQuery('.email_address-err').html('<span class="error">Please enter email address</span>');
@@ -1818,7 +1806,7 @@ get_footer();
 		   form_data.append("Periods_of_living", Periods_of_living);
 		   form_data.append("adversitement_check", adversitement_check);
 		   form_data.append("privacy_policy", privacy_policy);
-		   form_data.append( "action", 'nyc_application_form_pdf_ajax');  
+		   form_data.append( "action", 'nyc_application_form_pdf_ajax'); 
 		   
 		   jQuery.ajax({
 				type : "post",

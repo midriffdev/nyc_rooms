@@ -123,6 +123,7 @@ get_header();
 		<!-- Widget -->
 		<?php get_template_part('sidebar/property-owner'); ?>
 		<div class="col-md-8">
+		        <p style="color:#274abb"><a href="<?= site_url() ?>/property-owner/"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To Profile</a></p>
 		        <div class="admin-advanced-searchfilter" style="margin-bottom: 5%;">
 		            <h2>Advanced filter</h2>
 					<form method="get" id="advance-search">

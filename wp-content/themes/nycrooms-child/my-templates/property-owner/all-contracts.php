@@ -94,7 +94,7 @@ input.checkbulk{
 		<?php get_template_part('sidebar/property-owner'); ?>
 		<div class="col-md-8">
 			<div class="dashboard-main--cont">
-
+                <p style="color:#274abb"><a href="<?= site_url() ?>/property-owner/"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To Profile</a></p>
 				<div class="admin-advanced-searchfilter">
 					<h2>Contract Filter</h2>
 					<form>

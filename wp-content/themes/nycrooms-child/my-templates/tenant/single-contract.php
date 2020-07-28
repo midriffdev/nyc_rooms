@@ -344,6 +344,7 @@ textarea:required:focus {
 			</div>
 			<?php } ?>			
 			<div class="col-md-6">
+			    <?php if($authid){ ?>
 				<div class="contract-owner-detail">
 					<h2>Property Owner Detail</h2>
 					<?php 
@@ -367,6 +368,7 @@ textarea:required:focus {
 					</ul>
 					</div>
 				</div>
+				<?php } ?>
 			</div>
 
 			<?php if($selectedAgent){ ?>

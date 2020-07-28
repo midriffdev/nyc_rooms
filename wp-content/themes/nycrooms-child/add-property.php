@@ -27,7 +27,7 @@ $phone = get_user_meta($user_id,'user_phone',true);
 	<!-- Submit Page -->
 	<div class="col-md-12">
 		<div class="submit-page add-property-page" id="prop_form_data">
-        
+         <p style="color:#274abb"><a href="<?= site_url() ?>/property-owner/"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To Profile</a></p>
 		<!-- Section -->
 		<h3>Basic Information</h3>
 		<div class="submit-section">
