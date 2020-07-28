@@ -314,7 +314,7 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 
 				<div class="col-md-6">
 					<div class="dealdetail-signapplicationform">
-						<h3>Application Form Status <br><?= ($tenant_application_check == 1) ? ' <a class="deal-send-button deal-send-text dealdetail_view" href="'.wp_get_attachment_url($tenant_application).'" target="_blank">Complete &nbsp;<i class="fa fa-eye" aria-hidden="true"></i></a>' : 'Pending'; ?> </h3>
+						<h3>Application Form Status <br><?= ($tenant_application_check == 1) ? '<a class="deal-send-button deal-send-text dealdetail_view" href="'.wp_get_attachment_url($tenant_application).'" target="_blank">Complete &nbsp;<i class="fa fa-eye" aria-hidden="true"></i></a>' : 'Pending'; ?> </h3>
 					</div>
 				</div>
 

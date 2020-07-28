@@ -153,6 +153,8 @@ input.checkbulk{
 					<th style="width:10%;"><i class="fa fa-phone" ></i> Phone</th>
 					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Source</th>
 					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Date</th>
+					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Application Status</th>
+					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Invoice Status</th>
 					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Attachments</th>
 					<th style="width:20%;"><i class="fa fa-hand-pointer-o"></i> Action</th>
 				</tr>
@@ -164,6 +166,8 @@ input.checkbulk{
 						$deal_id = get_the_ID();
 						$deal_stage =  get_post_meta($deal_id,'deal_stage',true); 
 						$document_files = explode(',',get_post_meta($deal_id, 'tenant_docs_all',true));
+						$application_form =  get_post_meta($deal_id, 'application_doc',true);
+						$invoice =  get_post_meta($deal_id, 'payment_invoice_doc',true);
 					?>
 						<tr class="deal__stage-one deal-id-<?php echo $deal_id; ?>">
 							<td><input type="checkbox" class="checkbulk" value="<?php echo $deal_id; ?>" ></td>
@@ -173,6 +177,33 @@ input.checkbulk{
 							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'phone',true); ?></td>
 							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'lead_source',true); ?></td>
 							<td class="deal-phone-number"><?php echo get_the_date( 'd-m-Y' ); ?></td>
+							<td class="deal-phone-number"><?php 
+							if(!$application_form){
+							?>
+							 <button style="background:#a1b789;padding: 14px 15px;color:#fff">Pending</button>  
+							<?php
+                            } else {
+							  $application_form_attch = wp_get_attachment_link($application_form);
+							?>
+							 <a class="deal-send-button deal-send-text dealdetail_view" href="<?php echo $application_form_attch; ?>" target="_blank">Complete &nbsp;<i class="fa fa-eye" aria-hidden="true"></i></a>
+							<?php
+							}
+							?>
+							</td>
+							<td class="deal-phone-number">
+							<?php 
+                            if(!$invoice){
+							?>
+							  <button style="background:#a1b789;padding: 14px 15px;color:#fff">Pending</button>  
+							 <?php
+                            } else {
+							   $invoice_attch = wp_get_attachment_link($invoice);
+							?>
+							<a class="deal-send-button deal-send-text dealdetail_view" href="<?php echo $invoice_attch; ?>" target="_blank">Complete &nbsp;<i class="fa fa-eye" aria-hidden="true"></i></a>
+							<?php
+							}
+							?>
+							</td>
 							<td class="deal-phone-number">
 							<?php 
 							if($document_files){

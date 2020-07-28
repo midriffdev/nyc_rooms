@@ -33,6 +33,18 @@ $query_args = array(
 );
 
 $check_deal_orders = new WP_Query( $query_args );
+
+$query_args1 = array(
+	'post_type'  => 'contracts',
+	'meta_query' => array(
+	    array(
+			'key'   => 'deal_id',
+			'value' => $dealid ,
+	    ),
+	)
+);
+
+$check_contracts = new WP_Query( $query_args1 );
 get_header();
 ?>
 <!-- Wrapper -->
@@ -428,6 +440,7 @@ get_header();
 													if(count($check_deal_orders->posts) == 1){ if($deal_price){ ?><h3>Amount Paid: <span>$<?= $deal_price ?></span></h3> <?php } }  ?>
 													
 													<ul class="dealdetail-tenant-actionbuttons">
+													<?php if(!$check_contracts): ?>
 														<li>
 															<?php
 															if(empty($check_deal_orders->posts)){
@@ -449,6 +462,7 @@ get_header();
 														 <button class="dealdetail-tenant-reqagentb" <?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'disabled';}  ?>><?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'Agent Allotted';} else { echo 'Request an Agent';} ?>
 														 </button>
 													    </li>
+														<?php endif; ?>
 													</ul>
 													<?php 
 													if($get_invoice_doc){
@@ -475,7 +489,12 @@ get_header();
 						<h3>Kindly Upload The Documents Here</h3>
 						<div class="submit-section prop_req_docs">
 						   <form action="<?= site_url() ?>/tenant/deal-details-tenant/<?php echo $dealid; ?>" class="dropzone dropzone_tenant_documents" ></form>
-						   <p align=center><button type="button" class="button save_tenant_doc">Save Documents</button></p>
+						   <?php if(!$check_contracts): ?>
+						   <p align=center>
+						   <button type="button" class="button save_tenant_doc">Save Documents</button>
+						   </p>
+						   <?php endif; ?>
+						   
 					   </div>
 				   </div>
 				
@@ -553,7 +572,11 @@ get_header();
 					<?php }
                     ?>
 					    </div>
-                       <div align="center"><button class="button selected_property_tnt" id="selected_property_tnt" >Select Property</button></div>				
+                       <div align="center">
+					   <?php if(!$check_contracts): ?>
+					   <button class="button selected_property_tnt" id="selected_property_tnt" >Select Property</button>
+					   <?php endif; ?>
+					   </div>				
 					<?php
 					}else { echo "<div class='row'><div class='col-md-4'>No Suggested properties founds!</div></div>"; } ?>
 				
