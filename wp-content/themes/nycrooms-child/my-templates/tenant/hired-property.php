@@ -89,7 +89,7 @@ input.checkbulk{
 		<?php include(locate_template('sidebar/tenant-sidebar.php')); ?>
 		<div class="col-md-8">
 			<div class="dashboard-main--cont">
-
+                 <p style="color:#274abb"><a href="<?= site_url() ?>/tenant/"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To Profile</a></p>
                  <div class="col-md-12">
 					 <p class="showing-results"><?php echo $contracts->found_posts; ?> Results Found On Page <?php echo $paged ;?> of <?php echo $contracts->max_num_pages;?> </p>
 				 </div>
@@ -126,7 +126,7 @@ input.checkbulk{
 								<td class="title-container">
 									<img src="<?php if($prop_image){ echo $prop_image; } ?>" alt="">
 									<div class="title">
-										<h4><a href="<?= get_post_permalink( get_the_ID()) ?>"><?php echo get_the_title($post_id); ?></a></h4>
+										<h4><a href="<?= get_post_permalink( get_the_ID()) . '?prpage=hired-property' ?>"><?php echo get_the_title($post_id); ?></a></h4>
 										<span><?php echo $address;?> </span>
 										<span class="table-property-price"><?php echo $price . '$ / Week' ;?></span> <span class="active--property"><?php echo $status ;?></span>
 										<?php 
@@ -146,7 +146,7 @@ input.checkbulk{
 									<div class="owner--name"><a href="#"><?php echo $contact_name ; ?></a></div>
 								</td>
 								<td class="action">
-									<a href="<?= get_post_permalink( get_the_ID()) ?> "><i class="fa fa-eye"></i> View</a>
+									<a href="<?= get_post_permalink( get_the_ID()) . '?prpage=hired-property' ?>"><i class="fa fa-eye"></i> View</a>
 								</td>
 							</tr>
 			    <?php 

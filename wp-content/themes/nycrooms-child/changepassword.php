@@ -82,7 +82,24 @@ get_header();
 
 		<div class="col-md-8">
 		   <div class="row">
-		         <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
+		        <?php
+		        if($_GET['ppage'] == 'admin'){
+                ?>
+				 <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
+			    <?php
+                } else if($_GET['ppage'] == 'powner'){
+			   ?>
+			     <p style="color:#274abb"><a href="<?= site_url().'/property-owner/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To Profile</a></p>
+			   <?php
+               } else if($_GET['ppage'] == 'tenant'){
+			   ?>
+			     <p style="color:#274abb"><a href="<?= site_url().'/tenant/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To Profile</a></p>
+			   <?php
+               } 
+               ?>
+		   
+		         
+				 
 				<div class="col-md-6  my-profile">
 					<h4 class="margin-top-0 margin-bottom-30">Change Password</h4>
 					<?php

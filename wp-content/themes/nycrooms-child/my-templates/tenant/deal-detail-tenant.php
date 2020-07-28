@@ -41,7 +41,23 @@ get_header();
 
 <!-- Content
 ================================================== -->
-<div class="deal-detail-container">		
+<div class="deal-detail-container">	
+    <?php
+    $userrole = wp_get_current_user();
+	 if(!empty($userrole)){
+	     if($userrole->roles[0] == "administrator"){
+	?>
+	   <p style="color:#274abb"><a href="<?= site_url().'/admin/deals/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+	<?php     
+		 } else if($userrole->roles[0] == "tenant"){
+	?>
+	   <p style="color:#274abb"><a href="<?= site_url().'/tenant/deals/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+	<?php
+		 
+		 }
+	 }
+	?>
+	
 	<div class="container">
 
 		<!------Stage 1---->
