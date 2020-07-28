@@ -103,11 +103,28 @@ $gallery_files = explode(",",get_post_meta($post_id, 'gallery_files',true));
 			       <?php
                     } else if($userrole->roles[0] == "property_owner"){
 					?>
-					  <p style="color:#274abb"><a href="<?= site_url().'/property-owner/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To Profile</a></p>
+					  <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'active-properties'): ?>
+					     <p style="color:#274abb"><a href="<?= site_url().'/active-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+					 <?php endif; ?>
+					 
+					 <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'rented-properties'): ?>
+					     <p style="color:#274abb"><a href="<?= site_url().'/rented-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+					 <?php endif; ?>
+					 
+					 <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'unapproved-properties'): ?>
+					     <p style="color:#274abb"><a href="<?= site_url().'/unapproved-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+					 <?php endif; ?>
 					  
 					<?php
-					} 
-			 
+					} else if($userrole->roles[0] == "tenant"){
+					   if(isset($_GET['prpage']) && $_GET['prpage'] == 'hired-property'):
+					?>
+					   <p style="color:#274abb"><a href="<?= site_url().'/hired-property/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+                    <?php
+					   endif;
+					}
+					?>
+			 <?php
 			 } else { ?>
 			 
 			   <p style="color:#274abb"><a href="<?= site_url().'/property-search/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i>Back</a></p>

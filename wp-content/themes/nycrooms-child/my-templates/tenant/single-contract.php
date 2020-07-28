@@ -227,6 +227,7 @@ textarea:required:focus {
 	<div class="container">
 
 		<div class="row contractdetail--stageinnersection">
+		  <p style="color:#274abb"><a href="<?= site_url().'/tenant/all-contracts/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
 			<div class="col-md-12">
 				<div class="contract-property_detail">
 					<?php 

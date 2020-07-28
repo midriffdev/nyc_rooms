@@ -94,7 +94,7 @@ input.checkbulk{
 		<?php include(locate_template('sidebar/tenant-sidebar.php')); ?>
 		<div class="col-md-8">
 			<div class="dashboard-main--cont">
-
+                <p style="color:#274abb"><a href="<?= site_url() ?>/tenant/"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To Profile</a></p>
 				<div class="admin-advanced-searchfilter">
 					<h2>Contract Filter</h2>
 					<form>
@@ -162,7 +162,7 @@ input.checkbulk{
 							<td class="deal_number"><?php echo the_author_meta( 'user_email' , $authid ); ?></td>
 							<td class="deal_number"><?php echo  '<a href="'.wp_get_attachment_url($contract_pdf_id).'" download>'.pathinfo(basename ( get_attached_file( $contract_pdf_id ) ),PATHINFO_FILENAME).'</a>'; ?></td>
 							<td class="action">
-								<a href="<?php echo get_site_url(); ?>/tenant/all-contracts/view/<?php echo base64_encode($contract_id); ?>" ><i class="fa fa-eye"></i> View</a>				
+								<a href="<?php echo get_site_url(); ?>/tenant/all-contracts/view/<?php echo base64_encode($contract_id); ?>/" ><i class="fa fa-eye"></i> View</a>				
 							</td>
 						</tr>
 					<?php 

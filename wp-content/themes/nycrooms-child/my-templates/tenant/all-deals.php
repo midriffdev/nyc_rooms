@@ -95,7 +95,7 @@ input.checkbulk{
 		<?php include(locate_template('sidebar/tenant-sidebar.php')); ?>
 		<div class="col-md-8">
 			<div class="dashboard-main--cont">
-
+                <p style="color:#274abb"><a href="<?= site_url() ?>/tenant/"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To Profile</a></p>
 				<div class="admin-advanced-searchfilter">
 					<h2>Deals Filter</h2>
 					<form>

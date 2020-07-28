@@ -27,6 +27,16 @@ get_header();
 	<!-- Submit Page -->
 	<div class="col-md-12">
 		<div class="submit-page add-property-page" id="prop_form_data">
+		
+		<?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'active-properties'): ?>
+           <p style="color:#274abb"><a href="<?= site_url().'/active-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+		 <?php endif; ?>
+		 <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'rented-properties'): ?>
+           <p style="color:#274abb"><a href="<?= site_url().'/rented-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+		 <?php endif; ?>
+		  <?php if(isset($_GET['prpage']) && $_GET['prpage'] == 'unapproved-properties'): ?>
+           <p style="color:#274abb"><a href="<?= site_url().'/unapproved-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
+		 <?php endif; ?>
         
 		<!-- Section -->
 		<h3>Basic Information</h3>

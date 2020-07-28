@@ -19,6 +19,7 @@ $bookmark_properties = array_filter($bookmark_properties);
 		<?php include(locate_template('sidebar/tenant-sidebar.php')); ?>
 
 		<div class="col-md-8">
+		    <p style="color:#274abb"><a href="<?= site_url() ?>/tenant/"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To Profile</a></p>
 			<table class="manage-table bookmarks-table responsive-table">
 
 				<tr class="bookmark_table_head">
