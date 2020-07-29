@@ -774,7 +774,7 @@ jQuery(document).ready(function($) {
 	              var id = jQuery(this).data('id');
 				  
 				  if(checkedNum == 0){
-		               alert('Please Select this Property to delete');
+		               alert('Please Select this Property to Trash');
 		          } else {
 		       
 	                        var r = confirm("Are you sure to trash this Property");
