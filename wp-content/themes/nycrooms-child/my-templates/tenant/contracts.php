@@ -22,10 +22,10 @@ get_header();
 		<div class="col-md-8">
 			<table class="manage-table responsive-table contracts--table">
 				<tr>
-					<th><i class="fa fa-list-ol"></i> Contract No</th>
-					<th><i class="fa fa-file-text"></i> Contract Name</th>
-					<th class="expire-date"><i class="fa fa-calendar"></i> Date</th>
-					<th><i class="fa fa-hand-pointer-o"></i> Action</th>
+					<th>Contract No</th>
+					<th>Contract Name</th>
+					<th class="expire-date"> Date</th>
+					<th> Action</th>
 				</tr>
 
 				<!-- Item #1 -->

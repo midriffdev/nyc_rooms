@@ -143,15 +143,15 @@ input.checkbulk{
 				
 				<tbody>
 				<tr>
-					<th style="width:4%;"><input type="checkbox" class="checkallbulk"></th>
-					<th style="width:14%;"><i class="fa fa-list-ol"></i> Deal ID</th>
-					<th style="width:10%;"><i class="fa fa-user"></i>Tenant Name</th>
-					<th style="width:10%;"><i class="fa fa-phone" ></i> Phone</th>
-					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Source</th>
-					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Date</th>
-					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Deal Status</th>
-					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Attachments</th>
-					<th style="width:20%;">View</th>
+					<th><input type="checkbox" class="checkallbulk"></th>
+					<th>Deal No</th>
+					<th>Tenant Name</th>
+					<th>Phone</th>
+					<th>Source</th>
+					<th>Date</th>
+					<th>Deal Status</th>
+					<th>Attachments</th>
+					<th>View</th>
 				</tr>
 
 				<?php 

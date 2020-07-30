@@ -97,9 +97,9 @@ input.checkbulk{
 				<table class="manage-table responsive-table deal--table">
 				<tbody>
 				<tr>
-					<th><i class="fa fa-file-text"></i> Property</th>
-					<th><i class="fa fa-user"></i> Owner</th>
-					<th><i class="fa fa-hand-pointer-o"></i> Action</th>
+					<th> Property</th>
+					<th> Owner</th>
+					<th> Action</th>
 				</tr>
 
 				<?php 

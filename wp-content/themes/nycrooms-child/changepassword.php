@@ -100,7 +100,7 @@ get_header();
 		   
 		         
 				 
-				<div class="col-md-6  my-profile">
+				<div class="col-md-6  my-profile change--password_section">
 					<h4 class="margin-top-0 margin-bottom-30">Change Password</h4>
 					<?php
 						 if(!empty($errors)){
