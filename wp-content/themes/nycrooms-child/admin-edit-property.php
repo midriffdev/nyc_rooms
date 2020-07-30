@@ -36,6 +36,7 @@ get_header();
            <p style="color:#274abb"><a href="<?= site_url().'/admin-recently-properties/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a></p>
 		 <?php endif; ?>
 		 
+		 
 		<!-- Section -->
 		<h3>Basic Information</h3>
 		<div class="submit-section">

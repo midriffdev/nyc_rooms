@@ -5,31 +5,41 @@ if(isset($_GET['search_users'])){
 
     
 	 
-    $argarray =  array(
-                               'relation'    => 'AND',
-								array(
+    $argarray =            array(
+                               'relation'    => 'AND'        								
+                           ); 
+		if(!empty($_GET['agent'])){
+		   $argarray[] = array(
 									'key'          => 'user_full_name',
 									'value'        => $_GET['agent'],
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',
-								),
-								array(
+						);
+		}
+		
+		if(!empty($_GET['email'])){
+		   $argarray[] = array(
 									'key'          => 'user_agent_email',
 									'value'        => $_GET['email'],
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',
-								),
-								array(
+						 );
+		}
+		
+		if(!empty($_GET['phone'])){
+		   $argarray[] = array(
 									'key'          => 'user_phone',
 									'value'        => $_GET['phone'],
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',
-								)
-                                								
-                    ); 
+						);
+		}
+		
+		
+					
  
 }
 
@@ -76,6 +86,7 @@ $usersquery = new WP_User_Query( $args );
 
 $all_users = $usersquery->get_results();
 
+
 get_header();
 ?>
 <!-- Wrapper -->
@@ -106,7 +117,7 @@ get_header();
 								<div class="row with-forms">
 									<!-- Main Search Input -->
 									<div class="col-md-12">
-										<input type="text" placeholder="Enter Agent Name" value="" name="agent"/>
+										<input type="text" placeholder="Enter Agent Name"  name="agent"/>
 									</div>
 									
 								</div>
@@ -118,7 +129,7 @@ get_header();
 										<input type="email" id="email" name="email" placeholder="Enter Email">
 									</div>
 									<div class="col-md-6">
-										<input type="text" placeholder="Enter Phone" value="" name="phone"/>
+										<input type="text" placeholder="Enter Phone"  name="phone"/>
 									</div>
 								</div>
 								<!-- Row With Forms / End -->	

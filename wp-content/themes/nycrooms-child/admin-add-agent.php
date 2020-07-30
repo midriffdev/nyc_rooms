@@ -25,7 +25,7 @@ if( email_exists( $_POST['email'] ) ) {
 	   }
 	   
 	    if($user_id){
-		    update_user_meta($user_id, 'user_full_name', $_POST['first_name'] .' '.$_POST['last_name']);
+		    update_user_meta($user_id, 'user_full_name',trim($_POST['first_name']).' '.trim($_POST['last_name']));
 			update_user_meta($user_id, 'user_agent_email', $_POST['email']);
 	        update_user_meta($user_id, 'user_phone', $phone );
 			update_user_meta($user_id, 'user_personal_address', $_POST['address']);

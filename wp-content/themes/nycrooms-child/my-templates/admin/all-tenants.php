@@ -49,8 +49,8 @@ $args= array(
 	'order'=>'DESC',
 );
 if($searchphone){
-	$countargs['meta_query']=array( array( 'key'   => 'user_phone', 'value' => $searchphone, 'compare' => 'REGEXP' ) );
-	$args['meta_query']=array( array( 'key'   => 'user_phone', 'value' => $searchphone, 'compare' => 'REGEXP' )	);
+	$countargs['meta_query']=array( array( 'key'   => 'user_phone', 'value' => $searchphone, 'compare' => 'LIKE' ) );
+	$args['meta_query']=array( array( 'key'   => 'user_phone', 'value' => $searchphone, 'compare' => 'LIKE' )	);
 }
 $users    = get_users($countargs);
 $query    = get_users($args);

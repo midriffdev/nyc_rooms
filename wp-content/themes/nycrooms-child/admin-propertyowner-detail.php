@@ -244,9 +244,8 @@ get_header();
 						<div class="owner--name"><a href="#"><?php echo $name;?></a></div>
 					</td>
 					<td class="action">
-						<a href="#"><i class="fa fa-pencil"></i> Edit</a>
-						<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>
-						<a href="#" class="delete delete-property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
+						<a href="<?php echo get_site_url();?>/edit-property-admin/?pid=<?php echo $post_id ;?>"><i class="fa fa-pencil"></i> Edit</a>
+						<a href="#" class="delete delete-property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Trash</a>
 					</td>
 				</tr>
 <?php 

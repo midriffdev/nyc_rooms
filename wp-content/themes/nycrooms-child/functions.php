@@ -705,7 +705,7 @@ function nyc_delete_existing_file_doc_ajax(){
 
 function nyc_delete_property_ajax(){
 	if(isset($_POST['action']) && $_POST['action'] == 'nyc_delete_property_ajax'){
-	   $post=wp_delete_post($_POST['property_id'],true);
+	   $post=wp_trash_post($_POST['property_id'],true);
 	   if($post){
 		   echo 'success';
 	   }
