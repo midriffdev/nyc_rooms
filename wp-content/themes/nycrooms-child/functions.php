@@ -61,7 +61,7 @@ function square_custom_js_file(){
 
 
 function xx__update_custom_roles() {
-       add_role( 'property_owner', 'Property Owner', array( 'read' => true, 'level_0' => true ) );
+       add_role( 'property_owner', 'Property Owner', array( 'read' => true, 'level_0' => true));
        add_role( 'sales_agent', 'Sales Agent', array( 'read' => true, 'level_0' => true ) );
 	   add_role( 'tenant', 'Tenant', array( 'read' => true, 'level_0' => true ) );
 }
@@ -3805,10 +3805,6 @@ function nyc_delete_existing_doc_tenant_ajax(){
    }
   exit; 
 }
-
-
-
-
 
 require_once( 'inc/init-function.php');
 ?>

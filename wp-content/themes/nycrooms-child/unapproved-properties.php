@@ -267,7 +267,7 @@ get_header();
 
 						while ( $properties->have_posts() ) {
 							$properties->the_post();
-							$post_id = get_the_ID();
+							$post_id = get_the_ID();	
 							$address = get_post_meta($post_id, 'address',true)." ";
 							$address .= get_post_meta($post_id, 'city',true)." ";
 							$address .= get_post_meta($post_id, 'state',true).", ";
@@ -281,7 +281,7 @@ get_header();
 								<td class="title-container">
 									<img src="<?php if($prop_image){ echo $prop_image; } ?>" alt="">
 									<div class="title">
-										<h4><a href="<?= get_post_permalink($post_id).'&prpage=unapproved-properties'  ?>"><?php echo get_the_title(); ?></a></h4>
+										<h4><?php echo get_the_title(); ?></h4>
 										<span><?php echo $address; ?></span>
 										<span class="table-property-price">$<?php echo ($price) ? $price : 'N/A'; ?>/ Weekly</span> <span class="unapproved--property">Unapproved</span>
 										<?php 
@@ -298,7 +298,6 @@ get_header();
 									</div>
 								</td>
 								<td class="action">
-								     <a href="<?= get_post_permalink( $post_id).'&prpage=unapproved-properties' ?>"><i class="fa fa-eye"></i> View</a>
 									<a href="<?= site_url().'/edit-property-owner/?pid='. $post_id .'&prpage=unapproved-properties' ?>"><i class="fa fa-pencil"></i> Edit</a>
 									<a href="#" class="delete delete-property" data-id="<?php echo $post_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 								</td>
