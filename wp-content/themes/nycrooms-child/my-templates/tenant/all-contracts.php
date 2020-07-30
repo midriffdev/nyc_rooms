@@ -137,10 +137,10 @@ input.checkbulk{
 				<table class="manage-table responsive-table deal--table">
 				<tbody>
 				<tr>
-					<th><i class="fa fa-list-ol"></i> Contract ID</th>
-					<th><i class="fa fa-list-ol"></i> Deal ID</th>
-					<th><i class="fa fa-list-ol"></i> Owner Email</th>
-					<th><i class="fa fa-list-ol"></i> Contract PDF</th>
+					<th>Contract ID</th>
+					<th>Deal ID</th>
+					<th>Owner Email</th>
+					<th>Contract PDF</th>
 					<th>Action</th>
 				</tr>
 

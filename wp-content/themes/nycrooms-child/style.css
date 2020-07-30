@@ -3619,7 +3619,7 @@ button.fs-map-btn.button {
 
 .showing-results {
 	color: #888;
-	margin: 5px 0 25px 0;
+	margin: 25px 0 25px 0;
 }
 
 
@@ -4874,7 +4874,6 @@ section.fullwidth.border-bottom { border-bottom: 1px solid #e4e4e4;}
 	padding-bottom: 20px;
 	margin-bottom: 20px;
 	border-bottom: 1px solid #e6e6e6;
-	margin:0;
 }
 
 .my-account-nav-container .my-account-nav:last-child {
@@ -4982,7 +4981,6 @@ table.manage-table {
 	border-collapse: separate;
 	border-spacing: 0;
 	border: none;
-	table-layout:fixed;
 }
 .page-id-736 .deal_number {
     padding: 0 14px !important;
@@ -13062,7 +13060,6 @@ color:  #28a745;
     min-height: 115px;
 }
 table.deal--table th:first-child{width:auto;}
-.deal_number{padding-left: 40px !important;}
 .deal-detail-stagesec h2 {
     text-align: center;
     font-size: 34px;
@@ -13839,8 +13836,13 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
     transition: 0.5s;
 }
 .admin-add-States button:hover{opacity: 0.8;}
-
-.tenant-alldeals_table i{display:none;}
+.change--password_section {
+    margin: 0 auto;
+    float: unset;
+    background: #efefef;
+    padding: 30px 30px;
+}
+.change--password_section > h4 {text-align: center;}
 /* --------------------############## Shubham CSS end ######################------------------ */
 
 /*****saurabh(08/06/2020)start******/
@@ -13876,7 +13878,6 @@ input.checkallleads {height: 18px;}
 input.checkleads {height: 18px;margin: 0 13px !important;}
 
 input.checkallproperties {height: 18px;margin: 0;}
-input.checkproperties {height: 18px;margin: 0 13px !important;}
 input.checkallbulk {height: 18px;margin: 0;}
 
 table.manage-table .title-container{padding: 50px 20px;}

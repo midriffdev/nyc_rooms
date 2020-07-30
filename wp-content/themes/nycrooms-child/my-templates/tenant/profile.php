@@ -112,7 +112,7 @@ get_header();
 							<div class="row">
 							
 								 <div class="col-md-12">
-									<h4 class="margin-top-50 margin-bottom-25">Address</h4>
+								 	<label>Address</label>
 									<textarea name="address" id="address" name="address" placeholder="Address"><?php echo get_user_meta($user_id,'user_personal_address',true); ?></textarea>
 								</div>
 								
@@ -168,7 +168,7 @@ get_header();
 									<input value="<?php echo get_user_meta($user_id,'user_linkedin',true); ?>" type="text" placeholder="linkedin" name="linkedin">
 								</div>
 								<div class="col-md-12">
-									<h4 class="margin-top-50 margin-bottom-25">About Me</h4>
+									<label>About Me</label>
 									<textarea name="about" id="about"  placeholder="About"><?php echo get_user_meta($user_id,'user_about',true); ?></textarea>
 								</div>
 							</div>

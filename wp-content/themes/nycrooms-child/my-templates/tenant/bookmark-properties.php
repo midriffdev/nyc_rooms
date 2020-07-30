@@ -23,7 +23,7 @@ $bookmark_properties = array_filter($bookmark_properties);
 			<table class="manage-table bookmarks-table responsive-table">
 
 				<tr class="bookmark_table_head">
-					<th><i class="fa fa-file-text"></i> Property</th>
+					<th> Property</th>
 					<th></th>
 				</tr>
 
