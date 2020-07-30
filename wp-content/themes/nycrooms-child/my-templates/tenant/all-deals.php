@@ -149,8 +149,7 @@ input.checkbulk{
 					<th>Phone</th>
 					<th>Source</th>
 					<th>Date</th>
-					<th>Application Status</th>
-					<th>Invoice Status</th>
+					<th>Deal Status</th>
 					<th>Attachments</th>
 					<th>View</th>
 				</tr>
@@ -164,6 +163,17 @@ input.checkbulk{
 						$document_files = explode(',',get_post_meta($deal_id, 'tenant_docs_all',true));
 						$application_form =  get_post_meta($deal_id, 'application_doc',true);
 						$invoice =  get_post_meta($deal_id, 'payment_invoice_doc',true);
+						$query_args1 = array(
+											'post_type'  => 'contracts',
+											'meta_query' => array(
+												array(
+													'key'   => 'deal_id',
+													'value' => $deal_id,
+												),
+											)
+                                     );
+
+                        $check_contracts = new WP_Query($query_args1);
 						
 					?>
 						<tr class="deal-id-<?php echo $deal_id; ?>">
@@ -173,40 +183,21 @@ input.checkbulk{
 							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'phone',true); ?></td>
 							<td class="deal-phone-number"><?php echo get_post_meta($deal_id,'lead_source',true); ?></td>
 							<td class="deal-phone-number"><?php echo get_the_date( 'Y-m-d' ); ?></td>
-							<td class="deal-phone-number"><?php 
-							if(!$application_form){
-							?>
-							 <button style="background:#a1b789;padding: 14px 15px;color:#fff">Pending</button>    
-							<?php
-                            } else {
-							  $application_form_attch = wp_get_attachment_link($application_form);
-							?>
-							 <a class="deal-send-button deal-send-text dealdetail_view" href="<?php echo $application_form_attch; ?>" target="_blank">Complete &nbsp;<i class="fa fa-eye" aria-hidden="true"></i></a>
-							<?php
-							}
-							?>
-							
-							</td>
 							<td class="deal-phone-number">
 							<?php 
-                            if(!$invoice){
+							  if(empty($check_contracts->posts)){
+							       echo "Open";
+							  } else {
+							       echo "Closed";
+							  }
 							?>
-							 <button style="background:#a1b789;padding: 14px 15px;color:#fff">Pending</button>  
-							 <?php
-                            } else {
-							   $invoice_attch = wp_get_attachment_link($invoice);
-							?>
-							<a class="deal-send-button deal-send-text dealdetail_view" href="<?php echo $invoice_attch; ?>" target="_blank">Complete &nbsp;<i class="fa fa-eye" aria-hidden="true"></i></a>
-							<?php
-							}
-							?>
-							
 							</td>
 							<td class="deal-phone-number">
 							<?php 
 							if($document_files){
 								echo "</br></br>";
 								echo "<span>Document Files </span>";
+								echo "</br>";
 								foreach($document_files as $file){
 										$attc_id = get_post_meta($deal_id,$file,true);
 										$checkattachment = wp_get_attachment_link($attc_id);
@@ -217,12 +208,30 @@ input.checkbulk{
 										}
 										echo "</br>";
 								}
-							} 	
+							}
+							     
+                            if(!$application_form){
+							     echo "No Files Attachment";
+                            } else {
+							  $application_form_attch = wp_get_attachment_link($application_form);
+							  echo "</br>";
+							   echo $application_form_attch;
+							}
+							
+							if(!$invoice){
+							     echo "</br>";
+							     echo "No Files Attachment";
+                            } else {
+							  $invoice_form_attch = wp_get_attachment_link($invoice);
+							   echo "</br>";
+							   echo $invoice_form_attch;
+							}
+							
 							?>	
 							
 							</td>
 							<td>
-							<a href="<?php echo get_site_url(); ?>/tenant/deal-details-tenant/<?php echo base64_encode($deal_id); ?>"><i class="fa fa-eye"></i></a>
+							<a href="<?php echo get_site_url(); ?>/tenant/deal-details-tenant/<?php echo base64_encode($deal_id); ?>"><i class="fa fa-eye" style="display:block;"></i></a>
 							</td>
 						</tr>
 					<?php 

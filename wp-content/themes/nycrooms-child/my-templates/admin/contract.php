@@ -1,6 +1,7 @@
 <?php
 use Dompdf\Dompdf;
 $post_id = base64_decode(get_query_var( 'id' )); 
+echo $post_id;
 $post = get_post($post_id);
 if(empty($post) || ($post->post_type != 'deals')){
 	wp_redirect(get_site_url().'/admin/deals'); 
@@ -43,17 +44,10 @@ if(isset($_POST['create_contract']) && $contract_created == false){
 	$contract_data['customer_signature'] = $_POST['customer_signature'];
 	$contract_data['agent_date'] = $_POST['agent_date'];
 	$contract_data['customer_date'] = $_POST['customer_date'];
-	$contract_data['additional_notes'] = $_POST['additional_notes'];
-	$contract_data['agent_name_two'] = $_POST['agent_name_two'];
-	$contract_data['customer_name_two'] = $_POST['customer_name_two'];
-	$contract_data['agent_signature_two'] = $_POST['agent_signature_two'];
-	$contract_data['customer_signature_two'] = $_POST['customer_signature_two'];
-	$contract_data['agent_date_two'] = $_POST['agent_date_two'];
-	$contract_data['customer_date_two'] = $_POST['customer_date_two'];
 	
-	$text = trim($_POST['additional_notes']);
+	/* $text = trim($_POST['additional_notes']);
 	$textAr = explode("\n", $text);
-	$textAr = array_filter($textAr, 'trim');	
+	$textAr = array_filter($textAr, 'trim');	 */
 	$html='<html>
 		   <head>
 			  <meta http-equiv="Content-Type" content="charset=utf-8" />
@@ -768,197 +762,6 @@ if(isset($_POST['create_contract']) && $contract_created == false){
 							 </td>
 						  </tr>
 					</table>
-					<div class="page_break"></div>
-					<table style="width:100%;">
-					   <tr>
-						  <td colspan="2" style="padding-bottom:10px;">
-							 <table style="width:100%;">
-								<tbody>
-								   <tr>
-									  <td colspan="2" style="padding-bottom:30px;">
-										 <table style="width:100%;">
-											<tbody>
-											   <tr>
-												  <td style="width:45%;padding-top:10px;">
-													'.get_custom_logo().'
-												  </td>
-												  <td style="width:55%;padding: 20px 0px 0 10%;">
-													 <h2 style="text-align: right;margin-top: 0;margin-bottom: 0;">Apartment Sharing Contract</h2>
-													 <table style="width:100%;margin-top:10px;border:1px solid #000;">
-														<tbody>
-														   <tr>
-															  <td style="padding:10px;">
-																 <table style="width:100%;">
-																	<tbody>
-																	   <tr>
-																		  <td style="width:30%;">
-																			 <p style="margin:0;font-weight:500;font-size:17px;">Contract #</p>
-																		  </td>
-																		  <td style="width:70%;">
-																			 <p style="border-bottom: 1px solid #000;margin: 0px;font-size: 14px;">'.$_POST['contact_no'].'</p>
-																		  </td>
-																	   </tr>
-																	</tbody>
-																 </table>
-																 <table style="width:100%;">
-																	<tbody>
-																	   <tr>
-																		  <td style="width:30%;">
-																			 <p style="margin:0;font-weight:500;font-size:17px;">File No.</p>
-																		  </td>
-																		  <td style="width:70%;">
-																			 <p style="border-bottom: 1px solid #000;margin: 0px;font-size: 14px;">'.$_POST['contact_file_no'].'</p>
-																		  </td>
-																	   </tr>
-																	</tbody>
-																 </table>
-																 <table style="width:100%;">
-																	<tbody>
-																	   <tr>
-																		  <td style="width:30%;">
-																			 <p style="margin:0;font-weight:500;font-size:17px;">Date</p>
-																		  </td>
-																		  <td style="width:70%;">
-																			 <p style="border-bottom: 1px solid #000;margin: 0px;font-size: 14px;">'.$_POST['contact_date'].'</p>
-																		  </td>
-																	   </tr>
-																	</tbody>
-																 </table>
-															  </td>
-														   </tr>
-														</tbody>
-													 </table>
-												  </td>
-											   </tr>
-											</tbody>
-										 </table>
-									  </td>
-								   </tr>
-								</tbody>
-							 </table>
-						  </td>
-					   </tr>
-					   <tr>
-						  <td colspan="2">
-							 <table style="width:100%;margin-top:35px;">
-								<tbody>
-								   <tr>
-									  <td style="padding: 0 0 10px 0;width:100%;">
-										 <p style="color: #333;margin: 0px;font-size:20px;font-weight: 600;text-transform: capitalize;text-align: center;"> Additional Notes:</p>
-									  </td>
-								   </tr>
-								   <tr>
-									  <td>';
-										foreach ($textAr as $line) { 
-										 $html .= '<p style="border-bottom:1px solid #000;margin-bottom:5px;color:#333;font-size:14px;">'.$line.'</p>';
-										}								
-									 $html .= '</td>
-								   </tr>
-								   <tr>
-									  <td colspan="2" style="padding-top:30px;">
-										 <table style="width: 100%;">
-											<tbody>
-											   <tr>
-												  <td style="width:50%;padding-right:10px;">
-													 <table style="width:100%;">
-														<tbody>
-														   <tr>
-															  <td style="width:28%;padding: 0;"><span style="font-size: 14px;">Agent Name:</span></td>
-															  <td style="width:72%;padding: 0;">
-																 <p style="font-size:14px;margin:0;border-bottom: 1px solid #000;">test12</p>
-															  </td>
-														   </tr>
-														   <tr>
-															  <td colspan="2">
-																 <table style="width:100%;">
-																	<tbody>
-																	   <tr>
-																		  <td style="width:35%;padding: 0;"><span style="font-size: 14px;">Agent Signature:</span></td>
-																		  <td style="width:65%;padding: 0;">
-																			 <p style="font-size:14px;margin:0;border-bottom: 1px solid #000;">test123</p>
-																		  </td>
-																	   </tr>
-																	</tbody>
-																 </table>
-															  </td>
-														   </tr>
-														   <tr>
-															  <td colspan="2">
-																 <table style="width:100%;">
-																	<tbody>
-																	   <tr>
-																		  <td style="width:11%;padding: 0;"><span style="font-size: 14px;">Date:</span></td>
-																		  <td style="width:89%;padding: 0;">
-																			 <p style="font-size:14px;margin:0;border-bottom: 1px solid #000;">23 jun, 2020</p>
-																		  </td>
-																	   </tr>
-																	</tbody>
-																 </table>
-															  </td>
-														   </tr>
-														</tbody>
-													 </table>
-												  </td>
-												  <td style="width:50%;padding-left:10px;">
-													 <table style="width: 100%;">
-														<tbody>
-														   <tr>
-															  <td colspan="2">
-																 <table style="width:100%;">
-																	<tbody>
-																	   <tr>
-																		  <td style="width:35%;padding: 0;"><span style="font-size: 14px;">Customer Name:</span></td>
-																		  <td style="width:65%;padding: 0;">
-																			 <p style="font-size:14px;margin:0;border-bottom: 1px solid #000;">abc</p>
-																		  </td>
-																	   </tr>
-																	   <tr>
-																		  <td colspan="2">
-																			 <table style="width:100%;">
-																				<tbody>
-																				   <tr>
-																					  <td style="width:42%;padding: 0;"><span style="font-size: 14px;">Customer Signature:</span></td>
-																					  <td style="width:58%;padding: 0;">
-																						 <p style="font-size:14px;margin:0;border-bottom: 1px solid #000;">abc</p>
-																					  </td>
-																				   </tr>
-																				   <tr>
-																					  <td colspan="2">
-																						 <table style="width:100%;">
-																							<tbody>
-																							   <tr>
-																								  <td style="width:12%;padding: 0;"><span style="font-size: 14px;">Date:</span></td>
-																								  <td style="width:88%;padding: 0;">
-																									 <p style="font-size:14px;margin:0;border-bottom: 1px solid #000;">23 jun, 2020</p>
-																								  </td>
-																							   </tr>
-																							</tbody>
-																						 </table>
-																					  </td>
-																				   </tr>
-																				</tbody>
-																			 </table>
-																		  </td>
-																	   </tr>
-																	</tbody>
-																 </table>
-															  </td>
-														   </tr>
-														</tbody>
-													 </table>
-												  </td>
-											   </tr>
-											</tbody>
-										 </table>
-									  </td>
-								   </tr>
-								</tbody>
-							 </table>
-						  </td>
-					   </tr>
-					   </td>
-					   </tr>
-					</table>
 					</div>
 		   </body>
 		</html>';
@@ -1071,7 +874,17 @@ if(count($check_deal_orders->posts) == 1){
 } else {
    $payment_status = get_post_meta($post_id,'payment_status',true);
 }
+$query_args1 = array(
+	'post_type'  => 'contracts',
+	'meta_query' => array(
+	    array(
+			'key'   => 'deal_id',
+			'value' => $post_id ,
+	    ),
+	)
+);
 
+$check_contracts = new WP_Query( $query_args1 );
 ?>
 <style>
 .agent-space {
@@ -1764,9 +1577,9 @@ Date:</span>
 							</div>
 								</div>
 							</div>
-								<div class="form-content set-space">
+							<!--div class="form-content set-space">
 							<p class="sub-heading text-center">Additional Notes</p>
-							<textarea cols="20" rows="10" name="additional_notes"><?php if(!empty($contract_data)) { echo $contract_data['additional_notes']; }  ?></textarea>
+							<textarea cols="20" rows="10" name="additional_notes"><?php //if(!empty($contract_data)) { echo $contract_data['additional_notes']; }  ?></textarea>
 							<div class="form-content-pannel">
 								<div class="form-content-inner-pannel">
 									<div class="agreement-pannel">
@@ -1774,7 +1587,7 @@ Date:</span>
 											<span>Agent Name:</span>
 										</div>
 										<div class="agreement-pannel-content pannel2 agent-space">
-										<span><input type="text" class="form-input" name="agent_name_two" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_name_two']; }  ?>"></span></div>
+										<span><input type="text" class="form-input" name="agent_name_two" value="<?php //if(!empty($contract_data)) { echo $contract_data['agent_name_two']; }  ?>"></span></div>
 									</div>
 								</div>
 								<div class="form-content-inner-pannel">
@@ -1784,7 +1597,7 @@ Date:</span>
 Customer Name:</span>
 							</div>
 							<div class="agreement-pannel-content pannel2 customer-space">
-								<span><input type="text" class="form-input" name="customer_name_two" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_name_two']; }  ?>"></span></div>
+								<span><input type="text" class="form-input" name="customer_name_two" value="<?php //if(!empty($contract_data)) { echo $contract_data['customer_name_two']; }  ?>"></span></div>
 							</div>
 								</div>
 							</div>
@@ -1796,7 +1609,7 @@ Customer Name:</span>
 Agent Signature:</span>
 										</div>
 										<div class="agreement-pannel-content pannel2 agent-sign-space">
-										<span><input type="text" class="form-input" name="agent_signature_two" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_signature_two']; }  ?>"></span></div>
+										<span><input type="text" class="form-input" name="agent_signature_two" value="<?php //if(!empty($contract_data)) { echo $contract_data['agent_signature_two']; }  ?>"></span></div>
 									</div>
 								</div>
 								<div class="form-content-inner-pannel">
@@ -1806,7 +1619,7 @@ Agent Signature:</span>
 Customer Signature:</span>
 							</div>
 							<div class="agreement-pannel-content pannel2 customer-sign-space">
-								<input type="text" class="form-input" name="customer_signature_two" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_signature_two']; }  ?>"></div></div>
+								<input type="text" class="form-input" name="customer_signature_two" value="<?php //if(!empty($contract_data)) { echo $contract_data['customer_signature_two']; }  ?>"></div></div>
 							</div>
 								</div>
 							<div class="form-content-pannel">
@@ -1817,7 +1630,7 @@ Customer Signature:</span>
 Date:</span>
 										</div>
 										<div class="agreement-pannel-content pannel2 date-last-space">
-										<span><input type="date" class="form-input" name="agent_date_two" value="<?php if(!empty($contract_data)) { echo $contract_data['agent_date_two']; }  ?>"></span></div>
+										<span><input type="date" class="form-input" name="agent_date_two" value="<?php //if(!empty($contract_data)) { echo $contract_data['agent_date_two']; }  ?>"></span></div>
 									</div>
 								</div>
 								<div class="form-content-inner-pannel">
@@ -1827,13 +1640,23 @@ Date:</span>
 Date:</span>
 							</div>
 							<div class="agreement-pannel-content pannel2 date-last-space">
-								<input type="date" class="form-input" name="customer_date_two" value="<?php if(!empty($contract_data)) { echo $contract_data['customer_date_two']; }  ?>"></div></div>
+								<input type="date" class="form-input" name="customer_date_two" value="<?php //if(!empty($contract_data)) { echo $contract_data['customer_date_two']; }  ?>"></div></div>
 							</div>
 								</div>
-							</div>
+							</div--->
 						<div class="contract-form-row create_contract">
 							<div class="row">
+							    <?php
+                                  if(empty($check_contracts->posts)){
+								?>
 								<button type="submit" class="contract-form-submit" name="create_contract" id="create_contract_btn">Create Contract</button>
+								<?php
+								} else {
+								?>
+								<button type="button" class="button" disabled style="pointer-events:none;">Contract Created</button>
+								<?php
+								}
+								?>
 							</div>
 						</div>
 						</div>		

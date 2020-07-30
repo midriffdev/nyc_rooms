@@ -65,8 +65,19 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 	if(empty($payment_status)){
 		$msg .="Payment is not completed.</br>";
 	}
-}	
+}
 
+$query_args1 = array(
+	'post_type'  => 'contracts',
+	'meta_query' => array(
+	    array(
+			'key'   => 'deal_id',
+			'value' => $post_id ,
+	    ),
+	)
+);
+
+$check_contracts = new WP_Query( $query_args1 );
 ?>
 <!-- Wrapper -->
 <div id="wrapper">
@@ -104,7 +115,7 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 		?>
 		
 		
-		
+		 <?php if(empty($check_contracts->posts)): ?>
 		<div class="row deal-detail-upperunifrm-sect">
 			<div class="col-md-3">
 				<div class="deal-detail-stagesec">
@@ -142,8 +153,7 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 					
 				</div>
 			</div>
-			<div class="col-md-6">
-											
+			<div class="col-md-6">						
 				<div class="dealdetal-currentstage-status">Current Status:	<span>Stage <?php echo $deal_stage; ?></span></div>
 				<div class="deal-detail-uniformbutton">
 					<ul>
@@ -154,6 +164,7 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 				</div>				
 			</div>
 		</div>
+		<?php endif; ?>
 		<div class="row">
 			<div class="col-md-12">
 				<div class="copy_link_sec">
@@ -386,13 +397,13 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 					</div>
 				</div>
 				
-				
+				<?php if(empty($check_contracts->posts)): ?>
 				<div class="col-md-12 text-center">
 					<button type="submit" class="button" name="upadte_stag1">Save Details</button>
 					<a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-email' : 'deal-send-email'; ?>">Send as Email</a>
 					<a href="#" class="deal-send-button <?php echo (empty($deal_price)) ? 'button_disable no-send-text' : 'deal-send-text'; ?>">Send as Text</a>
 				</div>
-				
+				<?php endif; ?>
 			</div>
 			</form>
 			
@@ -409,7 +420,9 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 						<h3>Kindly Upload The Documents Here</h3>
 						<div class="submit-section prop_req_docs">
 						   <form action="<?= site_url() ?>/tenant/deal-details-tenant/<?php echo $post_id; ?>" class="dropzone dropzone_tenant_documents" ></form>
+						   <?php if(empty($check_contracts->posts)): ?>
 						   <p align=center><button type="button" class="button save_tenant_doc">Save Documents</button></p>
+						   <?php endif; ?>
 					   </div>
 			    </div> 
 
@@ -419,7 +432,7 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 				
 				</ul>
 			</div>
-
+            <?php if(empty($check_contracts->posts)): ?>
 			<div class="deal-stage-property-suggest">
 				<div class="deal-proprtysug-title">
 					<h2>Suggest Property</h2>
@@ -576,6 +589,7 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 				</div>
 
 			</div>
+			<?php endif; ?>
 
 		</div>
 
@@ -630,12 +644,13 @@ if(empty($deal_price) || empty($property_id) || empty($payment_status)){
 				</div>
 				</div>
 			</div>
-
+             <?php if(empty($check_contracts->posts)): ?>
 			<div class="create-deal-btnsec deal-detail-dealbutton ">
 				<a href="<?php echo get_site_url(); ?>/admin/deals/contract/<?php echo base64_encode($post_id); ?>" class="<?php echo $convert_deal; ?>"><button type="button" class="btn btn-primary popup__button stage3-convertdeal-but">
 				 Convert Deal to Contract
 				</button></a>
 			</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

@@ -381,6 +381,19 @@ $query_args = array(
 
 $check_deal_orders = new WP_Query( $query_args );
 
+$query_args1 = array(
+	'post_type'  => 'contracts',
+	'meta_query' => array(
+	    array(
+			'key'   => 'deal_id',
+			'value' => $dealid ,
+	    ),
+	)
+);
+
+$check_contracts = new WP_Query( $query_args1 );
+
+
 get_header();
 ?>
 <!-- Wrapper -->
@@ -526,7 +539,9 @@ get_header();
 						<form method="post">
 						<input type="hidden" name="deal_id" value="<?= $dealid ?>">
 						<textarea class="WYSIWYG" name="summary" cols="40" rows="3" id="summary" spellcheck="true"><?php if($agent_saved_notes){echo $agent_saved_notes;}?></textarea>
+						<?php if(empty($check_contracts->posts)): ?>
 						<input type="submit" name="save_notes" value="Save notes">
+						<?php endif; ?>
 						</form>
 					</div>
 				</div>
@@ -536,19 +551,28 @@ get_header();
 						<?php if($deal_price): ?><h3>Amount to be Paid: <span>$<?= $deal_price ?></span></h3> <?php endif;  ?>
 						<ul class="dealdetail-tenant-actionbuttons dealdetail-agent-actionbuttons">
 							<li>
-							<?php if(empty($check_deal_orders->posts)){ ?>
-								<button class="dealdetail-tenant-paynowb" data-toggle="modal" data-target="#agentlogpayment">Log Payment</button>
-							 <?php } else { ?>
+							<?php
+							if(empty($check_deal_orders->posts)){
+							  if(empty($check_contracts->posts)):  
+							?>
+							   <button class="dealdetail-tenant-paynowb" data-toggle="modal" data-target="#agentlogpayment">Log Payment</button>
+							 <?php 
+							   endif;
+							 } else { ?>
 							  <button class="dealdetail-tenant-paynowb" disabled>Payment Done</button>
 							 <?php
 							 }
 							 ?>
 							</li>
 							<li>
-							    <?php if(empty($check_deal_orders->posts)){ ?>
+							    <?php 
+								if(empty($check_contracts->posts)):
+								if(empty($check_deal_orders->posts)){ 
+								?>
 								<button class="dealdetail-tenant-reqagentb" data-toggle="modal" data-target="#send_payment_link_by_agent" >Send Payment Link</button>
 								<?php 
 								}
+								endif;
 								?>
 							</li>
 						</ul>
@@ -568,7 +592,9 @@ get_header();
 						<h3>Kindly Upload The Documents Here</h3>
 						<div class="submit-section prop_req_docs">
 						   <form action="<?= site_url() ?>/tenant/deal-details-tenant/<?php echo $dealid; ?>" class="dropzone dropzone_tenant_documents" ></form>
+						  <?php if(empty($check_contracts->posts)): ?>
 						   <p align=center><button type="button" class="button save_tenant_doc">Save Documents</button></p>
+						   <?php endif; ?>
 					   </div>
 				  </div>
 				  
@@ -607,7 +633,7 @@ get_header();
 				
 				</ul>
 			</div>
-
+            <?php if(empty($check_contracts->posts)): ?>
 			<div class="deal-stage-property-suggest">
 				<div class="deal-proprtysug-title">
 					<h2>Suggest Property</h2>
@@ -764,7 +790,7 @@ get_header();
 				</div>
 
 			</div>
-			
+			<?php endif; ?>
 		</div>
 	
 	</div>

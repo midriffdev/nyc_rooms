@@ -591,9 +591,9 @@ jQuery(document).ready(function($) {
 					alert('Please choose one or more properties to delete');
 				} else {
 				   if(checkedNum == 1){
-					var r = confirm("Are you sure to delete this property");
+					var r = confirm("Are you sure to trash this property");
 				  } else {
-					var r = confirm("Are you sure to delete these properties");
+					var r = confirm("Are you sure to trash these properties");
 				  }
 					if(r == true) {
 					       jQuery('.loading').show();
@@ -774,10 +774,10 @@ jQuery(document).ready(function($) {
 	              var id = jQuery(this).data('id');
 				  
 				  if(checkedNum == 0){
-		               alert('Please Select this Property to delete');
+		               alert('Please Select this Property to Trash');
 		          } else {
 		       
-	                        var r = confirm("Are you sure to delete this Property");
+	                        var r = confirm("Are you sure to trash this Property");
 					            if(r == true) {
 											  jQuery('.loading').show(); 
 											  myarrayprop.push(id);

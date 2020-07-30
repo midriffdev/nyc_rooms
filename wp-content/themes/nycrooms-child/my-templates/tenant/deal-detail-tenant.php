@@ -440,7 +440,7 @@ get_header();
 													if(count($check_deal_orders->posts) == 1){ if($deal_price){ ?><h3>Amount Paid: <span>$<?= $deal_price ?></span></h3> <?php } }  ?>
 													
 													<ul class="dealdetail-tenant-actionbuttons">
-													<?php if(!$check_contracts): ?>
+													<?php if(empty($check_contracts->posts)): ?>
 														<li>
 															<?php
 															if(empty($check_deal_orders->posts)){
@@ -489,7 +489,7 @@ get_header();
 						<h3>Kindly Upload The Documents Here</h3>
 						<div class="submit-section prop_req_docs">
 						   <form action="<?= site_url() ?>/tenant/deal-details-tenant/<?php echo $dealid; ?>" class="dropzone dropzone_tenant_documents" ></form>
-						   <?php if(!$check_contracts): ?>
+						   <?php if(empty($check_contracts->posts)): ?>
 						   <p align=center>
 						   <button type="button" class="button save_tenant_doc">Save Documents</button>
 						   </p>
@@ -573,7 +573,7 @@ get_header();
                     ?>
 					    </div>
                        <div align="center">
-					   <?php if(!$check_contracts): ?>
+					   <?php if(empty($check_contracts->posts)): ?>
 					   <button class="button selected_property_tnt" id="selected_property_tnt" >Select Property</button>
 					   <?php endif; ?>
 					   </div>				
