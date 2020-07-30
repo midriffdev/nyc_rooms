@@ -615,11 +615,17 @@ get_header();
 						 $propertyaddress = get_post_meta(get_the_ID(),'address',true);
 						 $region = get_post_meta(get_the_ID(),'state',true);
 						 $longlat = get_lat_long($propertyaddress,$region);
+						 if(!empty($longlat)){
 						 $longitude  =   $longlat['longitude'];
 						 $latitude   =   $longlat['latitude'];
+						 } else {
+						    $longitude = '';
+							$latitude = '';
+						 }
 						?>
 						<input type="hidden" class="property_longitude" value="<?= $longitude ?>">
 						<input type="hidden" class="property_latitude" value="<?= $latitude ?>">
+						
 					</div>
 				</div>
 				
