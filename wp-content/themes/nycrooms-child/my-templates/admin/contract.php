@@ -1,7 +1,6 @@
 <?php
 use Dompdf\Dompdf;
 $post_id = base64_decode(get_query_var( 'id' )); 
-echo $post_id;
 $post = get_post($post_id);
 if(empty($post) || ($post->post_type != 'deals')){
 	wp_redirect(get_site_url().'/admin/deals'); 
