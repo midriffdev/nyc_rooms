@@ -375,7 +375,7 @@ jQuery(document).ready(function($) {
 								if(response == "true"){
 									jQuery('.loading').hide(); 
 									$('#ModalUser .modal-body p').html('User Inactive Successfully');
-									$('#ModalUser').modal('show');
+									jQuery('#ModalUser').modal('show');
 									setTimeout(function(){
 									   window.location.reload();
 									   // or window.location = window.location.href; 
