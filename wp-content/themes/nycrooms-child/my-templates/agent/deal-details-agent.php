@@ -621,8 +621,9 @@ get_header();
 		</div>
 
 		<!----Stage 2---->
+		 <?php if(empty($check_contracts->posts)): ?>
 		<div class="row deal-stage-2">
-
+             
 			<div class="current-stage-title">
 				<h3>Stage 2</h3>
 			</div>
@@ -633,7 +634,7 @@ get_header();
 				
 				</ul>
 			</div>
-            <?php if(empty($check_contracts->posts)): ?>
+            
 			<div class="deal-stage-property-suggest">
 				<div class="deal-proprtysug-title">
 					<h2>Suggest Property</h2>
@@ -790,9 +791,9 @@ get_header();
 				</div>
 
 			</div>
-			<?php endif; ?>
+			
 		</div>
-	
+	    <?php endif; ?>
 	</div>
 </div>
 

@@ -425,13 +425,15 @@ $check_contracts = new WP_Query( $query_args1 );
 						   <?php endif; ?>
 					   </div>
 			    </div> 
-
+              <?php if(empty($check_contracts->posts)): ?>
 			<div class="deal-detail__suggestedpropertysec">
 				<h3>Selected Properties</h3>
 				<ul class='nyc_deal_selected_property_section'>
 				
 				</ul>
 			</div>
+			<?php endif; ?>
+			
             <?php if(empty($check_contracts->posts)): ?>
 			<div class="deal-stage-property-suggest">
 				<div class="deal-proprtysug-title">

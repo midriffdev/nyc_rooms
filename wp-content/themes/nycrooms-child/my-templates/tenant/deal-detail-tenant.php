@@ -530,7 +530,9 @@ get_header();
 
 		</div>
          
-		<?php if($selected_property){ ?>
+		<?php if(empty($check_contracts->posts)):  
+		      if($selected_property){
+		?>
 		<!----Stage 2---->
 		<div class="row deal-stage-2">
 			<div class="current-stage-title">
@@ -573,16 +575,17 @@ get_header();
                     ?>
 					    </div>
                        <div align="center">
-					   <?php if(empty($check_contracts->posts)): ?>
+					   
 					   <button class="button selected_property_tnt" id="selected_property_tnt" >Select Property</button>
-					   <?php endif; ?>
 					   </div>				
 					<?php
-					}else { echo "<div class='row'><div class='col-md-4'>No Suggested properties founds!</div></div>"; } ?>
+					}else { echo "<div class='row'><div class='col-md-4'>No Suggested properties founds!</div></div>"; }
+                        
+					?>
 				
 			</div>
 		</div>
-	    <?php } ?>
+	    <?php } endif; ?>
 	</div>
 </div>
 

@@ -8,6 +8,26 @@ $propertyID = $property->ID;
 $post_status = $property->post_status;
 $post_author = $property->post_author;
 $propertyTerm = get_the_terms( $propertyID,'types' );
+$attachmentfiles  = get_post_meta($propertyID,'gallery_files',true);
+$attachmentfiles = explode(',',$attachmentfiles);
+
+
+foreach($attachmentfiles as $attachment_file){
+
+   $attachment_id    = get_post_meta($propertyID,$attachment_file,true);
+   $attachment_url = wp_get_attachment_url($attachment_id);
+   if(!img_exist($attachment_url)){
+     $attachmentfilestodelete  = get_post_meta($propertyID,'gallery_files',true);
+     $attachmentfilestodeleteall = explode(',',$attachmentfilestodelete);
+	      foreach($attachmentfilestodeleteall as $attachmentfilesasdelete){
+			  $get_delete_attachemnt  = get_post_meta($propertyID,$attachmentfilesasdelete,true);
+			  delete_post_meta($propertyID,$attachmentfilesasdelete,$get_delete_attachemnt);
+	      }
+	          delete_post_meta($propertyID,'gallery_files',implode(',',$attachmentfilestodeleteall));
+	       break;
+   }
+   
+}
 get_header();
 ?>
 <!-- Wrapper -->
