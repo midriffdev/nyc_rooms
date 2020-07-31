@@ -228,7 +228,13 @@ jQuery(document).ready(function($) {
 				if(response == "success"){
 				  jQuery('.loading').hide();
 				var delete_tr= ".property-id-"+property_id;
-				jQuery(delete_tr).fadeOut("slow");	
+				jQuery(delete_tr).fadeOut("slow");
+				$('#Modaldelete').modal('show'); 
+				setTimeout(function(){
+					 window.location.reload();
+									   // or window.location = window.location.href; 
+			    }, 2000);
+                 				
 				}
 			}
 		});
@@ -273,7 +279,7 @@ jQuery(document).ready(function($) {
 									setTimeout(function(){
 									   window.location.reload();
 									   // or window.location = window.location.href; 
-								 }, 2000);
+								    }, 2000);
 								 
 								  }
 						});   

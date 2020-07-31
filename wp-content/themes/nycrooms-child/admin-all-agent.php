@@ -188,6 +188,17 @@ get_header();
 							<td><div class="owner-phone-no"><?php echo get_user_meta($agents->ID,'user_phone',true); ?></div></td>
 							<td><div class="owner-status"><?php echo get_user_meta($agents->ID,'user_agent_status',true); ?></div></td>
 							<td class="action">
+							    <?php
+                                  $checkstatus =get_user_meta($agents->ID,'user_agent_status',true);
+
+								if(!$checkstatus){ ?>
+					                <a style="cursor:pointer;" class="active active-tenant" data-id="<?php echo $agents->ID; ?>"><i class="fa fa-eye-slash"></i> Activate</a>
+						        <?php } else if($checkstatus == 'inactive'){ ?>
+						            <a style="cursor:pointer;" class="active active-tenant" data-id="<?php echo $agents->ID; ?>"><i class="fa fa-eye-slash"></i> Activate</a>
+						        <?php } else { ?>
+						            <a style="cursor:pointer;" class="inactive inactive-tenant" data-id="<?php echo $agents->ID; ?>"><i class="fa fa-key"></i> Inactivate</a>
+						        <?php } ?>
+						
 								<a href="<?= home_url() . '/agent-details/?agentid='.$agents->ID  ?>"><i class="fa fa-pencil"></i> Edit</a>
 								<a  class="delete_agent_profile" data-id="<?= $agents->ID ?>" style="cursor:pointer;"><i class="fa fa-remove"></i> Delete</a>
 							</td>
@@ -359,6 +370,75 @@ input.apply_action {
 <script>
 jQuery(document).ready(function($) {
 	jQuery('#sidebar-allagent').addClass('current');
+	var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+	jQuery('.active.active-tenant').click(function (e) {
+		e.preventDefault();
+		var checkedNum = jQuery(this).closest('tr').find('input[class="checkagent"]:checked').length;
+		if(checkedNum == 0){
+			  alert('Please select this agent to activate');
+		} else {
+				jQuery('.loading').show(); 
+				var myarraytenant = new Array();
+				var tenant_id = jQuery(this).attr('data-id');
+				myarraytenant.push(tenant_id);
+				
+				var data = {
+									'action': 'active_multiple_agents',
+									'data':   myarraytenant					
+						   };
+						// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+						jQuery.post(ajaxurl, data, function(response) {	
+						
+							if(response == "true"){
+								jQuery('.loading').hide();
+								jQuery('#Modalactive').modal('show');
+							    setTimeout(function(){
+									   window.location.reload();
+									   // or window.location = window.location.href; 
+								 }, 2000);
+								 
+						    }
+							
+					   });
+		
+		}
+	
+    });
+
+    jQuery('.inactive.inactive-tenant').click(function (e) {
+	        var myarraytenant = new Array();
+			e.preventDefault();
+			var checkedNum = jQuery(this).closest('tr').find('input[class="checkagent"]:checked').length;
+			if(checkedNum == 0){
+				  alert('Please select this agent to inactivate');
+			} else {
+			
+					jQuery('.loading').show(); 
+					var tenant_id = jQuery(this).attr('data-id');
+					myarraytenant.push(tenant_id);
+					
+					var data = {
+										'action': 'inactive_multiple_agents',
+										'data':   myarraytenant						
+							};
+							// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+							jQuery.post(ajaxurl, data, function(response) {			  
+								if(response == "true"){
+									 jQuery('.loading').hide();
+									 jQuery('#Modalinactive').modal('show');
+									 setTimeout(function(){
+									     window.location.reload();
+									   // or window.location = window.location.href; 
+								     }, 2000);
+								}
+					});
+					
+			}
+			
+	});
+	
+	
+	
 });
 </script>
 <!-- Wrapper / End -->

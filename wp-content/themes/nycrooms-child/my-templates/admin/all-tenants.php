@@ -180,13 +180,26 @@ input.checkbulk{
                          $checkstatus = get_user_meta($user_id,'user_status',true);
 						 if(!$checkstatus){
 						    echo "inactive";
-						 } else {
-						   echo $checkstatus;
+						 } else if($checkstatus == 'inactive'){
+						     echo $checkstatus;
+                         }	else {
+						     echo $checkstatus;
 						 }
 					
 					
 					?></div></td>					
 					<td class="action">
+					
+					   <?php if(!$checkstatus){ ?>
+					    <a style="cursor:pointer;" class="active active-tenant" data-id="<?php echo $user_id; ?>"><i class="fa fa-eye-slash"></i> Activate</a>
+						<?php } else if($checkstatus == 'inactive'){
+						?>
+						    <a style="cursor:pointer;" class="active active-tenant" data-id="<?php echo $user_id; ?>"><i class="fa fa-eye-slash"></i> Activate</a>
+						<?php
+						  } else {?>
+						     <a style="cursor:pointer;" class="inactive inactive-tenant" data-id="<?php echo $user_id; ?>"><i class="fa fa-key"></i> Inactivate</a>
+						<?php } ?>
+						
 						<a href="<?= site_url()?>/admin/edit-profile/?prpage=all-tenants&&uid=<?php echo $user_id; ?>"><i class="fa fa-pencil"></i> Edit</a>
 						<a href="#" class="delete delete-tenant" data-id="<?php echo $user_id; ?>"><i class="fa fa-remove"></i> Delete</a>
 					</td>
@@ -306,7 +319,81 @@ jQuery('.delete-tenant').click(function (e) {
 });
 jQuery(document).ready(function($) {
 	jQuery('#sidebar-alltenant').addClass('current');
+	
+	jQuery('.active.active-tenant').click(function (e) {
+	e.preventDefault();
+	var checkedNum = jQuery(this).closest('tr').find('input[class="checkbulk"]:checked').length;
+	if(checkedNum == 0){
+		  alert('Please select this user to activate');
+    } else {
+			jQuery('.loading').show(); 
+			var myarraytenant = new Array();
+			var tenant_id = jQuery(this).attr('data-id');
+			myarraytenant.push(tenant_id);
+			
+			var data = {
+								'action': 'nyc_bulk_action_user',
+								'data':   myarraytenant,
+								'bulkaction':'active',						
+					};
+					// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+					jQuery.post(my_ajax_object.ajax_url, data, function(response) {			  
+						if(response == "true"){
+							jQuery('.loading').hide(); 
+							$('#ModalUser .modal-body p').html('User Active Successfully');
+							$('#ModalUser').modal('show');
+							setTimeout(function(){
+							   window.location.reload();
+							   // or window.location = window.location.href; 
+							}, 2000);	
+						}
+			});
+	
+	}
+	
+    });
+
+    jQuery('.inactive.inactive-tenant').click(function (e) {
+			e.preventDefault();
+			var checkedNum = jQuery(this).closest('tr').find('input[class="checkbulk"]:checked').length;
+			if(checkedNum == 0){
+				  alert('Please select this user to inactivate');
+			} else {
+			
+					jQuery('.loading').show(); 
+					var myarraytenant = new Array();
+					var tenant_id = jQuery(this).attr('data-id');
+					myarraytenant.push(tenant_id);
+					
+					var data = {
+										'action': 'nyc_bulk_action_user',
+										'data':   myarraytenant,
+										'bulkaction':'inactive',						
+							};
+							// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+							jQuery.post(my_ajax_object.ajax_url, data, function(response) {			  
+								if(response == "true"){
+									jQuery('.loading').hide(); 
+									$('#ModalUser .modal-body p').html('User Inactive Successfully');
+									$('#ModalUser').modal('show');
+									setTimeout(function(){
+									   window.location.reload();
+									   // or window.location = window.location.href; 
+									}, 2000);	
+								}
+					});
+					
+			}
+			
+	});
+
+	
 });
+
+
+
+
+
 </script>
 <!-- Wrapper / End -->
 <?php

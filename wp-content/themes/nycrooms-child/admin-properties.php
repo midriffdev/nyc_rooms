@@ -545,6 +545,7 @@ get_header();
       
     </div>
   </div>
+  
   <!-- Modal Activate Property -->
   <div class="modal fade" id="Modalactivate" role="dialog">
     <div class="modal-dialog">
