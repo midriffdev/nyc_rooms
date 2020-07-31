@@ -5,7 +5,6 @@ Template Name: Admin Edit Property
 nyc_property_admin_authority();
 $property = get_post($_GET['pid']);
 $propertyID = $property->ID;
-echo $propertyID;
 $post_status = $property->post_status;
 $post_author = $property->post_author;
 $propertyTerm = get_the_terms( $propertyID,'types' );
