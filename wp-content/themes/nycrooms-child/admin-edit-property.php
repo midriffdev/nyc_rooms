@@ -5,6 +5,7 @@ Template Name: Admin Edit Property
 nyc_property_admin_authority();
 $property = get_post($_GET['pid']);
 $propertyID = $property->ID;
+echo $propertyID;
 $post_status = $property->post_status;
 $post_author = $property->post_author;
 $propertyTerm = get_the_terms( $propertyID,'types' );
@@ -12,7 +13,7 @@ $attachmentfiles  = get_post_meta($propertyID,'gallery_files',true);
 $attachmentfiles = explode(',',$attachmentfiles);
 
 
-foreach($attachmentfiles as $attachment_file){
+foreach($attachmentfiles as $attachment_file){	
 
    $attachment_id    = get_post_meta($propertyID,$attachment_file,true);
    $attachment_url = wp_get_attachment_url($attachment_id);
