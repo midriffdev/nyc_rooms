@@ -1159,8 +1159,8 @@ function nyc_deal_send_sms(){
 		$deal_id = $_POST['deal_id'];
 		$tenant_phone = get_post_meta($deal_id,'phone',true);
 		$selectedAgent = get_post_meta($deal_id, 'selectedAgent', true);
-		$tenant_deal_link = get_site_url().'/tenant/deal-details-tenant/?id='.$deal_id;
-		$agent_deal_link = get_site_url().'/agent/deal-details-agent/?id='.$deal_id;
+		$tenant_deal_link = get_site_url().'/tenant/deal-details-tenant/'.base64_encode($deal_id);
+		$agent_deal_link = get_site_url().'/agent/deal-details-agent/'.base64_encode($deal_id);
 		$return_msg = array();
 		// Include the TextMagic PHP lib
 		// put your Username and API Key from https://my.textmagic.com/online/api/rest-api/keys page.
