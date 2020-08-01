@@ -2635,7 +2635,7 @@ function nyc_tenant_payment_square_ajax(){
 																<tbody>
 																   <tr>
 																	  <td style="width:50%;">
-																		 <img src="https://nycrooms.midriffdevelopers.live/wp-content/uploads/2020/06/logo.png" style="width:150px;">
+																		 <img src="'. get_stylesheet_directory_uri() .'/images/logo-nyc.png" style="width:150px;">
 																	  </td>
 																	  <td style="width:50%;padding: 0 0px 0 10%;text-align: right;">
 																		 <h2 style="text-align: right;margin-top: 0;margin-bottom: 0;">NYC Room 4 Rent</h2>
@@ -3042,7 +3042,7 @@ function nyc_application_form_pdf_ajax(){
                         <tbody>
                            <tr>
                               <td style="width:50%;">
-                                 <img src="https://nycrooms.midriffdevelopers.live/wp-content/uploads/2020/06/logo.png" style="width:150px;">
+                                 <img src="'. get_stylesheet_directory_uri().'/images/logo-nyc.png" style="width:150px;">
                               </td>
                               <td style="width:50%;padding: 0 0px 0 10%;text-align: right;">
                                  <h2 style="text-align: right;margin-top: 0;margin-bottom: 0;">NYC Room 4 Rent</h2>

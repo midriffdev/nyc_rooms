@@ -72,13 +72,13 @@ get_header();
 				<div class="row">
 				        
 						
-				    <form method="post" enctype="multipart/form-data">
+				    <form method="post" enctype="multipart/form-data" id="add_new_agent">
 						<div class="col-md-6 my-profile">
 							
 							<div class="row">
 								<div class="col-md-6">
 									<label>Your Name</label>
-									<input type="text" name="Your_name" placeholder="Enter Your Name">
+									<input type="text" name="Your_name" placeholder="Enter Your Name" required>
 								</div>
 								<div class="col-md-6">
 									<label>Phone</label>
@@ -140,7 +140,7 @@ get_header();
 									<input type="text" placeholder="linkedin" name="linkedin">
 								</div>
 							</div>
-							<button class="button margin-top-20 margin-bottom-20" type="submit" name="add_owner">Save Changes</button>
+							<button class="button margin-top-20 margin-bottom-20" type="submit" name="add_owner" class="add_owner">Save Changes</button>
 						</div>
 					</form>
 				</div>
@@ -211,6 +211,15 @@ jQuery(document).ready(function(){
   oFReader.readAsDataURL(document.getElementById("imgupload").files[0]);
   });
   jQuery('#sidebar-profile').addClass('current');
+  
+  jQuery("form").submit(function(e){
+  
+        e.preventDefault();
+		
+  });
+  
+  
+  
 });
 </script>
 

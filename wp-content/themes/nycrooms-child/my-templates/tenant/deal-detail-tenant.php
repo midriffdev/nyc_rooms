@@ -1858,7 +1858,6 @@ get_footer();
 				contentType: false,
 				success: function(response) {
 				     if(response == "success"){
-					 
 					    jQuery('.loading').hide();
 						$('.applcation-submison-success-popup').html('Application Submitted Successfully');
 						$('.modal').modal({
