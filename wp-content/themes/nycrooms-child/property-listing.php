@@ -220,7 +220,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 $args = array(
          'post_type'        => 'property',
-		 'post_status'       => array('available'),
+		 'post_status'       => array('available','rented'),
          'posts_per_page'   => 6,
          //'no_found_rows'    => true,
          'suppress_filters' => false,
@@ -251,8 +251,11 @@ if(isset($_GET['furnish-unfurnish-type']) && !empty($_GET['furnish-unfurnish-typ
 if(!empty($argarray)){
    
   $argarray[] =  array(
-            'key'          => 'property_inactive',
-            'compare' => 'NOT EXISTS'
+            'key'          => 'prop_active_inactive',
+            'value'        =>  1 ,
+            //I think you really want != instead of NOT LIKE, fix me if I'm wrong
+            //'compare'      => 'NOT LIKE',
+            'compare'      => 'LIKE'
         );
    
    $args['meta_query'] = $argarray;
@@ -260,10 +263,17 @@ if(!empty($argarray)){
    
 }
 
+
+
 if(empty($_GET)){
    $argarray[] =  array(
-            'key'          => 'property_inactive',
-            'compare' => 'NOT EXISTS'
+   
+            'key'          => 'prop_active_inactive',
+            'value'        =>  1 ,
+            //I think you really want != instead of NOT LIKE, fix me if I'm wrong
+            //'compare'      => 'NOT LIKE',
+            'compare'      => 'LIKE',
+			
         );
    
    $args['meta_query'] = $argarray;
