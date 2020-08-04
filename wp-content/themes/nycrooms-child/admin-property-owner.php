@@ -92,8 +92,7 @@ $usersquery = new WP_User_Query( $args );
 $all_users = $usersquery->get_results();
 global $wp;
 $current_url = home_url( add_query_arg( array(), $wp->request ) );
-if(isset($_GET['download-csv']) && $_GET['download-csv'] == 'true'){
-	ob_end_clean();   
+if(isset($_GET['download-csv']) && $_GET['download-csv'] == 'true'){  
 	nyc_export_as_CSV_Prop_Owner();	
 }
 
