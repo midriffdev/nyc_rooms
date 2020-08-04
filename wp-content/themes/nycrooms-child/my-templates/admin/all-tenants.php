@@ -91,13 +91,6 @@ input.user_apply_action {
     margin-left: 5%;
     padding: 0;
 }
-input.checkallbulk{
-    height: 18px;
-}
-input.checkbulk{
-    height: 18px;
-    margin: 0 13px !important;
-}
 </style>
 <div id="wrapper" class="dashbaord__wrapper">
 <div class="container">
@@ -146,12 +139,12 @@ input.checkbulk{
 				<table class="manage-table responsive-table admin-teanent-maintable all_agents_table">
 				<tbody>
 				<tr>
-					<th style="width:8%;"><input type="checkbox" class="checkallbulk"></th>
-					<th><i class="fa fa-file-text"></i> Tenants</th>
-					<th><i class="fa fa-envelope"></i> Email</th>
-					<th><i class="fa fa-phone" ></i> Phone</th>
-					<th style="width:15%;"><i class="fa fa-toggle-on" ></i>Status</th>
-					<th style="width:15%;"><i class="fa fa-hand-pointer-o"></i> Action</th>
+					<th><input type="checkbox" class="checkallbulk"></th>
+					<th>Tenants</th>
+					<th>Email</th>
+					<th>Phone</th>
+					<th>Status</th>
+					<th> Action</th>
 				</tr>
 
 				<!-- Item #1 -->

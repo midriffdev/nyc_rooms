@@ -119,13 +119,13 @@ get_header();
 				<table class="manage-table responsive-table all_leads_table">
 				<tbody>
 				<tr>
-				    <th style="width: 8% !important"><input type="checkbox" class="checkallleads"></th>
-					<th style="width: 15%"><i class="fa fa-list-ol"></i> Lead No</th>
-					<th style="width: 12%"><i class="fa fa-user"></i>Name</th>
-					<th style="width: 15%"><i class="fa fa-phone"></i> Phone</th>
-					<th style="width: 15%" class="expire-date"><i class="fa fa-envelope" ></i>Email</th>
-					<th style="width: 20%"><i class="fa fa-bolt" ></i> Lead Source</th>
-					<th style="width: 15%">Action</th>
+				    <th><input type="checkbox" class="checkallleads"></th>
+					<th> Lead No</th>
+					<th>Name</th>
+					<th> Phone</th>
+					<th class="expire-date">Email</th>
+					<th> Lead Source</th>
+					<th>Action</th>
 				</tr>
                  
 				 

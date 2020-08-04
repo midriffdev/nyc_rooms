@@ -147,13 +147,6 @@ input.deal_apply_action_orders {
     margin-left: 5%;
     padding: 0;
 }
-input.checkallbulkorders{
-    height: 18px;
-}
-input.checkbulkorders{
-    height: 18px;
-    margin: 0 13px !important;
-}
 </style>
 <!-- Wrapper -->
 <div id="wrapper" class="dashbaord__wrapper">
@@ -243,18 +236,20 @@ input.checkbulkorders{
 				 <div class="col-md-2 mx-auto">
 					 <p class="showing-results"><?php if($dealsorders->found_posts > 0){ echo '<a href="'.$current_url.'/?download-csv=true">Download CSV</a>'; } ?></p>
 				</div>
+
+				<div class="table-wrapper_section">
 				<table class="manage-table responsive-table deal--table">
 				<tbody>
 				<tr>
 					<th><input type="checkbox" class="checkallbulkorders"></th>
-					<th><i class="fa fa-list-ol"></i> Invoice No .</th>
-					<th><i class="fa fa-user"></i>Deal No.</th>
-					<th><i class="fa fa-envelope"></i> Payment Amount</th>
-					<th><i class="fa fa-envelope"></i> Payment By</th>
-					<th><i class="fa fa-envelope"></i> Agent Involved</th>
-					<th><i class="fa fa-check-square-o" ></i>Payment Date</th>
-					<th><i class="fa fa-phone" ></i>Collection Method</th>
-					<th><i class="fa fa-check-square-o" ></i>Payment Status</th>
+					<th>Invoice No</th>
+					<th>Deal No</th>
+					<th>Payment Amount</th>
+					<th>Payment By</th>
+					<th>Agent Involved</th>
+					<th>Payment Date</th>
+					<th>Collection Method</th>
+					<th>Payment Status</th>
 					
 					<th></th>
 				</tr>
@@ -305,6 +300,7 @@ input.checkbulkorders{
 				?>
 				</tbody>
 				</table>
+				</div>
 				
 				<!-- Pagination Container -->
 				<div class="row fs-listings">

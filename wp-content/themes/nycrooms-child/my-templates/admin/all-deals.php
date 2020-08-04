@@ -79,13 +79,6 @@ input.deal_apply_action {
     margin-left: 5%;
     padding: 0;
 }
-input.checkallbulk{
-    height: 18px;
-}
-input.checkbulk{
-    height: 18px;
-    margin: 0 13px !important;
-}
 </style>
 <!-- Wrapper -->
 <div id="wrapper" class="dashbaord__wrapper">
@@ -141,21 +134,21 @@ input.checkbulk{
                  <div class="col-md-12">
 					 <p class="showing-results"><?php echo $deals->found_posts; ?> Results Found On Page <?php echo $paged ;?> of <?php echo $deals->max_num_pages;?> </p>
 				 </div>
-				<div >
+				<div class="table-wrapper_section">
 				<table class="manage-table responsive-table deal--table">
 				
 				<tbody>
 				<tr>
-					<th style="width:4%;"><input type="checkbox" class="checkallbulk"></th>
-					<th style="width:14%;"><i class="fa fa-list-ol"></i> Deal ID</th>
-					<th style="width:10%;"><i class="fa fa-user"></i>Name</th>
-					<th style="width:15%;"><i class="fa fa-envelope"></i> Email</th>
-					<th style="width:10%;"><i class="fa fa-phone" ></i> Phone</th>
-					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Source</th>
-					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Date</th>
-					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Deal Status</th>
-					<th style="width:15%;"><i class="fa fa-check-square-o" ></i> Attachments</th>
-					<th style="width:20%;"><i class="fa fa-hand-pointer-o"></i> Action</th>
+					<th><input type="checkbox" class="checkallbulk"></th>
+					<th> Deal ID</th>
+					<th>Name</th>
+					<th> Email</th>
+					<th> Phone</th>
+					<th> Source</th>
+					<th> Date</th>
+					<th> Deal Status</th>
+					<th> Attachments</th>
+					<th> Action</th>
 				</tr>
 
 				<?php 

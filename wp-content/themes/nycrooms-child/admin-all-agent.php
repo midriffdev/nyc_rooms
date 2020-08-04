@@ -156,11 +156,11 @@ get_header();
 				<tbody>
 				<tr>
 				    <th><input type="checkbox" class="checkallagents"></th>
-					<th><i class="fa fa-file-text"></i> Agent</th>
-					<th  class="action_mt"><i class="fa fa-envelope"></i> Email</th>
-					<th  class="action_mt"><i class="fa fa-phone" ></i> Phone</th>
-					<th  class="action_mt"><i class="fa fa-toggle-on" ></i>status</th>
-					<th  class="action_mt"><i class="fa fa-hand-pointer-o"></i> Action</th>
+					<th> Agent</th>
+					<th  class="action_mt"> Email</th>
+					<th  class="action_mt"> Phone</th>
+					<th  class="action_mt">status</th>
+					<th  class="action_mt"> Action</th>
 				</tr>
 
 				<?php 

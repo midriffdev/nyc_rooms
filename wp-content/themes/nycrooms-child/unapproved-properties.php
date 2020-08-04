@@ -258,8 +258,8 @@ get_header();
 				
 				<tr>
 				    <th><input type="checkbox" class="checkallproperties"></th>
-					<th style="width:70%;"><i class="fa fa-file-text"></i> Property</th>
-					<th style="width:30%;"></th>
+					<th> Property</th>
+					<th></th>
 				</tr>
 				<?php
 				

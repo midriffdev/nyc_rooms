@@ -119,6 +119,7 @@ get_header();
 									</div>
 								</div>
 							</div>
+
 							<div class="row">
 								<div class="col-md-12">
 									<h4 class="margin-top-50">Social</h4>
@@ -140,8 +141,12 @@ get_header();
 									<input type="text" placeholder="linkedin" name="linkedin">
 								</div>
 							</div>
-							<button class="button margin-top-20 margin-bottom-20" type="submit" name="add_owner" class="add_owner">Save Changes</button>
 						</div>
+
+						<div class="col-md-6">
+						<button class="button margin-top-20 margin-bottom-20" type="submit" name="add_owner" class="add_owner">Save Changes</button>
+						</div>
+
 					</form>
 				</div>
 			</div>

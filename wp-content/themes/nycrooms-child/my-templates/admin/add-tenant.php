@@ -100,9 +100,6 @@ if(isset($_POST['add_tenant'])){
 								<div class="col-md-6">
 									<label for="username">Username</label>
 									<input  type="text" name="username" id="username" class="username" placeholder="Username" value="<?php if(isset($username)){ echo $username; } ?>"  required>
-								</div>
-							</div>
-							
 							
 							<div class="row">
 								<div class="col-md-12">
@@ -114,13 +111,8 @@ if(isset($_POST['add_tenant'])){
 							<div class="row">
 							
 								 <div class="col-md-12">
-									<h4 class="margin-top-50 margin-bottom-25">Address</h4>
+									<label>Address</label>
 									<textarea name="address" id="address" cols="30" rows="10" name="address" placeholder="Address"><?php if(isset($address)){ echo $address; } ?></textarea>
-								</div>
-								
-								<div class="col-md-12">
-									<h4 class="margin-top-50 margin-bottom-25">About Me</h4>
-									<textarea name="about" id="about" cols="30" rows="10" placeholder="About"><?php if(isset($about)){ echo $about; } ?></textarea>
 								</div>
 								
 							</div>
@@ -163,8 +155,17 @@ if(isset($_POST['add_tenant'])){
 									<label><i class="fa fa-linkedin"></i> Linkedin</label>
 									<input type="text" placeholder="linkedin" name="linkedin" value="<?php if(isset($linkedin)){ echo $linkedin; } ?>"  >
 								</div>
+
+								<div class="col-md-12">
+									<label>About Me</label>
+									<textarea name="about" id="about" placeholder="About"><?php if(isset($about)){ echo $about; } ?></textarea>
+								</div>
 							</div>
-							<button class="button margin-top-20 margin-bottom-20" type="submit" name="add_tenant">Save Changes</button>
+							
+						</div>
+
+						<div class="col-md-12">
+						<button class="button margin-top-20 margin-bottom-20" type="submit" name="add_tenant">Save Changes</button>
 						</div>
 					</form>
 				</div>

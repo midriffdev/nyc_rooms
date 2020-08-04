@@ -178,9 +178,7 @@ get_header();
 		</div>
 	</div>
 <style>
-.tenant-questionary-cont{
-  height: 120vh;
-}
+
 .tg-container.search_prop_tnt {
     max-width: 100% !important;
 	display: block;

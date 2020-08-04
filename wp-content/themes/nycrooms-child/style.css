@@ -4992,7 +4992,6 @@ table.manage-table th {
 	border: none;
 	background-color: #66676b;
 	text-align: left;
-	padding: 17px 20px;
 	color: #fff;
 	vertical-align: top;
 	font-weight: 500;
@@ -5001,6 +5000,7 @@ table.manage-table th {
 	z-index: 9;
 	line-height: 22px;
 	margin-left: 33px !important;
+	padding: 17px 24px;
 }
 
 table.manage-table th i { margin-right: 3px; font-size: 14px; }
@@ -5054,7 +5054,6 @@ table.manage-table .title-container .title .table-property-price {
 	padding: 2px 10px;
 }
 
-table.manage-table th:first-child { width: 50%; border-radius: 3px 0 0 3px;}
 table.manage-table th:last-child {  border-radius: 0 3px 3px 0; }
 table.manage-table th:first-child i { left: 35px; }
 
@@ -12595,7 +12594,9 @@ table.contracts--table td:first-child {padding-left: 40px !important;}
     background: -webkit-linear-gradient(to right, #93EDC7, #1CD8D2);
     background: linear-gradient(to right, #93EDC7, #1CD8D2);
     height:100vh;
-    overflow: hidden !important;
+	overflow: hidden !important;
+	display: flex;
+	align-items: center;
 }
 .teanent-question-innersec:hover {
     -webkit-transform:scale(1.1);
@@ -12679,7 +12680,7 @@ table.contracts--table td:first-child {padding-left: 40px !important;}
 }
 #msform {
 	width: 1100px;
-	margin: 100px auto 0;
+	margin: 0 auto;
 	text-align: center;
 	position: relative;
 }
@@ -12902,7 +12903,6 @@ table.contracts--table td:first-child {padding-left: 40px !important;}
 .title-container.teanent-title-container {
     align-items: center !important;
 }
-table.admin-teanent-maintable th:first-child{width:30%;}
 .admin-teanentdetail-title{font-size:25px;}
 .admin-owner-propertycount{text-align: center;}
 .popup__button{
@@ -12932,7 +12932,7 @@ table.admin-teanent-maintable th:first-child{width:30%;}
 .lead-teanent_details {
     background: #efefef;
     border-radius: 5px;
-    box-shadow: 0 0 19px rgba(0,0,0,0.2);
+    box-shadow: 0 0 19px rgba(0,0,0,0.1);
     padding: 31px 34px 24px;
 }
 .lead-teanent_details ul {
@@ -13149,7 +13149,6 @@ table.deal-suggestproperty-table th:first-child{width:auto;}
 }
 .deal-addnotesndoc {margin: 30px 0 0 0;}
 .convertdeal-conbut{margin:0;}
-.deal--table {margin: 50px 0 0 0;}
 .active__contract::after {
     background: #a1b789;
     position: absolute;
@@ -13195,7 +13194,6 @@ table.deal-suggestproperty-table th:first-child{width:auto;}
     transform: translateY(-50%);
 }
 table.leads-maintable th:first-child{width:auto;}
-table.manage-table th{padding: 17px 14px;}
 .leads-maintable{margin:30px 0 0 0;}
 table.leads-maintable .lead-tablepropertyheading{width:30%;}
 .lead_number {
@@ -13317,7 +13315,7 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
     font-size: 23px;
     margin: 0 0 27px 0;
 }
-.deal-detail-adminnotes-sec {margin: 45px 0 0 0;background: #fff;box-shadow: 0 0 12px rgba(0,0,0,0.2);border-radius: 4px;padding: 40px;text-align: center;}
+.deal-detail-adminnotes-sec {margin: 45px 0 0 0;background: #fff;box-shadow: 0 0 12px rgba(0,0,0,0.1);border-radius: 4px;padding: 40px;text-align: center;}
 .dealdetail-signapplicationform h3 {
     margin: 0;
 }
@@ -13325,7 +13323,7 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
     margin: 20px 0 0 0;
 }
 .dealdetail-signapplicationform {
-    box-shadow: 0 0 12px rgba(0,0,0,0.2);
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
     border-radius: 4px;
     padding: 40px;
     text-align: center;
@@ -13343,7 +13341,7 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
     width: 228px;
 }
 .deal-detail-paymentstatus {
-    box-shadow: 0 0 12px rgba(0,0,0,0.2);
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
     border-radius: 4px;
     padding: 40px;
     text-align: center;
@@ -13843,6 +13841,48 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
     padding: 30px 30px;
 }
 .change--password_section > h4 {text-align: center;}
+.button.approve_property {
+    margin: 5px 0 0 0 !important;
+    padding: 3px 16px !important;
+}
+.button.unapprove_property{
+	margin: 5px 0 0 0 !important;
+    padding: 3px 16px !important;
+}
+.dashboard-main--cont input[type="date"] {
+	color: gray !important;
+	padding: 0 20px !important;
+}
+
+table.admin-teanent-maintable th{padding: 17px 27px;}
+.add-new_leadform textarea{
+	height:100px !important;
+	min-height: 100px;
+}
+.table-wrapper_section{
+	overflow-x: auto;
+	width: 100%;
+	height: 100%;
+}
+.table-wrapper_section table.deal--table td{
+	word-break: unset !important;
+}
+.checkbulkorders {
+    height: 14px;
+    margin: 0 !important;
+}
+.checkallbulkorders {
+    height: 14px;
+    margin: 0 !important;
+}
+
+.page-template-property-search .site-content{margin:0;}
+.page-template-property-search .tg-page-header{margin:0;}
+.tenant-questionary-cont .container{width:100%;}
+.page-template-property-search .site-content .tg-container{width:100%;max-width: 100%;}
+.page-template-property-search .site-content .tg-container .wrapper {
+    width: 100%;
+}
 /* --------------------############## Shubham CSS end ######################------------------ */
 
 /*****saurabh(08/06/2020)start******/
@@ -13860,10 +13900,6 @@ input[type=submit] {padding: 1px 21px;}.btn-default {color: #333;background-colo
 /*****amit(08/06/2020)start******/
 /*****header(start)******/
 /*****header(end)******/
-table.all_agents_table th:first-child{width:10% !important;}
-table.all_leads_table th:first-child{width:10% !important;}
-table.all_properties_table th:first-child{width:10% !important;}
-
 
 .page-id-612 .admin-advanced-searchfilter.new_margin {
     margin-top: 50PX;
@@ -13871,17 +13907,18 @@ table.all_properties_table th:first-child{width:10% !important;}
 .admin-advanced-searchfilter.new_margin {
     margin-top: 50px;
 }
-input.checkallagents {height: 18px;margin: 0;}
-input.checkagent {height: 18px;margin: 0 13px !important;}
 
-input.checkallleads {height: 18px;}
-input.checkleads {height: 18px;margin: 0 13px !important;}
-
-input.checkallproperties {height: 18px;margin: 0;}
-input.checkallbulk {height: 18px;margin: 0;}
-
-table.manage-table .title-container{padding: 50px 20px;}
-
+input.checkallagents {height: 14px;margin: 0;}
+input.checkagent {height: 14px;margin: 0 !important;}
+input.checkallleads {
+    height: 14px;
+    margin: 0;
+}
+input.checkleads {height: 14px;margin: 0 !important;}
+input.checkallproperties {height: 14px;margin: 0;}
+input.checkallbulk {height: 14px;margin: 0;}
+.checkproperties {height: 14px;}
+.checkbulk {height: 14px; margin:0 !important;}
 /******property-search CSS Start********/
 .page-id-72 .site-content {margin-top:0px;margin-bottom: 0px;}
 .page-id-72 .tg-page-header {margin-bottom: 0px;}
@@ -14567,22 +14604,6 @@ input[type=submit] {padding: 1px 21px;}.btn-default {color: #333;background-colo
 /*****header(start)******/
 .tg-page-header {background-color: #f8f8f8;position: relative;margin-bottom: 65px;}
 /*****header(end)******/
-table.all_agents_table th:first-child{width:10% !important;}
-table.all_leads_table th:first-child{width:10% !important;}
-table.all_properties_table th:first-child{width:10% !important;}
-
-input.checkagent {height: 18px;margin: 0 13px !important;}
-
-input.checkallleads {height: 18px;}
-input.checkleads {height: 18px;margin: 0 13px !important;}
-
-input.checkallproperties {height: 18px;}
-input.checkproperties {height: 18px;margin: 0 13px !important;}
-
-
-table.manage-table .title-container{padding: 50px 20px;}
-
-
 /******property-search CSS Start********/
 .page-id-72 .site-content {margin-top:0px;margin-bottom: 0px;}
 .page-id-72 .tg-page-header {margin-bottom: 0px;}
