@@ -1,6 +1,6 @@
 <?php 
 if(isset($_GET['download-csv']) && $_GET['download-csv'] == 'true'){
-	ob_end_clean();   
+	//ob_end_clean();   
 	nyc_export_as_CSV();	
 }
 if(isset($_GET['action-csv']) && $_GET['action-csv'] != ''){
