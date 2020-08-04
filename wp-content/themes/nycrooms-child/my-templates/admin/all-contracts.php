@@ -90,13 +90,6 @@ input.contract_apply_action {
     margin-left: 5%;
     padding: 0;
 }
-input.checkallbulk{
-    height: 18px;
-}
-input.checkbulk{
-    height: 18px;
-    margin: 0 13px !important;
-}
 </style>
 <!-- Wrapper -->
 <div id="wrapper" class="dashbaord__wrapper">
@@ -152,14 +145,14 @@ input.checkbulk{
 				<table class="manage-table responsive-table deal--table">
 				<tbody>
 				<tr>
-					<th style="width: 3% "><input type="checkbox" class="checkallbulk"></th>
-					<th style="width: 13% "><i class="fa fa-list-ol"></i> Contract ID</th>
-					<th style="width: 10% "><i class="fa fa-list-ol"></i> Deal ID</th>
-					<th style="width: 15% "><i class="fa fa-list-ol"></i> Tenant Name</th>
-					<th style="width: 15% "><i class="fa fa-list-ol"></i> Tenant Email</th>
-					<th style="width: 15% "><i class="fa fa-list-ol"></i> Owner Email</th>
-					<th style="width: 19% "><i class="fa fa-list-ol"></i> Contract PDF</th>
-					<th style="width: 10% ">Action</th>
+					<th><input type="checkbox" class="checkallbulk"></th>
+					<th> Contract ID</th>
+					<th> Deal ID</th>
+					<th> Tenant Name</th>
+					<th> Tenant Email</th>
+					<th> Owner Email</th>
+					<th> Contract PDF</th>
+					<th>Action</th>
 				</tr>
 
 				<?php 

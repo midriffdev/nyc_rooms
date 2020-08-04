@@ -79,13 +79,6 @@ input.deal_apply_action {
     margin-left: 5%;
     padding: 0;
 }
-input.checkallbulk{
-    height: 18px;
-}
-input.checkbulk{
-    height: 13px;
-    margin: 0 13px !important;
-}
 </style>
 <!-- Wrapper -->
 <div id="wrapper" class="dashbaord__wrapper">

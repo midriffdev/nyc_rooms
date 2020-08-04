@@ -619,7 +619,7 @@ function nyc_load_selcted_property() {
 			</div>
 			<span class="desellect-sellectedproperty"><i class="fa fa-times selected-property-close" data-id="<?php echo $property_id; ?>" aria-hidden="true"></i></span>
 		</li>
-	<?php } }else { echo "<li>No selected property founds!</li>"; } 	
+	<?php } }else { echo "<li class='no-property-found'>No selected property founds!</li>"; } 	
 	exit;
 }
 

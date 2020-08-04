@@ -63,70 +63,58 @@ get_header();
 					</div>
 				</div>
 				<div class="row">
-				        <form method="post" class="guest--checkout">
-					        <p class="form-row form-row-wide">
-								<label for="username2">Name:
-									<i class="im im-icon-Male"></i>
-									<input type="text" class="input-text" name="guest_name" id="username2" required />
-								</label>
-							</p>
-						    <p class="form-row form-row-wide">
-								<label for="email2">Email Address:
-									<i class="im im-icon-Mail"></i>
-									<input type="email" class="input-text" name="guest_email" id="email2" required />
-								</label>
-							</p>
+				        <form method="post" class="guest--checkout add-new_leadform">
 
-							<p class="form-row form-row-wide">
-								<label for="password1">Phone:
-									<i class="im im-icon-Phone"></i>
-									<input type="text" id="phone" name="guest_phone" required pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
-								</label>
-							</p>
-
-							<p class="form-row form-row-wide guest-check-descp-sec">
-								<label for="password2">Select Property:
-									<i class="im im-icon-Lock-2"></i>
-									<select name="properties_leads" required>
-									<option value=""></option>
-									<?php
-									foreach($properties->posts as $properties){
-									 ?>
-									 <option value="<?=$properties->ID ?>"><?= $properties->post_title ?></option>
-									 <?php
-									}
-									?>
-									</select>
-								</label>
-							</p>
-							
-							<p class="form-row form-row-wide guest-check-descp-sec">
-								<label for="password2">Select Lead Source:
-									<i class="im im-icon-Lock-2"></i>
-									<select name="lead_source" required>
-										 <option value="">Select Lead Source</option>
-										 <option value="Appointment Form">Appointment Form</option>
-										 <option value="Property Form">Property Form</option>
-									</select>
-								</label>
-							</p>
-							
-							<p class="form-row form-row-wide guest-check-descp-sec">
-								<label for="password2">Descprition:
-									<i class="im im-icon-Lock-2"></i>
-									<textarea class="WYSIWYG" name="guest_summary" id="summary" spellcheck="true" required></textarea>
-								</label>
-							</p>
-							
-							
-							
-
-							<p class="form-row">
-							    
-								
+							<div class="col-md-6">
+								<div class="row">
+									<div class="col-md-12">
+										<label>Name:</label>
+										<input type="text" class="input-text" name="guest_name" id="username2" required />
+									</div>
+									<div class="col-md-12">
+										<label>Phone:</label>
+										<input type="text" id="phone" name="guest_phone" required pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
+									</div>
+									
+									<div class="col-md-12">
+										<label >Descprition:</label>
+										<textarea class="WYSIWYG" name="guest_summary" id="summary" spellcheck="true" required></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="row">
+									<div class="col-md-12">
+										<label>Email Address:</label>
+										<input type="email" class="input-text" name="guest_email" id="email2" required />
+									</div>
+									<div class="col-md-12">
+										<label>Select Property:</label>
+										<select name="properties_leads" required>
+										<option value=""></option>
+										<?php
+										foreach($properties->posts as $properties){
+										?>
+										<option value="<?=$properties->ID ?>"><?= $properties->post_title ?></option>
+										<?php
+										}
+										?>
+										</select>
+									</div>
+									<div class="col-md-12">
+										<label >Select Lead Source:</label>
+										<select name="lead_source" required>
+											<option value="">Select Lead Source</option>
+											<option value="Appointment Form">Appointment Form</option>
+											<option value="Property Form">Property Form</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						    
+							<div class="col-md-12">
 								<input type="submit" class="button border fw margin-top-10" name="guest_checkout" value="Submit" />
-							</p>
-
+							</div>
 				        </form>
 				
 				</div>

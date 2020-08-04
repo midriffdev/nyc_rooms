@@ -84,11 +84,14 @@ get_header();
 							</div>
 							
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-12">
 									<label>Designation</label>
 									<input type="text" name="designation" placeholder="Designation">
 								</div>
-								<div class="col-md-6">
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
 									<label>Phone</label>
 									<input  type="text" name="phone" placeholder="Enter Phone With +1.." pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
 								</div>
@@ -105,13 +108,8 @@ get_header();
 							<div class="row">
 							
 								 <div class="col-md-12">
-									<h4 class="margin-top-50 margin-bottom-25">Address</h4>
-									<textarea name="address" id="address" cols="30" rows="10" name="address" placeholder="Address"></textarea>
-								</div>
-								
-								<div class="col-md-12">
-									<h4 class="margin-top-50 margin-bottom-25">About Me</h4>
-									<textarea name="about" id="about" cols="30" rows="10" placeholder="About"></textarea>
+									<label>Address</label>
+									<textarea name="address" id="address"  name="address" placeholder="Address"></textarea>
 								</div>
 								
 							</div>
@@ -154,8 +152,16 @@ get_header();
 									<label><i class="fa fa-linkedin"></i> Linkedin</label>
 									<input type="text" placeholder="linkedin" name="linkedin">
 								</div>
+
+								<div class="col-md-12">
+									<label>About Me</label>
+									<textarea name="about" id="about"  placeholder="About"></textarea>
+								</div>
 							</div>
-							<button class="button margin-top-20 margin-bottom-20" type="submit" name="add_agent">Save Changes</button>
+						</div>
+
+						<div class="col-md-12">
+						<button class="button margin-top-20 margin-bottom-20" type="submit" name="add_agent">Save Changes</button>
 						</div>
 					</form>
 				</div>

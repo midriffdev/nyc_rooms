@@ -330,6 +330,23 @@ $check_contracts = new WP_Query( $query_args1 );
 				</div>
 
 				<div class="col-md-6">
+					<div class="deal-detail-paymentstatus">
+						<h3>Payment Status
+						<span><?php echo ($payment_status) ? ucfirst(strtolower($payment_status)).'<i class="fa fa-check" aria-hidden="true"></i>' : 'Pending'; ?> </span></h3>
+						<?php if($payment_status){ ?>
+						<ul>
+							<li>Payment: <span><?= '$'.$payment_amount ?></span></li>
+							<li>Payment Source : <span><?= ucfirst($payment_source_type) ?></span></li>
+							<li>Payment mode : <span><?= ucfirst($payment_status)?></span></li>
+							
+							<li>Date: <span><?= $date ?></span></li>
+							<li>Time: <span><?= $time ?></span></li>
+						</ul>
+						<?php } ?>
+					</div>
+				</div>
+
+				<div class="col-md-12">
 					<div class="dealdetail--selectprice">
 						<h2>Select Price</h2>
 						<!-- Select Input -->
@@ -356,24 +373,7 @@ $check_contracts = new WP_Query( $query_args1 );
 					</div>
 				</div>
 
-				<div class="col-md-6">
-					<div class="deal-detail-paymentstatus">
-						<h3>Payment Status
-						<span><?php echo ($payment_status) ? $payment_status.'<i class="fa fa-check" aria-hidden="true"></i>' : 'Pending'; ?> </span></h3>
-						<?php if($payment_status){ ?>
-						<ul>
-							<li>Payment: <span><?= '$'.$payment_amount ?></span></li>
-							<li>Payment Source : <span><?= ucfirst($payment_source_type) ?></span></li>
-							<li>Payment mode : <span><?= ucfirst(str_replace('_',' ',$payment_mode)) ?></span></li>
-							
-							<li>Date: <span><?= $date ?></span></li>
-							<li>Time: <span><?= $time ?></span></li>
-						</ul>
-						<?php } ?>
-					</div>
-				</div>
-
-				<div class="col-md-6">
+				<div class="col-md-12">
 					<div class="deal-detail-adminnotes-sec">
 						<h3>Admin Notes</h3>
 						<textarea class="WYSIWYG" name="admin_notes" cols="40" rows="3" id="summary" spellcheck="true"><?php echo $admin_notes; ?></textarea>

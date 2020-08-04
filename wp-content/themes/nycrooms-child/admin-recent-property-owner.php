@@ -150,11 +150,11 @@ get_header();
 				<tbody>
 				<tr>
 				    <th><input type="checkbox" class="checkallagents"></th>
-					<th><i class="fa fa-file-text"></i> Owner</th>
-					<th class="expire-date"><i class="fa fa-home" ></i>Properties</th>
-					<th><i class="fa fa-envelope"></i> Email</th>
-					<th><i class="fa fa-phone" ></i> Phone</th>
-					<th><i class="fa fa-hand-pointer-o"></i> Action</th>
+					<th> Owner</th>
+					<th class="expire-date">Properties</th>
+					<th> Email</th>
+					<th> Phone</th>
+					<th> Action</th>
 				</tr>
 
 				<!-- Item #1 -->

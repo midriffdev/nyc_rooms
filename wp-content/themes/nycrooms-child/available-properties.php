@@ -340,10 +340,10 @@ get_header();
 				<table class="manage-table responsive-table all_properties_table">
 				<tbody>
 				<tr>
-				    <th style="width:8% !important;"><input type="checkbox" class="checkallproperties"></th>
-					<th style="width:52% !important;"><i class="fa fa-file-text"></i> Property</th>
-					<th style="width:20% !important;"><i class="fa fa-user"></i> Owner</th>
-					<th style="width:20% !important;"><i class="fa fa-hand-pointer-o"></i> Action</th>
+				    <th><input type="checkbox" class="checkallproperties"></th>
+					<th> Property</th>
+					<th> Owner</th>
+					<th> Action</th>
 				</tr>
 
 				<!-- Item #1 --><?php
