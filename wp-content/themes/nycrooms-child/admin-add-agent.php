@@ -2,6 +2,7 @@
 /* Template Name: Admin Add Agent */
 $usererror = '';
 $usersuccess = '';
+echo "hello there";
 nyc_property_admin_authority();
 if(isset($_POST['add_agent'])){
      $phone = $_POST['phone'];
