@@ -69,7 +69,7 @@ get_header();
 				<div class="row">
 				        
 						
-				    <form method="post" enctype="multipart/form-data">
+				    <form method="post" enctype="multipart/form-data" id="add_agent_form">
 						<div class="col-md-6 my-profile">
 							
 							<div class="row">
@@ -89,16 +89,16 @@ get_header();
 									<input type="text" name="designation" placeholder="Designation">
 								</div>
 								<div class="col-md-6">
-									<label>Phone</label>
-									<input  type="text" name="phone" placeholder="Enter Phone With +1.." pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
+									<label for="phone">Phone</label>
+									<input  type="text" name="phone" id="phone" class="phone" placeholder="Enter Phone With +1.." pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
 								</div>
 							</div>
 							
 							
 							<div class="row">
 								<div class="col-md-12">
-									<label>Email</label>
-									<input type="text" name="email" placeholder="Email" required>
+									<label for="email">Email</label>
+									<input type="text" name="email" id="email" class="email" placeholder="Email" required>
 								</div>
 							</div>
 
@@ -245,3 +245,48 @@ if(!empty($usersuccess)){
     </script>";
 }
 ?>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/jquery.validate.min.js"></script>
+<script>
+jQuery(document).ready(function(){
+var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+jQuery('#add_agent_form').validate({
+rules: {
+        phone:{
+		  phoneUS: true,
+		  minlength:12,
+		},
+        email: {
+           remote: {
+               url: ajaxurl,
+               type: "post",
+			   data: {
+			      action : function(){
+						return "nyc_check_user_email";
+				  }
+			   }
+			   
+           }
+        }
+    },
+    messages: {
+        email: {
+            remote: "Email already in use!"
+        }
+    },
+    submitHandler: function(form) {
+       form.submit();
+	   
+   }
+   
+   
+});
+
+jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
+    phone_number = phone_number.replace(/\s+/g, "");
+    return this.optional(element) || phone_number.length > 9 && 
+    phone_number.match(/^[+1]{2}[0-9]{10}$/);
+}, "Please Enter Valid No With Country Code +1");
+
+
+});
+</script>

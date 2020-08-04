@@ -1,5 +1,6 @@
 <?php
 /* Template Name: Forget Password */
+$success = array();
 if(isset($_POST['forgot_pass_Sbumit'])) {
     
    if ( isset($_POST['emailToreceive']) && empty($_POST['emailToreceive']) ){
@@ -58,7 +59,7 @@ get_header();
 		   }
 		 } else {
 		    ?>
-			<label class="form_sucess"><?php echo $success['reset_email']; ?></label>
+			<label class="form_sucess"><?php if(!empty($success)) { if(isset($success['reset_email'])){ echo $success['reset_email'];}} ?></label>
 			<?php
 		 }
 	  ?>  
@@ -67,11 +68,9 @@ get_header();
 				<span class="input-group-addon">E-Mail or Username </span>
 				<input type="text" name="emailToreceive" class="form-control" placeholder="Your Username or Email" required />
 			</div>
-		 
 			 <input type="hidden" name="forgot_pass_Sbumit" value="kv_yes" >
 			<input type="submit" class="btn btn-primary" value="Get Password" > 
    </form>
- 
 </div>
 </div>
 </div>

@@ -78,19 +78,19 @@ get_header();
 							<div class="row">
 								<div class="col-md-6">
 									<label>Your Name</label>
-									<input type="text" name="Your_name" placeholder="Enter Your Name" required>
+									<input type="text" name="Your_name" placeholder="Enter Your Name" class="Your_name" required>
 								</div>
 								<div class="col-md-6">
 									<label>Phone</label>
-									<input  type="text" name="phone" placeholder="Enter Phone With +1 .." required pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength=12>
+									<input  type="text" name="phone" class="phone" placeholder="Enter Phone With +1 .." required pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength=12 >
 								</div>
 							</div>
 							
 							
 							<div class="row">
 								<div class="col-md-12">
-									<label>Email</label>
-									<input type="text" name="email" placeholder="Email" required>
+									<label for="email">Email</label>
+									<input type="email" name="email" placeholder="Email" id="email" required>
 								</div>
 							</div>
 
@@ -212,15 +212,30 @@ jQuery(document).ready(function(){
   });
   jQuery('#sidebar-profile').addClass('current');
   
-  jQuery("form").submit(function(e){
-  
-        e.preventDefault();
+     /* jQuery('#add_new_agent').submit(function(e){
+	         var check_email = jQuery('input[name="email"]').val();
+			 var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+			 var data = {
+						   check_email: check_email,
+						   action: "nyc_check_user_email",
+						};
+			 jQuery.post(ajaxurl, data, function(response) {
+					 if(response == 'true'){
+					   alert('email already exists');
+					   
+					} else {
+					   jQuery('#add_new_agent').unbind(e);
+					   jQuery('#add_new_agent').submit();
+					}
+					
+			 }); 
+			 
 		
-  });
-  
-  
+     }); */
   
 });
+   
+	
 </script>
 
 <?php
@@ -240,3 +255,50 @@ if(!empty($usersuccess)){
     </script>";
 }
 ?>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/jquery.validate.min.js"></script>
+
+<script>
+jQuery(document).ready(function(){
+var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+jQuery('#add_new_agent').validate({
+rules: {
+        phone:{
+		  phoneUS: true,
+		  minlength:12,
+		},
+        email: {
+           remote: {
+               url: ajaxurl,
+               type: "post",
+			   data: {
+			      action : function(){
+						return "nyc_check_user_email";
+				  }
+			   }
+			   
+           }
+        }
+    },
+    messages: {
+        email: {
+            remote: "Email already in use!"
+        }
+    },
+    submitHandler: function(form) {
+       form.submit();
+	   
+   }
+   
+   
+});
+
+jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
+    phone_number = phone_number.replace(/\s+/g, "");
+    return this.optional(element) || phone_number.length > 9 && 
+    phone_number.match(/^[+1]{2}[0-9]{10}$/);
+}, "Please Enter Valid No With Country Code +1");
+
+
+});
+</script>
+

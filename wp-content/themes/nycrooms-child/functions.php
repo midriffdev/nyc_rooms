@@ -3806,5 +3806,38 @@ function nyc_delete_existing_doc_tenant_ajax(){
   exit; 
 }
 
+add_action( 'wp_ajax_nyc_check_user_email', 'nyc_check_user_email' );
+add_action( 'wp_ajax_nopriv_nyc_check_user_email', 'nyc_check_user_email' );
+
+function nyc_check_user_email(){
+     if(isset($_POST['action']) && $_POST['action'] == 'nyc_check_user_email' ){
+	    $check_email = $_POST['email'];
+		if(email_exists($check_email)){
+		   echo "false";
+		} else {
+		   echo "true";
+		}
+		
+	 }
+	exit;  
+}
+
+
+add_action( 'wp_ajax_nyc_check_user_name', 'nyc_check_user_name' );
+add_action( 'wp_ajax_nopriv_nyc_check_user_name', 'nyc_check_user_name' );
+
+function nyc_check_user_name(){
+     if(isset($_POST['action']) && $_POST['action'] == 'nyc_check_user_name' ){
+	    $check_username = $_POST['username'];
+		if(username_exists($check_username)){
+		   echo "false";
+		} else {
+		   echo "true";
+		}
+		
+	 }
+	exit;  
+}
+
 require_once( 'inc/init-function.php');
 ?>

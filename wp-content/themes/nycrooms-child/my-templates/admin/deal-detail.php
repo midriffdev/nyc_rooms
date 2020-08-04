@@ -1052,7 +1052,9 @@ get_footer();
 Dropzone.autoDiscover = false;		
 jQuery(".dropzone").dropzone({
 	dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
+	<?php if(empty($check_contracts->posts)): ?>
 	addRemoveLinks: true,
+	<?php endif; ?>
 	init: function() { 
 			myDropzoneFiles = this; 		
 			jQuery.ajax({
@@ -1085,6 +1087,7 @@ jQuery(".dropzone").dropzone({
 			 });
 			 
    },
+   <?php if(empty($check_contracts->posts)): ?>
    removedfile: function(file) {
      var file_name    = file.name; 
 	   jQuery.ajax({
@@ -1106,6 +1109,8 @@ jQuery(".dropzone").dropzone({
 	return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0; 
 	
    }
+   <?php endif; ?>
+   
    
 });	
 

@@ -137,6 +137,57 @@ do_action( 'zakra_action_after' );
     </div>
 </div>
 <div class="loading"></div>
+
+
+<style>
+<?php
+ $currentuser = wp_get_current_user();
+ if($currentuser->roles[0] == 'administrator'){
+ ?>
+.menu-item-object-page.menu-item-266{
+     display:none;
+}
+.menu-item-object-page.menu-item-509{
+   display:none;
+}
+<?php    
+ }
+ ?>
+ <?php
+ if($currentuser->roles[0] == 'property_owner'){
+ ?>
+ 
+.menu-item-object-page.menu-item-509{
+     display:none;
+}
+
+.menu-item-object-page.menu-item-267{
+     display:none;
+}
+
+<?php    
+ }
+ ?>
+ 
+ <?php
+ if($currentuser->roles[0] == 'tenant' ){
+ ?>
+ 
+.menu-item-object-page.menu-item-266{
+     display:none;
+}
+
+.menu-item-object-page.menu-item-267{
+     display:none;
+}
+<?php    
+ }
+ ?>
+ 
+ 
+ 
+ 
+</style>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/jquery-migrate-3.1.0.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
