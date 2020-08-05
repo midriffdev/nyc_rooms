@@ -26,6 +26,7 @@ $lead_id = wp_insert_post(array (
 			add_post_meta($lead_id, 'lead_name', $_POST['guest_name']);
 			add_post_meta($lead_id, 'lead_email', $_POST['guest_email']);
 			add_post_meta($lead_id, 'lead_phone', $_POST['guest_phone']);
+			add_post_meta($lead_id, 'lead_datetime', strtotime($_POST['date'] . ' '.$_POST['time']));
 			add_post_meta($lead_id, 'lead_summary', $_POST['guest_summary']);
 			add_post_meta($lead_id, 'lead_checkout_property', $_POST['properties_leads']);
 			add_post_meta($lead_id, 'lead_checkout_property_name', get_the_title($_POST['properties_leads']));
@@ -75,7 +76,10 @@ get_header();
 										<label>Phone:</label>
 										<input type="text" id="phone" name="guest_phone" required pattern="[+1]{2}[0-9]{10}"  oninvalid="setCustomValidity('Please Enter Valid No With Country Code +1.')" onchange="try{setCustomValidity('')}catch(e){}" maxlength="12" required>
 									</div>
-									
+									<div class="col-md-12">
+										<label for="date">Date*:</label>
+        				                <input type="date" name="date"  value="<?php echo date("Y-m-d"); ?>" required>
+									</div>
 									<div class="col-md-12">
 										<label >Descprition:</label>
 										<textarea class="WYSIWYG" name="guest_summary" id="summary" spellcheck="true" required></textarea>
@@ -100,6 +104,10 @@ get_header();
 										}
 										?>
 										</select>
+									</div>
+									<div class="col-md-12">
+										<label for="time">Time*:</label>
+        				                <input type="time" name="time" value="<?php echo date("H:i"); ?>" required>
 									</div>
 									<div class="col-md-12">
 										<label >Select Lead Source:</label>

@@ -368,13 +368,13 @@ jQuery(document).ready(function($) {
 	});
 	
 	jQuery('.delete_agent_profile').click(function(){
-	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkagent"]:checked').length;
+	              //var checkedNum = jQuery(this).closest('tr').find('input[class="checkagent"]:checked').length;
 				  var mydeletearray = new Array();
 	              var id = jQuery(this).data('id');
 				  
-				  if(checkedNum == 0){
+				  /* if(checkedNum == 0){
 		               alert('Please Select this user to delete');
-		          } else {
+		          } else { */
 		       
 	                        var r = confirm("Are you sure to delete this user");
 					            if(r == true) {
@@ -400,7 +400,7 @@ jQuery(document).ready(function($) {
 												}); 
 							   }
 			  
-	            }
+	            /* } */
 
 	});
 	
@@ -503,14 +503,14 @@ jQuery(document).ready(function($) {
 	});
 	
 	 jQuery('.all_leads_table .delete').click(function(){
-	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkleads"]:checked').length;
+	              //var checkedNum = jQuery(this).closest('tr').find('input[class="checkleads"]:checked').length;
 				   
 	              var myarrayleads = new Array();
 	              var id = jQuery(this).data('id');
 				  
-				  if(checkedNum == 0){
+				 /*  if(checkedNum == 0){
 		               alert('Please Select this lead to delete');
-		          } else {
+		          } else { */
 		       
 	                        var r = confirm("Are you sure to delete this lead");
 					            if(r == true) {
@@ -537,7 +537,7 @@ jQuery(document).ready(function($) {
 												}); 
 							   }
 			  
-	            }
+	           /*  } */
 	   
 	    
 	   
@@ -545,12 +545,12 @@ jQuery(document).ready(function($) {
 	
 	jQuery('.all_leads_table .into--deal').click(function(){
 	         
-	        var checkedNum = jQuery(this).closest('tr').find('input[class="checkleads"]:checked').length;
+	        //var checkedNum = jQuery(this).closest('tr').find('input[class="checkleads"]:checked').length;
 	        var myarrayleads = new Array();
 	        var id = jQuery(this).data('id');
-				if(checkedNum == 0){
+				/* if(checkedNum == 0){
 					alert('Please select this lead to convert to deal');
-				} else {
+				} else { */
 				           jQuery('.loading').show();
 				           $(this).css('pointer-events','none');
 						
@@ -575,7 +575,7 @@ jQuery(document).ready(function($) {
 									 
 							});   
 				 
-				}
+				/* } */
 	    
 	});
 	
@@ -773,14 +773,14 @@ jQuery(document).ready(function($) {
 	});
 	
 	jQuery('.all_properties_table .delete_admin_property').click(function(){
-	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
+	              //var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
 				   
 	              var myarrayprop = new Array();
 	              var id = jQuery(this).data('id');
 				  
-				  if(checkedNum == 0){
+				 /*  if(checkedNum == 0){
 		               alert('Please Select this Property to Trash');
-		          } else {
+		          } else { */
 		       
 	                        var r = confirm("Are you sure to trash this Property");
 					            if(r == true) {
@@ -806,7 +806,7 @@ jQuery(document).ready(function($) {
 												}); 
 							   }
 			  
-	            }
+	           /*  } */
 	   
 	    
 	   
@@ -815,14 +815,14 @@ jQuery(document).ready(function($) {
 	/* ------------- Activate Property ----------------------- */
 	
 	jQuery('.all_properties_table .actvate_prperty').click(function(){
-	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
+	              //var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
 				   
 	              var myarrayprop = new Array();
 	              var id = jQuery(this).data('id');
 				  
-				  if(checkedNum == 0){
+				 /*  if(checkedNum == 0){
 		               alert('Please select this property to activate');
-		          } else {
+		          } else { */
 		                      jQuery('.loading').show(); 
 							  myarrayprop.push(id);
 							  
@@ -843,7 +843,7 @@ jQuery(document).ready(function($) {
 										 
 										 }
 								}); 
-	            }
+	          /*   } */
 	   
 	    
 	   
@@ -853,14 +853,14 @@ jQuery(document).ready(function($) {
 	/* ------------- Deactivate Property ----------------------- */
 	
 	jQuery('.all_properties_table .deactvate_prperty').click(function(){
-	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
+	              //var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
 				   
 	              var myarrayprop = new Array();
 	              var id = jQuery(this).data('id');
 				  
-				  if(checkedNum == 0){
+				  /* if(checkedNum == 0){
 		               alert('Please select this property to deactivate');
-		          } else {
+		          } else { */
 		                      jQuery('.loading').show(); 
 							  myarrayprop.push(id);
 							  
@@ -881,7 +881,7 @@ jQuery(document).ready(function($) {
 										 
 										 }
 								}); 
-	            }
+	            /* } */
 	   
 	    
 	   
@@ -892,13 +892,13 @@ jQuery(document).ready(function($) {
 	
 	jQuery('.approve_property').click(function(){
 	
-	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
+	              //var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
 				  var myapprovearray = new Array();
 	              var id = jQuery(this).data('id');
 				  
-				  if(checkedNum == 0){
+				 /*  if(checkedNum == 0){
 		               alert('Please select this property to approve');
-		          } else {
+		          } else { */
 		                                       jQuery('.loading').show();
 								               myapprovearray.push(id);
 											   var data = {
@@ -921,19 +921,19 @@ jQuery(document).ready(function($) {
 												}); 
 							  
 			  
-	            }
+	            /* } */
 
 	});
 	
 	jQuery('.unapprove_property').click(function(){
 	
-	              var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
+	              //var checkedNum = jQuery(this).closest('tr').find('input[class="checkproperties"]:checked').length;
 				  var myunapprovearray = new Array();
 	              var id = jQuery(this).data('id');
 				  
-				  if(checkedNum == 0){
+				  /* if(checkedNum == 0){
 		               alert('Please select this property to unApprove');
-		          } else {
+		          } else { */
 		                                     jQuery('.loading').show();
 								             myunapprovearray.push(id);
 											 var data = {
@@ -956,7 +956,7 @@ jQuery(document).ready(function($) {
 												}); 
 							  
 			  
-	            }
+	          /*   } */
 
 	});
 	

@@ -313,10 +313,10 @@ jQuery(document).ready(function($) {
 	
 	jQuery('.active.active-tenant').click(function (e) {
 	e.preventDefault();
-	var checkedNum = jQuery(this).closest('tr').find('input[class="checkbulk"]:checked').length;
+	/* var checkedNum = jQuery(this).closest('tr').find('input[class="checkbulk"]:checked').length;
 	if(checkedNum == 0){
 		  alert('Please select this user to activate');
-    } else {
+    } else { */
 			jQuery('.loading').show(); 
 			var myarraytenant = new Array();
 			var tenant_id = jQuery(this).attr('data-id');
@@ -340,16 +340,16 @@ jQuery(document).ready(function($) {
 						}
 			});
 	
-	}
+	/* } */
 	
     });
 
     jQuery('.inactive.inactive-tenant').click(function (e) {
 			e.preventDefault();
-			var checkedNum = jQuery(this).closest('tr').find('input[class="checkbulk"]:checked').length;
-			if(checkedNum == 0){
+			//var checkedNum = jQuery(this).closest('tr').find('input[class="checkbulk"]:checked').length;
+			/* if(checkedNum == 0){
 				  alert('Please select this user to inactivate');
-			} else {
+			} else { */
 			
 					jQuery('.loading').show(); 
 					var myarraytenant = new Array();
@@ -374,7 +374,7 @@ jQuery(document).ready(function($) {
 								}
 					});
 					
-			}
+			/* } */
 			
 	});
 

@@ -284,7 +284,23 @@ $check_contracts = new WP_Query( $query_args1 );
 									</li>
 									<li>
 										<p>Date:</p>
-										<span><?php echo get_the_date('l F j, Y',$post_id); ?></span>
+										<span>
+										<?php 
+											$strtotime = get_post_meta($post_id, 'lead_datetime', true);
+											$date =  date("F j, Y", $strtotime); 
+											echo $date;
+							            ?>
+							           </span>
+									</li>
+									<li>
+										<p>Time:</p>
+										<span>
+											<?php 
+												$strtotime = get_post_meta($post_id, 'lead_datetime', true);
+												$time =  date("h:i A", $strtotime);
+												echo $time;
+											?>
+										</span>
 									</li>
 									<li>
 										<p>Description:</p>
