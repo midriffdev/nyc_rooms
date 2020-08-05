@@ -2963,7 +2963,13 @@ function nyc_application_form_pdf_ajax(){
          update_post_meta($deal_id,'tenant_application_data',$tenant_application_data);
 	     $get_application_tenant = get_post_meta($deal_id,'tenant_application_data',true);
 		 $imageurl = get_stylesheet_directory_uri() . '/images/cropped-logo.jpg';
-		 $checkedgoogle = '';
+		 
+		   if($get_application_tenant['adversitement_check'] == 'Please Choose An option'){
+		      $get_application_tenant['adversitement_check'] = '';
+		   }
+		   
+		   
+		/*  $checkedgoogle = '';
 		 $checkedElDiario = '';
 		 $checkedFacebook = '';
 		 $checkedAmsterdamNewspaper = '';
@@ -2988,11 +2994,13 @@ function nyc_application_form_pdf_ajax(){
 		     $checkedReferral = 'checked';
 		 } else if($get_application_tenant['adversitement_check'] == 'Other'){
 		     $checkedOther = 'checked';
-		 }
+		 } */
 		 
 		 
 		 
-		  $html = '<html>
+		  $html = '';
+		  
+		  $html .= '<html>
 <head>
     <meta http-equiv="Content-Type" content="charset=utf-8" />
     <style type="text/css">
@@ -3102,7 +3110,7 @@ function nyc_application_form_pdf_ajax(){
                                  <span>Secondary Phone Number</span>
                               </td>
                               <td style="width:75%;">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['secondary_contact_no'].'</p>
+                                 <p style="'; $html .= (empty($get_application_tenant['secondary_contact_no'])) ? 'height:14px;' : '';  $html .= 'font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['secondary_contact_no'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -3118,7 +3126,7 @@ function nyc_application_form_pdf_ajax(){
                                  <span>Emergency Contact</span>
                               </td>
                               <td style="width:81%;">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['emergency_contact_no'].'</p>
+                                 <p style="'; $html .= (empty($get_application_tenant['emergency_contact_no'])) ? 'height:14px;' : '';  $html .= 'font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['emergency_contact_no'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -3134,7 +3142,7 @@ function nyc_application_form_pdf_ajax(){
                                  <span>Email Address</span>
                               </td>
                               <td style="width:86%;">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['email_address'].'</p>
+                                 <p style="'; $html .= (empty($get_application_tenant['email_address'])) ? 'height:14px;' : '';  $html .= 'font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['email_address'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -3150,7 +3158,7 @@ function nyc_application_form_pdf_ajax(){
                                  <span>Employer/School</span>
                               </td>
                               <td style="width:83%;">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['employer_school'].'</p>
+                                 <p style="'; $html .= (empty($get_application_tenant['employer_school'])) ? 'height:14px;' : '';  $html .= 'font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['employer_school'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -3166,7 +3174,7 @@ function nyc_application_form_pdf_ajax(){
                                  <span>Address</span>
                               </td>
                               <td style="width:91%;">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['address'].'</p>
+                                 <p style="'; $html .= (empty($get_application_tenant['address'])) ? 'height:14px;' : '';  $html .= 'font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['address'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -3186,7 +3194,7 @@ function nyc_application_form_pdf_ajax(){
                               <td style="
                                  width: 83%;
                                  ">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['manager_name'].'</p>
+                                 <p style="'; $html .=  (empty($get_application_tenant['manager_name'])) ? 'height:14px;' : '';  $html .= 'font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['manager_name'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -3206,7 +3214,7 @@ function nyc_application_form_pdf_ajax(){
                               <td style="
                                  width: 78%;
                                  ">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['manager_contact'].'</p>
+                                 <p style="'; $html .=  (empty($get_application_tenant['manager_contact'])) ? 'height:14px;' : '';  $html .= 'font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['manager_contact'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -3225,7 +3233,7 @@ function nyc_application_form_pdf_ajax(){
                               </td>
                               <td style="width:84%;"
                                  ">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['month_income'].'</p>
+                                 <p style="'; $html .= (empty($get_application_tenant['month_income'])) ? 'height:14px;' : '';  $html .= 'font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['month_income'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -3245,7 +3253,7 @@ function nyc_application_form_pdf_ajax(){
                               <td style="
                                  width: 80%;
                                  ">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['week_rent_budget'].'</p>
+                                 <p style="'; $html .= (empty($get_application_tenant['week_rent_budget'])) ? 'height:14px;' : '';  $html .= 'font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['week_rent_budget'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -3265,7 +3273,7 @@ function nyc_application_form_pdf_ajax(){
                               <td style="
                                  width: 60%;
                                  ">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['people_living_count'].'</p>
+                                 <p style="'; $html .= (empty($get_application_tenant['people_living_count'])) ? 'height:14px;' : ''; $html .= 'font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['people_living_count'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -3285,7 +3293,7 @@ function nyc_application_form_pdf_ajax(){
                               <td style="
                                  width: 55%;
                                  ">
-                                 <p style="font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['Periods_of_living'].'</p>
+                                 <p style="'; $html .= (empty($get_application_tenant['Periods_of_living'])) ? 'height:14px;' : '';  $html .= 'font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['Periods_of_living'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -3297,72 +3305,14 @@ function nyc_application_form_pdf_ajax(){
                      <table style="width:100%;">
                         <tbody>
                            <tr>
-                              <td>
+                              <td style="width:45%">
                                  <span>Where did you see our advertisement?
                                  </span>
                               </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                  </td>
-               </tr>
-               <tr>
-                  <td colspan="2">
-                     <table style="width:100%;">
-                        <tbody>
-                           <tr>
-                              <td colspan="2">
-                                 <table style="width:100%;">
-                                    <tbody>
-                                       <tr>
-                                          <td style="width:33%;">
-                                             <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedgoogle.'>Google
-                                             </p>
-                                          </td>
-                                          <td style="width:33%;">
-                                             <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedElDiario.'>El Diario 
-                                             </p>
-                                          </td>
-										  <td style="width:33%;">
-                                             <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedFacebook.'>Facebook
-                                             </p>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td style="width:33%;">
-                                             <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedAmsterdamNewspaper.'>Amsterdam Newspaper 
-                                             </p>
-                                          </td>
-										  <td style="width:33%;">
-                                             <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedCraigslist.'>
-                                                Craigslist 
-                                             </p>
-                                          </td>
-										   <td style="width:33%;">
-                                             <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedMetroNewspaper.'>Metro Newspaper 
-                                             </p>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td style="width:33%;">
-                                             <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedReferral.'>Referral
-                                             </p>
-                                          </td>
-										  <td style="width:33%;">
-                                             <p style="display:inline-block;font-size:14px;margin:0;">
-                                                <input style="margin-top:6px;" type="checkbox" id="advertisement" '.$checkedOther.'>Other
-                                             </p>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
+							  <td style="
+                                 width: 55%;
+                                 ">
+                                 <p style="'; $html .= (empty($get_application_tenant['adversitement_check'])) ? 'height:14px;' : '';  $html .= 'font-size:14px;margin: 0;border-bottom: 1px solid #000;">'.$get_application_tenant['adversitement_check'].'</p>
                               </td>
                            </tr>
                         </tbody>
@@ -3804,6 +3754,39 @@ function nyc_delete_existing_doc_tenant_ajax(){
       echo "faliure";
    }
   exit; 
+}
+
+add_action( 'wp_ajax_nyc_check_user_email', 'nyc_check_user_email' );
+add_action( 'wp_ajax_nopriv_nyc_check_user_email', 'nyc_check_user_email' );
+
+function nyc_check_user_email(){
+     if(isset($_POST['action']) && $_POST['action'] == 'nyc_check_user_email' ){
+	    $check_email = $_POST['email'];
+		if(email_exists($check_email)){
+		   echo "false";
+		} else {
+		   echo "true";
+		}
+		
+	 }
+	exit;  
+}
+
+
+add_action( 'wp_ajax_nyc_check_user_name', 'nyc_check_user_name' );
+add_action( 'wp_ajax_nopriv_nyc_check_user_name', 'nyc_check_user_name' );
+
+function nyc_check_user_name(){
+     if(isset($_POST['action']) && $_POST['action'] == 'nyc_check_user_name' ){
+	    $check_username = $_POST['username'];
+		if(username_exists($check_username)){
+		   echo "false";
+		} else {
+		   echo "true";
+		}
+		
+	 }
+	exit;  
 }
 
 require_once( 'inc/init-function.php');

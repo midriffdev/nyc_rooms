@@ -220,7 +220,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 $args = array(
          'post_type'        => 'property',
-		 'post_status'       => array('available','rented'),
+		 'post_status'       => array('available'),
          'posts_per_page'   => 6,
          //'no_found_rows'    => true,
          'suppress_filters' => false,
@@ -228,9 +228,9 @@ $args = array(
 
         );
 		
-if(isset($_GET['property_status']) && $_GET['property_status'] == 'rented'){
+/* if(isset($_GET['property_status']) && $_GET['property_status'] == 'rented'){
       $args['post_status'] = 'rented';
-}
+} */
 
 if(isset($_GET['furnish-unfurnish-type']) && !empty($_GET['furnish-unfurnish-type'])){
 
@@ -335,16 +335,16 @@ get_header();
 										</div>
 
 										<!-- Status -->
-										<div class="col-fs-3">
+										<!--div class="col-fs-3">
 											<select data-placeholder="Any Status" class="chosen-select-no-single" name="property_status" >
 												<option value="">Any Status</option>	
-												<option value="available" <?= (isset($_GET['property_status']) && !empty($_GET['property_status']) && $_GET['property_status'] == 'available') ? 'selected' : '' ?> >Available</option>
-												<option value="rented" <?= (isset($_GET['property_status']) && !empty($_GET['property_status']) &&  $_GET['property_status'] == 'rented') ? 'selected' : '' ?> >Rented</option>
+												<option value="available" <?php //(isset($_GET['property_status']) && !empty($_GET['property_status']) && $_GET['property_status'] == 'available') ? 'selected' : '' ?> >Available</option>
+												<option value="rented" <?php //(isset($_GET['property_status']) && !empty($_GET['property_status']) &&  $_GET['property_status'] == 'rented') ? 'selected' : '' ?> >Rented</option>
 											</select>
-										</div>
+										</div-->
 
 										<!-- Property Type -->
-										<div class="col-fs-3">
+										<div class="col-fs-6">
 											<select data-placeholder="Any Type" class="chosen-select-no-single" name="furnish-unfurnish-type" >
 												<option value="">Any Type</option>	
 												<option value="furnished" <?= (isset($_GET['furnish-unfurnish-type']) && !empty($_GET['furnish-unfurnish-type']) && $_GET['furnish-unfurnish-type'] == 'furnished') ? 'selected' : '' ?> >Furnished</option>

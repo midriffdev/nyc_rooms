@@ -96,7 +96,7 @@ get_header();
 				<div class="row">
 				        
 						
-				    <form method="post" enctype="multipart/form-data">
+				    <form method="post" enctype="multipart/form-data" id="add_tenant_form">
 						<div class="col-md-6 my-profile">
 							
 							<div class="row">
@@ -114,17 +114,17 @@ get_header();
 							
 							<div class="row">
 							   <div class="col-md-6">
-									<label>Phone</label>
-									<input  type="text" name="phone" placeholder="Enter Phone With +1.." required pattern="[+1]{2}[0-9]{10}" maxlength=12>
+									<label for="phone">Phone</label>
+									<input type="text" name="phone" id="phone" class="phone" placeholder="Enter Phone With +1.." required pattern="[+1]{2}[0-9]{10}" maxlength=12>
 								</div>
 								<div class="col-md-6">
-									<label>Username</label>
-									<input type="text" class="input-text" name="username" id="username2" Placeholder="Username" required />
+									<label for="username">Username</label>
+									<input type="text" class="input-text" name="username" id="username" class="username" Placeholder="Username" required />
 									<p><label class="form_errors"><?php if(!empty($errors['username'])){ echo $errors['username'];} ?></label></p>
 								</div>
 								<div class="col-md-12">
-									<label>Email</label>
-									<input type="email" name="email" placeholder="Email" required>
+									<label for="email">Email</label>
+									<input type="email" name="email" id="email" class="email" placeholder="Email" required>
 									<p><label class="form_errors"><?php if(!empty($errors['email'])){ echo $errors['email'];} ?></label></p>
 								</div>
 							</div>
@@ -263,3 +263,63 @@ if(!empty($usersuccess)){
     </script>";
 }
 ?>
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/jquery.validate.min.js"></script>
+<script>
+jQuery(document).ready(function(){
+var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+jQuery('#add_tenant_form').validate({
+rules: {
+        phone:{
+		  phoneUS: true,
+		  minlength:12,
+		},
+		username: {
+           remote: {
+               url: ajaxurl,
+               type: "post",
+			   data: {
+			      action : function(){
+						return "nyc_check_user_name";
+				  }
+			   }
+			   
+           }
+        },
+        email: {
+           remote: {
+               url: ajaxurl,
+               type: "post",
+			   data: {
+			      action : function(){
+						return "nyc_check_user_email";
+				  }
+			   }
+			   
+           }
+        }
+    },
+    messages: {
+        email: {
+            remote: "Email already in use!"
+        },
+		username: {
+		   remote: "UserName Already Exists"
+		}
+    },
+    submitHandler: function(form) {
+       form.submit();
+	   
+   }
+   
+   
+});
+
+jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
+    phone_number = phone_number.replace(/\s+/g, "");
+    return this.optional(element) || phone_number.length > 9 && 
+    phone_number.match(/^[+1]{2}[0-9]{10}$/);
+}, "Please Enter Valid No With Country Code +1");
+
+
+});
+</script>

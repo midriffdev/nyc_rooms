@@ -3,7 +3,6 @@ nyc_property_admin_authority();
 global $wp;
 global $wpdb;
 if(isset($_GET['download-csv']) && $_GET['download-csv'] == 'true'){
-	ob_end_clean();   
 	nyc_export_payments_as_CSV();	
 }
 

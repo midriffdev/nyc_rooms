@@ -236,20 +236,14 @@ function nyc_export_as_CSV($ids='') {
 
 		fputcsv($handle, $row, ',', '"');
 	}
-
-
 	$now = gmdate('D, d M Y H:i:s') . ' GMT';
-
 	header('Content-Type: text/csv');
 	header('Expires: ' . $now);
-
 	header('Content-Disposition: attachment; filename="referrals.csv"');
 	header('Pragma: no-cache'); 
-
 	echo $csv; 
 	exit();
 }
-
 function nyc_export_as_CSV_Prop_Owner($ids='') {
 	ob_start();
 	$csv = '';

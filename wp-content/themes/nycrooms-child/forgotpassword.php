@@ -1,5 +1,6 @@
 <?php
 /* Template Name: Forget Password */
+$success = array();
 if(isset($_POST['forgot_pass_Sbumit'])) {
     
    if ( isset($_POST['emailToreceive']) && empty($_POST['emailToreceive']) ){
@@ -58,20 +59,18 @@ get_header();
 		   }
 		 } else {
 		    ?>
-			<label class="form_sucess"><?php echo $success['reset_email']; ?></label>
+			<label class="form_sucess"><?php if(!empty($success)) { if(isset($success['reset_email'])){ echo $success['reset_email'];}} ?></label>
 			<?php
 		 }
 	  ?>  
-    <form role="form" action="<?php echo "https://".$_SERVER["SERVER_NAME"].$_SERVER['REQUEST_URI']; ?>" method="post" >
+    <form role="form" action="<?php echo "https://".$_SERVER["SERVER_NAME"].$_SERVER['REQUEST_URI']; ?>" method="post" id="forgetPassword" >
 			<div class="form-group input-group">
 				<span class="input-group-addon">E-Mail or Username </span>
-				<input type="text" name="emailToreceive" class="form-control" placeholder="Your Username or Email" required />
+				<input type="text" name="emailToreceive" class="form-control" id="emailToreceive" placeholder="Your Username or Email" />
 			</div>
-		 
 			 <input type="hidden" name="forgot_pass_Sbumit" value="kv_yes" >
 			<input type="submit" class="btn btn-primary" value="Get Password" > 
    </form>
- 
 </div>
 </div>
 </div>
@@ -83,3 +82,24 @@ label.form_errors {
 <?php
 get_footer();
 ?>
+
+<script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/jquery.validate.min.js"></script>
+<script>
+jQuery('#forgetPassword').validate({
+rules: {
+        emailToreceive:{
+		  required: true,
+		}
+    },
+    messages: {
+        emailToreceive: {
+            required: "Please Enter Email or UserName"
+        }
+    },
+    submitHandler: function(form) {
+       form.submit();
+   }
+   
+
+});
+</script>

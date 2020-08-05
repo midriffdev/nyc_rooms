@@ -284,7 +284,23 @@ $check_contracts = new WP_Query( $query_args1 );
 									</li>
 									<li>
 										<p>Date:</p>
-										<span><?php echo get_the_date('l F j, Y',$post_id); ?></span>
+										<span>
+										<?php 
+											$strtotime = get_post_meta($post_id, 'lead_datetime', true);
+											$date =  date("F j, Y", $strtotime); 
+											echo $date;
+							            ?>
+							           </span>
+									</li>
+									<li>
+										<p>Time:</p>
+										<span>
+											<?php 
+												$strtotime = get_post_meta($post_id, 'lead_datetime', true);
+												$time =  date("h:i A", $strtotime);
+												echo $time;
+											?>
+										</span>
 									</li>
 									<li>
 										<p>Description:</p>
@@ -1052,7 +1068,9 @@ get_footer();
 Dropzone.autoDiscover = false;		
 jQuery(".dropzone").dropzone({
 	dictDefaultMessage: "<i class='sl sl-icon-plus'></i> Click here or drop files to upload",
+	<?php if(empty($check_contracts->posts)): ?>
 	addRemoveLinks: true,
+	<?php endif; ?>
 	init: function() { 
 			myDropzoneFiles = this; 		
 			jQuery.ajax({
@@ -1085,6 +1103,7 @@ jQuery(".dropzone").dropzone({
 			 });
 			 
    },
+   <?php if(empty($check_contracts->posts)): ?>
    removedfile: function(file) {
      var file_name    = file.name; 
 	   jQuery.ajax({
@@ -1106,6 +1125,8 @@ jQuery(".dropzone").dropzone({
 	return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0; 
 	
    }
+   <?php endif; ?>
+   
    
 });	
 

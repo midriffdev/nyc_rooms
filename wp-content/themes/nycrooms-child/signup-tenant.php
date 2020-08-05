@@ -641,3 +641,15 @@ label.reset_success {
 </style>
 <?php
 get_footer();
+?>
+<?php if(isset($_GET['request']) && $_GET['request'] == 'guest_checkout'): ?>
+<script>
+jQuery(document).ready(function(){
+$('.my-account ul.tabs-nav li:first-child').removeClass('active');
+$('.my-account ul.tabs-nav li:last-child').addClass('active');
+$('#tab1').hide();
+$('#tab3').show();
+
+});
+</script>
+<?php endif; ?>

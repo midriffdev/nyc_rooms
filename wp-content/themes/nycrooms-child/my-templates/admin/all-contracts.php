@@ -164,8 +164,7 @@ input.contract_apply_action {
 						$contract_pdf_id = get_post_meta($contract_id,'contract_pdf', true); 
 						$deal_id = get_post_meta($contract_id,'deal_id', true);
 						$property_id = get_post_meta($deal_id,'property_id',true);
-						$auth = get_post($property_id);
-						$authid = $auth->post_author;						
+						$auth = get_post($property_id);						
 					?>
 						<tr class="deal__stage-one contract-id-<?php echo $contract_id; ?>">
 							<td><input type="checkbox" class="checkbulk" value="<?php echo $contract_id; ?>" ></td>
@@ -173,7 +172,18 @@ input.contract_apply_action {
 							<td class="deal_number"><?php echo $deal_id; ?></td>
 							<td class="deal_number"><?php echo get_post_meta($deal_id,'name', true); ?></td>
 							<td class="deal_number"><?php echo get_post_meta($deal_id,'email', true); ?></td>
-							<td class="deal_number"><?php echo the_author_meta( 'user_email' , $authid ); ?></td>
+							<td class="deal_number">
+							<?php 
+							   if(!empty($auth)){
+								   $authid = $auth->post_author;
+								   echo the_author_meta( 'user_email' , $authid );
+							  } else {
+							      echo "N.A";
+							  }
+
+							?>
+							
+							</td>
 							<td class="deal_number"><?php echo  '<a href="'.wp_get_attachment_url($contract_pdf_id).'" download>'.pathinfo(basename ( get_attached_file( $contract_pdf_id ) ),PATHINFO_FILENAME).'</a>'; ?></td>
 							<td class="action">
 								<a href="<?php echo get_site_url(); ?>/admin/all-contracts/view/<?php echo base64_encode($contract_id); ?>" ><i class="fa fa-eye"></i> View</a>
