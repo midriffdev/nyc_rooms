@@ -13883,6 +13883,9 @@ table.admin-teanent-maintable th{padding: 17px 27px;}
 .page-template-property-search .site-content .tg-container .wrapper {
     width: 100%;
 }
+.all_properties_table td{word-break: unset !important;}
+.admin-teanent-maintable td{word-break: unset !important;}
+
 /* --------------------############## Shubham CSS end ######################------------------ */
 
 /*****saurabh(08/06/2020)start******/
@@ -13915,7 +13918,7 @@ input.checkallleads {
     margin: 0;
 }
 input.checkleads {height: 14px;margin: 0 !important;}
-input.checkallproperties {height: 14px;margin: 0;}
+input.checkallproperties {height: 14px;margin: 0;width:14px;}
 input.checkallbulk {height: 14px;margin: 0;}
 .checkproperties {height: 14px;}
 .checkbulk {height: 14px; margin:0 !important;}
