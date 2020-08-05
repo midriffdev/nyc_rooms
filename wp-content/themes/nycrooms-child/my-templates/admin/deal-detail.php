@@ -341,7 +341,7 @@ $check_contracts = new WP_Query( $query_args1 );
 
 				<div class="col-md-6">
 					<div class="dealdetail-signapplicationform">
-						<h3>Application Form Status <br><?= ($tenant_application_check == 1) ? '<a class="deal-send-button deal-send-text dealdetail_view" href="'.wp_get_attachment_url($tenant_application).'" target="_blank">Complete &nbsp;<i class="fa fa-eye" aria-hidden="true"></i></a>' : 'Pending'; ?> </h3>
+						<h3>Application Form Status <br><?= ($tenant_application_check == 1) ? '<a class="deal-send-button deal-send-texts dealdetail_view" href="'.wp_get_attachment_url($tenant_application).'" target="_blank">Complete &nbsp;<i class="fa fa-eye" aria-hidden="true"></i></a>' : 'Pending'; ?> </h3>
 					</div>
 				</div>
 
@@ -422,7 +422,17 @@ $check_contracts = new WP_Query( $query_args1 );
 				<?php endif; ?>
 			</div>
 			</form>
-			
+			<div class="row">
+				<div class="col-md-12">
+							<h3>Kindly Upload The Documents Here</h3>
+							<div class="submit-section prop_req_docs">
+							   <form action="<?= site_url() ?>/tenant/deal-details-tenant/<?php echo $post_id; ?>" class="dropzone dropzone_tenant_documents" ></form>
+							   <?php if(empty($check_contracts->posts)): ?>
+							   <p align=center><button type="button" class="button save_tenant_doc">Save Documents</button></p>
+							   <?php endif; ?>
+						   </div>
+				</div> 
+			</div>
 		</div>
 		
 		<!----Stage 2---->
@@ -432,15 +442,7 @@ $check_contracts = new WP_Query( $query_args1 );
 			</div>
 			
 			<!------------ Documents Tenants  ------------------->
-			    <div class="col-md-12">
-						<h3>Kindly Upload The Documents Here</h3>
-						<div class="submit-section prop_req_docs">
-						   <form action="<?= site_url() ?>/tenant/deal-details-tenant/<?php echo $post_id; ?>" class="dropzone dropzone_tenant_documents" ></form>
-						   <?php if(empty($check_contracts->posts)): ?>
-						   <p align=center><button type="button" class="button save_tenant_doc">Save Documents</button></p>
-						   <?php endif; ?>
-					   </div>
-			    </div> 
+			    
               <?php if(empty($check_contracts->posts)): ?>
 			<div class="deal-detail__suggestedpropertysec">
 				<h3>Selected Properties</h3>
@@ -861,6 +863,11 @@ $check_contracts = new WP_Query( $query_args1 );
 </div>
 
 </div>
+<style>
+.deal-send-button.deal-send-texts {
+    background: #2c3b3e;
+}
+</style>
 
 <script type="text/javascript">
 function copyToClipboard(element) {
