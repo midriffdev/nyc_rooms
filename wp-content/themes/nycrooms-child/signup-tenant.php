@@ -83,6 +83,8 @@ if(is_user_logged_in()){
 				      add_user_meta($user,'user_full_name', $_REQUEST['guest_name_reg']);
 					  add_user_meta($user,'user_email', $_REQUEST['email']);
 					  add_user_meta($user,'user_phone', $_REQUEST['guest_phone_reg']);
+					  add_user_meta($user,'user_status','active');
+					  
 					  
 				   //------------ atart creating leads ---------------
 				   if(isset($_REQUEST['guest_search_enq_req']) && $_REQUEST['guest_search_enq_req'] == "enquiry request" ):
@@ -194,9 +196,18 @@ if(is_user_logged_in()){
 		   if ( is_wp_error($user_verify)) {  
 			$loginerror = "Invalid login details";  
 		   // Note, I have created a page called "Error" that is a child of the login page to handle errors. This can be anything, but it seemed a good way to me to handle errors.  
-		   } else {    
-			   echo "<script type='text/javascript'>window.location.href='". site_url().'/tenant/' ."'</script>";  
-			   exit();  
+		   } else {
+                   
+				   $checkstatus =  get_user_meta($userrolecheck->ID ,'user_status',true);
+				   if($checkstatus == 'active'){
+					   echo "<script type='text/javascript'>window.location.href='". site_url().'/tenant/' ."'</script>";  
+			           exit();
+				   } else {
+				      $loginerror = "Your account is currently suspended. Please Contact Administrator for activation.";
+				   }
+					
+			  
+			   
 		   } 
 	}
 	} else {
@@ -332,6 +343,7 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 				$user_id = wp_insert_user( $userdata );
 				if($user_id){
 				    add_user_meta($user_id,'user_full_name', $fb_user->first_name . ' ' . $fb_user->last_name);
+					add_user_meta($user,'user_status','active');
 				}
 				wp_new_user_notification($user_id, null, 'both');
 			} else {
