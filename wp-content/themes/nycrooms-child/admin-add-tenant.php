@@ -32,9 +32,10 @@ if(isset($_POST['add_tenant'])){
 
 
    if(0 === count($errors)) {
+      $userPass = wp_generate_password();
       $userdata = array(
 					'user_login'  => $_POST['username'],
-					'user_pass'   =>  wp_generate_password(), // random password, you can also send a notification to new users, so they could set a password themselves
+					'user_pass'   =>  $userPass, // random password, you can also send a notification to new users, so they could set a password themselves
 					'user_email' => $_POST['email'],
 					'first_name' => $_POST['first_name'],
 					'last_name' => $_POST['last_name'],
@@ -60,8 +61,10 @@ if(isset($_POST['add_tenant'])){
 			 update_user_meta($user_id,'user_twitter', $_POST['twitter']);
 			 update_user_meta($user_id,'user_facebook', $_POST['facebook']);
 			 update_user_meta($user_id,'user_googleplus', $_POST['googleplus']);
-			 update_user_meta($user_id,'user_linkedin', $_POST['linkedin']); 
-			 $usersuccess = "Tenant Added Successfully";	
+			 update_user_meta($user_id,'user_linkedin', $_POST['linkedin']);
+             update_user_meta( $user_id, 'user_status','active');
+             nyc_wp_new_user_notification($user_id,$userPass);			 
+			 $usersuccess = "Tenant profile added successfully";	
 			
 	   }
 	   

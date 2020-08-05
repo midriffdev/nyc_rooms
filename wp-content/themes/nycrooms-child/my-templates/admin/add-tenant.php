@@ -100,6 +100,8 @@ if(isset($_POST['add_tenant'])){
 								<div class="col-md-6">
 									<label for="username">Username</label>
 									<input  type="text" name="username" id="username" class="username" placeholder="Username" value="<?php if(isset($username)){ echo $username; } ?>"  required>
+							    </div>
+							</div>
 							
 							<div class="row">
 								<div class="col-md-12">
@@ -109,12 +111,10 @@ if(isset($_POST['add_tenant'])){
 							</div>
 
 							<div class="row">
-							
-								 <div class="col-md-12">
+							    <div class="col-md-12">
 									<label>Address</label>
 									<textarea name="address" id="address" cols="30" rows="10" name="address" placeholder="Address"><?php if(isset($address)){ echo $address; } ?></textarea>
 								</div>
-								
 							</div>
 							
 						</div>
@@ -252,6 +252,18 @@ rules: {
 		  phoneUS: true,
 		  minlength:12,
 		},
+		username: {
+           remote: {
+               url: ajaxurl,
+               type: "post",
+			   data: {
+			      action : function(){
+						return "nyc_check_user_name";
+				  }
+			   }
+			   
+           }
+        },
         email: {
            remote: {
                url: ajaxurl,
@@ -268,7 +280,10 @@ rules: {
     messages: {
         email: {
             remote: "Email already in use!"
-        }
+        },
+		username: {
+		   remote: "UserName Already Exists"
+		}
     },
     submitHandler: function(form) {
        form.submit();

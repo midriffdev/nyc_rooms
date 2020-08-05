@@ -343,9 +343,11 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 				$user_id = wp_insert_user( $userdata );
 				if($user_id){
 				    add_user_meta($user_id,'user_full_name', $fb_user->first_name . ' ' . $fb_user->last_name);
-					add_user_meta($user,'user_status','active');
+					add_user_meta($user_id,'user_status','active');
 				}
 				wp_new_user_notification($user_id, null, 'both');
+				
+				
 			} else {
 				// user exists, so we need just get his ID
 				$user = get_user_by( 'email', $fb_user->email );
@@ -354,9 +356,11 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 			}
 			
 			if( $user_id ) {
+			
 			    wp_set_auth_cookie( $user_id, true );
 				wp_redirect( home_url() . '/tenant/');
 				exit;
+				
 			}
  
 		}
@@ -412,6 +416,7 @@ if (isset($_GET['code'])) {
 				$user_id = wp_insert_user( $userdata );
 				if($user_id){
 				    add_user_meta($user_id,'user_full_name', $google_account_info->givenName . ' ' . $google_account_info->familyName);
+					add_user_meta($user_id,'user_status','active');
 				}
 				wp_new_user_notification($user_id, null, 'both');
 				
@@ -424,9 +429,11 @@ if (isset($_GET['code'])) {
 			}
 			
 			if( $user_id ) {
+			
 			    wp_set_auth_cookie( $user_id, true );
 				wp_redirect( home_url() . '/tenant/');
 				exit;
+				
 			}
 			
   
