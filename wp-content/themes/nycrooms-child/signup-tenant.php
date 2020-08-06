@@ -471,7 +471,14 @@ get_header();
 
 	<!--Tab -->
 	<div class="my-account style-1 margin-top-5 margin-bottom-40">
-
+            <?php 
+                   if($success_msg):
+			?>
+				       <label class="reset_success" align="center"><?php echo $success_msg ;?></label>
+		     <?php
+				  endif;
+		      ?>
+			  
 		<ul class="tabs-nav">
 			<li class=""><a href="#tab1">Log In</a></li>
 			<li><a href="#tab2">Register</a></li>
@@ -479,13 +486,7 @@ get_header();
 		</ul>
 
 		<div class="tabs-container alt">
-		    <?php 
-                   if($success_msg):
-			?>
-				       <label class="reset_success" align="center"><?php echo $success_msg ;?></label>
-		     <?php
-				  endif;
-		      ?>
+		    
 
 			<!-- Login -->
 			<div class="tab-content" id="tab1" style="display: none;">
