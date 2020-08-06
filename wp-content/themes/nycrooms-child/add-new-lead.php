@@ -13,7 +13,8 @@ $args = array(
 $properties = new WP_Query( $args );
 if(isset($_POST['guest_checkout'])){
 
-$lead_id = wp_insert_post(array (
+
+ $lead_id = wp_insert_post(array (
 			'post_type'		=> 'leads',
 			'post_title' 	=> 'Lead submission',
 			'post_content' 	=> 'Lead submission by guest user',
@@ -28,11 +29,20 @@ $lead_id = wp_insert_post(array (
 			add_post_meta($lead_id, 'lead_phone', $_POST['guest_phone']);
 			add_post_meta($lead_id, 'lead_datetime', strtotime($_POST['date'] . ' '.$_POST['time']));
 			add_post_meta($lead_id, 'lead_summary', $_POST['guest_summary']);
-			add_post_meta($lead_id, 'lead_checkout_property', $_POST['properties_leads']);
-			add_post_meta($lead_id, 'lead_checkout_property_name', get_the_title($_POST['properties_leads']));
-			add_post_meta($lead_id, 'lead_checkt_prp_owner', get_post_meta($_POST['properties_leads'],'contact_name',true));
-			add_post_meta($lead_id, 'lead_source',$_POST['lead_source']);
-			add_post_meta($lead_id, 'lead_chckt_prp_owner_email', get_post_meta($_POST['properties_leads'],'contact_email',true));
+			if(!empty($_POST['properties_leads']) && $_POST['lead_source'] == 'Property Form'){
+			
+				add_post_meta($lead_id, 'lead_checkout_property', $_POST['properties_leads']);
+				add_post_meta($lead_id, 'lead_checkout_property_name', get_the_title($_POST['properties_leads']));
+				add_post_meta($lead_id, 'lead_checkt_prp_owner', get_post_meta($_POST['properties_leads'],'contact_name',true));
+				add_post_meta($lead_id, 'lead_chckt_prp_owner_email', get_post_meta($_POST['properties_leads'],'contact_email',true));
+				
+			}
+			if(!empty($_POST['lead_source'])){
+			    add_post_meta($lead_id, 'lead_source',$_POST['lead_source']);
+			} else {
+			    add_post_meta($lead_id, 'lead_source','Custom Deal');
+			}
+			
 			add_post_meta($lead_id, 'lead_created_from', 'admin' );
 			add_post_meta($lead_id, 'lead_created_user_id',get_current_user_id());
             $success_msg = "Lead Created Sucessfully!!";
@@ -78,7 +88,7 @@ get_header();
 									</div>
 									<div class="col-md-12">
 										<label for="date">Date*:</label>
-        				                <input type="date" name="date"  value="<?php echo date("Y-m-d"); ?>" required>
+        				                <input type="date" name="date" value="<?php echo date("Y-m-d"); ?>" required>
 									</div>
 									<div class="col-md-12">
 										<label >Descprition:</label>
@@ -94,8 +104,8 @@ get_header();
 									</div>
 									<div class="col-md-12">
 										<label>Select Property:</label>
-										<select name="properties_leads" required>
-										<option value=""></option>
+										<select name="properties_leads">
+										<option value="">Select Property</option>
 										<?php
 										foreach($properties->posts as $properties){
 										?>
@@ -111,7 +121,7 @@ get_header();
 									</div>
 									<div class="col-md-12">
 										<label >Select Lead Source:</label>
-										<select name="lead_source" required>
+										<select name="lead_source">
 											<option value="">Select Lead Source</option>
 											<option value="Appointment Form">Appointment Form</option>
 											<option value="Property Form">Property Form</option>

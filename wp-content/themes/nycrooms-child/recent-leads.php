@@ -153,7 +153,7 @@ get_header();
 							<?php 
 							   if($checkdeal && $checkdealid){
 							?>
-							   <a class="deal--done" disabled><i class="fa fa-check-square-o" aria-hidden="true"></i> Deal Done</a>
+							   <a class="deal--done" disabled><i class="fa fa-check-square-o" aria-hidden="true"></i> Deal Created</a>
 							<?php
 							 } else {
 							?>

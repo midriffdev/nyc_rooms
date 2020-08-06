@@ -81,7 +81,7 @@ get_header();
 			</div>
 			<div class="col-md-6">
 				<div class="leaddetail-teanentdetail">
-				<h2>Tenant Details</h2>
+				<h2>Lead Details</h2>
 				<div class="lead-teanent_details">
 					<ul>
 						<li>
@@ -108,13 +108,10 @@ get_header();
 			<?php 
 			}
 			?>
-			 <?php if($lead_source == "Appointment Form"){ ?>
-			 <div class="col-md-12">
-			   <h4>Lead by Appointment Form</h4>
-			 </div>
+			 <?php if($lead_source == "Appointment Form" || $lead_source == "Custom Deal"){ ?>
 			 <div class="col-md-6">
 				<div class="leaddetail-teanentdetail">
-				<h2>Tenant Details</h2>
+				<h2>Lead Details</h2>
 				<div class="lead-teanent_details">
 					<ul>
 						<li>

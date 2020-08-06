@@ -154,7 +154,7 @@ input.user_apply_action {
 				if($profile_image_id){
 					$image_url  =  wp_get_attachment_url($profile_image_id);
 				}else{
-					$image_url  =  get_stylesheet_directory_uri()."/images/placeholder-image-profile.png";
+					$image_url  =  get_stylesheet_directory_uri()."/images/male-icon.png";
 				}
 				?>
 				<tr class="tenant-id-<?php echo $user_id; ?>">

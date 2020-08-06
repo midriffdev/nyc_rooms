@@ -1448,7 +1448,7 @@ function submit_book_appointment_form(){
 				?>
 				<script>
 				jQuery(document).ready(function(){
-					jQuery('#successModal .modal-body p').html('We have recieved your request for property. We will contact you soon');
+					jQuery('#successModal .modal-body p').html('Thank you for appointment. We will get back to you soon!');
 					jQuery('#successModal').modal('show');
 				});
 				</script>				

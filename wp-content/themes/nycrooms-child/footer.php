@@ -207,5 +207,22 @@ do_action( 'zakra_action_after' );
 <script type="text/javascript" src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/main.js"></script>
 <script type="text/javascript"  src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/moment.min.js"></script>
 <script type="text/javascript"  src="<?php echo get_stylesheet_directory_uri(); ?>/scripts/daterangepicker.js"></script>
+<script>
+$(function(){
+    var dtToday = new Date();
+    
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+    
+    var maxDate = year + '-' + month + '-' + day;
+    $('input[name="date"]').attr('min', maxDate);
+	
+});
+</script>
 </body>
 </html>

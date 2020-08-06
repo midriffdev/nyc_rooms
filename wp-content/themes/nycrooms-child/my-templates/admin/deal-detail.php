@@ -267,7 +267,15 @@ $check_contracts = new WP_Query( $query_args1 );
 				<?php if($lead_source == "Appointment Form" || $lead_source == "Custom Deal"){ ?>
 					<div class="dealdetal__appointmentdetail-sec">
 						<div class="leaddetail-teanentdetail dealdetail__tenantdetail">
+						
+						   <?php if($lead_source == "Appointment Form"):?>
 							<h2>Appointment Details</h2>
+							<?php endif; ?>
+							
+							 <?php if($lead_source == "Custom Deal"):?>
+							<h2>Deal Details</h2>
+							<?php endif; ?>
+							
 							<div class="lead-teanent_details">
 								<ul>
 									<li>

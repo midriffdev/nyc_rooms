@@ -1290,6 +1290,41 @@ function adding_multiple_deals(){
 							}
 							
 		 }
+		 
+		 if($lead_source == "Custom Deal"){
+			  $DealDescription  =  get_post_meta($ids,'lead_summary',true);
+			  $lead_user_id     =  get_post_meta($ids, 'lead_created_user_id',true);
+			  $lead_name        =  get_post_meta($ids, 'lead_name',true);
+			  $lead_email	    =  get_post_meta($ids, 'lead_email',true);
+			  $lead_phone	    =  get_post_meta($ids, 'lead_phone',true);
+			  $lead_datetime    =  get_post_meta($ids, 'lead_datetime',true);	
+			  $deal_id = wp_insert_post(array (
+											'post_type'		=> 'deals',
+											'post_title' 	=> 'deal submission',
+											'post_content' 	=> $DealDescription,
+											'post_author' 	=> get_current_user_id(),
+											'post_status'   => 'publish'
+								   ));
+			
+			
+							 if ($deal_id) {
+							 
+								add_post_meta($deal_id, 'lead_source',$lead_source);
+								add_post_meta($deal_id, 'user_id',$lead_user_id);
+								add_post_meta($deal_id, 'name',$lead_name);
+								add_post_meta($deal_id, 'email',$lead_email);
+								add_post_meta($deal_id, 'phone',$lead_phone);
+								add_post_meta($deal_id, 'lead_id',$ids);
+								add_post_meta($deal_id, 'lead_datetime',$lead_datetime);
+								add_post_meta($deal_id, 'description',$DealDescription);
+								add_post_meta($deal_id, 'deal_stage',1);
+								add_post_meta($deal_id, 'deal_created_by',get_current_user_id());
+								add_post_meta($ids,'is_deal_created','yes');
+								add_post_meta($ids,'deal_id',$deal_id);
+								
+							}
+							
+		 }
 							
 	 
 	   }
