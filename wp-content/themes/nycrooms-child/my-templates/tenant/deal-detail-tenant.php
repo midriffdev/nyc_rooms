@@ -269,7 +269,6 @@ get_header();
 								    <div class="step-content">
 									<?php if(!$application_submission) { ?>	  
 									 <div class="submit-section">
-										<h4>Add Personnel Details</h4>
 											<div class="form">
 													<h5>Name(s)</h5>
 													<input class="name" type="text" placeholder="Enter Name..">
@@ -416,13 +415,17 @@ get_header();
                                     <input type="button" class="button submit_application_form" id="submit_application_form" value="Submit Aplication">
 									<?php } ?>
 									
+									 <button class="dealdetail-tenant-reqagentb" <?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'disabled';}  ?> style="margin-right:3%"><?php if($get_requested_agent && $get_requested_agent == 1 ){ echo 'Agent Allotted';} else { echo 'Request an Agent';} ?>
+									</button>
 									
 									<button class=" waves-effect waves-dark btn blue next-step">CONTINUE</button>
+									
+									
                                     </div>
 								  </div>
 							  </li>
 							  <li class="step <?= (!$application_submission) ? '' : 'active' ?>">
-								    <div class="step-title waves-effect waves-dark">Step 2</div>
+								    <div data-step-label="<?php if(empty($check_deal_orders->posts)){ echo "Make Payment"; } else { echo "Payment Done";} ?>"class="step-title waves-effect waves-dark">Step 2</div>
 									    <div class="step-content">
 										  <div class="row">
 											<div class="col-md-12">
@@ -1905,9 +1908,15 @@ get_footer();
 			$("input[name=check_consents_terms]").focus();
 		} else {
 		      <?php 
-			    if(!$application_submission){
+			  if(!$deal_price){
 			  ?>
-			      $('.appcation_submission_err').html('Please Submit The Application Form in the Previous Step Before Payment.');
+			      $('.appcation_submission_err').html('Deal Price Missing. Please Contact Administrator For Deal Price');
+				  
+			  <?php
+			  } else if(!$application_submission){ 
+			  ?>
+			     $('.appcation_submission_err').html('Please Submit The Application Form in the Previous Step Before Payment.');
+				 
 			  <?php
 			  } else {
 			  ?>

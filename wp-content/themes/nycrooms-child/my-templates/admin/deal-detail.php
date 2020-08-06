@@ -990,7 +990,7 @@ jQuery(document).ready(function($) {
 	
 	$('.no-send-email, .no-send-text').live('click',function(e){
 		e.preventDefault();
-		jQuery('.dealsend-popup h3').html('Please select price first!');
+		jQuery('.dealsend-popup h3').html('Please save the price first!');
 		jQuery('#selected_property_popup').modal('show');
 	});
 	

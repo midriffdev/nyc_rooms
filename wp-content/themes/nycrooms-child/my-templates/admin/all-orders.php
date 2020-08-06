@@ -13,6 +13,8 @@ $args = array(
 'post_status' => array('publish'),
 'posts_per_page'   => -1,
 'suppress_filters' => false,
+'orderby'          => 'ID',
+'order'            => 'DESC',
 'paged' => $paged
 );
 

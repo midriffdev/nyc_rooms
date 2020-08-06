@@ -8,6 +8,8 @@ $args = array(
 'post_status' => array('publish'),
 'posts_per_page'   => 6,
 'suppress_filters' => false,
+'orderby'          => 'ID',
+'order'            => 'DESC',
 'paged' => $paged
 );
 $meta_query = array();

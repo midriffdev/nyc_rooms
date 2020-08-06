@@ -54,6 +54,8 @@ if(isset($_POST['add_tenant'])){
 			update_user_meta($user_id, 'user_linkedin', $linkedin );
 			update_user_meta( $user_id, 'user_status','active');
 			nyc_wp_new_user_notification($user_id,$userPass);
+			$notification = "A new Tenant added by admin";
+		    nyc_add_noticication($notification);
 			$createmsg = "Tenant profile added successfully";	
 		}
 	}

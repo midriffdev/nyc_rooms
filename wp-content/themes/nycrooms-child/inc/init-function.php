@@ -1257,6 +1257,8 @@ function add_new_custom_deal(){
 		add_post_meta($deal_id, 'description',$_POST['t_description']);
 		add_post_meta($deal_id, 'admin_notes',$_POST['admin_notes']);
 		add_post_meta($deal_id, 'deal_price',$_POST['deal_price']);
+		$notification = "A new deal created by admin";
+		nyc_add_noticication($notification);
 		echo "success";
 	}
 	}	
