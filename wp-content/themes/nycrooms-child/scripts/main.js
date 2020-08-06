@@ -45,11 +45,21 @@ $(".next").click(function(){
 			left = (now * 50)+"%";
 			//3. increase opacity of next_fs to 1 as it moves in
 			opacity = 1 - now;
-			current_fs.css({
+			
+			/* current_fs.css({
         'transform': 'scale('+scale+')',
         'position': 'absolute'
       });
-			next_fs.css({'left': left, 'opacity': opacity});
+			next_fs.css({'left': left, 'opacity': opacity}); */
+			
+			
+			current_fs.css({
+				'display': 'none',
+				'position': 'relative'
+            });
+            next_fs.css({'opacity': opacity});
+
+			
 		}, 
 		duration: 800, 
 		complete: function(){
@@ -66,14 +76,14 @@ $(".previous").click(function(){
 	animating = true;
 	
 	current_fs   = $(this).parent();
-	var stateval = $(this).parent().prev().prev().find('select[name="state"]').val();
+	var stateval = current_fs.prev().prev().find('select[name="state"]').val();
 	  console.log(stateval);
 	if(typeof stateval == 'undefined'){
-	   previous_fs = $(this).parent().prev();
+	   previous_fs = current_fs.prev();
 	} else if(stateval != 'new york'){
-	   previous_fs = $(this).parent().prev().prev();
+	   previous_fs = current_fs.prev().prev();
 	} else if(stateval == 'new york') {
-	   previous_fs = $(this).parent().prev();
+	   previous_fs = current_fs.prev();
 	}
 	
 	
@@ -92,8 +102,17 @@ $(".previous").click(function(){
 			left = ((1-now) * 50)+"%";
 			//3. increase opacity of previous_fs to 1 as it moves in
 			opacity = 1 - now;
-			current_fs.css({'left': left});
-			previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
+			
+			/* current_fs.css({'left': left});
+			previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity}); */
+			//previous_fs.css({'position':''});
+			current_fs.css({
+				'display': 'none',
+				'position': 'relative'
+				});
+            previous_fs.css({'opacity': opacity});
+			
+			
 		}, 
 		duration: 800, 
 		complete: function(){

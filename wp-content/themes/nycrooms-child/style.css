@@ -13874,6 +13874,7 @@ table.admin-teanent-maintable th{padding: 17px 27px;}
 .checkallbulkorders {
     height: 14px;
     margin: 0 !important;
+	width:14px;
 }
 
 .page-template-property-search .site-content{margin:0;}
@@ -13911,15 +13912,16 @@ input[type=submit] {padding: 1px 21px;}.btn-default {color: #333;background-colo
     margin-top: 50px;
 }
 
-input.checkallagents {height: 14px;margin: 0;}
+input.checkallagents {height: 14px;margin: 0;width:14px;}
 input.checkagent {height: 14px;margin: 0 !important;}
 input.checkallleads {
     height: 14px;
     margin: 0;
+	width:14px;
 }
 input.checkleads {height: 14px;margin: 0 !important;}
 input.checkallproperties {height: 14px;margin: 0;width:14px;}
-input.checkallbulk {height: 14px;margin: 0;}
+input.checkallbulk {height: 14px;margin: 0;width:14px;}
 .checkproperties {height: 14px;}
 .checkbulk {height: 14px; margin:0 !important;}
 /******property-search CSS Start********/
