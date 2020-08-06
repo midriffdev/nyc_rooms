@@ -366,9 +366,26 @@ add_filter('wp_nav_menu_items', 'add_login_logout_link' , 10, 2 );
 function add_login_logout_link($items, $args) {
 		ob_start();
 		if(is_user_logged_in()){
-			$loginoutlink = '<a href="'.wp_logout_url(get_page_link()).'">Log out</a>';
-			ob_end_clean();
-			$items .= '<li>'. $loginoutlink .'</li>';			
+		     $currentuser = wp_get_current_user();
+			  if($currentuser->roles[0] == 'administrator'){
+					$loginoutlink = '<a href="'.wp_logout_url(home_url().'/login-admin/').'">Log out</a>';
+					ob_end_clean();
+					$items .= '<li>'. $loginoutlink .'</li>';
+              }
+			  
+			  if($currentuser->roles[0] == 'property_owner'){
+					$loginoutlink = '<a href="'.wp_logout_url(home_url().'/owner-registeration/').'">Log out</a>';
+					ob_end_clean();
+					$items .= '<li>'. $loginoutlink .'</li>';
+              }
+			  
+			  if($currentuser->roles[0] == 'tenant'){
+					$loginoutlink = '<a href="'.wp_logout_url(home_url().'/tenant-registration/').'">Log out</a>';
+					ob_end_clean();
+					$items .= '<li>'. $loginoutlink .'</li>';
+              }
+			  
+			
 		}
 		$appointment = '<button class="appointment-button" data-toggle="modal" data-target="#bookappntmntpopup">Book Appointment</button>';
 		$items .= '<li>'. $appointment .'</li>';			
