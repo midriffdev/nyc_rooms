@@ -365,7 +365,7 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 				} else {
 				    $loginerror = "Your account is currently suspended. Please Contact Administrator for activation.";
 					$facebooklogin = true;
-					header( "refresh:5;url=".home_url()."/tenant/" );
+					header( "refresh:3;url=".home_url()."/tenant/" );
 				}
 				
 			}
@@ -446,7 +446,7 @@ if (isset($_GET['code'])) {
 					exit;
 				} else {
 				   $loginerror = "Your account is currently suspended. Please Contact Administrator for activation.";
-				   header( "refresh:5;url=".home_url()."/tenant/" );
+				   header( "refresh:3;url=".home_url()."/tenant/" );
 				}
 				
 				
