@@ -343,6 +343,7 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 				$user_id = wp_insert_user( $userdata );
 				if($user_id){
 				    add_user_meta($user_id,'user_full_name', $fb_user->first_name . ' ' . $fb_user->last_name);
+					add_user_meta($user_id,'user_email', $fb_user->email);
 					add_user_meta($user_id,'user_status','active');
 				}
 				$notification = "A Tenant with email Id (". $fb_user->email .") is registered From Facebook";
@@ -424,6 +425,7 @@ if (isset($_GET['code'])) {
 				$user_id = wp_insert_user( $userdata );
 				if($user_id){
 				    add_user_meta($user_id,'user_full_name', $google_account_info->givenName . ' ' . $google_account_info->familyName);
+					add_user_meta($user_id,'user_email', $google_account_info->email);
 					add_user_meta($user_id,'user_status','active');
 				}
 				$notification = "A Tenant with email Id (". $google_account_info->email .") is registered From Google";
