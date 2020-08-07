@@ -54,11 +54,15 @@ if(is_user_logged_in()){
          {  
    
             $password = $_REQUEST['password1'];  
+			$full_name = explode(" ",$_REQUEST['full_name']);
+			$first_name = $full_name[0];
+			$last_name  = $full_name[1];
             $signin_data =  array(
 									  'user_login' => $username,
 									  'user_pass' => $password,
 									  'user_email' => $email,
-									  'display_name' => $_REQUEST['full_name'],
+									  'first_name' => $first_name,
+					                  'last_name' => $last_name,
 									  'role'  => 'property_owner'
                            );
 			  
@@ -194,7 +198,8 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 					'user_login'  =>  $fb_user->email,
 					'user_pass'   =>  wp_generate_password(), // random password, you can also send a notification to new users, so they could set a password themselves
 					'user_email' => $fb_user->email,
-					'display_name' => $fb_user->first_name . ' ' . $fb_user->last_name,
+					'first_name' => $fb_user->first_name,
+					'last_name' => $fb_user->last_name,
 					'role'  => 'property_owner'
 				);
 				$user_id = wp_insert_user( $userdata );
@@ -276,7 +281,8 @@ if (isset($_GET['code'])) {
 					'user_login'  =>  $google_account_info->email,
 					'user_pass'   =>  wp_generate_password(), // random password, you can also send a notification to new users, so they could set a password themselves
 					'user_email' => $google_account_info->email,
-					'display_name' => $google_account_info->givenName . ' ' . $google_account_info->familyName,
+					'first_name' => $google_account_info->givenName,
+					'last_name' => $google_account_info->familyName,
 					'role'  => 'property_owner'
 				);
 				$user_id = wp_insert_user( $userdata );
