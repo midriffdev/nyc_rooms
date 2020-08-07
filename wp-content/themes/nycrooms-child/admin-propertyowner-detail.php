@@ -87,14 +87,7 @@ if(isset($_POST['update_owner'])){
 	
  }
 get_header();
-echo "hello";
-echo "<br>";
-echo get_user_meta($getuser->ID,'user_name',true); 
-echo "<br>";
-echo get_user_meta($getuser->ID,'user_email',true);
 ?>
-
-
 <!-- Wrapper -->
 <div id="wrapper">
 

@@ -65,10 +65,10 @@ if(is_user_logged_in()){
 			$user =  wp_insert_user($signin_data);
 			 
 			 if($user){
-				add_user_meta($user,'user_name', $_REQUEST['full_name']);
-				add_user_meta($user,'user_email', $email);
-				add_user_meta($user,'user_phone', $_REQUEST['user_phone']);
-				update_user_meta($user, 'user_status','active');
+				update_user_meta($user,'user_name', $_REQUEST['full_name']);
+				update_user_meta($user,'user_email', $email);
+				update_user_meta($user,'user_phone', $_REQUEST['user_phone']);
+				update_user_meta($user,'user_status','active');
 			   $login_data = array(
 			                    'user_login' => $username,
 							    'user_password' => $password,
@@ -199,9 +199,9 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 				);
 				$user_id = wp_insert_user( $userdata );
 				if($user_id){
-				    add_user_meta($user_id,'user_name',$fb_user->first_name . ' ' . $fb_user->last_name);
-					add_user_meta($user_id,'user_email', $fb_user->email);
-					add_user_meta($user_id,'user_status','active');
+				    update_user_meta($user_id,'user_name',$fb_user->first_name . ' ' . $fb_user->last_name);
+					update_user_meta($user_id,'user_email', $fb_user->email);
+					update_user_meta($user_id,'user_status','active');
 				}
 				$notification = "A property owner with email Id (". $fb_user->email .") is registered From Facebook";
 				nyc_add_noticication($notification);
@@ -281,9 +281,9 @@ if (isset($_GET['code'])) {
 				);
 				$user_id = wp_insert_user( $userdata );
 				if($user_id){
-				    add_user_meta($user_id,'user_name', $google_account_info->givenName . ' ' . $google_account_info->familyName);
-					add_user_meta($user_id,'user_email', $google_account_info->email);
-					add_user_meta($user_id,'user_status','active');
+				    update_user_meta($user_id,'user_name', $google_account_info->givenName . ' ' . $google_account_info->familyName);
+					update_user_meta($user_id,'user_email', $google_account_info->email);
+					update_user_meta($user_id,'user_status','active');
 				}
 				$notification = "A property owner with email Id (". $google_account_info->email .") is registered From Google";
 				nyc_add_noticication($notification);
