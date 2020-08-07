@@ -12,14 +12,14 @@ if(isset($_GET['search_owner'])){
                                'relation'    => 'AND',
 								array(
 									'key'          => 'user_name',
-									'value'        => $_GET['ownername'],
+									'value'        => trim($_GET['ownername']),
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',
 								),
 								array(
 									'key'          => 'user_email',
-									'value'        => $_GET['email'],
+									'value'        => trim($_GET['email']),
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',
