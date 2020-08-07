@@ -1258,7 +1258,7 @@ function add_new_custom_deal(){
 		add_post_meta($deal_id, 'admin_notes',$_POST['admin_notes']);
 		add_post_meta($deal_id, 'deal_price',$_POST['deal_price']);
 		
-		$notification = "A new deal created with Deal No ". $deal_id . "by admin";
+		$notification = "A new deal created with Deal No ". $deal_id . " by admin";
 		nyc_add_noticication($notification);
 		
 		/* ------------ Sent mail to  admin --------*/
