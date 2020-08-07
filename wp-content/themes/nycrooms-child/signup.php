@@ -67,6 +67,7 @@ if(is_user_logged_in()){
 			 if($user){
 				add_user_meta($user,'user_full_name', $_REQUEST['full_name']);
 				add_user_meta($user,'user_phone', $_REQUEST['user_phone']);
+				update_user_meta($user, 'user_status','active');
 			   $login_data = array(
 			                    'user_login' => $username,
 							    'user_password' => $password,
@@ -124,9 +125,19 @@ if(is_user_logged_in()){
 		if ( is_wp_error($user_verify) ) {  
 			$loginerror = "Invalid login details";  
 		   // Note, I have created a page called "Error" that is a child of the login page to handle errors. This can be anything, but it seemed a good way to me to handle errors.  
-		 } else {    
-		   echo "<script type='text/javascript'>window.location.href='". site_url().'/property-owner/' ."'</script>";  
-		   exit();  
+		 } else {
+		     $checkstatus =  get_user_meta($userrolecheck->ID ,'user_status',true);
+			 
+		     if($checkstatus == 'active'){
+			       echo "<script type='text/javascript'>window.location.href='". site_url().'/property-owner/' ."'</script>";  
+		           exit();  
+			 } else {
+			     $loginerror = "Your account is currently suspended. Please Contact Administrator for activation.";
+			 }
+			  
+		  
+		   
+		   
 		 }
      }
 	} else {
@@ -187,18 +198,32 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 				$user_id = wp_insert_user( $userdata );
 				if($user_id){
 				    add_user_meta($user_id,'user_full_name', $fb_user->first_name . ' ' . $fb_user->last_name);
+					add_user_meta($user_id,'user_status','active');
 				}
-				wp_new_user_notification($user_id, null, 'both');	
+				$notification = "A property owner with email Id (". $fb_user->email .") is registered From Facebook";
+				nyc_add_noticication($notification);
+				
+				wp_new_user_notification($user_id, null, 'both');
+                 
+				wp_set_auth_cookie( $user_id, true );
+				wp_redirect( home_url() . '/property-owner/');
+				exit;
+				
+				
 			} else {
 				// user exists, so we need just get his ID
 				$user = get_user_by( 'email', $fb_user->email );
 				$user_id = $user->ID;
-			}
-			
-			if( $user_id ) {
-			    wp_set_auth_cookie( $user_id, true );
-				wp_redirect( home_url() . '/property-owner/');
-				exit;
+				
+				$checkstatus =  get_user_meta($user_id,'user_status',true);
+				if($checkstatus == 'active'){
+					wp_set_auth_cookie( $user_id, true );
+					wp_redirect( home_url() . '/property-owner/');
+					exit;
+				} else {
+				    $loginerror = "Your account is currently suspended. Please Contact Administrator for activation.";
+				}
+				
 			}
  
 		}
@@ -250,21 +275,29 @@ if (isset($_GET['code'])) {
 				$user_id = wp_insert_user( $userdata );
 				if($user_id){
 				    add_user_meta($user_id,'user_full_name', $google_account_info->givenName . ' ' . $google_account_info->familyName);
+					add_user_meta($user_id,'user_status','active');
 				}
+				$notification = "A property owner with email Id (". $google_account_info->email .") is registered From Google";
+				nyc_add_noticication($notification);
+				
 				wp_new_user_notification($user_id, null, 'both');
 				
+				wp_set_auth_cookie( $user_id, true );
+				wp_redirect( home_url() . '/property-owner/');
+				exit;
  
 			} else {
 				// user exists, so we need just get his ID
 				$user = get_user_by( 'email', $google_account_info->email );
 				$user_id = $user->ID;
-				
-			}
-			
-			if( $user_id ) {
-			    wp_set_auth_cookie( $user_id, true );
-				wp_redirect( home_url() . '/property-owner/');
-				exit;
+				$checkstatus =  get_user_meta($user_id,'user_status',true);
+				if($checkstatus == 'active'){
+					wp_set_auth_cookie( $user_id, true );
+					wp_redirect( home_url() . '/property-owner/');
+					exit;
+				} else {
+				     $loginerror = "Your account is currently suspended. Please Contact Administrator for activation.";
+				}
 			}
 			
   

@@ -345,21 +345,26 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 				    add_user_meta($user_id,'user_full_name', $fb_user->first_name . ' ' . $fb_user->last_name);
 					add_user_meta($user_id,'user_status','active');
 				}
-				wp_new_user_notification($user_id, null, 'both');
+				$notification = "A Tenant with email Id (". $fb_user->email .") is registered From Facebook";
+				nyc_add_noticication($notification);
 				
+				wp_new_user_notification($user_id, null, 'both');
+				wp_set_auth_cookie( $user_id, true );
+				wp_redirect( home_url() . '/tenant/');
+				exit;
 				
 			} else {
 				// user exists, so we need just get his ID
 				$user = get_user_by( 'email', $fb_user->email );
 				$user_id = $user->ID;
-				
-			}
-			
-			if( $user_id ) {
-			
-			    wp_set_auth_cookie( $user_id, true );
-				wp_redirect( home_url() . '/tenant/');
-				exit;
+				$checkstatus =  get_user_meta($user_id,'user_status',true);
+				if($checkstatus == 'active'){
+					wp_set_auth_cookie( $user_id, true );
+					wp_redirect( home_url() . '/tenant/');
+					exit;
+				} else {
+				    $loginerror = "Your account is currently suspended. Please Contact Administrator for activation.";
+				}
 				
 			}
  
@@ -418,21 +423,28 @@ if (isset($_GET['code'])) {
 				    add_user_meta($user_id,'user_full_name', $google_account_info->givenName . ' ' . $google_account_info->familyName);
 					add_user_meta($user_id,'user_status','active');
 				}
+				$notification = "A Tenant with email Id (". $google_account_info->email .") is registered From Google";
+				nyc_add_noticication($notification);
 				wp_new_user_notification($user_id, null, 'both');
 				
+				wp_set_auth_cookie( $user_id, true );
+				wp_redirect( home_url() . '/tenant/');
+				exit;
  
 			} else {
+			     
 				// user exists, so we need just get his ID
 				$user = get_user_by( 'email', $google_account_info->email );
 				$user_id = $user->ID;
+				$checkstatus =  get_user_meta($user_id,'user_status',true);
+				if($checkstatus == 'active'){
+					wp_set_auth_cookie( $user_id, true );
+					wp_redirect( home_url() . '/tenant/');
+					exit;
+				} else {
+				   $loginerror = "Your account is currently suspended. Please Contact Administrator for activation.";
+				}
 				
-			}
-			
-			if( $user_id ) {
-			
-			    wp_set_auth_cookie( $user_id, true );
-				wp_redirect( home_url() . '/tenant/');
-				exit;
 				
 			}
 			

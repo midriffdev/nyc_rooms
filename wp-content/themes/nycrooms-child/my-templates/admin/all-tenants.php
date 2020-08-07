@@ -11,11 +11,15 @@ nyc_property_admin_authority();
 get_header();
 $serachname = '';
 $searchphone = '';
+$searchbaddress = '';
 if(isset($_GET['tname'])){
 $serachname = $_GET['tname'];
 }
 if(isset($_GET['phone'])){
 $searchphone = $_GET['phone'];
+}
+if(isset($_GET['searchbaddress'])){
+$searchbaddress = $_GET['searchbaddress'];
 }
 $number   = 6;
 $paged    = (get_query_var('paged')) ? get_query_var('paged') : 1;
@@ -46,10 +50,15 @@ $args= array(
 	'orderby'=>'ID',
 	'order'=>'DESC',
 );
-if($searchphone){
+if(!empty($searchphone)){
 	$countargs['meta_query']=array( array( 'key'   => 'user_phone', 'value' => $searchphone, 'compare' => 'LIKE' ) );
 	$args['meta_query']=array( array( 'key'   => 'user_phone', 'value' => $searchphone, 'compare' => 'LIKE' )	);
 }
+
+if(!empty($searchbaddress)){
+	$args['meta_query']=array( array( 'key'   => 'user_personal_address', 'value' => $searchbaddress, 'compare' => 'LIKE' )	);
+}
+
 $users    = get_users($countargs);
 $query    = get_users($args);
 $total_users = count($users);
@@ -112,6 +121,9 @@ input.user_apply_action {
 								</div>
 								<div class="col-md-6">
 									<input type="text" placeholder="Enter Phone" name="phone" value="<?php if(isset($searchphone)) { echo $searchphone; } ?>"/>
+								</div>
+								<div class="col-md-6">
+									<input type="text" placeholder="Search by address,city, state, state code.." name="searchbaddress"/>
 								</div>
 							</div>
 							<!-- Row With Forms / End -->	

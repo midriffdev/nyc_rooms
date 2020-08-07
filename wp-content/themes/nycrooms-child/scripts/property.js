@@ -358,7 +358,68 @@ jQuery(document).ready(function($) {
 		     }
 			 
 		    
-		 }
+		 } else if(value == 'activeowner') {
+		 
+			var checkedNum = jQuery('input[class="checkagent"]:checked').length;
+			if(checkedNum == 0){
+				 alert('Please choose one or more owner to be active');
+			} else {
+			    jQuery('.loading').show();
+				jQuery('input[class="checkagent"]:checked').each(function(){
+					myarray.push(jQuery(this).val());
+				});			   
+				var data = {
+							'action': 'nyc_bulk_action_user',
+							'data':   myarray,
+							'bulkaction':'active',						
+				};
+				// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+				jQuery.post(my_ajax_object.ajax_url, data, function(response) {			  
+					if(response == "true"){
+					    jQuery('.loading').hide();
+						$('#ModalUser .modal-body p').html('Owners Active Successfully');
+						$('#ModalUser').modal('show');
+						setTimeout(function(){
+						   window.location.reload();
+						   // or window.location = window.location.href; 
+						}, 2000);	
+					}
+				});		 
+			}
+		
+		} else if(value == 'inactiveowner'){
+		
+				var checkedNum = jQuery('input[class="checkagent"]:checked').length;
+				if(checkedNum == 0){
+					alert('Please choose one or more owner to be inactive');
+				}else{
+				 jQuery('.loading').show();
+				jQuery('input[class="checkagent"]:checked').each(function(){
+					 myarray.push(jQuery(this).val());
+				});
+				var data = {
+							'action': 'nyc_bulk_action_user',
+							'data':   myarray,
+							'bulkaction':'inactive',	
+				};
+				// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+				jQuery.post(my_ajax_object.ajax_url, data, function(response) {			  
+					if(response == "true"){
+					    jQuery('.loading').hide();
+						$('#ModalUser .modal-body p').html('Owners Inactive Successfully');
+						$('#ModalUser').modal('show');
+						setTimeout(function(){
+						   window.location.reload();
+						}, 2000);
+					}
+				});
+				}
+				
+		}
+		 
+		 
+		 
+		 /*****-----*/
 	}
 	
     });

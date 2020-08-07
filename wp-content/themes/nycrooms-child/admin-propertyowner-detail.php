@@ -38,6 +38,7 @@ if(isset($_POST['update_owner'])){
 								 update_user_meta($getuser->ID,'user_phone', $phoneno);
 								 update_user_meta($getuser->ID,'user_email', $_POST['email']);
 								 update_user_meta($getuser->ID,'about', $_POST['about']);
+								 update_user_meta($getuser->ID, 'user_personal_address',$_POST['address']);
 								 update_user_meta($getuser->ID,'user_twitter', $_POST['twitter']);
 								 update_user_meta($getuser->ID,'user_facebook', $_POST['facebook']);
 								 update_user_meta($getuser->ID,'user_google', $_POST['googleplus']);
@@ -74,6 +75,7 @@ if(isset($_POST['update_owner'])){
 								 update_user_meta($getuser->ID,'user_phone', $phoneno);
 								 update_user_meta($getuser->ID,'user_email', $_POST['email']);
 								 update_user_meta($getuser->ID,'about', $_POST['about']);
+								 update_user_meta($getuser->ID, 'user_personal_address',$_POST['address']);
 								 update_user_meta($getuser->ID,'user_twitter', $_POST['twitter']);
 								 update_user_meta($getuser->ID,'user_facebook', $_POST['facebook']);
 								 update_user_meta($getuser->ID,'user_google', $_POST['googleplus']);
@@ -138,7 +140,14 @@ get_header();
 									<input type="text" name="email" placeholder="Email" required value="<?php echo $getuser->data->user_email; ?>">
 								</div>
 							</div>
-
+							
+                            <div class="row">
+							    <div class="col-md-12">
+									<label>Address</label>
+									<textarea name="address" id="address" cols="30" rows="10" name="address" placeholder="Address"><?php echo get_user_meta($getuser->ID,'user_personal_address',true); ?></textarea>
+								</div>
+							</div>
+							
 							<div class="row">
 								<div class="col-md-12">
 									<h4 class="margin-top-50 margin-bottom-25">About Me</h4>
