@@ -40,13 +40,11 @@ if(isset($_POST['guest_checkout'])){
 			if(!empty($_POST['lead_source'])){
 			    add_post_meta($lead_id, 'lead_source',$_POST['lead_source']);
 			} else {
-			    add_post_meta($lead_id, 'lead_source','Custom Deal');
+			    add_post_meta($lead_id, 'lead_source','Manual Added');
 			}
 			
 			add_post_meta($lead_id, 'lead_created_from', 'admin' );
 			add_post_meta($lead_id, 'lead_created_user_id',get_current_user_id());
-			$notification = "A new lead submission by admin";
-		    nyc_add_noticication($notification);
             $success_msg = "Lead Created Sucessfully!!";
 		 }
    

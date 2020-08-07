@@ -426,7 +426,7 @@ get_header();
 			</div>
 
 			<div class="row dealdetail--stageinnersection">
-				 <?php  if($lead_source == "Property Form"){
+				 <?php  if($lead_source == "Property Form" || $lead_source == "Custom Deal"){
 			   $property_id  =   get_post_meta($dealid,'property_id',true);
 
 			   ?>
@@ -490,7 +490,7 @@ get_header();
                 <?php } ?>
                 <?php } ?>
 				<div class="col-md-12">
-					<?php if($lead_source == "Appointment Form" || $lead_source == "Custom Deal"){ ?>
+					<?php if($lead_source == "Appointment Form" || $lead_source == "Manual Added"){ ?>
 					<div class="dealdetal__appointmentdetail-sec">
 						<div class="leaddetail-teanentdetail dealdetail__tenantdetail">
 						
@@ -498,7 +498,7 @@ get_header();
 							<h2>Appointment Details</h2>
 							<?php endif; ?>
 							
-							<?php if($lead_source == "Custom Deal"):?>
+							<?php if($lead_source == "Manual Added"):?>
 							<h2>Deal Details</h2>
 							<?php endif; ?>
 							
