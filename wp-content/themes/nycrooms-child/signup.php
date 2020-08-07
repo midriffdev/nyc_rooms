@@ -149,6 +149,7 @@ if(is_user_logged_in()){
 $client_id = '675017533078473'; // Facebook APP Client ID
 $client_secret = 'a2183f77e4e5c2944b2c5f1ed9fcabb6'; // Facebook APP Client secret
 $redirect_uri =  site_url() . '/owner-registeration/'; // URL of page/file that processes a request
+$facebooklogin = false;
  
  /*----------------- Facebook Login -------------------------*/
  
@@ -222,6 +223,7 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 					exit;
 				} else {
 				    $loginerror = "Your account is currently suspended. Please Contact Administrator for activation.";
+					$facebooklogin = true;
 				}
 				
 			}
@@ -232,6 +234,7 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 }
 ?>
 <?php
+if($facebooklogin == false){
 $params = array(
 	'client_id'     => $client_id,
 	'redirect_uri'  => $redirect_uri,
@@ -308,6 +311,7 @@ if (isset($_GET['code'])) {
   // now you can use this profile info to create account in your website and make user logged in.
 } else {
   $google_uri = $client->createAuthUrl();
+}
 }
 
 //Check whether the user is already logged in  
