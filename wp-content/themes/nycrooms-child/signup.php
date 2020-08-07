@@ -234,7 +234,7 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 }
 ?>
 <?php
-if($facebooklogin == false){
+if(!$facebooklogin){
 $params = array(
 	'client_id'     => $client_id,
 	'redirect_uri'  => $redirect_uri,
