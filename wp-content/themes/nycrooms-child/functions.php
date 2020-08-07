@@ -1291,7 +1291,7 @@ function adding_multiple_deals(){
 							
 		 }
 		 
-		 if($lead_source == "Custom Deal"){
+		 if($lead_source == "Manual Added"){
 			  $DealDescription  =  get_post_meta($ids,'lead_summary',true);
 			  $lead_user_id     =  get_post_meta($ids, 'lead_created_user_id',true);
 			  $lead_name        =  get_post_meta($ids, 'lead_name',true);
