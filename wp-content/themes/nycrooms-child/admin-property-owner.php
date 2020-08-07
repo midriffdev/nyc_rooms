@@ -69,7 +69,7 @@ $argspage = array(
 $users = new WP_User_Query( $argspage ); 
 $user_count_agents = $users->get_results();
 // count the number of users found in the query
-$total_users_agents = $user_count_agents ? count($user_count_agents) : 1;
+$total_users_agents =  count($user_count_agents);
 
 $page = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
