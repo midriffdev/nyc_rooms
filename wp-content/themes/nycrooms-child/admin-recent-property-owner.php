@@ -8,39 +8,52 @@ if(isset($_GET['search_owner'])){
 
     
 	 
-    $argarray =  array(
-                               'relation'    => 'AND',
-								array(
+   $argarray =  array(
+                                    'relation'    => 'AND',	
+                                 ); 
+					
+					if(!empty($_GET['ownername'])){
+					     $argarray[] = array(
 									'key'          => 'user_name',
 									'value'        => $_GET['ownername'],
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',
-								),
-								array(
+								);
+					     
+					}
+					
+					if(!empty($_GET['email'])){
+					     $argarray[] = array(
 									'key'          => 'user_email',
 									'value'        => $_GET['email'],
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',
-								),
-								array(
+								);
+					     
+					}
+					if(!empty($_GET['phone'])){
+					     $argarray[] = array(
 									'key'          => 'user_phone',
 									'value'        => $_GET['phone'],
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',
-								),
-								array(
-									'key'          => 'user_personal_address',
-									'value'        => $_GET['searchbaddress'],
-									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
-									//'compare'      => 'NOT LIKE',
-									'compare'      => 'LIKE',
-								)
-								
-                                								
-                    ); 
+								);
+					     
+					}
+					if(!empty($_GET['searchbaddress'])){
+					     $argarray[] = array(
+											'key'          => 'user_personal_address',
+											'value'        => $_GET['searchbaddress'],
+											//I think you really want != instead of NOT LIKE, fix me if I'm wrong
+											//'compare'      => 'NOT LIKE',
+											'compare'      => 'LIKE',
+								       );
+					     
+					}
+					
  
 }
 
