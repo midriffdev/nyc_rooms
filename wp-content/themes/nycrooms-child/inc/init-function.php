@@ -1257,8 +1257,31 @@ function add_new_custom_deal(){
 		add_post_meta($deal_id, 'description',$_POST['t_description']);
 		add_post_meta($deal_id, 'admin_notes',$_POST['admin_notes']);
 		add_post_meta($deal_id, 'deal_price',$_POST['deal_price']);
-		$notification = "A new deal created by admin";
+		
+		$notification = "A new deal created with Deal No ". $deal_id . "by admin";
 		nyc_add_noticication($notification);
+		
+		/* ------------ Sent mail to  admin --------*/
+		
+		$subject = "New Deal Created With Deal No  - ". $deal_id;
+	    $to = get_option('admin_email');
+		$msg  = __( 'Hello Admin,') . "\r\n\r\n";
+		$msg .= sprintf( __( '<p>A New Deal has been created with Deal No %s on the behalf of Tenant.</p> <p>Please check by login with your Dashboard For details.</p>'), $deal_id);
+		$msg .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
+		$headers = array('Content-Type: text/html; charset=UTF-8');
+		$sent = wp_mail($to, $subject, $msg,$headers);
+		
+		
+		/* ------------ Sent mail to  tenant --------*/
+		$tenant_deal_link = get_site_url().'/tenant/deal-details-tenant/'.base64_encode($deal_id);
+		$subject1 = "New Deal Created From NYC Rooms With Deal No  - ". $deal_id;
+	    $to1 = $_POST['t_email'];
+		$msg1  = sprintf( __('Hello %s',$_POST['t_name']));
+		$msg1 .= sprintf( __( "<p>A New Deal has been created by Administrator from NYC Rooms with Deal No %s.</p><p>Here's the link where you can check deal details: %s</p>"), $deal_id,$tenant_deal_link);
+		$msg1 .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
+		$headers1 = array('Content-Type: text/html; charset=UTF-8');
+		$sent = wp_mail($to1, $subject1, $msg1,$headers1);
+		
 		echo "success";
 	}
 	}	
