@@ -108,7 +108,7 @@ get_header();
 			<?php 
 			}
 			?>
-			 <?php if($lead_source == "Appointment Form" || $lead_source == "Custom Deal"){ ?>
+			 <?php if($lead_source == "Appointment Form" || $lead_source == "Manual Added"){ ?>
 			 <div class="col-md-6">
 				<div class="leaddetail-teanentdetail">
 				<h2>Lead Details</h2>
