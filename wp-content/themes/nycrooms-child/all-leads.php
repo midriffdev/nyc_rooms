@@ -5,30 +5,32 @@ if(isset($_GET['search_leadsall'])){
 
     $argarray =  array(
 								//comparison between the inner meta fields conditionals
-								'relation'    => 'AND',
-								array(
+								'relation'    => 'AND'
+		         ); 
+				if(!empty($_GET['property_name'])){	
+			         $argarray[] = array(
 										'key'          => 'lead_checkout_property_name',
 										'value'        => $_GET['property_name'],
 										'compare'      => 'LIKE',
-                                 ),
-								//meta field condition one
-								array(
+                                    );	
+				}
+				if(!empty($_GET['property_owner_name'])){	
+			         $argarray[] = array(
 									'key'          => 'lead_name',
 									'value'        => $_GET['property_owner_name'],
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',
-								),
-								array(
-									'key'          => 'lead_email',
-									'value'        => $_GET['property_owner_email'] ,
-									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
-									//'compare'      => 'NOT LIKE',
-									'compare'      => 'LIKE',
-								)
-		
-                    ); 
- 
+								);	
+				}
+				if(!empty($_GET['property_owner_email'])){	
+			         $argarray[] = array(
+										'key'          => 'lead_checkout_property_name',
+										'value'        => $_GET['property_owner_email'],
+										'compare'      => 'LIKE',
+                                    );	
+				}
+				
 }
 
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
