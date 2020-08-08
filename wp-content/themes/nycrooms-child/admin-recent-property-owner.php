@@ -8,31 +8,52 @@ if(isset($_GET['search_owner'])){
 
     
 	 
-    $argarray =  array(
-                               'relation'    => 'AND',
-								array(
+   $argarray =  array(
+                                    'relation'    => 'AND',	
+                                 ); 
+					
+					if(!empty($_GET['ownername'])){
+					     $argarray[] = array(
 									'key'          => 'user_name',
 									'value'        => $_GET['ownername'],
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',
-								),
-								array(
+								);
+					     
+					}
+					
+					if(!empty($_GET['email'])){
+					     $argarray[] = array(
 									'key'          => 'user_email',
 									'value'        => $_GET['email'],
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',
-								),
-								array(
+								);
+					     
+					}
+					if(!empty($_GET['phone'])){
+					     $argarray[] = array(
 									'key'          => 'user_phone',
 									'value'        => $_GET['phone'],
 									//I think you really want != instead of NOT LIKE, fix me if I'm wrong
 									//'compare'      => 'NOT LIKE',
 									'compare'      => 'LIKE',
-								)
-                                								
-                    ); 
+								);
+					     
+					}
+					if(!empty($_GET['searchbaddress'])){
+					     $argarray[] = array(
+											'key'          => 'user_personal_address',
+											'value'        => $_GET['searchbaddress'],
+											//I think you really want != instead of NOT LIKE, fix me if I'm wrong
+											//'compare'      => 'NOT LIKE',
+											'compare'      => 'LIKE',
+								       );
+					     
+					}
+					
  
 }
 
@@ -50,7 +71,7 @@ $argspage = array(
 $users = new WP_User_Query( $argspage ); 
 $user_count_agents = $users->get_results();
 // count the number of users found in the query
-$total_users_agents = $user_count_agents ? count($user_count_agents) : 1;
+$total_users_agents =  count($user_count_agents);
 
 $page = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
@@ -68,7 +89,6 @@ $args = array(
 		 'offset'    => $offset,
          'orderby'	=> 'user_registered',	 
 		 'order'      => 'DESC',
-
         );
 		
 
@@ -76,14 +96,27 @@ if(!empty($argarray)){
    $args['meta_query'] = $argarray; 
 }
 
-$usersquery = new WP_User_Query( $args ); 
+if(isset($_GET['datesearch']) && !empty($_GET['datesearch'])){
+     
+	 $date = explode('-',$_GET['datesearch']);
+	 $args['date_query'] = array(
+								array(
+									'year'  => (int) $date[0],
+									'month' => (int) $date[1],
+									'day'   => (int) $date[2]
+								)
+                        ); 
+   
+}
 
+$usersquery = new WP_User_Query( $args ); 
 $all_users = $usersquery->get_results();
 global $wp;
 $current_url = home_url( add_query_arg( array(), $wp->request ) );
-if(isset($_GET['download-csv']) && $_GET['download-csv'] == 'true'){ 
+if(isset($_GET['download-csv']) && $_GET['download-csv'] == 'true'){  
 	nyc_export_as_CSV_Prop_Owner();	
 }
+
 get_header();
 ?>
 
@@ -98,9 +131,8 @@ get_header();
 
 		<div class="col-md-9">
 			<div class="dashboard-main--cont">
-                    <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
+                 <p style="color:#274abb"><a href="<?= site_url().'/admin/' ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To DashBoard</a></p>
 				<div class="admin-advanced-searchfilter">
-				    
 					<h2>Property Owner filter</h2>
 					<form method="get">
 					<div class="row with-forms">
@@ -124,7 +156,16 @@ get_header();
 								<div class="col-md-6">
 									<input type="text" placeholder="Enter Phone" name="phone"/>
 								</div>
+								<div class="col-md-6">
+									<input type="date" placeholder="Enter Date" name="datesearch"/>
+								</div>
+								
+								<div class="col-md-6">
+									<input type="text" placeholder="Search by address,city, state, state code.." name="searchbaddress"/>
+								</div>
+								
 							</div>
+							
 							<!-- Row With Forms / End -->	
 
 							<!-- Search Button -->
@@ -139,7 +180,7 @@ get_header();
 					</div>
 					</form>
 				</div>
-				 <div class="col-md-10">
+				<div class="col-md-10">
 					     <p class="showing-results"><?= count($all_users); ?> Results Found On Page <?php echo $page ;?> of <?php echo $total_pages;?> </p>
 				 </div>
 				 <div class="col-md-2 mx-auto">
@@ -153,47 +194,65 @@ get_header();
 					<th class="expire-date">Properties</th>
 					<th> Email</th>
 					<th> Phone</th>
+					<th>Status</th>
 					<th> Action</th>
 				</tr>
 
 				<!-- Item #1 -->
 				<?php 
-				if($all_users){	
-				foreach ( $all_users as $user ) {
-                   $phone = get_user_meta($user->ID,'user_phone',true);
-				   $profile_picture = get_user_meta($user->ID,'profile_picture',true);
+				if($all_users){				
+					foreach ( $all_users as $user ) {
+					   $phone = get_user_meta($user->ID,'user_phone',true);
+					   $profile_picture = get_user_meta($user->ID,'profile_picture',true);
 					?>
-					<tr>
-					    <td><input type="checkbox" class="checkagent" value="<?= $user->ID ?>"></td>
-						<td class="title-container teanent-title-container">
-						   <?php if($profile_picture){
-						       echo wp_get_attachment_image( $profile_picture, array('150', '150'), "", array( "class" => "img-responsive" ) );
-						   ?>
-							<?php } else { ?>
-							  <img src="<?= get_stylesheet_directory_uri() ?>/images/male-icon.png" alt="">
-							<?php } ?>
-							<div class="title">
-							 <h4><!--a href="<?php //echo get_site_url();?>/property-owner-details"---><?php echo $user->display_name; ?><!--/a--></h4>
-							</div>
-						</td>
-						<td class="admin-owner-propertycount"><?php echo nyc_get_properties_by_property_owner($user->ID)->post_count;?></td>
-						<td class="owner--username"><?php echo $user->user_email ;?></td>
-						<td><div class="owner-phone-no"><?php echo $phone ;?></div></td>
-						<td class="action">
-							<a href="<?php echo get_site_url();?>/property-owner-details/?prpage=recent-property-owner&&uid=<?php echo $user->ID;?>"><i class="fa fa-pencil"></i> Edit</a>
-							<a style="cursor:pointer;" class="delete_agent_profile" data-id="<?php echo $user->ID; ?>"><i class="fa fa-remove"></i> Delete</a>
-						</td>
-					</tr>
-				<?php
-                   if(count($all_users) > 20){
-				      break;
-				   }
-
-				}
+						<tr>
+							<td><input type="checkbox" class="checkagent" value="<?= $user->ID ?>"></td>
+							<td class="title-container teanent-title-container">
+							   <?php if($profile_picture){
+								   echo wp_get_attachment_image( $profile_picture, array('150', '150'), "", array( "class" => "img-responsive" ) );
+							   ?>
+								<?php } else { ?>
+								  <img src="<?= get_stylesheet_directory_uri() ?>/images/male-icon.png" alt="">
+								<?php } ?>
+								<div class="title">
+								 <h4><!--a href="<?php //echo get_site_url();?>/property-owner-details"---><?php echo $user->display_name; ?><!--/a--></h4>
+								</div>
+							</td>
+							<td class="admin-owner-propertycount"><?php echo nyc_get_properties_by_property_owner($user->ID)->post_count;?></td>
+							<td class="owner--username"><?php echo $user->user_email ;?></td>
+							<td><div class="owner-phone-no"><?php echo $phone ;?></div></td>
+							<td>
+							<div class="owner-status">
+							<?php
+								 $checkstatus = get_user_meta($user->ID,'user_status',true);
+								 if(!$checkstatus){
+									echo "inactive";
+								 } else if($checkstatus == 'inactive'){
+									 echo $checkstatus;
+								 }	else {
+									 echo $checkstatus;
+								 }
+					      ?></div>
+						    </td>
+							<td class="action">
+							    <?php if(!$checkstatus){ ?>
+									<a style="cursor:pointer;" class="active active-tenant" data-id="<?php echo $user->ID; ?>"><i class="fa fa-eye-slash"></i> Activate</a>
+							    <?php } else if($checkstatus == 'inactive'){
+								?>
+									<a style="cursor:pointer;" class="active active-tenant" data-id="<?php echo $user->ID; ?>"><i class="fa fa-eye-slash"></i> Activate</a>
+							     <?php
+							     } else {?>
+									 <a style="cursor:pointer;" class="inactive inactive-tenant" data-id="<?php echo $user->ID; ?>"><i class="fa fa-key"></i> Inactivate</a>
+								<?php } ?>
+								<a href="<?php echo get_site_url();?>/property-owner-details/?prpage=admin-property-owner-all&&uid=<?php echo $user->ID;?>"><i class="fa fa-pencil"></i> Edit</a>
+								<a style="cursor:pointer;" class="delete_agent_profile" data-id="<?php echo $user->ID; ?>"><i class="fa fa-remove"></i> Delete</a>
+							</td>
+						</tr>
+					<?php 
+					} 
 				}else{
 					echo "<tr class='nyc-no-properties'><td class='no_property_found' colspan='6'>No Property Owner Found !</td></tr>";
 				}
-				
 				?>
 				</tbody>
 				</table>
@@ -239,6 +298,8 @@ get_header();
                   <div class="bulk_actions">
 						<select class="select_action">
 							 <option value="-1">Bulk Actions</option>
+							 <option value="activeowner">Activate</option>
+						     <option value="inactiveowner">Inactivate</option>
 							 <option value="delete">Delete</option>
 						</select>
                     <input type="button" value="Apply" class="apply_action">
@@ -255,6 +316,25 @@ get_header();
 
 <!-- Back To Top Button -->
 <div id="backtotop"><a href="#"></a></div>
+
+<div class="modal fade" id="ModalUser" role="dialog">
+	<div class="modal-dialog">
+	  <!-- Modal content-->
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+		</div>
+		<div class="modal-body">
+		  <p></p>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		</div>
+	  </div>
+	  
+	</div>
+</div>
+
 <!-- Modal -->
   <div class="modal fade" id="Modaldelete" role="dialog">
     <div class="modal-dialog">
@@ -310,8 +390,82 @@ input.apply_action {
 <script>
 jQuery(document).ready(function($) {
 	jQuery('.admin-propertiesowner').addClass('show--submenu');
-	jQuery('#sidebar-recentowner').addClass('current');
+	jQuery('#sidebar-propertiesowner').addClass('current');
+	
+	var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+	
+	jQuery('.active.active-tenant').click(function (e) {
+	e.preventDefault();
+	/* var checkedNum = jQuery(this).closest('tr').find('input[class="checkbulk"]:checked').length;
+	if(checkedNum == 0){
+		  alert('Please select this user to activate');
+    } else { */
+			jQuery('.loading').show(); 
+			var myarraytenant = new Array();
+			var tenant_id = jQuery(this).attr('data-id');
+			myarraytenant.push(tenant_id);
+			
+			var data = {
+								'action': 'nyc_bulk_action_user',
+								'data':   myarraytenant,
+								'bulkaction':'active',						
+					};
+					// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+					jQuery.post(ajaxurl, data, function(response) {			  
+						if(response == "true"){
+							jQuery('.loading').hide(); 
+							$('#ModalUser .modal-body p').html('Owner Active Successfully');
+							jQuery('#ModalUser').modal('show');
+							setTimeout(function(){
+							   window.location.reload();
+							   // or window.location = window.location.href; 
+							}, 2000);	
+						}
+			});
+	
+	/* } */
+	
+    });
+
+    jQuery('.inactive.inactive-tenant').click(function (e) {
+			e.preventDefault();
+			//var checkedNum = jQuery(this).closest('tr').find('input[class="checkbulk"]:checked').length;
+			/* if(checkedNum == 0){
+				  alert('Please select this user to inactivate');
+			} else { */
+			
+					jQuery('.loading').show(); 
+					var myarraytenant = new Array();
+					var tenant_id = jQuery(this).attr('data-id');
+					myarraytenant.push(tenant_id);
+					
+					var data = {
+										'action': 'nyc_bulk_action_user',
+										'data':   myarraytenant,
+										'bulkaction':'inactive',						
+							};
+							// We can also pass the url value separately from ajaxurl for front end AJAX implementations
+							jQuery.post(ajaxurl, data, function(response) {			  
+								if(response == "true"){
+									jQuery('.loading').hide(); 
+									$('#ModalUser .modal-body p').html('Owner Inactive Successfully');
+									jQuery('#ModalUser').modal('show');
+									setTimeout(function(){
+									   window.location.reload();
+									   // or window.location = window.location.href; 
+									}, 2000);	
+								}
+					});
+					
+			/* } */
+			
+	});
+	
+	
+	
 });
+
+
 </script>
 
 <?php 

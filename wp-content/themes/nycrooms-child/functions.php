@@ -327,10 +327,11 @@ function nyc_add_property_ajax(){
 				// $user_name  = 
 				 $subject1 = "New Property Listed - ".$_POST['title'];
 			     $to1 = $user_email;
-			     $msg1  = __( 'Hello Admin,') . "\r\n\r\n";
-			     $msg1 .= sprintf( __( 'A new property listed by %s title is "%s".'), $_POST['contact_name'], $_POST['title'] ) . "\r\n\r\n";
+			     $msg1  = sprintf( __('Hello %s',$_POST['contact_name']));
+			     $msg1 .= sprintf( __( '<p>A new property with Title Name "%s" has been listed on the behalf of admin From NYC Rooms.</p><p>Once This property has been approved It will be public interface.Please check your account for more details.</p>  '),$_POST['title'] );
 			     $msg1 .= __( 'Thanks!', 'personalize-login' ) . "\r\n";
-		         $sent1 = wp_mail($to1, $subject1, $msg1);
+				 $headers1 = array('Content-Type: text/html; charset=UTF-8');
+		         $sent1 = wp_mail($to1, $subject1, $msg1,$headers1);
 			    
 			}
 			
@@ -1291,7 +1292,7 @@ function adding_multiple_deals(){
 							
 		 }
 		 
-		 if($lead_source == "Custom Deal"){
+		 if($lead_source == "Manual Added"){
 			  $DealDescription  =  get_post_meta($ids,'lead_summary',true);
 			  $lead_user_id     =  get_post_meta($ids, 'lead_created_user_id',true);
 			  $lead_name        =  get_post_meta($ids, 'lead_name',true);

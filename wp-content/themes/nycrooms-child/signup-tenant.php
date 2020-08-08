@@ -294,7 +294,7 @@ if(isset($_POST['guest_checkout'])){
 $client_id = '675017533078473'; // Facebook APP Client ID
 $client_secret = 'a2183f77e4e5c2944b2c5f1ed9fcabb6'; // Facebook APP Client secret
 $redirect_uri =   site_url() . '/tenant-registration/'; // URL of page/file that processes a request
- 
+ $facebooklogin = false;
  
  
 // in our case we ask facebook to redirect to the same page, because processing code is also here
@@ -343,23 +343,31 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 				$user_id = wp_insert_user( $userdata );
 				if($user_id){
 				    add_user_meta($user_id,'user_full_name', $fb_user->first_name . ' ' . $fb_user->last_name);
+					add_user_meta($user_id,'user_email', $fb_user->email);
 					add_user_meta($user_id,'user_status','active');
 				}
-				wp_new_user_notification($user_id, null, 'both');
+				$notification = "A Tenant with email Id (". $fb_user->email .") is registered From Facebook";
+				nyc_add_noticication($notification);
 				
+				wp_new_user_notification($user_id, null, 'both');
+				wp_set_auth_cookie( $user_id, true );
+				wp_redirect( home_url() . '/tenant/');
+				exit;
 				
 			} else {
 				// user exists, so we need just get his ID
 				$user = get_user_by( 'email', $fb_user->email );
 				$user_id = $user->ID;
-				
-			}
-			
-			if( $user_id ) {
-			
-			    wp_set_auth_cookie( $user_id, true );
-				wp_redirect( home_url() . '/tenant/');
-				exit;
+				$checkstatus =  get_user_meta($user_id,'user_status',true);
+				if($checkstatus == 'active'){
+					wp_set_auth_cookie( $user_id, true );
+					wp_redirect( home_url() . '/tenant/');
+					exit;
+				} else {
+				    $loginerror = "Your account is currently suspended. Please Contact Administrator for activation.";
+					$facebooklogin = true;
+					header( "refresh:3;url=".home_url()."/tenant/" );
+				}
 				
 			}
  
@@ -369,6 +377,7 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 }
 ?>
 <?php
+if(!$facebooklogin){
 $params = array(
 	'client_id'     => $client_id,
 	'redirect_uri'  => $redirect_uri,
@@ -416,23 +425,32 @@ if (isset($_GET['code'])) {
 				$user_id = wp_insert_user( $userdata );
 				if($user_id){
 				    add_user_meta($user_id,'user_full_name', $google_account_info->givenName . ' ' . $google_account_info->familyName);
+					add_user_meta($user_id,'user_email', $google_account_info->email);
 					add_user_meta($user_id,'user_status','active');
 				}
+				$notification = "A Tenant with email Id (". $google_account_info->email .") is registered From Google";
+				nyc_add_noticication($notification);
 				wp_new_user_notification($user_id, null, 'both');
 				
+				wp_set_auth_cookie( $user_id, true );
+				wp_redirect( home_url() . '/tenant/');
+				exit;
  
 			} else {
+			     
 				// user exists, so we need just get his ID
 				$user = get_user_by( 'email', $google_account_info->email );
 				$user_id = $user->ID;
+				$checkstatus =  get_user_meta($user_id,'user_status',true);
+				if($checkstatus == 'active'){
+					wp_set_auth_cookie( $user_id, true );
+					wp_redirect( home_url() . '/tenant/');
+					exit;
+				} else {
+				   $loginerror = "Your account is currently suspended. Please Contact Administrator for activation.";
+				   header( "refresh:3;url=".home_url()."/tenant/" );
+				}
 				
-			}
-			
-			if( $user_id ) {
-			
-			    wp_set_auth_cookie( $user_id, true );
-				wp_redirect( home_url() . '/tenant/');
-				exit;
 				
 			}
 			
@@ -444,6 +462,7 @@ if (isset($_GET['code'])) {
   // now you can use this profile info to create account in your website and make user logged in.
 } else {
   $google_uri = $client->createAuthUrl();
+}
 }
 //Check whether the user is already logged in  
 get_header();

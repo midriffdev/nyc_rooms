@@ -54,19 +54,25 @@ if(is_user_logged_in()){
          {  
    
             $password = $_REQUEST['password1'];  
+			$full_name = explode(" ",$_REQUEST['full_name']);
+			$first_name = $full_name[0];
+			$last_name  = $full_name[1];
             $signin_data =  array(
 									  'user_login' => $username,
 									  'user_pass' => $password,
 									  'user_email' => $email,
-									  'display_name' => $_REQUEST['full_name'],
+									  'first_name' => $first_name,
+					                  'last_name' => $last_name,
 									  'role'  => 'property_owner'
                            );
 			  
 			$user =  wp_insert_user($signin_data);
 			 
 			 if($user){
-				add_user_meta($user,'user_full_name', $_REQUEST['full_name']);
-				add_user_meta($user,'user_phone', $_REQUEST['user_phone']);
+				update_user_meta($user,'user_name', $_REQUEST['full_name']);
+				update_user_meta($user,'user_email', $email);
+				update_user_meta($user,'user_phone', $_REQUEST['user_phone']);
+				update_user_meta($user,'user_status','active');
 			   $login_data = array(
 			                    'user_login' => $username,
 							    'user_password' => $password,
@@ -124,9 +130,19 @@ if(is_user_logged_in()){
 		if ( is_wp_error($user_verify) ) {  
 			$loginerror = "Invalid login details";  
 		   // Note, I have created a page called "Error" that is a child of the login page to handle errors. This can be anything, but it seemed a good way to me to handle errors.  
-		 } else {    
-		   echo "<script type='text/javascript'>window.location.href='". site_url().'/property-owner/' ."'</script>";  
-		   exit();  
+		 } else {
+		     $checkstatus =  get_user_meta($userrolecheck->ID ,'user_status',true);
+			 
+		     if($checkstatus == 'active'){
+			       echo "<script type='text/javascript'>window.location.href='". site_url().'/property-owner/' ."'</script>";  
+		           exit();  
+			 } else {
+			     $loginerror = "Your account is currently suspended. Please Contact Administrator for activation.";
+			 }
+			  
+		  
+		   
+		   
 		 }
      }
 	} else {
@@ -138,6 +154,7 @@ if(is_user_logged_in()){
 $client_id = '675017533078473'; // Facebook APP Client ID
 $client_secret = 'a2183f77e4e5c2944b2c5f1ed9fcabb6'; // Facebook APP Client secret
 $redirect_uri =  site_url() . '/owner-registeration/'; // URL of page/file that processes a request
+$facebooklogin = false;
  
  /*----------------- Facebook Login -------------------------*/
  
@@ -181,24 +198,43 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 					'user_login'  =>  $fb_user->email,
 					'user_pass'   =>  wp_generate_password(), // random password, you can also send a notification to new users, so they could set a password themselves
 					'user_email' => $fb_user->email,
-					'display_name' => $fb_user->first_name . ' ' . $fb_user->last_name,
+					'first_name' => $fb_user->first_name,
+					'last_name' => $fb_user->last_name,
 					'role'  => 'property_owner'
 				);
 				$user_id = wp_insert_user( $userdata );
 				if($user_id){
-				    add_user_meta($user_id,'user_full_name', $fb_user->first_name . ' ' . $fb_user->last_name);
+				    update_user_meta($user_id,'user_name',$fb_user->first_name . ' ' . $fb_user->last_name);
+					update_user_meta($user_id,'user_email', $fb_user->email);
+					update_user_meta($user_id,'user_status','active');
 				}
-				wp_new_user_notification($user_id, null, 'both');	
+				$notification = "A property owner with email Id (". $fb_user->email .") is registered From Facebook";
+				nyc_add_noticication($notification);
+				
+				wp_new_user_notification($user_id, null, 'both');
+                 
+				wp_set_auth_cookie( $user_id, true );
+				wp_redirect( home_url() . '/property-owner/');
+				exit;
+				
+				
 			} else {
 				// user exists, so we need just get his ID
 				$user = get_user_by( 'email', $fb_user->email );
 				$user_id = $user->ID;
-			}
-			
-			if( $user_id ) {
-			    wp_set_auth_cookie( $user_id, true );
-				wp_redirect( home_url() . '/property-owner/');
-				exit;
+				
+				$checkstatus =  get_user_meta($user_id,'user_status',true);
+				if($checkstatus == 'active'){
+					wp_set_auth_cookie( $user_id, true );
+					wp_redirect( home_url() . '/property-owner/');
+					exit;
+				} else {
+				    $loginerror = "Your account is currently suspended. Please Contact Administrator for activation.";
+					$facebooklogin = true;
+					header( "refresh:3;url=".home_url()."/property-owner/" );
+					
+				}
+				
 			}
  
 		}
@@ -207,6 +243,7 @@ if ( isset( $_GET['code'] ) && $_GET['code'] ) {
 }
 ?>
 <?php
+if(!$facebooklogin){
 $params = array(
 	'client_id'     => $client_id,
 	'redirect_uri'  => $redirect_uri,
@@ -244,27 +281,38 @@ if (isset($_GET['code'])) {
 					'user_login'  =>  $google_account_info->email,
 					'user_pass'   =>  wp_generate_password(), // random password, you can also send a notification to new users, so they could set a password themselves
 					'user_email' => $google_account_info->email,
-					'display_name' => $google_account_info->givenName . ' ' . $google_account_info->familyName,
+					'first_name' => $google_account_info->givenName,
+					'last_name' => $google_account_info->familyName,
 					'role'  => 'property_owner'
 				);
 				$user_id = wp_insert_user( $userdata );
 				if($user_id){
-				    add_user_meta($user_id,'user_full_name', $google_account_info->givenName . ' ' . $google_account_info->familyName);
+				    update_user_meta($user_id,'user_name', $google_account_info->givenName . ' ' . $google_account_info->familyName);
+					update_user_meta($user_id,'user_email', $google_account_info->email);
+					update_user_meta($user_id,'user_status','active');
 				}
+				$notification = "A property owner with email Id (". $google_account_info->email .") is registered From Google";
+				nyc_add_noticication($notification);
+				
 				wp_new_user_notification($user_id, null, 'both');
 				
+				wp_set_auth_cookie( $user_id, true );
+				wp_redirect( home_url() . '/property-owner/');
+				exit;
  
 			} else {
 				// user exists, so we need just get his ID
 				$user = get_user_by( 'email', $google_account_info->email );
 				$user_id = $user->ID;
-				
-			}
-			
-			if( $user_id ) {
-			    wp_set_auth_cookie( $user_id, true );
-				wp_redirect( home_url() . '/property-owner/');
-				exit;
+				$checkstatus =  get_user_meta($user_id,'user_status',true);
+				if($checkstatus == 'active'){
+					wp_set_auth_cookie( $user_id, true );
+					wp_redirect( home_url() . '/property-owner/');
+					exit;
+				} else {
+				     $loginerror = "Your account is currently suspended. Please Contact Administrator for activation.";
+					 header( "refresh:3;url=".home_url()."/property-owner/" );
+				}
 			}
 			
   
@@ -275,6 +323,7 @@ if (isset($_GET['code'])) {
   // now you can use this profile info to create account in your website and make user logged in.
 } else {
   $google_uri = $client->createAuthUrl();
+}
 }
 
 //Check whether the user is already logged in  

@@ -12,9 +12,10 @@ if(isset($_POST['add_owner'])){
   if( email_exists( $_POST['email'] ) ) {
      $usererror ="Sorry!! Email Already Exists";
   } else {
+      $userPass = wp_generate_password();
       $userdata = array(
 					'user_login'  => $_POST['email'],
-					'user_pass'   =>  wp_generate_password(), // random password, you can also send a notification to new users, so they could set a password themselves
+					'user_pass'   =>  $userPass, // random password, you can also send a notification to new users, so they could set a password themselves
 					'user_email' => $_POST['email'],
 					'first_name' => $first_name,
 					'last_name' => $last_name,
@@ -33,11 +34,14 @@ if(isset($_POST['add_owner'])){
 			 update_user_meta($user_id,'user_phone', $phone);
 			 update_user_meta($user_id,'user_email', $_POST['email']);
 			 update_user_meta($user_id,'about', $_POST['about']);
+			 update_user_meta($user_id, 'user_personal_address',$_POST['address']);
 			 update_user_meta($user_id,'user_twitter', $_POST['twitter']);
 			 update_user_meta($user_id,'user_facebook', $_POST['facebook']);
 			 update_user_meta($user_id,'user_google', $_POST['googleplus']);
 			 update_user_meta($user_id,'user_linkedin', $_POST['linkedin']); 
-			$usersuccess = "Owner Added Successfully";	
+			 update_user_meta($user_id, 'user_status','active');
+			 nyc_wp_new_user_notification($user_id,$userPass);
+			 $usersuccess = "Owner Added Successfully";	
 			
 	   }
 	   
@@ -93,7 +97,14 @@ get_header();
 									<input type="email" name="email" placeholder="Email" id="email" required>
 								</div>
 							</div>
-
+							
+                            <div class="row">
+							    <div class="col-md-12">
+									<label>Address</label>
+									<textarea name="address" id="address" cols="30" rows="10" name="address" placeholder="Address"></textarea>
+								</div>
+							</div>
+							
 							<div class="row">
 								<div class="col-md-12">
 									<h4 class="margin-top-50 margin-bottom-25">About Me</h4>
