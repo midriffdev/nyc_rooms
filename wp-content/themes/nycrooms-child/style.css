@@ -13650,8 +13650,9 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
 }
 .appointment-button:hover{opacity: 0.8;}
 .bookappointment--popup .modal-body {
-    height: 450px;
+    height: 400px;
     overflow-y: scroll;
+    padding: 30px;
 }
 .fillamount-popup > h3 {
     text-align: center;
@@ -13849,11 +13850,14 @@ table.leads-maintable .lead-tablepropertyheading{width:30%;}
 	margin: 5px 0 0 0 !important;
     padding: 3px 16px !important;
 }
-.dashboard-main--cont input[type="date"] {
+input[type="date"] {
 	color: gray !important;
 	padding: 0 20px !important;
 }
-
+input[type="time"]{
+	color: gray !important;
+	padding: 0 20px !important;
+}
 table.admin-teanent-maintable th{padding: 17px 27px;}
 .add-new_leadform textarea{
 	height:100px !important;

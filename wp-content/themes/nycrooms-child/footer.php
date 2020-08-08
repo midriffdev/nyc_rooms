@@ -113,8 +113,8 @@ do_action( 'zakra_action_after' );
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-secondary dealdetail-popupsub" name="book_appointment">Submit</button>
+        <button type="button" class="btn btn-secondary book-appointment-close" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-secondary dealdetail-popupsub book-appointment-submit" name="book_appointment">Submit</button>
       </div>
 	</form>
     </div>
